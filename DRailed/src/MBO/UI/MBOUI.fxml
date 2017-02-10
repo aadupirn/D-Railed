@@ -23,7 +23,7 @@
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="890.0" prefWidth="2065.0">
                            <children>
-                              <TableView layoutX="431.0" layoutY="143.0" prefHeight="1220.0" prefWidth="2065.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <TableView id="train_info_table" layoutX="431.0" layoutY="143.0" prefHeight="1220.0" prefWidth="2065.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
                                     <TableColumn prefWidth="75.0" text="ID" />
                                     <TableColumn prefWidth="75.0" text="Safe Speed" />
@@ -43,11 +43,11 @@
                            <children>
                               <HBox>
                                  <children>
-                                    <ToggleButton mnemonicParsing="false" text="MBO Switch">
+                                    <ToggleButton id="mbo_btn" mnemonicParsing="false" text="MBO Switch">
                                        <HBox.margin>
                                           <Insets right="10.0" />
                                        </HBox.margin></ToggleButton>
-                                    <Button mnemonicParsing="false" text="Upload Schedule" />
+                                    <Button id="schedule_btn" mnemonicParsing="false" text="Upload Schedule" />
                                  </children>
                               </HBox>
                            </children></AnchorPane>
@@ -56,11 +56,11 @@
                </children></AnchorPane>
       </content>
     </Tab>
-    <Tab text="Stations">
+    <Tab text="Train Schedule">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <TableView layoutX="14.0" layoutY="14.0" prefHeight="842.0" prefWidth="1200.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView id="schedule_table" layoutX="14.0" layoutY="14.0" prefHeight="842.0" prefWidth="1200.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
                       <TableColumn prefWidth="128.0" text="Train ID: " />
                       <TableColumn minWidth="0.0" prefWidth="119.0" text="9056" />
@@ -69,7 +69,7 @@
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab text="Worker">
+      <Tab text="Worker Schedule">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
@@ -77,7 +77,7 @@
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <TableView prefHeight="639.0" prefWidth="2065.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <TableView id="worker_schedule_table" prefHeight="639.0" prefWidth="2065.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
                                   <TableColumn prefWidth="75.0" text="ID" />
                                   <TableColumn prefWidth="199.0" text="Last, First" />
@@ -88,7 +88,7 @@
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <Button layoutX="14.0" layoutY="4.0" mnemonicParsing="false" text="Upload" />
+                              <Button id="worker_schedule_btn" layoutX="14.0" layoutY="4.0" mnemonicParsing="false" text="Upload" />
                            </children>
                         </AnchorPane>
                     </items>
@@ -102,9 +102,9 @@
                <children>
                   <HBox layoutX="14.0" layoutY="14.0">
                      <children>
-                        <TextField promptText="# of Passengers" />
-                        <TextField promptText="# of Conductors" />
-                        <Button mnemonicParsing="false" text="Submit" />
+                        <TextField id="passengers" promptText="# of Passengers" />
+                        <TextField id="conductors" promptText="# of Conductors" />
+                        <Button id="plan_btn" mnemonicParsing="false" text="Submit" />
                      </children>
                   </HBox>
                </children></AnchorPane>
@@ -114,7 +114,7 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <ToggleButton layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="BLOCK COMMUNICATIONS" textAlignment="CENTER" textFill="RED">
+                  <ToggleButton id="mbo_murphy_btn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="BLOCK COMMUNICATIONS" textAlignment="CENTER" textFill="RED">
                      <font>
                         <Font name="System Bold" size="48.0" />
                      </font>
