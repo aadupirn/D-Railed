@@ -9,6 +9,7 @@ import java.util.List;
 
 
 
+
 import javax.swing.ButtonGroup;
 //import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -24,6 +25,7 @@ import javax.swing.border.EmptyBorder;
 
 import ctc.bean.Schedule;
 import ctc.bean.Trace;
+import ctc.panel.MonitorMapPanel;
 import ctc.util.ExcelUtil;
 import ctc.util.ScheduleUtil;
 
@@ -128,7 +130,6 @@ public class MainFrame extends JFrame implements ActionListener{
         radioButton2.setBounds(120, 520, 83, 31);
         contentPane.add(radioButton2);// 
         
-        
         ButtonGroup group = new ButtonGroup();// 
         group.add(radioButton1); // 
         group.add(radioButton2); // Radio Button Group
@@ -179,10 +180,15 @@ public class MainFrame extends JFrame implements ActionListener{
 		lblCtcMonitoringSystem.setBounds(14, 13, 232, 18);
 		contentPane.add(lblCtcMonitoringSystem);
 		
-		JTextArea trackImg = new JTextArea();
-		trackImg.setBackground(Color.DARK_GRAY);
-		trackImg.setBounds(0, 2, 994, 516);
-		contentPane.add(trackImg);
+		// JTextArea trackImg = new JTextArea();
+		// trackImg.setBackground(Color.DARK_GRAY);
+		// trackImg.setBounds(0, 2, 994, 516);
+		// contentPane.add(trackImg);
+		MonitorMapPanel mMPanel = new MonitorMapPanel();
+		mMPanel.setBounds(0, 2, 994, 516);
+		mMPanel.setBackground(Color.black);
+		contentPane.add(mMPanel);
+		
 		Timer timer = new Timer(label);//compute Timer
 		timer.start();
 		

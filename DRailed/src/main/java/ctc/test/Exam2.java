@@ -9,11 +9,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class Exam2 extends Thread implements ActionListener{
+    //声明图形界面元素
     private JButton  startJb;
     private JButton stopJb;
     private JButton resetJb;
     private JLabel displayJl ;
-    
+     
+    //定义变量存储时分秒
     int hour =0;
     int min =0;
     int sec =0 ;
