@@ -1,6 +1,5 @@
 package TrackController;
 
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,29 +11,56 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
-
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import TrackController.Classes.*;
 
 /**
- * Created by aadu on 2/3/17.
+ * Created by Jonathan on 2/3/17.
  */
 public class TrackController {
+    //Test
 
     //Class Objects
     private Stage mainStage, sideStage;
     private Scene mainScene, murphyScene, userInScene, engScene, toTMScene;
-    private Label controllerLabel,blockLabel, controlLabel, switchLabel, blockIDLabel, openLabel, lightsLabel, crossLabel, stationLabel, switchAdjLabel, switchIDLAbel, mainBlockLabel, subBlock1Label,subBlock2Label,connectedLabel;
+    private Label controllerLabel,blockLabel, controlLabel, switchLabel, openLabel, lightsLabel, crossLabel, stationLabel, switchAdjLabel, mainBlockLabel, subBlock1Label,subBlock2Label,connectedLabel;
     private TextField blockID, openStatus, lightsStatus,crossStatus,stationStatus, switchAdj1, switchAdj2, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText;
     private TextArea notifications;
     private Text controllerLine, controllerSection;
-    private Button murphyButton, userInputsButton, engInputsButton, toTrackModelButton, murphyBreakTrackButton, murphyBreakCTCComms, murphyBreakTMComms;
+    private Button murphyButton, userInputsButton, engInputsButton, toTrackModelButton, murphyBreakTrackButton, murphyBreakCTCComms, murphyBreakTMComms, sendEngineer, loadPLC, blockIdButton, switchIdButton;
     private RadioButton trainRB, blockRB, switchRB;
+    private PLC myPLC;
+    private Block[] Blocks;
 
 
     public TrackController() throws IOException {
 
+       createUI();
+
+        Block A,B,C,D;
+        A = new Block("A.1");
+        B = new Block("A.2");
+        C = new Block("B.1");
+        D = new Block("B.2");
+        Blocks = new Block[]{A,B,C,D};
+        Switch sw = new Switch("1",B,C,D);
+        Blocks[0].setOccupied(true);
+        Blocks[1].setSwitchID1(sw);
+        Blocks[2].setSwitchID1(sw);
+        Blocks[2].setStationName("Test Station");
+        Blocks[3].setSwitchID1(sw);
+        Blocks[3].setHasCrossings(true);
+
+    }
+
+    public void createUI()
+    {
         //Set variables
         double windowWidth = 1250;
         double windowHeight = 500;
@@ -119,9 +145,9 @@ public class TrackController {
         //Block Info Section -------------------------------------------
         blockInfo.setVgap(40);
         //Block label
-        blockIDLabel = new Label("Block ID: ");
-        blockIDLabel.setFont(new Font("Garamond",16));
-        blockInfo.add(blockIDLabel,0,0);
+        blockIdButton = new Button("Update Block: ");
+        blockIdButton.setOnAction(e->MainUpdateButtonClicked(e));
+        blockInfo.add(blockIdButton,0,0);
 
         //Block ID text
         blockID = new TextField("A.1");
@@ -225,9 +251,9 @@ public class TrackController {
         switchInfo.setVgap(45);
 
         //Switch ID label
-        switchIDLAbel = new Label("Switch ID: ");
-        switchIDLAbel.setFont(new Font("Garamond",16));
-        switchInfo.add(switchIDLAbel,0,0);
+        switchIdButton = new Button("Update Switch: ");
+        switchIdButton.setOnAction(e->MainUpdateButtonClicked(e));
+        switchInfo.add(switchIdButton,0,0);
 
         //Switch ID text
         switchIDText = new TextField("ID/(N/A)");
@@ -315,8 +341,10 @@ public class TrackController {
         TextField selectSwitchText = new TextField("");
         TextField setOpenText = new TextField("");
         TextField setSwitchText = new TextField("");
-        Button sendEngineer = new Button("Send Changes");
-        Button loadPLC = new Button("Upload PLC File");
+        sendEngineer = new Button("Send Changes");
+        loadPLC = new Button("Upload PLC File");
+        sendEngineer.setOnAction(e->EngineerButtonClicked(e));
+        loadPLC.setOnAction(e->EngineerButtonClicked(e));
 
 
         //setBlocklabel
@@ -429,13 +457,29 @@ public class TrackController {
         userInputs.add(getData,0,3,2,1);
         //End From CTC---------------------------------------------------------------------
 
-
         mainStage.setScene(mainScene);
         mainStage.show();
-
     }
 
-    public void MurphyButtonClicked(ActionEvent e) {
+    public void EngineerButtonClicked(ActionEvent e)
+    {
+        Object source = e.getSource();
+        if(source == loadPLC)
+        {
+            FileChooser fileChooser = new FileChooser();
+            Stage fileSelect = new Stage();
+            fileSelect.setTitle("Choose a PLC file to import:");
+            fileChooser.setInitialDirectory(new File("src/TrackController"));
+            File file = fileChooser.showOpenDialog(fileSelect);
+            if(file != null)
+            {
+                myPLC = new PLC(file, Blocks);
+            }
+        }
+    }
+
+    public void MurphyButtonClicked(ActionEvent e)
+    {
         Object source = e.getSource();
         if(source == murphyBreakTrackButton)
         {
@@ -448,6 +492,48 @@ public class TrackController {
         }
     }
 
+    public void MainUpdateButtonClicked(ActionEvent e)
+    {
+        Object source = e.getSource();
+        if(source == blockIdButton)
+        {
+            for(Block b : Blocks)
+            {
+                if(b.getID().equals(blockID.getText()))
+                {
+                    openStatus.setText(b.getOpenStatus());
+                    lightsStatus.setText(b.getLights());
+                    crossStatus.setText(b.getCrossings());
+                    stationStatus.setText(b.getStationName());
+                    switchAdj1.setText(b.getSwitchID1Name());
+                    switchAdj2.setText(b.getSwitchID2Name());
+                }
+            }
+        }
+        else if(source == switchIdButton)
+        {
+            Switch sw = null;
+            for(Block b : Blocks)
+            {
+                if(b.getSwitchID1() != null)
+                {
+                    sw = b.getSwitchID1();
+
+                }
+                if(b.getSwitchID2() != null)
+                {
+                    sw = b.getSwitchID2();
+                }
+                if(sw != null)
+                {
+                    mainBlockText.setText(sw.getMainBlock().getID());
+                    subBlock1Text.setText(sw.getSubBlock1().getID());
+                    subBlock2Text.setText(sw.getSubBlock2().getID());
+                    connectedText.setText(sw.getState());
+                }
+            }
+        }
+    }
     public void MainButtonClicked(ActionEvent e)
     {
         String newTitle = "Unknown Event";
