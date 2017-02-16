@@ -63,22 +63,24 @@ public class TrackModelGUI {
     private GridPane blockStatus = new GridPane();
 
     // Infrastructure Icon Resources
-    private ImageView trainIcon = new ImageView(new Image("TrackModel/UI/images/trainIcon.png"));
-    private ImageView switchIcon = new ImageView(new Image("TrackModel/UI/images/switchIcon.png"));
-    private ImageView stationIcon = new ImageView(new Image("TrackModel/UI/images/stationIcon.png"));
-    private ImageView crossingIcon = new ImageView(new Image("TrackModel/UI/images/crossingIcon.png"));
-    private ImageView lightsIcon = new ImageView(new Image("TrackModel/UI/images/lightsIcon.png"));
+    private ImageView trainIcon = new ImageView(new Image("/TrackModel/UI/images/trainIcon.png"));
+    private ImageView switchIcon = new ImageView(new Image("/TrackModel/UI/images/switchIcon.png"));
+    private ImageView stationIcon = new ImageView(new Image("/TrackModel/UI/images/stationIcon.png"));
+    private ImageView crossingIcon = new ImageView(new Image("/TrackModel/UI/images/crossingIcon.png"));
+    private ImageView lightsIcon = new ImageView(new Image("/TrackModel/UI/images/lightsIcon.png"));
 
     // Status Icon Resources
-    private ImageView openIcon = new ImageView(new Image("TrackModel/UI/images/openIcon.png"));
-    private ImageView closedIcon = new ImageView(new Image("TrackModel/UI/images/closedIcon.png"));
-    private ImageView railIcon = new ImageView(new Image("TrackModel/UI/images/railIcon.png"));
-    private ImageView circuitIcon = new ImageView(new Image("TrackModel/UI/images/circuitIcon.png"));
-    private ImageView powerIcon = new ImageView(new Image("TrackModel/UI/images/powerIcon.png"));
+    private ImageView openIcon = new ImageView(new Image("/TrackModel/UI/images/openIcon.png"));
+    private ImageView closedIcon = new ImageView(new Image("/TrackModel/UI/images/closedIcon.png"));
+    private ImageView railIcon = new ImageView(new Image("/TrackModel/UI/images/railIcon.png"));
+    private ImageView circuitIcon = new ImageView(new Image("/TrackModel/UI/images/circuitIcon.png"));
+    private ImageView powerIcon = new ImageView(new Image("/TrackModel/UI/images/powerIcon.png"));
 
     public TrackModelGUI() throws IOException {
 
         stage.setTitle(applicationTitle);
+
+        System.out.println(System.getProperty("user.dir"));
 
         // Layout Menu
         Label layoutMenuTitle = getLayoutLabel();
