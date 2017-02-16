@@ -104,7 +104,7 @@ public class Block {
         this.aSwitch = null;
         this.crossing = null;
         this.station = null;
-        this.light = new Light("" + blockNumber);
+        this.light = new Light(blockNumber);
 
         this.hasTrain = false;
 
@@ -118,7 +118,7 @@ public class Block {
     public void setParameters(Double length, Double grade, Double speedLimit, Double elevation, Double cumElevation, Double temperature, String direction){
         this.length = length;
         this.grade = grade;
-        this.speedLimit = speedLimit;
+        this.speedLimit = new Double(Math.round((speedLimit*1000.0)/3600.0)); // (kilometer/hour * meters/kilometer) * hour/second
         this.elevation = elevation;
         this.cumulativeElevation = cumElevation;
         this.temperature = temperature;
@@ -130,7 +130,7 @@ public class Block {
         this.aSwitch = aSwitch;
         this.crossing = crossing;
         this.other = other;
-        this.light = new Light("" + this.blockNumber);
+        this.light = new Light(this.blockNumber);
     }
 
     public void trainEnter(Train newTrain){
@@ -341,6 +341,10 @@ public class Block {
 
     public void toggleLight(){
         this.light.toggleActive();
+    }
+
+    public String toString(){
+        return section + blockNumber;
     }
 }
 

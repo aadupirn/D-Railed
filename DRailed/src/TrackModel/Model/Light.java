@@ -5,7 +5,7 @@ package TrackModel.Model;
  */
 public class Light {
 
-    String lightId;
+    Integer lightId;
     boolean active;
 
     public Light(){
@@ -13,21 +13,21 @@ public class Light {
         this.active = false;
     }
 
-    public Light(String lightId){
+    public Light(Integer lightId){
         this.lightId = lightId;
         this.active = true;
     }
 
-    public Light(String lightId, boolean status){
+    public Light(Integer lightId, boolean status){
         this.lightId = lightId;
         this.active = status;
     }
 
-    public String getLightId() {
+    public Integer getLightId() {
         return lightId;
     }
 
-    public void setLightId(String lightId) {
+    public void setLightId(Integer lightId) {
         this.lightId = lightId;
     }
 
