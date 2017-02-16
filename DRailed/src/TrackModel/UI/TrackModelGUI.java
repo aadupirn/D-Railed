@@ -25,6 +25,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,22 +63,24 @@ public class TrackModelGUI {
     private GridPane blockStatus = new GridPane();
 
     // Infrastructure Icon Resources
-    private ImageView trainIcon = new ImageView(new Image("TrackModel/UI/images/trainIcon.png"));
-    private ImageView switchIcon = new ImageView(new Image("TrackModel/UI/images/switchIcon.png"));
-    private ImageView stationIcon = new ImageView(new Image("TrackModel/UI/images/stationIcon.png"));
-    private ImageView crossingIcon = new ImageView(new Image("TrackModel/UI/images/crossingIcon.png"));
-    private ImageView lightsIcon = new ImageView(new Image("TrackModel/UI/images/lightsIcon.png"));
+    private ImageView trainIcon = new ImageView(new Image("/TrackModel/UI/images/trainIcon.png"));
+    private ImageView switchIcon = new ImageView(new Image("/TrackModel/UI/images/switchIcon.png"));
+    private ImageView stationIcon = new ImageView(new Image("/TrackModel/UI/images/stationIcon.png"));
+    private ImageView crossingIcon = new ImageView(new Image("/TrackModel/UI/images/crossingIcon.png"));
+    private ImageView lightsIcon = new ImageView(new Image("/TrackModel/UI/images/lightsIcon.png"));
 
     // Status Icon Resources
-    private ImageView openIcon = new ImageView(new Image("TrackModel/UI/images/openIcon.png"));
-    private ImageView closedIcon = new ImageView(new Image("TrackModel/UI/images/closedIcon.png"));
-    private ImageView railIcon = new ImageView(new Image("TrackModel/UI/images/railIcon.png"));
-    private ImageView circuitIcon = new ImageView(new Image("TrackModel/UI/images/circuitIcon.png"));
-    private ImageView powerIcon = new ImageView(new Image("TrackModel/UI/images/powerIcon.png"));
+    private ImageView openIcon = new ImageView(new Image("/TrackModel/UI/images/openIcon.png"));
+    private ImageView closedIcon = new ImageView(new Image("/TrackModel/UI/images/closedIcon.png"));
+    private ImageView railIcon = new ImageView(new Image("/TrackModel/UI/images/railIcon.png"));
+    private ImageView circuitIcon = new ImageView(new Image("/TrackModel/UI/images/circuitIcon.png"));
+    private ImageView powerIcon = new ImageView(new Image("/TrackModel/UI/images/powerIcon.png"));
 
     public TrackModelGUI() throws IOException {
 
         stage.setTitle(applicationTitle);
+
+        System.out.println(System.getProperty("user.dir"));
 
         // Layout Menu
         Label layoutMenuTitle = getLayoutLabel();
@@ -472,6 +476,92 @@ public class TrackModelGUI {
             }
         });
 
+        Button infraSettings = new Button("Settings");
+        importTrack.setMinHeight(30);
+        importTrack.setMaxHeight(30);
+
+        infraSettings.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent e){
+                if(selectedBlock.getBlockNumber() == null){
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Settings Error");
+                    alert.setHeaderText("No Block Selected");
+                    alert.setContentText("Please select a block to use this function!");
+                    alert.show();
+                    return;
+                }
+
+                Stage settings = new Stage();
+                GridPane settingsPanel = new GridPane();
+
+                VBox changeSettings = new VBox();
+                HBox confirm = new HBox();
+
+                Label todo = new Label("Select systems to simulate block infrastructure:");
+                todo.setPadding(new Insets(10));
+
+                CheckBox switchToggle = new CheckBox("Toggle Switch Position");
+                CheckBox crossingToggle = new CheckBox("Toggle Crossing State");
+                CheckBox stationToggle = new CheckBox("Generate New Station Departure Amount");
+                CheckBox lightToggle = new CheckBox("Toggle Light State");
+
+                Button okButton = new Button("OK");
+                okButton.setOnAction(new EventHandler<ActionEvent>(){
+                    public void handle(ActionEvent e){
+                        if(switchToggle.isSelected())
+                            selectedBlock.getSwitch().toggleState();
+
+                        if(crossingToggle.isSelected())
+                            selectedBlock.getCrossing().toggleActive();
+
+                        if(stationToggle.isSelected())
+                            selectedBlock.getStation().depart();
+
+                        if(lightToggle.isSelected())
+                            selectedBlock.getLight().toggleActive();
+
+                        updateBlockMonitor();
+                        settings.close();
+                    }
+                });
+
+                Button cancelButton = new Button("Cancel");
+                cancelButton.setOnAction(new EventHandler<ActionEvent>(){
+                    public void handle(ActionEvent e){
+                        settings.close();
+                    }
+                });
+
+                if(selectedBlock.getSwitch() != null)
+                    changeSettings.getChildren().add(switchToggle);
+
+                if(selectedBlock.getCrossing() != null)
+                    changeSettings.getChildren().add(crossingToggle);
+
+                if(selectedBlock.getStation() != null)
+                    changeSettings.getChildren().add(stationToggle);
+
+                if(selectedBlock.getLight() != null)
+                    changeSettings.getChildren().add(lightToggle);
+
+                changeSettings.setPadding(new Insets(10));
+
+                confirm.getChildren().addAll(okButton, cancelButton);
+                confirm.setPadding(new Insets(10));
+
+                settingsPanel.add(todo, 0, 0);
+                settingsPanel.add(changeSettings, 0, 1);
+                settingsPanel.add(confirm, 0, 3);
+
+                Scene murphyScene = new Scene(settingsPanel, 400, 500);
+                settings.setTitle("Infrastructure Settings");
+                settings.setScene(murphyScene);
+                settings.show();
+
+            }
+        });
+
+
         Button murphyCtrl = new Button("Murphy Controls");
         murphyCtrl.setMinHeight(30);
         murphyCtrl.setMaxHeight(30);
@@ -553,7 +643,7 @@ public class TrackModelGUI {
             }
         });
 
-        menu.getChildren().addAll(importTrack, murphyCtrl);
+        menu.getChildren().addAll(importTrack, infraSettings, murphyCtrl);
         return menu;
     }
 
@@ -894,14 +984,24 @@ public class TrackModelGUI {
             blockLabel.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
             blockValue.setPadding(new Insets(0,0,20,10));
 
-        Label length = new Label("Length (m): ");
-        Label lengthValue = new Label("" + selectedBlock.getLength());
+        Label length = new Label("Length (mi): ");
+        Label lengthValue = null;
+        if(selectedBlock.getLength() != null) {
+            lengthValue = new Label("" + round(selectedBlock.getLength() * 0.0006, 2));
+        }else{
+            lengthValue = new Label("" + selectedBlock.getLength());
+        }
             length.setPadding(new Insets(0,0,0,10));
             length.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
             lengthValue.setPadding(new Insets(0,0,0,10));
 
         Label speedLimit = new Label("Speed Limit (mph): ");
-        Label speedLimitValue = new Label("" + selectedBlock.getSpeedLimit());
+        Label speedLimitValue = null;
+        if(selectedBlock.getSpeedLimit() != null) {
+            speedLimitValue = new Label("" + round(selectedBlock.getSpeedLimit() * 2.24, 2)); // meters/seconds * miles/hour
+        }else{
+            speedLimitValue = new Label("" + selectedBlock.getSpeedLimit());
+        }
             speedLimit.setPadding(new Insets(0,0,0,10));
             speedLimit.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
             speedLimitValue.setPadding(new Insets(0,0,0,10));
@@ -912,20 +1012,43 @@ public class TrackModelGUI {
             grade.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
             gradeValue.setPadding(new Insets(0,0,0,10));
 
-        Label elevation = new Label("Elevation (m): ");
-        Label elevationValue = new Label("" + selectedBlock.getElevation());
+        Label elevation = new Label("Elevation (ft): ");
+        Label elevationValue = null;
+        if(selectedBlock.getElevation() != null) {
+            elevationValue = new Label("" + round(selectedBlock.getElevation() * 3.28, 2));
+        }else{
+            elevationValue = new Label("" + selectedBlock.getElevation());
+        }
             elevation.setPadding(new Insets(0,0,0,10));
             elevation.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
             elevationValue.setPadding(new Insets(0,0,0,10));
 
-        Label cumElevation = new Label("Cumulative Elevation (m): ");
-        Label cumElevationValue = new Label("" + selectedBlock.getCumulativeElevation());
+        Label cumElevation = new Label("Cumulative Elevation (ft): ");
+        Label cumElevationValue = null;
+        if(selectedBlock.getCumulativeElevation() != null){
+            cumElevationValue = new Label("" + round(selectedBlock.getCumulativeElevation() * 3.28,2));
+        }else{
+            cumElevationValue = new Label("" + selectedBlock.getCumulativeElevation());
+        }
             cumElevation.setPadding(new Insets(0,0,0,10));
             cumElevation.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
             cumElevationValue.setPadding(new Insets(0,0,0,10));
 
         Label direction = new Label("Direction: ");
-        Label directionValue = new Label("" + selectedBlock.getDirection());
+        String dir = null;
+        if(selectedBlock.getDirection() == null){
+            dir = "BI";
+        }else if(selectedBlock.getDirection().equals("HEAD")){
+            dir = "HEAD";
+        }else if(selectedBlock.getDirection().equals("TAIL")){
+            dir = "TAIL";
+        }else if(selectedBlock.getDirection().equals("HEAD/TAIL")){
+            dir = "UNI";
+        }else if(selectedBlock.getDirection().equals("HEAD/HEAD")){
+            dir = "BI";
+        }
+
+        Label directionValue = new Label("" + dir);
             direction.setPadding(new Insets(0,0,0,10));
             direction.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
             directionValue.setPadding(new Insets(0,0,0,10));
@@ -965,6 +1088,14 @@ public class TrackModelGUI {
         blockInfoPanel.add(temperatureValue, 1, 10);
 
         return blockInfoPanel;
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
 }

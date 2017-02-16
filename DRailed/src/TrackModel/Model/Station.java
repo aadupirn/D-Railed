@@ -78,14 +78,20 @@ public class Station {
         this.departing = departing;
     }
 
+    public int depart(){
+        int depart = this.departing;
+        this.departing = generateDeparting();
+        return depart;
+    }
+
     /***
      * Randomly generates an occupancy for a station
      */
-    private int generateOccupancy() {
+    public int generateOccupancy() {
         return new Random().nextInt(1000);
     }
 
-    private int generateDeparting() {
+    public int generateDeparting() {
         return new Random().nextInt(222 - 74) + 74;
     }
 
