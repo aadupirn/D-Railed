@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -42,6 +43,7 @@ public class MBOController extends Application {
     private TextField passengerInput;
     private TextField conductorInput;
     private Button submitButton;
+    private DialogPane resultPane;
 
     // MURPHY TAB
     private ToggleButton murphyButton;
@@ -77,6 +79,7 @@ public class MBOController extends Application {
         passengerInput = (TextField) primary.getScene().lookup("#passengers");
         conductorInput = (TextField) primary.getScene().lookup("#conductors");
         submitButton = (Button) primary.getScene().lookup("#plan_btn");
+        resultPane = (DialogPane) primary.getScene().lookup("#result_pane");
 
         murphyButton = (ToggleButton) primary.getScene().lookup("#mbo_murphy_toggle");
 
@@ -110,6 +113,17 @@ public class MBOController extends Application {
 
             setInfoColumns();
             primary.show();
+        });
+
+        submitButton.setOnAction((ActionEvent a) -> {
+            Double passengerNo = Double.parseDouble(passengerInput.getText());
+            Double conductorNo = Double.parseDouble(conductorInput.getText());
+
+            if(passengerNo/conductorNo > 1000)
+                resultPane.setContentText("FAIL");
+            else
+                resultPane.setContentText("SUCCESS");
+
         });
     }
 
