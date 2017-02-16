@@ -1,9 +1,8 @@
 package TrainController;
 
-import javafx.fxml.FXMLLoader;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -20,22 +19,71 @@ import java.io.IOException;
 public class TrainController {
 	private final Stage stage = new Stage();
 
+	private TextArea notifications;
+
 	//Create Scene
 	private Scene scene;
 
 	//Class strings
-	private String applicationTitle = "Train Controller";
+	private String windowTitle = "Train Controller";
 
 	//Class integers
 	private int windowWidth = 800;
-	private int windowHight = 475;
+	private int windowHight = 500;
 	private int inset = 25;
 	private int colWidth = 75;
+
+	private double kp = 1;
+	private double ki = 1;
+
+	private Text speedText;
+	private Text powerText;
+
+	public void SetPowerText(String in)
+	{
+		powerText.setText(in + " W");
+	}
+
+	public void SetSpeedText(String in)
+	{
+		powerText.setText(in + " mph");
+	}
+
+	public void MakeAnnouncement(String announcement)
+	{
+		String newNotification;
+		if(notifications.getText().equals("Notifications here"))
+		{
+			newNotification = "";
+		}
+		else
+		{
+			newNotification = notifications.getText();
+		}
+
+		notifications.setText(newNotification + "ANN: " + announcement + "\n");
+	}
+
+	public void setPowerVars(double kpIn, double kiIn)
+	{
+		kp = kpIn;
+		ki = kiIn;
+	}
+
+	public double getKP()
+	{
+		return kp;
+	}
+
+	public double getKI()
+	{
+		return ki;
+	}
 
 	public TrainController() throws IOException
 	{
 
-		stage.setTitle(applicationTitle);
+		stage.setTitle(windowTitle);
 
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
@@ -62,8 +110,8 @@ public class TrainController {
 		speedLabel.setAlignment(Pos.CENTER_RIGHT);
 		grid.add(speedLabel, 3, 0);
 
-		Text speedText = new Text();
-		speedText.setText("TEMPSPEED");
+		speedText = new Text();
+		speedText.setText("0 mph");
 		speedText.setWrappingWidth(colWidth*1.5);
 		speedText.setTextAlignment(TextAlignment.LEFT);
 		grid.add(speedText, 4, 0);
@@ -96,8 +144,8 @@ public class TrainController {
 		powerLabel.setAlignment(Pos.CENTER_RIGHT);
 		grid.add(powerLabel, 3, 1);
 
-		Text powerText = new Text();
-		powerText.setText("TEMPOWER");
+		powerText = new Text();
+		powerText.setText("0 W");
 		powerText.setWrappingWidth(colWidth*1.5);
 		powerText.setTextAlignment(TextAlignment.LEFT);
 		grid.add(powerText, 4, 1);
@@ -164,6 +212,7 @@ public class TrainController {
 		RadioButton acFail = new RadioButton("Fail");
 		acFail.setToggleGroup(acToggleGroup);
 		acFail.setSelected(false);
+		acFail.setDisable(true);
 		acFail.setMaxWidth(colWidth);
 		acFail.setMinWidth(colWidth);
 		acGrid.add(acFail, 0, 2);
@@ -171,10 +220,10 @@ public class TrainController {
 		acGrid.setMinWidth(colWidth*2);
 		grid.add(acGrid, 1, 3, 2, 1);
 
-		TextField notifications = new TextField ("Notifications here");
-		notifications.setMinWidth(colWidth*3);
-		notifications.setMinHeight(colWidth*3);
-		notifications.setAlignment(Pos.CENTER);
+		notifications = new TextArea ("Notifications here");
+		notifications.setMaxWidth(colWidth*3.5);
+		notifications.setWrapText(true);
+		notifications.setEditable(false);
 		grid.add(notifications, 3, 3, 3, 4);
 
 		//Row Index 4
@@ -206,6 +255,7 @@ public class TrainController {
 		RadioButton heatFail = new RadioButton("Fail");
 		heatFail.setToggleGroup(heatToggleGroup);
 		heatFail.setSelected(false);
+		heatFail.setDisable(true);
 		heatFail.setMaxWidth(colWidth);
 		heatFail.setMinWidth(colWidth);
 		heatGrid.add(heatFail, 0, 2);
@@ -255,6 +305,7 @@ public class TrainController {
 		RadioButton lightsFail = new RadioButton("Fail");
 		lightsFail.setToggleGroup(lightsToggleGroup);
 		lightsFail.setSelected(false);
+		lightsFail.setDisable(true);
 		lightsFail.setMaxWidth(colWidth);
 		lightsFail.setMinWidth(colWidth);
 		lightsGrid.add(lightsFail, 0, 2);
@@ -290,6 +341,7 @@ public class TrainController {
 
 		RadioButton lDoorFail = new RadioButton("Fail");
 		lDoorFail.setToggleGroup(lDoorToggleGroup);
+		lDoorFail.setDisable(true);
 		lDoorFail.setSelected(false);
 		lDoorFail.setMaxWidth(colWidth);
 		lDoorFail.setMinWidth(colWidth);
@@ -301,16 +353,22 @@ public class TrainController {
 		GridPane speedGrid = new GridPane();
 
 		Button incSpeed = new Button("+");
-		speedGrid.add(incSpeed, 0, 0);
+		HBox hIncSpeed = new HBox();
+		hIncSpeed.setAlignment(Pos.CENTER);
+		hIncSpeed.getChildren().add(incSpeed);
+		speedGrid.add(hIncSpeed, 0, 0);
 
 		Text speed = new Text("XX mph");
 		speed.setTextAlignment(TextAlignment.CENTER);
 		speedGrid.add(speed, 0, 1);
 
 		Button decSpeed = new Button("-");
-		speedGrid.add(decSpeed, 0, 2);
+		HBox hDecSpeed = new HBox();
+		hDecSpeed.setAlignment(Pos.CENTER);
+		hDecSpeed.getChildren().add(decSpeed);
+		speedGrid.add(hDecSpeed, 0, 2);
 		speedGrid.setMinWidth(colWidth*3);
-		speedGrid.setAlignment(Pos.CENTER_RIGHT);
+		speedGrid.setAlignment(Pos.CENTER);
 		grid.add(speedGrid, 5, 6, 3, 1);
 
 
@@ -343,6 +401,7 @@ public class TrainController {
 		RadioButton rDoorFail = new RadioButton("Fail");
 		rDoorFail.setToggleGroup(rDoorToggleGroup);
 		rDoorFail.setSelected(false);
+		rDoorFail.setDisable(true);
 		rDoorFail.setMaxWidth(colWidth);
 		rDoorFail.setMinWidth(colWidth);
 		rDoorGrid.add(rDoorFail, 0, 2);
@@ -355,6 +414,70 @@ public class TrainController {
 		movementStatus.setText("MOVEMENTSTATUS");
 		movementStatus.setTextAlignment(TextAlignment.CENTER);
 		grid.add(movementStatus, 3, 7, 2, 1);
+
+		Button makeAnnouncementBtn = new Button("Make Announcement");
+		HBox hMakeAnnouncementBtn = new HBox();
+		makeAnnouncementBtn.setTextAlignment(TextAlignment.CENTER);
+		hMakeAnnouncementBtn.setAlignment(Pos.CENTER_RIGHT);
+		hMakeAnnouncementBtn.setMinWidth(colWidth*2);
+		makeAnnouncementBtn.setMinWidth(colWidth*2);
+		hMakeAnnouncementBtn.getChildren().add(makeAnnouncementBtn);
+		grid.add(hMakeAnnouncementBtn, 5, 7, 3, 1);
+
+		// Row 8
+		Button testBtn = new Button("Test Train Controller");
+		HBox hTextBtn = new HBox();
+		testBtn.setTextAlignment(TextAlignment.CENTER);
+		hTextBtn.setAlignment(Pos.CENTER);
+		hTextBtn.setMinWidth(colWidth*2);
+		hTextBtn.getChildren().add(testBtn);
+		grid.add(hTextBtn, 3, 8, 2, 1);
+
+		Button powerControlBtn = new Button("Power Control");
+		HBox hPowerControlBtn = new HBox();
+		powerControlBtn.setTextAlignment(TextAlignment.CENTER);
+		hPowerControlBtn.setAlignment(Pos.CENTER_RIGHT);
+		hPowerControlBtn.setMinWidth(colWidth*2);
+		hPowerControlBtn.getChildren().add(powerControlBtn);
+		grid.add(hPowerControlBtn, 5, 8, 3, 1);
+
+
+		// Button Handlers
+		makeAnnouncementBtn.setOnAction((ActionEvent e) ->
+		{
+			try
+			{
+				AnnouncementWindow announcementWindow = new AnnouncementWindow(this);
+			} catch (Exception e1)
+			{
+				e1.printStackTrace();
+			}
+		});
+
+		testBtn.setOnAction((ActionEvent e) ->
+		{
+			try
+			{
+				TestingWindow testingWindow = new TestingWindow(this);
+			} catch (Exception e1)
+			{
+				e1.printStackTrace();
+			}
+		});
+
+		// Button Handlers
+		powerControlBtn.setOnAction((ActionEvent e) ->
+		{
+			try
+			{
+				PowerControlWindow powerControlWindow = new PowerControlWindow(this);
+			} catch (Exception e1)
+			{
+				e1.printStackTrace();
+			}
+		});
+
+
 
 		Scene scene = new Scene(grid, windowWidth, windowHight);
 		stage.setScene(scene);

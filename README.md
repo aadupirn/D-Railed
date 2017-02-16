@@ -1,5 +1,5 @@
 # D-Railed
-Spring 2017 Software Engineering Project Repo  
+Spring2017 Software Engineering Project Repo 
 
 Members: Jonathan Selling, Swaroop Akkineni, Aadu Pirn, Andrew Zundel, Ray Huang, Joe Roesinger  
 
