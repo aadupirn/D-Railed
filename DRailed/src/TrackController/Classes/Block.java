@@ -185,6 +185,9 @@ public class Block
         result = in.replaceAll("this.occupied", Boolean.toString(this.occupied));
         result = result.replaceAll("this.broken", Boolean.toString(this.broken));
         result = result.replaceAll("this.closed", Boolean.toString(this.closed));
+        result = result.replaceAll(getID()+".occupied", Boolean.toString(this.occupied));
+        result = result.replaceAll(getID()+".broken", Boolean.toString(this.broken));
+        result = result.replaceAll(getID()+".closed", Boolean.toString(this.closed));
         return(result);
     }
 
