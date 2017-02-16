@@ -1,2 +1,4 @@
-this.crossing = (this.occupied || this.broken) && this.switches
+this.crossing = this.occupied || this.broken || this.closed
 this.lights = this.occupied
+B.1.lights = !this.occupied
+1.switches = !A.2.occupied

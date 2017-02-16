@@ -6,26 +6,18 @@ import javax.script.ScriptException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 
 public class PLC
     {
-        boolean isGood;
-        String input, output;
-        String[] inOut, afterParenths;
-        boolean occupied, switches, lights, broken;
+        private boolean isGood;
+        private String input, output;
+        private String[] inOut, getIn, getOut;
 
-        public PLC(File file)
+        public PLC(File file, Block[] Blocks)
         {
             isGood = true;
-            occupied = true;
-            switches = false;
-            lights = false;
-            broken = false;
 
             try(BufferedReader br = new BufferedReader(new FileReader(file)))
             {
@@ -38,6 +30,8 @@ public class PLC
                     }
                     else {
                         inOut = line.split("=");
+
+
                         if (inOut.length != 2)
                         {
                             isGood = false;
@@ -48,29 +42,38 @@ public class PLC
                             input = inOut[1].trim();
 
                             System.out.println("output: " + output + "\n" + "input: " + input);
-
-                            try {
-
-                                ScriptEngineManager sem = new ScriptEngineManager();
-                                ScriptEngine se = sem.getEngineByName("JavaScript");
-                                String myExpression = input;
-                                System.out.println(se.eval(myExpression));
-
-                            } catch (ScriptException e) {
-
-                                System.out.println("Invalid Expression");
-                                e.printStackTrace();
-
-                            }
-                           /* if (line.contains("("))
+                            getOut = output.split("\\.");
+                            String out = getOut[getOut.length-1];
+                            String outBlock = getOut[0] + "." + getOut[1];
+                            String outSwitch = getOut[0];
+                            for(Block b : Blocks)
                             {
-                                afterParenths = input.split("\\(|\\)");
-                                afterParenths = removeEmptyElements(afterParenths);
-                                for (int i = 0; i < afterParenths.length; i++)
+                                if(out.equals("crossing") && (b.getID().equals(outBlock) || outSwitch.equals("this")))
                                 {
-                                    System.out.println(i + ") " + afterParenths[i].trim());
+                                    System.out.println("Setting " + b.getID() + " crossing to " + input);
+                                    b.setCrossings(input);
                                 }
-                            }*/
+                                if(out.equals("lights") && (b.getID().equals(outBlock) || outSwitch.equals("this")))
+                                {
+                                    System.out.println("Setting " + b.getID() + " lights to " + input);
+                                    b.setLights(input);
+                                }
+                                if(out.equals("switches"))
+                                {
+                                    if(b.getSwitchID1() != null)
+                                    {
+                                        if(b.getSwitchID1().getID().equals(outSwitch)) {
+                                            b.getSwitchID1().setState(input);
+                                        }
+                                    }
+                                    if(b.getSwitchID2() != null)
+                                    {
+                                        if(b.getSwitchID2().getID().equals(outSwitch)) {
+                                            b.getSwitchID2().setState(input);
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -82,19 +85,6 @@ public class PLC
         private boolean OnlyVariable(String test)
         {
             return(true);
-        }
-
-        private String[] removeEmptyElements(String[] test)
-        {
-            ArrayList<String> result = new ArrayList<>();
-
-            for(String item : test)
-                if(!item.equals(""))
-                    result.add(item);
-
-            result.toArray(test);
-
-            return result.toArray(test);
         }
 
         public boolean isValid()
