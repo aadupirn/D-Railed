@@ -63,18 +63,18 @@ public class TrackModelGUI {
     private GridPane blockStatus = new GridPane();
 
     // Infrastructure Icon Resources
-    private ImageView trainIcon = new ImageView(new Image("/images/trainIcon.png"));
-    private ImageView switchIcon = new ImageView(new Image("/images/switchIcon.png"));
-    private ImageView stationIcon = new ImageView(new Image("/images/stationIcon.png"));
-    private ImageView crossingIcon = new ImageView(new Image("/images/crossingIcon.png"));
-    private ImageView lightsIcon = new ImageView(new Image("/images/lightsIcon.png"));
+    private ImageView trainIcon = new ImageView(new Image(getClass().getResource("/UI/images/trainIcon.png").toString()));
+    private ImageView switchIcon = new ImageView(new Image(getClass().getResource("/UI/images/switchIcon.png").toString()));
+    private ImageView stationIcon = new ImageView(new Image(getClass().getResource("/UI/images/stationIcon.png").toString()));
+    private ImageView crossingIcon = new ImageView(new Image(getClass().getResource("/UI/images/crossingIcon.png").toString()));
+    private ImageView lightsIcon = new ImageView(new Image(getClass().getResource("/UI/images/lightsIcon.png").toString()));
 
     // Status Icon Resources
-    private ImageView openIcon = new ImageView(new Image("/images/openIcon.png"));
-    private ImageView closedIcon = new ImageView(new Image("/images/closedIcon.png"));
-    private ImageView railIcon = new ImageView(new Image("/images/railIcon.png"));
-    private ImageView circuitIcon = new ImageView(new Image("/images/circuitIcon.png"));
-    private ImageView powerIcon = new ImageView(new Image("/images/powerIcon.png"));
+    private ImageView openIcon = new ImageView(new Image(getClass().getResource("/UI/images/openIcon.png").toString()));
+    private ImageView closedIcon = new ImageView(new Image(getClass().getResource("/UI/images/closedIcon.png").toString()));
+    private ImageView railIcon = new ImageView(new Image(getClass().getResource("/UI/images/railIcon.png").toString()));
+    private ImageView circuitIcon = new ImageView(new Image(getClass().getResource("/UI/images/circuitIcon.png").toString()));
+    private ImageView powerIcon = new ImageView(new Image(getClass().getResource("/UI/images/powerIcon.png").toString()));
 
     public TrackModelGUI() throws IOException {
 
