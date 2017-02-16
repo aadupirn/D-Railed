@@ -14,17 +14,17 @@ import java.io.IOException;
 /**
  * Created by joero on 2/6/2017.
  */
-public class TrainSchedule {
-    private ObservableList<TrainRow> trainRows = FXCollections.observableArrayList();
+public class WorkerSchedule {
+    private ObservableList<WorkerRow> workerRows = FXCollections.observableArrayList();
     public XSSFWorkbook schedule = new XSSFWorkbook();
 
-    public TrainSchedule(File file) {
+    public WorkerSchedule(File file) {
         try {
             FileInputStream fileIn = new FileInputStream(file);
             schedule = new XSSFWorkbook(fileIn);
             XSSFSheet worksheet = schedule.getSheet("Sheet1");
             for(int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++)
-                this.createTrainRow(worksheet.getRow(i));
+                this.createRow(worksheet.getRow(i));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -33,22 +33,16 @@ public class TrainSchedule {
         }
     }
 
-    private void createTrainRow(XSSFRow data) {
-        TrainRow trainRow = new TrainRow(
+    private void createRow(XSSFRow data) {
+        WorkerRow workerRow = new WorkerRow(
                 data.getCell(0).getStringCellValue(),
                 data.getCell(1).getStringCellValue(),
-                data.getCell(2).getStringCellValue(),
-                data.getCell(3).getStringCellValue(),
-                data.getCell(4).getStringCellValue(),
-                data.getCell(5).getStringCellValue(),
-                data.getCell(6).getStringCellValue(),
-                data.getCell(7).getStringCellValue(),
-                data.getCell(8).getStringCellValue());
-        trainRows.add(trainRow);
+                data.getCell(2).getStringCellValue());
+        workerRows.add(workerRow);
     }
 
     public XSSFWorkbook getExcelFile(){
         return schedule;
     }
-    public ObservableList<TrainRow> getRows() { return trainRows; }
+    public ObservableList<WorkerRow> getRows() { return workerRows; }
 }

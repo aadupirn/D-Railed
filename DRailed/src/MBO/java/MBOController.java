@@ -1,36 +1,26 @@
 package MBO.java;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Date;
 
 public class MBOController extends Application {
     private Stage primary;
-    private TrainSchedule schedule;
+    private TrainSchedule trainSchedule;
+    private WorkerSchedule workSchedule;
 
 
     // TRAIN INFO TAB
@@ -39,7 +29,10 @@ public class MBOController extends Application {
     private TableView trainTable;
 
     // TRAIN SCHEDULE DISPLAY TAB
-    private TableView stationsTable;
+    private TableView<TrainRow> stationsTable = new TableView<TrainRow>();
+    private ObservableList<TrainRow> test = FXCollections.observableArrayList(
+      new TrainRow("0", "0", "0", "0", "0", "0", "0", "0", "0")
+    );
 
     // WORKER SCHEDULE DISPLAY TAB
     private Button workerScheduleButton;
@@ -54,10 +47,12 @@ public class MBOController extends Application {
     private ToggleButton murphyButton;
 
     // ACCESSORS
-    public TrainSchedule getSchedule() { return schedule; }
+    public TrainSchedule getSchedule() { return trainSchedule; }
 
     // MUTATORS
-    public void setTrainInfo(){ }
+    public void setTrainInfo(int id, String loc){
+
+    }
 
     /*
     * Method in charge of setting up gettting the elements associated with the portions
@@ -72,7 +67,7 @@ public class MBOController extends Application {
         mboToggle = (ToggleButton) primary.getScene().lookup("#mbo_toggle");
         trainTable = (TableView) primary.getScene().lookup("#train_info_table");
 
-        stationsTable = (TableView) primary.getScene().lookup("#scheudle_table");
+        stationsTable = (TableView<TrainRow>) primary.getScene().lookup("#schedule_table");
 
         workerScheduleButton = (Button) primary.getScene().lookup("#worker_schedule_btn");
         workerTable = (TableView) primary.getScene().lookup("#worker_schedule_table");
@@ -83,45 +78,77 @@ public class MBOController extends Application {
 
         murphyButton = (ToggleButton) primary.getScene().lookup("#mbo_murphy_toggle");
 
+        stationsTable.setEditable(true);
+
         trainScheduleButton.setOnAction((ActionEvent a) -> {
-            try {
-                FileChooser fc = new FileChooser();
-                fc.setTitle("Pick Train Schedule");
-                File schedule = fc.showOpenDialog(primary);
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Pick Train Schedule");
+            File schedule = fc.showOpenDialog(primary);
+            trainSchedule = new TrainSchedule(schedule);
 
-                FileInputStream fileInputStream = new FileInputStream(schedule);
-                XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
-                XSSFSheet worksheet = workbook.getSheet("Sheet1");
-                XSSFRow row1 = worksheet.getRow(0);
-                XSSFCell cellA1 = row1.getCell((short) 0);
-                String a1Val = cellA1.getStringCellValue();
-                XSSFCell cellB1 = row1.getCell((short) 1);
-                String b1Val = cellB1.getStringCellValue();
-                XSSFCell cellC1 = row1.getCell((short) 2);
-                boolean c1Val = cellC1.getBooleanCellValue();
-                XSSFCell cellD1 = row1.getCell((short) 3);
-                Date d1Val = cellD1.getDateCellValue();
+            setTrainColumns();
+            primary.show();
+        });
 
-                System.out.println("A1: " + a1Val);
-                System.out.println("B1: " + b1Val);
-                System.out.println("C1: " + c1Val);
-                System.out.println("D1: " + d1Val);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        workerScheduleButton.setOnAction((ActionEvent a) -> {
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Pick Worker Schedule");
+            File schedule = fc.showOpenDialog(primary);
+            workSchedule = new WorkerSchedule(schedule);
+
+            setWorkColumns();
+            primary.show();
         });
 
     }
 
-    // Button Actions
+    private void setTrainColumns() {
+        TableColumn trainId = new TableColumn("Train ID");
+        trainId.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("trainId"));
 
-    public void chooseFile(){
-        FileChooser fc = new FileChooser();
-        File file = fc.showOpenDialog(new Stage());
+        TableColumn station1 = new TableColumn("Station 1");
+        station1.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("station1"));
 
-        TrainSchedule scheudle = new TrainSchedule(file);
+        TableColumn station2 = new TableColumn("Station 2");
+        station2.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("station2"));
+
+        TableColumn station3 = new TableColumn("Station 3");
+        station3.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("station3"));
+
+        TableColumn station4 = new TableColumn("Station 4");
+        station4.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("station4"));
+
+        TableColumn station5 = new TableColumn("Station 5");
+        station5.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("station5"));
+
+        TableColumn station6 = new TableColumn("Station 6");
+        station6.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("station6"));
+
+        TableColumn station7 = new TableColumn("Station 7");
+        station7.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("station7"));
+
+        TableColumn station8 = new TableColumn("Station 8");
+        station8.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("station8"));
+
+        stationsTable.setItems(trainSchedule.getRows());
+        stationsTable.getColumns().addAll(trainId, station1, station2, station3, station4, station5, station6, station7, station8);
+    }
+
+    private void setWorkColumns() {
+        TableColumn workerId = new TableColumn("Worker Id");
+        workerId.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("workerId"));
+
+        TableColumn name = new TableColumn("Worker Name");
+        name.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("name"));
+
+        TableColumn textSchedule= new TableColumn("Schedule");
+        textSchedule.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("schedule"));
+
+        workerTable.setItems(workSchedule.getRows());
+        workerTable.getColumns().addAll(workerId, name, textSchedule);
+    }
+
+    private void updateTrainInfo() {
     }
 
     @Override
