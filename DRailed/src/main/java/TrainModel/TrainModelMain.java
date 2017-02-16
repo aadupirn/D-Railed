@@ -17,11 +17,11 @@ public class TrainModelMain {
     private static Double distance;
 
     public TrainModelMain(){
-        powerCommand = 100.0;
+        powerCommand = 10000.0;
         velocity = 0.5;
         //listOfCarts.add(new Cart());
         calculatedAccleration = 0.5;
-        mass = 2.0;
+        mass = 37000.0;
         timeStep = 0.001;
         distance = 0.0;
         grade = 0.0;
@@ -59,6 +59,12 @@ public class TrainModelMain {
         return velocity;
     }
 
+    protected boolean distanceCalc(Double power) {
+        powerCommand = power;
+        TimeCalc();
+        return true;
+    }
+
     public TrainModelMain(int numberOfCarts, Double newAuthority, Double newSpeed){
         authority = newAuthority;
         velocity = newSpeed;
@@ -79,6 +85,10 @@ public class TrainModelMain {
     private boolean setSpeed(Double newSpeed){
         velocity = newSpeed;
         return true;
+    }
+
+    public void passengersLoading(int beaconPassengerCount) {
+        //do some calculations for passengers
     }
 
 
