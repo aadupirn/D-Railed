@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import jdk.management.resource.internal.inst.FileChannelImplRMHooks;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
@@ -21,18 +22,17 @@ public class MBOController extends Application {
     private Stage primary;
     private TrainSchedule trainSchedule;
     private WorkerSchedule workSchedule;
+    private TrainInfo trainInfo;
 
 
     // TRAIN INFO TAB
-    private Button trainScheduleButton;
+    private Button testInfoButton;
     private ToggleButton mboToggle;
-    private TableView trainTable;
+    private TableView<InfoRow> infoTable = new TableView<InfoRow>();
 
     // TRAIN SCHEDULE DISPLAY TAB
     private TableView<TrainRow> stationsTable = new TableView<TrainRow>();
-    private ObservableList<TrainRow> test = FXCollections.observableArrayList(
-      new TrainRow("0", "0", "0", "0", "0", "0", "0", "0", "0")
-    );
+    private Button trainScheduleButton;
 
     // WORKER SCHEDULE DISPLAY TAB
     private Button workerScheduleButton;
@@ -63,11 +63,13 @@ public class MBOController extends Application {
     * No returns
     */
     private void getUIElements(){
-        trainScheduleButton = (Button) primary.getScene().lookup("#schedule_btn");
+
         mboToggle = (ToggleButton) primary.getScene().lookup("#mbo_toggle");
-        trainTable = (TableView) primary.getScene().lookup("#train_info_table");
+        infoTable = (TableView<InfoRow>) primary.getScene().lookup("#train_info_table");
+        testInfoButton = (Button) primary.getScene().lookup("#test_info_btn");
 
         stationsTable = (TableView<TrainRow>) primary.getScene().lookup("#schedule_table");
+        trainScheduleButton = (Button) primary.getScene().lookup("#schedule_btn");
 
         workerScheduleButton = (Button) primary.getScene().lookup("#worker_schedule_btn");
         workerTable = (TableView) primary.getScene().lookup("#worker_schedule_table");
@@ -100,6 +102,41 @@ public class MBOController extends Application {
             primary.show();
         });
 
+        testInfoButton.setOnAction((ActionEvent a) -> {
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Pick Worker Schedule");
+            File schedule = fc.showOpenDialog(primary);
+            trainInfo = new TrainInfo(schedule);
+
+            setInfoColumns();
+            primary.show();
+        });
+    }
+
+    private void setInfoColumns() {
+        TableColumn trainId = new TableColumn("Train ID");
+        trainId.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("trainId"));
+
+        TableColumn safeSpeed = new TableColumn("Safe Speed");
+        safeSpeed.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("safeSpeed"));
+
+        TableColumn speed = new TableColumn("Speed");
+        speed.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("speed"));
+
+        TableColumn variance = new TableColumn("Variance");
+        variance.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("variance"));
+
+        TableColumn authority = new TableColumn("Authority");
+        authority.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("authority"));
+
+        TableColumn block = new TableColumn("Block");
+        block.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("block"));
+
+        TableColumn gps = new TableColumn("GPS");
+        gps.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("gps"));
+
+        infoTable.setItems(trainInfo.getRows());
+        infoTable.getColumns().addAll(trainId, safeSpeed, speed, variance, authority, block, gps);
     }
 
     private void setTrainColumns() {
