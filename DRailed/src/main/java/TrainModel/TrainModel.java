@@ -265,7 +265,7 @@ public class TrainModel {
         primaryStage.show();
 
         TrainModelMain trainModel = new TrainModelMain();
-        int i = 1000;
+        int i = 10000;
         while(i > 0){
             Double velocity = trainModel.TimeCalc();
             grid.getChildren().remove(speedLabelText);
