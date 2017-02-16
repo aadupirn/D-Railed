@@ -61,11 +61,11 @@ public class InfoRow {
         this.block.set(block);
     }
 
-    public String getGPS() {
+    public String getGps() {
         return gps.get();
     }
 
-    public void setGPS(String gps) {
+    public void setGps(String gps) {
         this.gps.set(gps);
     }
 }
