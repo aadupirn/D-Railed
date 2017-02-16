@@ -68,11 +68,15 @@ public class TrainModel {
         Button autoOrManualButton = new Button("Automatic");
         HBox autoOrManualButtonHbox = new HBox(0);
         autoOrManualButton.setOnAction(value ->  {
-            if(autoOrManualButton.getText().equals("Manual"))//label.getText().equals("Not clicked"))
+            if(autoOrManualButton.getText().equals("Manual")) {//label.getText().equals("Not clicked"))
                 autoOrManualButton.setText("Automatic");
+                System.out.println("Automatic");
+            }
                 //label.setText("Clicked!");
-            else
+            else {
                 autoOrManualButton.setText("Manual");
+                System.out.println("Manual");
+            }
             //label.setText("Not clicked!");
         });
         autoOrManualButton.setMinWidth(colWidth*3);
@@ -83,18 +87,20 @@ public class TrainModel {
         grid.add(autoOrManualButton, 5, 0, 3, 1);
 
         //Row 1
-        Label speedLabel = new Label("Speed : ");
+        Label speedLabel = new Label();//new Label("Speed : ");
         speedLabel.setTextAlignment(TextAlignment.LEFT);
         speedLabel.setMinWidth(colWidth);
         speedLabel.setAlignment(Pos.CENTER_LEFT);
         grid.add(speedLabel, 0, 1);
-
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
         Text speedLabelText = new Text();
         speedLabelText.setWrappingWidth(colWidth*2);
-        speedLabelText.setText(" 50 m/s");
+        speedLabelText.setText(" 0 mph");
         speedLabelText.setTextAlignment(TextAlignment.CENTER);
         grid.add(speedLabelText, 0, 1);
-
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
         Label blockNumber = new Label("BlockNumber : ");
         blockNumber.setMinWidth(colWidth*1.5);
         blockNumber.setTextAlignment(TextAlignment.CENTER);
@@ -258,7 +264,17 @@ public class TrainModel {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-
+        TrainModelMain trainModel = new TrainModelMain();
+        int i = 1000;
+        while(i > 0){
+            Double velocity = trainModel.TimeCalc();
+            grid.getChildren().remove(speedLabelText);
+            speedLabelText = new Text();
+            speedLabelText.setWrappingWidth(colWidth*2);
+            speedLabelText.setText(" " + velocity );
+            speedLabelText.setTextAlignment(TextAlignment.CENTER);
+            i--;
+            grid.add(speedLabelText, 0, 1);
+        }
     }
-
 }

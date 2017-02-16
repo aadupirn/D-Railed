@@ -1,4 +1,3 @@
-*.iml
-*.xml
-.idea/*
-DRailed/.idea/*
+/DRailed/out/*
+/DRailed/.idea/*
+/DRailed/DRailed.iml
