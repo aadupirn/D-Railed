@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import TrackController.TrackController;
 import TrainModel.TrainModel;
 import MBO.java.MBOController;
+import ctc.MainFrame;
 
 import java.io.IOException;
 
@@ -92,9 +93,11 @@ public class Main extends Application {
         //handle button press
 		ctcBtn.setOnAction((ActionEvent e) ->
 		{
-			try {
-				TrainController trainController = new TrainController();
-			} catch (IOException e1) {
+			try{
+				MainFrame ctc = new MainFrame();
+				ctc.setVisible(true);
+				ctc.deleteFile();
+			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 		});
