@@ -2,4 +2,4 @@
 /DRailed/.idea/*
 /DRailed/DRailed.iml
 *.DS_Store
-
+*.class
