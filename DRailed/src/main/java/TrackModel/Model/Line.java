@@ -111,14 +111,6 @@ public class Line {
     }
 
     //////////////////////
-    // Application.Track.Model.Block Level      //
-    //////////////////////
-
-//    public boolean hasBlock(String section, Integer block){
-//        return this.sections.get(this.sections.indexOf(section)).hasBlock(block);
-//    }
-
-    //////////////////////
     // Application.Track.Model.Switch Level     //
     //////////////////////
 
@@ -227,8 +219,14 @@ public class Line {
         return count;
     }
 
-    public void placeTrain(String section, Integer blockNo, Train train){
-        getSection(section).getBlock(blockNo).trainEnter(train);
+    public void placeTrain(Integer blockNo, Train train){
+
+        for(Section s : sections){
+            if(s.existsBlock(blockNo))
+                    s.getBlock(blockNo).trainEnter(train);
+
+        }
+
         trains.add(train);
     }
 

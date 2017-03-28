@@ -3,6 +3,7 @@ package TrackModel.Model;
 import MBO.java.Train;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -49,7 +50,10 @@ public class TrackModel
 
     public void importTrack(String fileName){
 
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName)))
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("TrackModel/tracks/" + fileName).getFile());
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file)))
         {
 
             String reader = null;
@@ -402,9 +406,23 @@ public class TrackModel
             int blockNo = 2;
 
             System.out.println("Train dispatched to: " + line + ":" + secVal + ":" + blockNo);
-            getLine(line).placeTrain(secVal, blockNo, testTrainList.get(trainToDispatch));
+            getLine(line).placeTrain(blockNo, testTrainList.get(trainToDispatch));
             trainToDispatch++;
         }
+    }
+
+    public boolean dipatchTrain(String line, Train train){
+
+        for(Section s : getLine(line).getSections()){
+                for (Block b : s.getBlocks()) {
+                    if (b.getSwitch().isFromYard()) {
+                        getLine(line).placeTrain(b.getSwitch().getMain(), train);
+                        return true;
+                    }
+                }
+        }
+
+        return false;
     }
 
     public Block findTrain(String line, int trainId){
@@ -502,7 +520,7 @@ public class TrackModel
 
         for(Section s : getLine(line).getSections()){
             for(Block b : s.getBlocks()){
-                if(b.getLight().getLightId() == lightNo){
+                if(b.getLight().getLightNumber() == lightNo){
                     light = b.getLight();
                 }
             }

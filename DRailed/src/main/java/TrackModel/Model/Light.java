@@ -5,30 +5,30 @@ package TrackModel.Model;
  */
 public class Light {
 
-    Integer lightId;
+    Integer lightNumber;
     boolean active;
 
     public Light(){
-        this.lightId = null;
+        this.lightNumber = null;
         this.active = false;
     }
 
-    public Light(Integer lightId){
-        this.lightId = lightId;
+    public Light(Integer lightNumber){
+        this.lightNumber = lightNumber;
         this.active = true;
     }
 
-    public Light(Integer lightId, boolean status){
-        this.lightId = lightId;
+    public Light(Integer lightNumber, boolean status){
+        this.lightNumber = lightNumber;
         this.active = status;
     }
 
-    public Integer getLightId() {
-        return lightId;
+    public Integer getLightNumber() {
+        return lightNumber;
     }
 
-    public void setLightId(Integer lightId) {
-        this.lightId = lightId;
+    public void setLightNumber(Integer lightNumber) {
+        this.lightNumber = lightNumber;
     }
 
     public boolean isActive() {

@@ -63,24 +63,22 @@ public class TrackModelGUI {
     private GridPane blockStatus = new GridPane();
 
     // Infrastructure Icon Resources
-    private ImageView trainIcon = new ImageView(new Image(getClass().getResource("/UI/images/trainIcon.png").toString()));
-    private ImageView switchIcon = new ImageView(new Image(getClass().getResource("/UI/images/switchIcon.png").toString()));
-    private ImageView stationIcon = new ImageView(new Image(getClass().getResource("/UI/images/stationIcon.png").toString()));
-    private ImageView crossingIcon = new ImageView(new Image(getClass().getResource("/UI/images/crossingIcon.png").toString()));
-    private ImageView lightsIcon = new ImageView(new Image(getClass().getResource("/UI/images/lightsIcon.png").toString()));
+    private ImageView trainIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/trainIcon.png").toString()));
+    private ImageView switchIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/switchIcon.png").toString()));
+    private ImageView stationIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/stationIcon.png").toString()));
+    private ImageView crossingIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/crossingIcon.png").toString()));
+    private ImageView lightsIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/lightsIcon.png").toString()));
 
     // Status Icon Resources
-    private ImageView openIcon = new ImageView(new Image(getClass().getResource("/UI/images/openIcon.png").toString()));
-    private ImageView closedIcon = new ImageView(new Image(getClass().getResource("/UI/images/closedIcon.png").toString()));
-    private ImageView railIcon = new ImageView(new Image(getClass().getResource("/UI/images/railIcon.png").toString()));
-    private ImageView circuitIcon = new ImageView(new Image(getClass().getResource("/UI/images/circuitIcon.png").toString()));
-    private ImageView powerIcon = new ImageView(new Image(getClass().getResource("/UI/images/powerIcon.png").toString()));
+    private ImageView openIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/openIcon.png").toString()));
+    private ImageView closedIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/closedIcon.png").toString()));
+    private ImageView railIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/railIcon.png").toString()));
+    private ImageView circuitIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/circuitIcon.png").toString()));
+    private ImageView powerIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/powerIcon.png").toString()));
 
     public TrackModelGUI() throws IOException {
 
         stage.setTitle(applicationTitle);
-
-        System.out.println(System.getProperty("user.dir"));
 
         // Layout Menu
         Label layoutMenuTitle = getLayoutLabel();
@@ -453,7 +451,10 @@ public class TrackModelGUI {
         FileChooser fileChooser = new FileChooser();
         Stage fileSelect = new Stage();
         fileSelect.setTitle("Choose a track layout data file to import:");
-        //fileChooser.setInitialDirectory(new File("/UI/resources"));
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("TrackModel/tracks/").getFile());
+        fileChooser.setInitialDirectory(file);
 
         // Import Track Button
         Button importTrack = new Button("Import Track");
@@ -466,7 +467,7 @@ public class TrackModelGUI {
                 File file = fileChooser.showOpenDialog(fileSelect);
                 if(file != null)
                 {
-                    track.importTrack(file.getAbsolutePath());
+                    track.importTrack(file.getName());
 
                     track.randomDispatch(track.getLines().get(track.getLineCount()-1).getLine());
 
