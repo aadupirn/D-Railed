@@ -29,7 +29,7 @@ public class PLC
             {
                 for(String line; (line = br.readLine()) != null; )
                 {
-                    System.out.println("Whole string: " + line + "\n");
+                    System.out.println("\nWhole string: " + line);
                     if(!line.contains("="))
                     {
                         isGood = false;
@@ -51,57 +51,72 @@ public class PLC
                             getOut = output.split("\\.");
                             String out = getOut[getOut.length-1];
                             String id = getOut[0];
-                            String outSwitch = getOut[0];
                             if(out.equals("crossing"))
                             {
-                                try
-                                {
-                                    outputID = Integer.parseInt(id);
-                                } catch (NumberFormatException e)
-                                {
-                                    System.out.println("ID not valid");
-                                    isGood = false;
+                                if (!id.equals("this")) {
+                                    try {
+                                        outputID = Integer.parseInt(id);
+                                        System.out.println("Setting " + outputID + " crossing to " + input);
+                                        plcInputs[outputID][1] = input;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("ID not valid");
+                                        isGood = false;
+                                    }
                                 }
-                                System.out.println("Setting " + outputID + " crossing to " + input);
-                                plcInputs[outputID][1] = input;
+                                else
+                                {
+                                    for (int i = 0; i < 153; i++)
+                                        plcInputs[i][1] = input;
+                                }
                             }
                             else if(out.equals("lights"))
                             {
-                                try
-                                {
-                                    outputID = Integer.parseInt(id);
-                                } catch (NumberFormatException e)
-                                {
-                                    System.out.println("ID not valid");
-                                    isGood = false;
+                                if (!id.equals("this")) {
+                                    try {
+                                        outputID = Integer.parseInt(id);
+                                        System.out.println("Setting " + outputID + " lights to " + input);
+                                        plcInputs[outputID][0] = input;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("ID not valid");
+                                        isGood = false;
+                                    }
                                 }
-                                System.out.println("Setting " + outputID + " lights to " + input);
-                                plcInputs[outputID][0] = input;
+                                else
+                                {
+                                    for (int i = 0; i < 153; i++)
+                                        plcInputs[i][0] = input;
+                                }
                             }
                             else if(out.equals("stop"))
                             {
-                                try
-                                {
-                                    outputID = Integer.parseInt(id);
-                                } catch (NumberFormatException e)
-                                {
-                                    System.out.println("ID not valid");
-                                    isGood = false;
+                                if (!id.equals("this")) {
+                                    try {
+                                        outputID = Integer.parseInt(id);
+                                        System.out.println("Setting " + outputID + " stop to " + input);
+                                        plcInputs[outputID][2] = input;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("ID not valid");
+                                        isGood = false;
+                                    }
                                 }
-                                System.out.println("Setting " + outputID + " stop to " + input);
-                                plcInputs[outputID][2] = input;
+                                else
+                                {
+                                    for (int i = 0; i < 153; i++)
+                                        plcInputs[i][2] = input;
+                                }
                             }
                             else if(out.equals("switch"))
                             {
                                 try
                                 {
                                     outputID = Integer.parseInt(id);
+                                    System.out.println("Setting " + outputID + " switch to " + input);
+                                    switches[outputID] = input;
                                 } catch (NumberFormatException e)
                                 {
                                     System.out.println("ID not valid");
                                     isGood = false;
                                 }
-                                switches[outputID] = input;
                             }
                             else
                             {

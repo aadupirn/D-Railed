@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import java.io.File;
 import TrackController.Classes.*;
+import TrackModel.Model.*;
 
 public class TrackControllerUI {
 
@@ -24,7 +25,7 @@ public class TrackControllerUI {
     private Stage mainStage, sideStage;
     private Scene mainScene, murphyScene, userInScene, engScene, toTMScene;
     private Label controllerLabel,blockLabel, controlLabel, switchLabel, openLabel, lightsLabel, crossLabel, stationLabel, switchAdjLabel, mainBlockLabel, subBlock1Label,subBlock2Label,connectedLabel;
-    private TextField blockID, openStatus, lightsStatus,crossStatus,stationStatus, switchAdj1, switchAdj2, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText;
+    private TextField blockID, openStatus, lightsStatus,crossStatus,stationStatus, switchAdj, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText;
     private TextArea notifications;
     private Text controllerLine, controllerSection;
     private Button murphyButton, userInputsButton, engInputsButton, toTrackModelButton, murphyBreakTrackButton, murphyBreakCTCComms, murphyBreakTMComms, sendEngineer, loadPLC, blockIdButton, switchIdButton;
@@ -57,7 +58,6 @@ public class TrackControllerUI {
         GridPane engInputs = new GridPane();
         GridPane toTrackModel = new GridPane();
         GridPane blockInfo = new GridPane();
-        GridPane blockSwitchIDs = new GridPane();
         GridPane buttonSelect = new GridPane();
         GridPane switchInfo = new GridPane();
         GridPane trainInfo = new GridPane();
@@ -170,11 +170,8 @@ public class TrackControllerUI {
         blockInfo.add(switchAdjLabel, 0, 5);
 
         //Switch GridPane
-        switchAdj1 = new TextField("ID/(N/A)");
-        blockSwitchIDs.add(switchAdj1, 0, 0);
-        switchAdj2 = new TextField("ID/(N/A)");
-        blockSwitchIDs.add(switchAdj2, 1, 0);
-        blockInfo.add(blockSwitchIDs, 1, 5);
+        switchAdj = new TextField("ID/(N/A)");
+        blockInfo.add(switchAdj, 1, 5);
 
         blockInfo.setMinHeight(windowHeight * 2 / 3);
 
@@ -473,14 +470,13 @@ public class TrackControllerUI {
         {
             for(Block b : Blocks)
             {
-                if(b.getID().equals(blockID.getText()))
+                if(b.getBlockNumber() == (Integer.parseInt(blockID.getText())))
                 {
-                    openStatus.setText(b.getOpenStatus());
-                    lightsStatus.setText(b.getLights());
-                    crossStatus.setText(b.getCrossings());
-                    stationStatus.setText(b.getStationName());
-                    switchAdj1.setText(b.getSwitchID1Name());
-                    switchAdj2.setText(b.getSwitchID2Name());
+                    openStatus.setText(b.getTrackState());
+                    lightsStatus.setText(Boolean.toString(b.getLight().isActive()));
+                    crossStatus.setText(Boolean.toString(b.getCrossing().isActive()));
+                    stationStatus.setText(b.getStation().getStationName());
+                    switchAdj.setText(Integer.toString(b.getSwitch().getSwitchNumber()));
                 }
             }
         }
@@ -489,21 +485,24 @@ public class TrackControllerUI {
             Switch sw = null;
             for(Block b : Blocks)
             {
-                if(b.getSwitchID1() != null)
+                if(b.getSwitch() != null)
                 {
-                    sw = b.getSwitchID1();
+                    sw = b.getSwitch();
 
-                }
-                if(b.getSwitchID2() != null)
-                {
-                    sw = b.getSwitchID2();
                 }
                 if(sw != null)
                 {
-                    mainBlockText.setText(sw.getMainBlock().getID());
-                    subBlock1Text.setText(sw.getSubBlock1().getID());
-                    subBlock2Text.setText(sw.getSubBlock2().getID());
-                    connectedText.setText(sw.getState());
+                    mainBlockText.setText(Integer.toString(sw.getMain()));
+                    subBlock1Text.setText((Integer.toString(sw.getTop())));
+                    subBlock2Text.setText(Integer.toString(sw.getBottom()));
+                    if (sw.getState() == SwitchState.TOP)
+                    {
+                        subBlock1Text.setText((Integer.toString(sw.getTop())));
+                    }
+                    else
+                    {
+                        subBlock2Text.setText(Integer.toString(sw.getBottom()));
+                    }
                 }
             }
         }

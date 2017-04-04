@@ -34,6 +34,7 @@ public class TrackController {
 
     public void setPLC(File file) {
         this.myPLC = new PLC(file,Blocks);
+        System.out.println("\n\nPLC Valid: " + myPLC.isValid());
     }
 
     public void setModel(TrackModel model) {
