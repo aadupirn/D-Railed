@@ -12,18 +12,17 @@ import TrackModel.Model.*;
 public class PLC
     {
         private boolean isGood;
-        private String[][] green,red; //A string of conditions for each line
+        private String[][] plcInputs; //A string of conditions for each line
         private String input, output;
         private String[] inOut, getIn, getOut,switches;
-        private Block[] greenBlocks, redBlocks;
+        private Block[] blocks;
 
-        public PLC(File file)
+        public PLC(File file, Block[] blocks)
         {
             isGood = true;
-            green = new String[153][3]; // 0 is lights, 1 is crossings, 2 is stop
-            red = new String[78][3]; // 0 is lights, 1 is crossings, 2 is stop
+            plcInputs = new String[153][3]; // 0 is lights, 1 is crossings, 2 is stop
             switches = new String[13];
-            boolean isGreen = true;
+            this.blocks = blocks;
             int outputID = 0;
 
             try(BufferedReader br = new BufferedReader(new FileReader(file)))
@@ -33,11 +32,7 @@ public class PLC
                     System.out.println("Whole string: " + line + "\n");
                     if(!line.contains("="))
                     {
-                        //check if it is the transition to red
-                        if (line.contains("red"))
-                            isGreen = false;
-                        else
-                            isGood = false;
+                        isGood = false;
                     }
                     else
                     {
@@ -68,10 +63,7 @@ public class PLC
                                     isGood = false;
                                 }
                                 System.out.println("Setting " + outputID + " crossing to " + input);
-                                if (isGreen)
-                                    green[outputID][1] = input;
-                                else
-                                    red[outputID][1] = input;
+                                plcInputs[outputID][1] = input;
                             }
                             else if(out.equals("lights"))
                             {
@@ -84,10 +76,7 @@ public class PLC
                                     isGood = false;
                                 }
                                 System.out.println("Setting " + outputID + " lights to " + input);
-                                if (isGreen)
-                                    green[outputID][0] = input;
-                                else
-                                    red[outputID][0] = input;
+                                plcInputs[outputID][0] = input;
                             }
                             else if(out.equals("stop"))
                             {
@@ -100,10 +89,7 @@ public class PLC
                                     isGood = false;
                                 }
                                 System.out.println("Setting " + outputID + " stop to " + input);
-                                if (isGreen)
-                                    green[outputID][2] = input;
-                                else
-                                    red[outputID][2] = input;
+                                plcInputs[outputID][2] = input;
                             }
                             else if(out.equals("switch"))
                             {
@@ -132,35 +118,23 @@ public class PLC
 
         public boolean getSwitchState(int switchID)
         {
-            if (switchID <= 6)
-                return(runPLC(switches[switchID],"GREEN",switchID));
-            return(runPLC(switches[switchID],"RED",switchID));
+            return(runPLC(switches[switchID],switchID));
         }
-        public boolean getCrossingState(String line, int blockID)
+        public boolean getCrossingState(int blockID)
         {
-            if (line.equals("GREEN"))
-                return(runPLC(green[blockID][1],line,blockID));
-            return(runPLC(red[blockID][1],line,blockID));
+            return(runPLC(plcInputs[blockID][1],blockID));
         }
-        public boolean getStopTrain(String line, int blockID)
+        public boolean getStopTrain(int blockID)
         {
-            if (line.equals("GREEN"))
-                return(runPLC(green[blockID][2],line,blockID));
-            return(runPLC(red[blockID][2],line,blockID));
+            return(runPLC(plcInputs[blockID][2],blockID));
         }
-        public boolean getLights(String line, int blockID)
+        public boolean getLights(int blockID)
         {
-            if (line.equals("GREEN"))
-                return(runPLC(green[blockID][0],line,blockID));
-            return(runPLC(red[blockID][0],line,blockID));
+            return(runPLC(plcInputs[blockID][0],blockID));
         }
 
-        public void setGreenBlocks(Block[] greenBlocks) {
-            this.greenBlocks = greenBlocks;
-        }
-
-        public void setRedBlocks(Block[] redBlocks) {
-            this.redBlocks = redBlocks;
+        public void setBlocks(Block[] Blocks) {
+            this.blocks = Blocks;
         }
 
         public boolean isValid()
@@ -168,9 +142,9 @@ public class PLC
             return(isGood);
         }
 
-        private boolean runPLC(String input, String line, int id)
+        private boolean runPLC(String input, int id)
         {
-            String boolIn = replaceAllInputs(input, id, line);
+            String boolIn = replaceAllInputs(input, id);
             boolean result;
             try {
 
@@ -187,21 +161,17 @@ public class PLC
 
             }
         }
-        private String replaceAllInputs(String in, int id, String line)
+        private String replaceAllInputs(String in, int id)
         {
             String result;
-            if (line.equals("GREEN")) {
-                result = in.replaceAll("this.occupied", Boolean.toString(greenBlocks[id].hasTrain()));
-                for (int i = 1; i <= 152; i++) {
-                    result = result.replaceAll(i + ".occupied", Boolean.toString(greenBlocks[i].hasTrain()));
-                }
+            result = in.replaceAll("this.occupied", Boolean.toString(blocks[id].hasTrain()));
+            for (int i = 1; i <= blocks.length; i++) {
+                result = result.replaceAll(blocks[i].getBlockNumber() + ".occupied", Boolean.toString(blocks[i].hasTrain()));
+                result = result.replaceAll(blocks[i].getBlockNumber() + ".nextoccupied", Boolean.toString(blocks[i].hasTrain())); //TODO replace with next block!!
             }
-            else
+            if (result.contains(".occupied")) //The other track controller has this block
             {
-                result = in.replaceAll("this.occupied", Boolean.toString(redBlocks[id].hasTrain()));
-                for (int i = 1; i <= 77; i++) {
-                    result = result.replaceAll(i + ".occupied", Boolean.toString(greenBlocks[i].hasTrain()));
-                }
+                System.out.println("Haven't handled yet");
             }
             return(result);
         }
