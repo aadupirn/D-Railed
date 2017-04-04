@@ -8,8 +8,8 @@ import java.util.Random;
  * Created by swaroopakkineni on 2/14/17.
  */
 public class Train {
-    protected TrainModel trainModel;
-    TrainController trainController;
+    private TrainModelMain trainModel;
+    private TrainController trainController;
     private int block;
     private Double commandSpeed;
     private int id;
@@ -115,7 +115,7 @@ Calculates speed
     protected boolean calculateSpeed(Double power){
         //do some calculations
         currentSpeed =  Engine.calculateSpeed(mass, commandSpeed, currentSpeed, grade);
-        System.out.println(currentSpeed);
+        System.out.println("Current Speed: "+currentSpeed);
         return true;
     }
 
