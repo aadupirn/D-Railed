@@ -15,50 +15,63 @@ import java.io.IOException;
  * Created by joero on 2/6/2017.
  */
 public class TrainInfo {
-    private ObservableList<InfoRow> infoRows = FXCollections.observableArrayList();
-    public XSSFWorkbook schedule = new XSSFWorkbook();
+    private int id;
+    private double speed;
+    private double safeSpeed;
+    private String location;
+    private int authority;
+    private double variance;
 
-    public TrainInfo(File file) {
-        try {
-            FileInputStream fileIn = new FileInputStream(file);
-            schedule = new XSSFWorkbook(fileIn);
-            XSSFSheet worksheet = schedule.getSheet("Sheet1");
-            for(int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++)
-                this.createInfoRow(worksheet.getRow(i));
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public TrainInfo(int id, double speed, double safeSpeed, String location, int authority, double variance){
+        this.id = id;
+        this.speed = speed;
+        this.safeSpeed = safeSpeed;
+        this.location = location;
+        this.authority = authority;
+        this.variance = variance;
     }
 
-    private void createInfoRow(XSSFRow data) {
-        InfoRow infoRow = new InfoRow(
-                data.getCell(0).getStringCellValue(),
-                data.getCell(1).getStringCellValue(),
-                data.getCell(2).getStringCellValue(),
-                data.getCell(3).getStringCellValue(),
-                data.getCell(4).getStringCellValue(),
-                data.getCell(5).getStringCellValue(),
-                data.getCell(6).getStringCellValue());
-        infoRows.add(infoRow);
+    public int getId(){
+        return id;
     }
 
-    public void addRow(InfoRow data) {
-        infoRows.add(data);
+    public double getSpeed(){
+        return speed;
     }
 
-    public InfoRow findRow(String id) {
-        for(InfoRow data : infoRows){
-            if(data.getTrainId().equals(id))
-                return data;
-        }
-        return null;
+    public void setSpeed(double speed){
+        this.speed = speed;
     }
 
-    public XSSFWorkbook getExcelFile(){
-        return schedule;
+    public double getSafeSpeed(){
+        return safeSpeed;
     }
-    public ObservableList<InfoRow> getRows() { return infoRows; }
+
+    public double calculateSafeSpeed(){
+        return 0;
+    }
+
+    public String updateLocation(){
+        return location;
+    }
+
+    public void setLocation(String location){
+        this.location = location;
+    }
+
+    public int getAuthority(){
+        return authority;
+    }
+
+    public void setAuthorithy(int authorithy){
+        this.authority = authority;
+    }
+
+    public double getVariance(){
+        return variance;
+    }
+
+    public void setVariance(double variance){
+        this.variance = variance;
+    }
 }
