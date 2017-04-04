@@ -110,9 +110,10 @@ private double calculateSpeed(double mass, double powerCommand, double currentSp
                                 double grade){
 Calculates speed
  */
-    private boolean calculateSpeed(Double power){
+    protected boolean calculateSpeed(Double power){
         //do some calculations
         currentSpeed =  Engine.calculateSpeed(mass, commandSpeed, currentSpeed, grade);
+        System.out.println(currentSpeed);
         return true;
     }
 
