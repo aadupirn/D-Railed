@@ -8,8 +8,8 @@ import java.util.Random;
  * Created by swaroopakkineni on 2/14/17.
  */
 public class Train {
-    protected TrainModel trainModel;
-    TrainController trainController;
+    private TrainModelMain trainModel;
+    private TrainController trainController;
     private int block;
     private Double commandSpeed;
     private int id;

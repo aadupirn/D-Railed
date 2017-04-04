@@ -137,10 +137,10 @@ public class Main extends Application {
 			try {
 				Train t = new Train();
 				DTime dt = new DTime(t.GetTrainController());
-				dt.Run();
+				//dt.Run();
 			} catch (IOException e1) {
 				e1.printStackTrace();
-			} catch (InterruptedException e1)
+			} catch (Exception e1)
 			{
 				e1.printStackTrace();
 			}
