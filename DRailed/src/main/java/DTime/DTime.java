@@ -37,23 +37,6 @@ public class DTime
 		trainController = iTrainController;
 		timer = new Timer();
 		timer.schedule(new DRailedTask(), 0, intervalMS);
-		/*Task<Void> task = new Task<Void>()
-		{
-			@Override public Void call() throws InterruptedException {
-				int counter = 0;
-				while(counter<30)
-				{
-					counter++;
-					Step();
-					Thread.sleep(intervalMS);
-				}
-
-
-				return null;
-			}
-		};
-
-		Thread thread = new Thread(task);*/
 	}
 
 
