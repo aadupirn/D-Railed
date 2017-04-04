@@ -264,10 +264,15 @@ public class TrainModel {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        Train train = new Train();
+//        Train train = new Train();
         int i = 10000;
+<<<<<<< HEAD
+       // while(i > 0){
+  //          train.calculateSpeed(1000.0);
+=======
         //while(i > 0){
             //train.calculateSpeed(1000.0);
+>>>>>>> bf3ca250567fc3bccc3d215e96a4988eb4fd3be0
             /*Double velocity = train.TimeCalc();
             grid.getChildren().remove(speedLabelText);
             speedLabelText = new Text();
@@ -277,6 +282,10 @@ public class TrainModel {
             i--;
             grid.add(speedLabelText, 0, 1);
             */
+<<<<<<< HEAD
+      //  }
+=======
 
+>>>>>>> bf3ca250567fc3bccc3d215e96a4988eb4fd3be0
     }
 }
