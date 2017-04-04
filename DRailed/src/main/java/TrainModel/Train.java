@@ -20,6 +20,9 @@ public class Train {
 
     private engine Engine;
     private AC ac;
+    private boolean leftDoors;
+    private boolean rightDoors;
+    private boolean lights;
 
     int unloading;
 
@@ -28,6 +31,9 @@ public class Train {
        // trainModel = new TrainModel();
         Engine = new engine();
         ac = new AC();
+        leftDoors = false;
+        rightDoors = false;
+        lights = false;
 
         trainController = new TrainController(this);
     }
@@ -118,24 +124,21 @@ Calculates speed
         System.out.println("Current Speed: "+currentSpeed);
         return true;
     }
-
-    private void acOn(){
+//AC Status
+    public void SetAcOn(){
         ac.acOn();
     }
-
-    private void acOFF(){
+    public void SetAcOFF(){
         ac.acOff();
     }
-    private void heatOn(){
+    public void SetHeatOn(){
         ac.heatOn();
     }
-
-    private void heatOFF(){
+    public void SetHeatOFF(){
         ac.heatOff();
     }
-    private void getGrade(){
-        // grade = trainController.getGrade();
-    }
+    public double getTemperature(){ return ac.getTemp();}
+
 
     // @ANDREW also used in TrackModel tests
     private int generateUnloading() {
@@ -163,6 +166,50 @@ Calculates speed
     public void Update(){
         System.out.println("TEmperature is 90");
         System.out.println("Speed is " + calculateSpeed(commandSpeed));
+
+    }
+
+
+
+    public boolean OpenLeftDoors(){
+        leftDoors = true;
+        return leftDoors;
+    }
+    public boolean CloseLeftDoors(){
+        leftDoors = false;
+        return leftDoors;
+    }
+    public boolean GetLeftDoorsStatus(){
+        return leftDoors;
+    }
+    public boolean OpenRightDoors(){
+        rightDoors = true;
+        return rightDoors;
+    }
+    public boolean CloseRightDoors(){
+        leftDoors = false;
+        return rightDoors;
+    }
+    public boolean GetRightDoorsStatus(){
+        return rightDoors;
+    }
+
+
+
+    public boolean SetLights(boolean lightsStatus){
+        lights = lightsStatus;
+        return true;
+    }
+    public boolean GetLights(){
+        return lights;
+    }
+
+    public boolean setGrade(Double newGrade){
+        grade = newGrade;
+        return true;
+    }
+    public double getGrade(){
+        return grade;
     }
 }
 
