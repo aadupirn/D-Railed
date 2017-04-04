@@ -84,11 +84,15 @@ public class TrackModel
                 Double blockCumulativeElevation = new Double(dataLine[8]);
                 String switchInfo = null;
                 String direction = null;
+                String beacon = null;
 
                 if(dataLine.length > 9) {
                     switchInfo = dataLine[9].toUpperCase();
                     if(dataLine.length > 10) {
                         direction = dataLine[10].toUpperCase();
+                        if(dataLine.length > 11){
+                            beacon = dataLine[11].toUpperCase();
+                        }
                     }
                 }
 
@@ -131,6 +135,9 @@ public class TrackModel
 
                     List<Object> infraSet = parseInfrastructure(updateLine, section, blockNumber, infrastructure, switchInfo);
 
+                    if(beacon != null) {
+                        updateBlock.setBeacon(beacon);
+                    }
                     Station updateStation = (Station) infraSet.get(0);
                     Crossing updateCrossing = (Crossing) infraSet.get(2);
                     String other = (String) infraSet.get(3);
