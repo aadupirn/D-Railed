@@ -125,7 +125,7 @@ public class Main extends Application {
 		trainModelBtn.setOnAction((ActionEvent e) ->
 		{
 			try {
-				TrainModel trainModel = new TrainModel();
+				Train train = new Train();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
