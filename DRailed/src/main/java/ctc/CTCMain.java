@@ -23,7 +23,7 @@ import ctc.panels.Monitormgr;
 import ctc.panels.ScheduleMgr;
 
 /**
- *
+ * HELLO TESTSs
  * @author 
  */
 public class CTCMain extends Application {   
