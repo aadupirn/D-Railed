@@ -53,7 +53,7 @@ public class Train {
         trainModel = new TrainModelMain();
     }
     public Train(int blockLocation, int numberOfCarts, int newID) throws IOException {
-        trainController = new TrainController();
+        trainController = new TrainController(this);
         Engine = new engine();
         ac = new AC();
 
@@ -94,7 +94,7 @@ public class Train {
 
     private boolean setBeaconImputs(Double beaconSpeed, Double beaconCommand, int beaconFailureStatus, int beaconPassengerCount) {
 
-        trainModel.distanceCalc(trainController.setBeaconArguments(beaconSpeed, beaconCommand, beaconFailureStatus));
+        //trainModel.distanceCalc(trainController.setBeaconArguments(beaconSpeed, beaconCommand, beaconFailureStatus));
         trainModel.passengersLoading(beaconPassengerCount);
         return true;
     }
