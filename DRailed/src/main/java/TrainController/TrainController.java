@@ -16,7 +16,10 @@ import java.io.IOException;
 /**
  * Created by aadu on 2/3/17.
  */
-public class TrainController {
+public class TrainController
+{
+
+	//region Class Variables
 	private final Stage stage = new Stage();
 
 	private TextArea notifications;
@@ -39,50 +42,13 @@ public class TrainController {
 	private Text speedText;
 	private Text powerText;
 
-	public void SetPowerText(String in)
-	{
-		powerText.setText(in + " W");
-	}
+	//endregion
 
-	public void SetSpeedText(String in)
-	{
-		powerText.setText(in + " mph");
-	}
-
-	public void MakeAnnouncement(String announcement)
-	{
-		String newNotification;
-		if(notifications.getText().equals("Notifications here"))
-		{
-			newNotification = "";
-		}
-		else
-		{
-			newNotification = notifications.getText();
-		}
-
-		notifications.setText(newNotification + "ANN: " + announcement + "\n");
-	}
-
-	public void setPowerVars(double kpIn, double kiIn)
-	{
-		kp = kpIn;
-		ki = kiIn;
-	}
-
-	public double getKP()
-	{
-		return kp;
-	}
-
-	public double getKI()
-	{
-		return ki;
-	}
-
+	//region Constructor
 	public TrainController() throws IOException
 	{
 
+		//region UI code
 		stage.setTitle(windowTitle);
 
 		GridPane grid = new GridPane();
@@ -209,14 +175,6 @@ public class TrainController {
 		acOff.setMinWidth(colWidth);
 		acGrid.add(acOff, 0, 1);
 
-		RadioButton acFail = new RadioButton("Fail");
-		acFail.setToggleGroup(acToggleGroup);
-		acFail.setSelected(false);
-		acFail.setDisable(true);
-		acFail.setMaxWidth(colWidth);
-		acFail.setMinWidth(colWidth);
-		acGrid.add(acFail, 0, 2);
-
 		acGrid.setMinWidth(colWidth*2);
 		grid.add(acGrid, 1, 3, 2, 1);
 
@@ -251,14 +209,6 @@ public class TrainController {
 		heatOff.setMaxWidth(colWidth);
 		heatOff.setMinWidth(colWidth);
 		heatGrid.add(heatOff, 0, 1);
-
-		RadioButton heatFail = new RadioButton("Fail");
-		heatFail.setToggleGroup(heatToggleGroup);
-		heatFail.setSelected(false);
-		heatFail.setDisable(true);
-		heatFail.setMaxWidth(colWidth);
-		heatFail.setMinWidth(colWidth);
-		heatGrid.add(heatFail, 0, 2);
 
 		heatGrid.setMinWidth(colWidth*2);
 		grid.add(heatGrid, 1, 4, 2, 1);
@@ -302,14 +252,6 @@ public class TrainController {
 		lightsOff.setMinWidth(colWidth);
 		lightsGrid.add(lightsOff, 0, 1);
 
-		RadioButton lightsFail = new RadioButton("Fail");
-		lightsFail.setToggleGroup(lightsToggleGroup);
-		lightsFail.setSelected(false);
-		lightsFail.setDisable(true);
-		lightsFail.setMaxWidth(colWidth);
-		lightsFail.setMinWidth(colWidth);
-		lightsGrid.add(lightsFail, 0, 2);
-
 		lightsGrid.setMinWidth(colWidth*2);
 		grid.add(lightsGrid, 1, 5, 2, 1);
 
@@ -338,14 +280,6 @@ public class TrainController {
 		lDoorClosed.setMaxWidth(colWidth);
 		lDoorClosed.setMinWidth(colWidth);
 		lDoorGrid.add(lDoorClosed, 0, 1);
-
-		RadioButton lDoorFail = new RadioButton("Fail");
-		lDoorFail.setToggleGroup(lDoorToggleGroup);
-		lDoorFail.setDisable(true);
-		lDoorFail.setSelected(false);
-		lDoorFail.setMaxWidth(colWidth);
-		lDoorFail.setMinWidth(colWidth);
-		lDoorGrid.add(lDoorFail, 0, 2);
 
 		lDoorGrid.setMinWidth(colWidth*2);
 		grid.add(lDoorGrid, 1, 6, 2, 1);
@@ -398,14 +332,6 @@ public class TrainController {
 		rDoorClosed.setMinWidth(colWidth);
 		rDoorGrid.add(rDoorClosed, 0, 1);
 
-		RadioButton rDoorFail = new RadioButton("Fail");
-		rDoorFail.setToggleGroup(rDoorToggleGroup);
-		rDoorFail.setSelected(false);
-		rDoorFail.setDisable(true);
-		rDoorFail.setMaxWidth(colWidth);
-		rDoorFail.setMinWidth(colWidth);
-		rDoorGrid.add(rDoorFail, 0, 2);
-
 		rDoorGrid.setMinWidth(colWidth*2);
 		grid.add(rDoorGrid, 1, 7, 2, 1);
 
@@ -441,8 +367,9 @@ public class TrainController {
 		hPowerControlBtn.getChildren().add(powerControlBtn);
 		grid.add(hPowerControlBtn, 5, 8, 3, 1);
 
+		//endregion
 
-		// Button Handlers
+		//region Button Handlers
 		makeAnnouncementBtn.setOnAction((ActionEvent e) ->
 		{
 			try
@@ -477,10 +404,65 @@ public class TrainController {
 			}
 		});
 
+		//endregion
+
 
 
 		Scene scene = new Scene(grid, windowWidth, windowHight);
 		stage.setScene(scene);
 		stage.show();
 	}
+
+	//endregion
+
+	//region Public Methods
+
+	public void SetPowerText(String in)
+	{
+		powerText.setText(in + " W");
+	}
+
+	public void SetSpeedText(String in)
+	{
+		powerText.setText(in + " mph");
+	}
+
+	public void MakeAnnouncement(String announcement)
+	{
+		String newNotification;
+		if(notifications.getText().equals("Notifications here"))
+		{
+			newNotification = "";
+		}
+		else
+		{
+			newNotification = notifications.getText();
+		}
+
+		notifications.setText(newNotification + "ANN: " + announcement + "\n");
+	}
+
+	public void setPowerVars(double kpIn, double kiIn)
+	{
+		kp = kpIn;
+		ki = kiIn;
+	}
+
+	public double getKP()
+	{
+		return kp;
+	}
+
+	public double getKI()
+	{
+		return ki;
+	}
+
+	//endregion
+
+	//region Private Methods
+
+	//endregion
+
+
 }

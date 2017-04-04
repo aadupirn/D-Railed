@@ -1,4 +1,4 @@
-package sample;
+package Application;
 
 import TrackModel.UI.TrackModelGUI;
 import TrainController.TrainController;

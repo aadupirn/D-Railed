@@ -469,7 +469,7 @@ public class TrackController {
             FileChooser fileChooser = new FileChooser();
             Stage fileSelect = new Stage();
             fileSelect.setTitle("Choose a PLC file to import:");
-            fileChooser.setInitialDirectory(new File("src/TrackController"));
+            //fileChooser.setInitialDirectory(new File("src/TrackController"));
             File file = fileChooser.showOpenDialog(fileSelect);
             if(file != null)
             {

@@ -453,7 +453,7 @@ public class TrackModelGUI {
         FileChooser fileChooser = new FileChooser();
         Stage fileSelect = new Stage();
         fileSelect.setTitle("Choose a track layout data file to import:");
-        fileChooser.setInitialDirectory(new File("src/TrackModel/UI/resources"));
+        //fileChooser.setInitialDirectory(new File("/UI/resources"));
 
         // Import Track Button
         Button importTrack = new Button("Import Track");
