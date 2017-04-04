@@ -3,4 +3,8 @@
 /.idea/*
 /out/*
 *.DS_Store
+<<<<<<< HEAD
 *.class
+=======
+*.class
+>>>>>>> master
