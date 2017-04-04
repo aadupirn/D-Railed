@@ -21,7 +21,7 @@ public class ExcelUtil {
 
 	/**
 	 * Read Excel
-	 * 
+	 *
 	 * @param fileName
 	 */
 	public static List<Schedule> readSchedule(String fileName) {
@@ -206,8 +206,8 @@ public class ExcelUtil {
 
 						cell4.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
 						trace.setBlockgrade(cell4.getNumericCellValue());
-						
-						
+
+
 						Cell cell5 = row.getCell(5);// speedlimit
 
 						if (StringUtils.isBlank(cell5.toString())) {
@@ -216,7 +216,7 @@ public class ExcelUtil {
 
 						cell5.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
 						trace.setSpeedlimit(cell5.getNumericCellValue());
-						
+
 						list.add(trace);
 					}
 
