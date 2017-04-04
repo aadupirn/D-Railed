@@ -1,5 +1,7 @@
 package TrainModel;
+import TrainController.TrainController;
 
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -7,7 +9,7 @@ import java.util.Random;
  */
 public class Train {
     private TrainModelMain trainModel;
-    TrainControllerTest trainController;
+    TrainController trainController;
     private int block;
     private Double commandSpeed;
     private int id;
@@ -20,22 +22,27 @@ public class Train {
 
     int unloading;
 
-    public Train(){
+    public Train() throws IOException {
         Engine = new engine();
         ac = new AC();
 
         trainModel = new TrainModelMain();
-        //trainController = new TrainController();
+        trainController = new TrainController(this);
     }
 
     // @ANDREW created for track model testing
-    public Train(int newId){
+    public Train(int newId) throws IOException {
+        trainController = new TrainController(this);
+        Engine = new engine();
+        ac = new AC();
+
         trainModel = new TrainModelMain();
         this.id = id;
         this.unloading = generateUnloading();
     }
 
-    public Train(int blockLocation, int newID){
+    public Train(int blockLocation, int newID) throws IOException {
+       trainController = new TrainController(this);
         Engine = new engine();
         ac = new AC();
 
@@ -44,9 +51,9 @@ public class Train {
         id = newID;
 
         trainModel = new TrainModelMain();
-        //trainController = new TrainController();
     }
-    public Train(int blockLocation, int numberOfCarts, int newID){
+    public Train(int blockLocation, int numberOfCarts, int newID) throws IOException {
+        trainController = new TrainController();
         Engine = new engine();
         ac = new AC();
 
@@ -55,20 +62,23 @@ public class Train {
         trainModel = new TrainModelMain(numberOfCarts);
         //trainController = new TrainController();
     }
-    public Train(int blockLocation, int numberOfCarts, Double newAuthority, Double newSpeed, int newID){
+    public Train(int blockLocation, int numberOfCarts, Double newAuthority, Double newSpeed, int newID) throws IOException {
         Engine = new engine();
         ac = new AC();
+        trainController = new TrainController(this);
+
 
         block = blockLocation;
         id = newID;
         trainModel = new TrainModelMain(numberOfCarts, newAuthority, newSpeed);
-        trainController = new TrainControllerTest();
     }
 
     public int getId(){
         return id;
     }
-
+    public TrainController GetTrainController(){
+      return trainController;
+    }
     private boolean receiveBeacon(String beacon){
         String[] beaconArray = beacon.split("");
         int beaconID = Integer.decode("0x" + beaconArray[0]);
@@ -123,7 +133,7 @@ Calculates speed
     private void getGrade(){
         // grade = trainController.getGrade();
     }
-}
+
     // @ANDREW also used in TrackModel tests
     private int generateUnloading() {
         return new Random().nextInt(222 - 74) + 74;

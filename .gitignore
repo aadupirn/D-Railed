@@ -1,5 +1,6 @@
 /DRailed/out/*
 /DRailed/.idea/*
 /DRailed/DRailed.iml
+/.idea/*
 *.DS_Store
 *.class
