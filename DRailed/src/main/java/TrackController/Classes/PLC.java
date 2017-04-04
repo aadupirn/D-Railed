@@ -179,10 +179,10 @@ public class PLC
         private String replaceAllInputs(String in, int id)
         {
             String result;
-            result = in.replaceAll("this.occupied", Boolean.toString(blocks[id].hasTrain()));
+            result = in.replaceAll("this.occupied", Boolean.toString(blocks[id].isOccupied()));
             for (int i = 1; i <= blocks.length; i++) {
-                result = result.replaceAll(blocks[i].getBlockNumber() + ".occupied", Boolean.toString(blocks[i].hasTrain()));
-                result = result.replaceAll(blocks[i].getBlockNumber() + ".nextoccupied", Boolean.toString(blocks[i].hasTrain())); //TODO replace with next block!!
+                result = result.replaceAll(blocks[i].getBlockNumber() + ".occupied", Boolean.toString(blocks[i].isOccupied()));
+                result = result.replaceAll(blocks[i].getBlockNumber() + ".nextoccupied", Boolean.toString(blocks[i].isOccupied())); //TODO replace with next block!!
             }
             if (result.contains(".occupied")) //The other track controller has this block
             {
