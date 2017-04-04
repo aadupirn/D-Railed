@@ -108,7 +108,7 @@ public class MBOController extends Application {
             FileChooser fc = new FileChooser();
             fc.setTitle("Pick Worker Schedule");
             File schedule = fc.showOpenDialog(primary);
-            trainInfo = new TrainInfo(schedule);
+            //trainInfo = new TrainInfo(schedule);
 
             setInfoColumns();
             primary.show();
@@ -148,7 +148,7 @@ public class MBOController extends Application {
         TableColumn gps = new TableColumn("GPS");
         gps.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("gps"));
 
-        infoTable.setItems(trainInfo.getRows());
+        //infoTable.setItems(trainInfo.getRows());
         infoTable.getColumns().addAll(trainId, safeSpeed, speed, variance, authority, block, gps);
     }
 
