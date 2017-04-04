@@ -61,7 +61,6 @@ public class Block {
 
     // Connected Blocks
     private Block nextBlock;
-    private Block previousBlock;
 
     public Block(){
         // basic info
@@ -338,6 +337,14 @@ public class Block {
 
     public String toString(){
         return section + blockNumber;
+    }
+
+    public Block getNextBlock(){
+        return nextBlock;
+    }
+
+    public void setNextBlock(Block nextBlock){
+        this.nextBlock = nextBlock;
     }
 }
 

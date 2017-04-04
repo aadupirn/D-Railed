@@ -35,9 +35,8 @@ public class TrackModel
     public TrackModel(String trackLayout){
         lines = new ArrayList<>();
         testTrainList = new ArrayList<>();
-
         importTrack(trackLayout);
-
+        connectTrack();
     }
 
     public List<Line> getLines() {
@@ -542,6 +541,35 @@ public class TrackModel
     private void getTestTrains(){
         testTrainList.add(new Train(0));
         testTrainList.add(new Train(1));
+    }
+
+    private void connectTrack() {
+
+        Block pastBlock = null;
+
+        for(Line l : lines){
+            for(Section s : l.getSections()){
+                for(Block b : s.getBlocks()){
+                    if(b.getSwitch() != null) {
+                        if (pastBlock == null) {
+                            pastBlock = b;
+                        }else{
+                            b.setNextBlock(pastBlock);
+                            pastBlock = b;
+                        }
+                    }else{
+                        if(b.getSwitch().getState() == SwitchState.TOP){
+                            b.setNextBlock(s.getBlock(b.getSwitch().getTop()));
+                            pastBlock = b;
+                        }else{
+                            b.setNextBlock(s.getBlock(b.getSwitch().getBottom()));
+                            pastBlock = b;
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
 }
