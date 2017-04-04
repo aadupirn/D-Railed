@@ -8,7 +8,7 @@ import java.util.Random;
  * Created by swaroopakkineni on 2/14/17.
  */
 public class Train {
-    private TrainModelMain trainModel;
+    protected TrainModel trainModel;
     TrainController trainController;
     private int block;
     private Double commandSpeed;
@@ -16,6 +16,7 @@ public class Train {
     private double currentSpeed;
     private double mass;
     private double grade;
+    private double authority;
 
     private engine Engine;
     private AC ac;
@@ -23,10 +24,11 @@ public class Train {
     int unloading;
 
     public Train() throws IOException {
+        System.out.println("train created");
+       // trainModel = new TrainModel();
         Engine = new engine();
         ac = new AC();
 
-        trainModel = new TrainModelMain();
         trainController = new TrainController(this);
     }
 
@@ -36,7 +38,7 @@ public class Train {
         Engine = new engine();
         ac = new AC();
 
-        trainModel = new TrainModelMain();
+        //trainModel = new TrainModel();
         this.id = id;
         this.unloading = generateUnloading();
     }
@@ -47,10 +49,9 @@ public class Train {
         ac = new AC();
 
         block = blockLocation;
-        trainModel = new TrainModelMain();
         id = newID;
+      //  trainModel = new TrainModel();
 
-        trainModel = new TrainModelMain();
     }
     public Train(int blockLocation, int numberOfCarts, int newID) throws IOException {
         trainController = new TrainController(this);
@@ -59,7 +60,7 @@ public class Train {
 
         block = blockLocation;
         id = newID;
-        trainModel = new TrainModelMain(numberOfCarts);
+        //trainModel = new TrainModel();
         //trainController = new TrainController();
     }
     public Train(int blockLocation, int numberOfCarts, Double newAuthority, Double newSpeed, int newID) throws IOException {
@@ -70,7 +71,7 @@ public class Train {
 
         block = blockLocation;
         id = newID;
-        trainModel = new TrainModelMain(numberOfCarts, newAuthority, newSpeed);
+        //trainModel = new TrainModel();
     }
 
     public int getId(){
@@ -92,10 +93,11 @@ public class Train {
         return false;
     }
 
+
     private boolean setBeaconImputs(Double beaconSpeed, Double beaconCommand, int beaconFailureStatus, int beaconPassengerCount) {
 
         //trainModel.distanceCalc(trainController.setBeaconArguments(beaconSpeed, beaconCommand, beaconFailureStatus));
-        trainModel.passengersLoading(beaconPassengerCount);
+        //trainModel.passengersLoading(beaconPassengerCount);
         return true;
     }
 
@@ -148,4 +150,23 @@ Calculates speed
         this.unloading = generateUnloading();
     }
 
+    public double GetCurrentSpeed(){
+        return currentSpeed;
+    }
+    public double GetAuthority(){
+        authority = 0;
+        return authority;
+    }
+    public void SetPowerCommand(Double pwrCMD){
+        commandSpeed = pwrCMD;
+    }
+    public void Update(){
+        System.out.println("TEmperature is 90");
+        System.out.println("Speed is " + calculateSpeed(commandSpeed));
+    }
 }
+
+
+/*
+
+ */
