@@ -151,76 +151,76 @@ public class ExcelUtil {
 				}
 				System.out.println(wb.getNumberOfSheets());
 				//for (int numSheet = 0; numSheet < wb.getNumberOfSheets(); numSheet++) {
-				Sheet sheet = wb.getSheetAt(numSheet);
-				if (sheet == null) {
-					return null;
+					Sheet sheet = wb.getSheetAt(numSheet);
+					if (sheet == null) {
+						return null;
+					}
+					for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
+
+						Trace trace = new Trace();
+
+						Row row = sheet.getRow(rowNum);
+						if (row == null) {
+							continue;
+						}
+
+						Cell cell0 = row.getCell(0);// line
+						if (cell0==null||StringUtils.isBlank(cell0.toString())) {
+							continue;
+						}
+						cell0.setCellType(HSSFCell.CELL_TYPE_STRING);
+						trace.setLine(cell0.toString());
+
+						Cell cell1 = row.getCell(1);// Section;
+
+						if (StringUtils.isBlank(cell1.toString())) {
+							continue;
+						}
+
+						cell1.setCellType(HSSFCell.CELL_TYPE_STRING);
+						trace.setSection(cell1.toString());
+
+						Cell cell2 = row.getCell(2);// blocknumber
+
+						if (StringUtils.isBlank(cell2.toString())) {
+							continue;
+						}
+
+						cell2.setCellType(HSSFCell.CELL_TYPE_STRING);
+						trace.setBlocknumber(cell2.toString());
+
+						Cell cell3 = row.getCell(3);// blocklength
+
+						if (StringUtils.isBlank(cell3.toString())) {
+							continue;
+						}
+
+						cell3.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+						trace.setBlocklength(cell3.getNumericCellValue());
+
+						Cell cell4 = row.getCell(4);// blockgrade
+
+						if (StringUtils.isBlank(cell4.toString())) {
+							continue;
+						}
+
+						cell4.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+						trace.setBlockgrade(cell4.getNumericCellValue());
+						
+						
+						Cell cell5 = row.getCell(5);// speedlimit
+
+						if (StringUtils.isBlank(cell5.toString())) {
+							continue;
+						}
+
+						cell5.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+						trace.setSpeedlimit(cell5.getNumericCellValue());
+						
+						list.add(trace);
+					}
+
 				}
-				for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
-
-					Trace trace = new Trace();
-
-					Row row = sheet.getRow(rowNum);
-					if (row == null) {
-						continue;
-					}
-
-					Cell cell0 = row.getCell(0);// line
-					if (cell0==null||StringUtils.isBlank(cell0.toString())) {
-						continue;
-					}
-					cell0.setCellType(HSSFCell.CELL_TYPE_STRING);
-					trace.setLine(cell0.toString());
-
-					Cell cell1 = row.getCell(1);// Section;
-
-					if (StringUtils.isBlank(cell1.toString())) {
-						continue;
-					}
-
-					cell1.setCellType(HSSFCell.CELL_TYPE_STRING);
-					trace.setSection(cell1.toString());
-
-					Cell cell2 = row.getCell(2);// blocknumber
-
-					if (StringUtils.isBlank(cell2.toString())) {
-						continue;
-					}
-
-					cell2.setCellType(HSSFCell.CELL_TYPE_STRING);
-					trace.setBlocknumber(cell2.toString());
-
-					Cell cell3 = row.getCell(3);// blocklength
-
-					if (StringUtils.isBlank(cell3.toString())) {
-						continue;
-					}
-
-					cell3.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
-					trace.setBlocklength(cell3.getNumericCellValue());
-
-					Cell cell4 = row.getCell(4);// blockgrade
-
-					if (StringUtils.isBlank(cell4.toString())) {
-						continue;
-					}
-
-					cell4.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
-					trace.setBlockgrade(cell4.getNumericCellValue());
-
-
-					Cell cell5 = row.getCell(5);// speedlimit
-
-					if (StringUtils.isBlank(cell5.toString())) {
-						continue;
-					}
-
-					cell5.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
-					trace.setSpeedlimit(cell5.getNumericCellValue());
-
-					list.add(trace);
-				}
-
-			}
 			//}
 		} catch (Exception ex) {
 			ex.printStackTrace();

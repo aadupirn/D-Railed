@@ -67,3 +67,17 @@ Train Traffic Controller and Model Application
 * Code Base
 * Installation Manual Document
 * Working Subsystem?
+
+## GitHub Staging Process
+
+* `git checkout master`
+* `git pull origin master`
+* `git checkout YOURBRANCH`
+* `git merge master`
+* `git push origin YOURBRANCH`
+* submit a pull request from YOURBRANCH to master on github
+
+## GitHub .gitignore untrack bad files commands
+
+* git rm --cached -r
+* git add .
