@@ -1,6 +1,7 @@
 package TrackModel;
 
 import TrackModel.Model.Block;
+import TrackModel.Model.Heater;
 import TrackModel.Model.Station;
 import TrackModel.Model.SwitchState;
 import TrainModel.Train;
@@ -110,15 +111,36 @@ public class TrackTests {
     @Test
     public void testRegulateTemperature(){
 
+        Heater heat = new Heater("PIT", 34);
+
+        heat.setDesiredTemp(54);
+        heat.toggleActive();
+        heat.setHeatRate(10);
+
+        // heat to 54 degrees
+        heat.updateTemp();
+        heat.updateTemp();
+
+        // rail temp should stay at desired temp of 54
+        heat.updateTemp();
+
+        assertEquals(54.0, heat.getRailTemp());
+
     }
 
     @Test
     public void testCorrectFile(){
 
+        Track track = new Track("greenTrackLayout.csv");
+        assertEquals(true, track != null);
+
     }
 
     @Test
     public void testImportTrack(){
+
+        Track track = new Track("greenTrackLayout.csv");
+        assertEquals(true, track != null);
 
     }
 
@@ -134,10 +156,21 @@ public class TrackTests {
     @Test
     public void testSetStationTimes(){
 
+        Station station = new Station("TEST", 12, "LEFT");
+        station.setTrainTimes("12:00-1:00");
+
+        assertEquals("12:00-1:00", station.getTrainTimes());
+
     }
 
     @Test
     public void testCloseBlock(){
+
+        Track track = new Track("greenTrackLayout.csv");
+
+        track.getBlock(3).setTrackState("CLOSED");
+
+        assertEquals("CLOSED", track.getBlock(3).getTrackState());
 
     }
 
