@@ -115,7 +115,7 @@ Calculates speed
     protected boolean calculateSpeed(Double power){
         //do some calculations
         currentSpeed =  Engine.calculateSpeed(mass, commandSpeed, currentSpeed, grade);
-        System.out.println(currentSpeed);
+        System.out.println("Current Speed: "+currentSpeed);
         return true;
     }
 
