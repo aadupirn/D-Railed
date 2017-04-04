@@ -11,6 +11,7 @@ public class Heater {
     private boolean active;
     private Double desiredTemp;
     private Double railTemp;
+    private Double enviromentTemp;
     private Double heatRate = 2.0;
 
     /***
@@ -20,12 +21,14 @@ public class Heater {
         this.heaterId = heaterId;
         this.active = false;
         this.railTemp = generateRailTemp();
+        this.enviromentTemp = this.railTemp;
     }
 
     public Heater(String heaterNumber, double railTemp){
         this.heaterId = heaterNumber;
         this.active = false;
         this.railTemp = railTemp;
+        this.enviromentTemp = this.railTemp;
     }
 
     public String getHeaterNumber() {
@@ -77,6 +80,28 @@ public class Heater {
 
     private Double generateRailTemp() {
         return new Double(new Random().nextInt(100));
+    }
+
+    public Double updateTemp(){
+        if(this.active){
+            heatOn();
+        }else{
+            heatOff();
+        }
+
+        return this.railTemp;
+    }
+
+    private void heatOn(){
+        if(this.railTemp <= this.desiredTemp){
+            this.railTemp += this.heatRate;
+        }
+    }
+
+    private void heatOff(){
+        if(this.railTemp >= this.enviromentTemp){
+            this.railTemp -= this.heatRate;
+        }
     }
 
 }

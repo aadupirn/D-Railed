@@ -7,11 +7,14 @@ import java.util.Random;
  */
 public class Station {
 
+    private int stationNumber;
     private String stationName;
-    private int occupancy;
     private int departing;
     private Heater heater;
-    private String fromSection;
+    private String trainTimes;
+    private Beacon beacon;
+    private String leftSection;
+    private String rightSection;
 
     /***
      * Create a station with a randomly generated occupancy
@@ -20,9 +23,9 @@ public class Station {
      */
     public Station(String stationName, String from){
         this.stationName = stationName;
-        this.occupancy = generateOccupancy();
         this.departing = generateDeparting();
-        this.fromSection = from;
+        this.leftSection = from;
+        this.rightSection = null;
         this.heater = new Heater(stationName);
     }
 
@@ -30,13 +33,18 @@ public class Station {
      * Create a station with a custom occupancy
      *
      * @param stationName - name of the station
-     * @param occupancy - occupancy to set
+     * @param departing - departing to set to set
      */
-    public Station(String stationName, int occupancy, String from){
+    public Station(String stationName, int departing, String from){
         this.stationName = stationName;
-        this.occupancy = occupancy;
-        this.fromSection = from;
+        this.departing = departing;
+        this.leftSection = from;
+        this.rightSection = null;
     }
+
+    public int getStationNumber(){ return stationNumber; }
+
+    public void setStationNumber(int stationNumber){ this.stationNumber = stationNumber; }
 
     /***
      * @return the name of the station
@@ -54,22 +62,6 @@ public class Station {
         this.stationName = stationName;
     }
 
-    /***
-     * @return the occupancy of a station
-     */
-    public Integer getOccupancy() {
-        return occupancy;
-    }
-
-    /***
-     * Manually set an occupancy for a station
-     *
-     * @param occupancy - occupancy to set
-     */
-    public void setOccupancy(Integer occupancy) {
-        this.occupancy = occupancy;
-    }
-
     public int getDeparting() {
         return departing;
     }
@@ -82,6 +74,14 @@ public class Station {
         int depart = this.departing;
         this.departing = generateDeparting();
         return depart;
+    }
+
+    public void addSectionConnection(String section){
+        if(leftSection == null){
+            leftSection = section;
+        }else if(rightSection == null){
+            rightSection = section;
+        }
     }
 
     /***
@@ -101,5 +101,13 @@ public class Station {
 
     public void setHeater(Heater heater) {
         this.heater = heater;
+    }
+
+    public void setTrainTimes(String time){
+        this.trainTimes = time;
+    }
+
+    public String getTrainTimes(){
+        return trainTimes;
     }
 }
