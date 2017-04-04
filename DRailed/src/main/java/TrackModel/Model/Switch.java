@@ -146,7 +146,7 @@ public class Switch {
      *
      * @param state - switch state to set
      */
-    public void setState(SwitchState state){
+    public void setSwitchState(SwitchState state){
         this.state = state;
     }
 

@@ -1,6 +1,6 @@
 package TrackModel.Model;
 
-import MBO.java.Train;
+import TrainModel.Train;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,14 +111,6 @@ public class Line {
     }
 
     //////////////////////
-    // Application.Track.Model.Block Level      //
-    //////////////////////
-
-//    public boolean hasBlock(String section, Integer block){
-//        return this.sections.get(this.sections.indexOf(section)).hasBlock(block);
-//    }
-
-    //////////////////////
     // Application.Track.Model.Switch Level     //
     //////////////////////
 
@@ -227,9 +219,11 @@ public class Line {
         return count;
     }
 
-    public void placeTrain(String section, Integer blockNo, Train train){
-        getSection(section).getBlock(blockNo).trainEnter(train);
+    public void placeTrain(Block block, Train train){
+
+        block.trainEnter(train);
         trains.add(train);
+
     }
 
 }
