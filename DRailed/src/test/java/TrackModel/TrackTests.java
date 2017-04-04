@@ -1,10 +1,9 @@
 package TrackModel;
 
-import MBO.java.Train;
 import TrackModel.Model.Block;
 import TrackModel.Model.Station;
-import TrackModel.Model.Switch;
 import TrackModel.Model.SwitchState;
+import TrainModel.Train;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertNotSame;
@@ -92,7 +91,7 @@ public class TrackTests {
     public void testSetCrossing(){
 
         Track track = new Track("greenTrackLayout.csv");
-        boolean state = track.setCrossingState("GREEN", 1, true);
+        boolean state = track.setCrossingState("GREEN", 19, true);
 
         assertEquals(true, state);
 

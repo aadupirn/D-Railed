@@ -4,7 +4,8 @@ package TrackModel.Model;
  * Created by andrew on 1/17/2017.
  */
 
-import MBO.java.Train;
+
+import TrainModel.Train;
 
 /***
  * Blocks represent track infrastructure and physical attributes. They serve as pieces and the

@@ -50,11 +50,8 @@ public class Track {
     }
 
     // @CTC: Places the train on the appropriate block coming from the Yard
-    public int dispatchTrainOnTrack(String line, Train train) {
+    public int dispatchTrainOnTrack(String line, TrainModel.Train train) {
 
-        System.out.println("Track Dispatch");
-        System.out.println("Line: " + line);
-        System.out.println("Train: " + train);
         return tm.dipatchTrain(line, train);
 
     }

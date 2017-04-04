@@ -4,8 +4,8 @@ package TrackModel.UI;
  * Created by andrew on 1/21/17.
  */
 
-import MBO.java.Train;
 import TrackModel.Model.*;
+import TrainModel.Train;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

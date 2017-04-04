@@ -1,6 +1,6 @@
 package TrackModel.Model;
 
-import MBO.java.Train;
+import TrainModel.Train;
 
 import java.io.BufferedReader;
 import java.io.File;
