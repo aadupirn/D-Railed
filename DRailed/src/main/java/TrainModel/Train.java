@@ -11,9 +11,19 @@ public class Train {
     private int block;
     private Double commandSpeed;
     private int id;
+    private double currentSpeed;
+    private double mass;
+    private double grade;
+
+    private engine Engine;
+    private AC ac;
+
     int unloading;
 
     public Train(){
+        Engine = new engine();
+        ac = new AC();
+
         trainModel = new TrainModelMain();
         //trainController = new TrainController();
     }
@@ -26,6 +36,9 @@ public class Train {
     }
 
     public Train(int blockLocation, int newID){
+        Engine = new engine();
+        ac = new AC();
+
         block = blockLocation;
         trainModel = new TrainModelMain();
         id = newID;
@@ -34,12 +47,18 @@ public class Train {
         //trainController = new TrainController();
     }
     public Train(int blockLocation, int numberOfCarts, int newID){
+        Engine = new engine();
+        ac = new AC();
+
         block = blockLocation;
         id = newID;
         trainModel = new TrainModelMain(numberOfCarts);
         //trainController = new TrainController();
     }
     public Train(int blockLocation, int numberOfCarts, Double newAuthority, Double newSpeed, int newID){
+        Engine = new engine();
+        ac = new AC();
+
         block = blockLocation;
         id = newID;
         trainModel = new TrainModelMain(numberOfCarts, newAuthority, newSpeed);
@@ -76,12 +95,35 @@ public class Train {
         calculateSpeed(power);
         return true;
     }*/
-
+/*
+private double calculateSpeed(double mass, double powerCommand, double currentSpeed,
+                                double grade){
+Calculates speed
+ */
     private boolean calculateSpeed(Double power){
         //do some calculations
+        currentSpeed =  Engine.calculateSpeed(mass, commandSpeed, currentSpeed, grade);
         return true;
     }
 
+    private void acOn(){
+        ac.acOn();
+    }
+
+    private void acOFF(){
+        ac.acOff();
+    }
+    private void heatOn(){
+        ac.heatOn();
+    }
+
+    private void heatOFF(){
+        ac.heatOff();
+    }
+    private void getGrade(){
+        // grade = trainController.getGrade();
+    }
+}
     // @ANDREW also used in TrackModel tests
     private int generateUnloading() {
         return new Random().nextInt(222 - 74) + 74;
