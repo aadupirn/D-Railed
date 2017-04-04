@@ -20,7 +20,7 @@ public class TrackController {
     private int ID, startBlock, endBlock;
     private String line;
     private ArrayList<Block> blocks;
-    private boolean trackComms, ctcComms;
+    private boolean trackComms, ctcComms, isLineMain;
 
 
     public TrackController() throws IOException
@@ -57,8 +57,16 @@ public class TrackController {
         this.trackComms = trackComms;
     }
 
+    public boolean hasTrackComms() {
+        return trackComms;
+    }
+
     public void setCtcComms(boolean ctcComms) {
         this.ctcComms = ctcComms;
+    }
+
+    public boolean hasCtcComms() {
+        return ctcComms;
     }
 
     public int getStartBlock() {
@@ -84,6 +92,15 @@ public class TrackController {
     public void setLine(String line) {
         this.line = line;
     }
+
+    public boolean isLineMain() {
+        return isLineMain;
+    }
+
+    public void setLineMain(boolean lineMain) {
+        isLineMain = lineMain;
+    }
+
     public boolean hasBlock(String line, int id)
     {
         if (line.equals(this.line))
