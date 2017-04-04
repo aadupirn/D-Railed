@@ -76,3 +76,8 @@ Train Traffic Controller and Model Application
 * `git merge master`
 * `git push origin YOURBRANCH`
 * submit a pull request from YOURBRANCH to master on github
+
+## GitHub .gitignore untrack bad files commands
+
+* git rm --cached -r
+* git add .
