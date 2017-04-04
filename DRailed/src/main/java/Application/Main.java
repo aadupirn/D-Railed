@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import TrackController.TrackController;
 import TrainModel.TrainModel;
+import TrainModel.Train;
 import MBO.java.MBOController;
 import ctc.MainFrame;
 
@@ -133,7 +134,9 @@ public class Main extends Application {
 		trainControllerBtn.setOnAction((ActionEvent e) ->
 		{
 			try {
-				TrainController trainController = new TrainController();
+				Train t = new Train();
+
+				TrainController trainController = new TrainController(t);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
