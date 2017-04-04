@@ -601,7 +601,7 @@ public class TrainController
 
 	public void Update()
 	{
-
+		System.out.println("Update");
 	}
 
 	//endregion

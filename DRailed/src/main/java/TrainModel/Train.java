@@ -123,7 +123,7 @@ Calculates speed
     private void getGrade(){
         // grade = trainController.getGrade();
     }
-}
+
     // @ANDREW also used in TrackModel tests
     private int generateUnloading() {
         return new Random().nextInt(222 - 74) + 74;

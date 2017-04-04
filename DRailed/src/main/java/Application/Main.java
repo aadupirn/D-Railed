@@ -12,6 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import TrackController.TrackController;
+import DTime.DTime;
 import TrainModel.TrainModel;
 import TrainModel.Train;
 import MBO.java.MBOController;
@@ -135,8 +136,8 @@ public class Main extends Application {
 		{
 			try {
 				Train t = new Train();
+				DTime dt = new DTime(t.GetTrainController());
 
-				TrainController trainController = new TrainController(t);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
