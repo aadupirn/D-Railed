@@ -1,8 +1,9 @@
 package TrackModel.Model;
 
-import MBO.java.Train;
+import TrainModel.Train;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -49,7 +50,10 @@ public class TrackModel
 
     public void importTrack(String fileName){
 
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName)))
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("TrackModel/tracks/" + fileName).getFile());
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file)))
         {
 
             String reader = null;
@@ -402,24 +406,41 @@ public class TrackModel
             int blockNo = 2;
 
             System.out.println("Train dispatched to: " + line + ":" + secVal + ":" + blockNo);
-            getLine(line).placeTrain(secVal, blockNo, testTrainList.get(trainToDispatch));
+            Block b = getLine(line).getSection(secVal).getBlock(blockNo);
+            getLine(line).placeTrain(b, testTrainList.get(trainToDispatch));
             trainToDispatch++;
         }
     }
 
-    public Block findTrain(String line, int trainId){
+    public int dipatchTrain(String line, Train train){
+
+        int err = -1;
+
+        for(Section s : getLine(line).getSections()){
+                for (Block b : s.getBlocks()) {
+                    if (b.getSwitch() != null && b.getSwitch().isFromYard()) {
+                        getLine(line).placeTrain(b, train);
+                        return b.getBlockNumber();
+                    }
+                }
+        }
+
+        return err;
+    }
+
+    public int findTrain(String line, int trainId){
 
         if(lines == null || lines.isEmpty()){
             System.out.println("Track model is not available. Please import a track first");
-            return null;
+            return -1;
         }
 
-        Block block = null;
+        int block = -1;
 
         for(Section s : getLine(line).getSections()){
             for(Block b : s.getBlocks()){
-                if(b.getTrain().getId() == trainId){
-                    block = b;
+                if(b.getTrain() != null || b.getTrain().getId() == trainId){
+                    block = b.getBlockNumber();
                 }
             }
         }
@@ -438,7 +459,7 @@ public class TrackModel
 
         for(Section s : getLine(line).getSections()){
             for(Block b : s.getBlocks()){
-                if(b.getSwitch().getSwitchNumber().equals(switchNo)){
+                if(b.getSwitch() != null || b.getSwitch().getSwitchNumber().equals(switchNo)){
                     aSwitch = b.getSwitch();
                 }
             }
@@ -460,7 +481,7 @@ public class TrackModel
 
         for(Section s : getLine(line).getSections()){
             for(Block b : s.getBlocks()){
-                if(b.getCrossing().getCrossingNumber().equals(crossingNo)){
+                if(b.getCrossing() != null || b.getCrossing().getCrossingNumber().equals(crossingNo)){
                     crossing = b.getCrossing();
                 }
             }
@@ -481,7 +502,7 @@ public class TrackModel
 
         for(Section s : getLine(line).getSections()){
             for(Block b : s.getBlocks()){
-                if(b.getStation().getStationName().equals(stationName)){
+                if(b.getStation() != null || b.getStation().getStationName().equals(stationName)){
                     station = b.getStation();
                 }
             }
@@ -502,7 +523,7 @@ public class TrackModel
 
         for(Section s : getLine(line).getSections()){
             for(Block b : s.getBlocks()){
-                if(b.getLight().getLightId() == lightNo){
+                if( b.getLight() != null || b.getLight().getLightNumber() == lightNo){
                     light = b.getLight();
                 }
             }
