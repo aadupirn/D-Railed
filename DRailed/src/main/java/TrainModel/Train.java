@@ -1,5 +1,7 @@
 package TrainModel;
 
+import java.util.Random;
+
 /**
  * Created by swaroopakkineni on 2/14/17.
  */
@@ -16,6 +18,8 @@ public class Train {
     private engine Engine;
     private AC ac;
 
+    int unloading;
+
     public Train(){
         Engine = new engine();
         ac = new AC();
@@ -23,6 +27,14 @@ public class Train {
         trainModel = new TrainModelMain();
         //trainController = new TrainController();
     }
+
+    // @ANDREW created for track model testing
+    public Train(int newId){
+        trainModel = new TrainModelMain();
+        this.id = id;
+        this.unloading = generateUnloading();
+    }
+
     public Train(int blockLocation, int newID){
         Engine = new engine();
         ac = new AC();
@@ -51,6 +63,10 @@ public class Train {
         id = newID;
         trainModel = new TrainModelMain(numberOfCarts, newAuthority, newSpeed);
         trainController = new TrainControllerTest();
+    }
+
+    public int getId(){
+        return id;
     }
 
     private boolean receiveBeacon(String beacon){
@@ -107,4 +123,18 @@ Calculates speed
     private void getGrade(){
         // grade = trainController.getGrade();
     }
+}
+    // @ANDREW also used in TrackModel tests
+    private int generateUnloading() {
+        return new Random().nextInt(222 - 74) + 74;
+    }
+
+    public int getUnloading(){
+        return unloading;
+    }
+
+    public void unload(){
+        this.unloading = generateUnloading();
+    }
+
 }
