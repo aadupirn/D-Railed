@@ -19,13 +19,13 @@ public class TrackModel
     private int trainToDispatch = 0;
     private int lineCount;
 
-    // Rail:: right to left 0x123456  Train:: right to left 0x123456
-    // [1] -> Train Id               [1] -> Train Id
-    // [2] -> Speed                  [2] -> Station
-    // [3] -> Authority              [3] -> Failures
-    // [4] -> Station Load           [4] -> ?
-    // [5] -> ?                      [5] -> ?
-    // [6] -> ?                      [6] -> ?
+    // Rail:: right to left 0x123456
+    // [1] -> Train Id
+    // [2] -> Speed
+    // [3] -> Speed
+    // [4] -> Speed
+    // [5] -> Authority
+    // [6] -> Authority
 
     public TrackModel(){
         lines = new ArrayList<>();

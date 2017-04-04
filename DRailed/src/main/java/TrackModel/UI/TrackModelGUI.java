@@ -68,6 +68,8 @@ public class TrackModelGUI {
     private ImageView stationIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/stationIcon.png").toString()));
     private ImageView crossingIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/crossingIcon.png").toString()));
     private ImageView lightsIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/lightsIcon.png").toString()));
+    private ImageView heaterIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/heaterIcon.png").toString()));
+    private ImageView beaconIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/beaconIcon.png").toString()));
 
     // Status Icon Resources
     private ImageView openIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/openIcon.png").toString()));
