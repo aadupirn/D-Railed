@@ -29,6 +29,10 @@ public class ControlCalculator
 
 
 	//region Methods
+	public double ComputeNextCommand()
+	{
+		return 1000;
+	}
 
 	//endregion
 }

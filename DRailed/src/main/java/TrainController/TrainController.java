@@ -80,13 +80,21 @@ public class TrainController
 	public TrainController(Train iTrain) throws IOException
 	{
 		train = iTrain;
-		trainID = 1;
-		route = "test";
+		trainID = train.getId();
+		route = "Green  Line";
 		acStatus = 0;
 		heatStatus = 0;
 		lDoorStatus = 0;
 		rDoorStatus = 0;
 		lightStatus = 0;
+		powerLimit = 1000;
+		speed = train.GetCurrentSpeed();
+		power = 0;
+		eBrakeStatus = false;
+		sBrakeStatus = false;
+
+		locationCalculator = new LocationCalculator();
+		controlCalculator = new ControlCalculator(powerLimit, kp, ki);
 
 		//region UI code
 		stage.setTitle(windowTitle);
@@ -601,7 +609,9 @@ public class TrainController
 
 	public void Update()
 	{
-		System.out.println("Update");
+		train.SetPowerCommand(controlCalculator.ComputeNextCommand());
+		train.Update();
+		SetSpeedText(""+train.GetCurrentSpeed());
 	}
 
 	//endregion
