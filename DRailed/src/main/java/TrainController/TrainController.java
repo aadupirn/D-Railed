@@ -1,5 +1,8 @@
 package TrainController;
 
+import TrainModel.Train;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -29,24 +32,61 @@ public class TrainController
 
 	//Class strings
 	private String windowTitle = "Train Controller";
+	private String upcomingStation = "";
+	private String route;
+	private String notificationText = "";
 
 	//Class integers
 	private int windowWidth = 800;
 	private int windowHight = 500;
 	private int inset = 25;
 	private int colWidth = 75;
+	private int lightStatus;
+	private int lDoorStatus;
+	private int rDoorStatus;
+	private int acStatus;
+	private int heatStatus;
+	private int movementStatus;
+	private int locationStatus;
+	private int trainID;
+	private int currentBlockID;
 
+
+	private double speed;
+	private double power;
 	private double kp = 1;
 	private double ki = 1;
+	private double temperature;
+	private double powerLimit;
+	private double desiredSpeed;
+
+	private boolean eBrakeStatus;
+	private boolean sBrakeStatus;
 
 	private Text speedText;
 	private Text powerText;
 
+	private Train train;
+
+	private LocationCalculator locationCalculator;
+	private ControlCalculator controlCalculator;
+
+
+
+
 	//endregion
 
 	//region Constructor
-	public TrainController() throws IOException
+	public TrainController(Train iTrain) throws IOException
 	{
+		train = iTrain;
+		trainID = 1;
+		route = "test";
+		acStatus = 0;
+		heatStatus = 0;
+		lDoorStatus = 0;
+		rDoorStatus = 0;
+		lightStatus = 0;
 
 		//region UI code
 		stage.setTitle(windowTitle);
@@ -54,7 +94,6 @@ public class TrainController
 		GridPane grid = new GridPane();
 		grid.setAlignment(Pos.CENTER);
 		grid.setPadding(new Insets(inset, inset, inset, inset));
-		//grid.setHgap(10);
 		grid.setVgap(10);
 
 		//Row Index 0
@@ -64,9 +103,8 @@ public class TrainController
 		trainIDLabel.setAlignment(Pos.CENTER_LEFT);
 		grid.add(trainIDLabel, 0, 0);
 
-		Text trainIDText = new Text();
+		Text trainIDText = new Text(Integer.toString(trainID));
 		trainIDText.setWrappingWidth(colWidth*2);
-		trainIDText.setText("TEMPTRAINID");
 		trainIDText.setTextAlignment(TextAlignment.RIGHT);
 		grid.add(trainIDText, 0, 0);
 
@@ -100,7 +138,7 @@ public class TrainController
 
 		Text routeText = new Text();
 		routeText.setWrappingWidth(colWidth*2);
-		routeText.setText("TEMPROUTE");
+		routeText.setText(route);
 		routeText.setTextAlignment(TextAlignment.RIGHT);
 		grid.add(routeText, 0, 1);
 
@@ -163,15 +201,14 @@ public class TrainController
 
 		RadioButton acOn = new RadioButton("On");
 		acOn.setToggleGroup(acToggleGroup);
-		acOn.setSelected(false);
 		acOn.setMaxWidth(colWidth);
 		acOn.setMinWidth(colWidth);
 		acGrid.add(acOn, 0, 0);
 
 		RadioButton acOff = new RadioButton("Off");
 		acOff.setToggleGroup(acToggleGroup);
-		acOff.setSelected(true);
 		acOff.setMaxWidth(colWidth);
+		acOff.setSelected(true);
 		acOff.setMinWidth(colWidth);
 		acGrid.add(acOff, 0, 1);
 
@@ -406,6 +443,110 @@ public class TrainController
 
 		//endregion
 
+		//region RadioButtonHandlers
+		acToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
+			{
+				RadioButton toggled = (RadioButton)acToggleGroup.getSelectedToggle();
+				if(toggled.getText().equals("On"))
+				{
+					acStatus = 1;
+				}
+				else if(toggled.getText().equals("Off"))
+				{
+					acStatus = 0;
+				}
+			}
+		});
+
+		heatToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
+			{
+				RadioButton toggled = (RadioButton)heatToggleGroup.getSelectedToggle();
+				if(toggled.getText().equals("On"))
+				{
+					heatStatus = 1;
+				}
+				else if(toggled.getText().equals("Off"))
+				{
+					heatStatus = 0;
+				}
+			}
+		});
+
+		lDoorToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
+			{
+				RadioButton toggled = (RadioButton)lDoorToggleGroup.getSelectedToggle();
+				if(toggled.getText().equals("On"))
+				{
+					lDoorStatus = 1;
+				}
+				else if(toggled.getText().equals("Off"))
+				{
+					lDoorStatus = 0;
+				}
+			}
+		});
+
+		rDoorToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
+			{
+				RadioButton toggled = (RadioButton)rDoorToggleGroup.getSelectedToggle();
+				if(toggled.getText().equals("On"))
+				{
+					rDoorStatus = 1;
+				}
+				else if(toggled.getText().equals("Off"))
+				{
+					rDoorStatus = 0;
+				}
+			}
+		});
+
+		rDoorToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
+			{
+				RadioButton toggled = (RadioButton)rDoorToggleGroup.getSelectedToggle();
+				if(toggled.getText().equals("On"))
+				{
+					rDoorStatus = 1;
+				}
+				else if(toggled.getText().equals("Off"))
+				{
+					rDoorStatus = 0;
+				}
+			}
+		});
+
+		lightsToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
+			{
+				RadioButton toggled = (RadioButton)lightsToggleGroup.getSelectedToggle();
+				if(toggled.getText().equals("On"))
+				{
+					lightStatus = 1;
+				}
+				else if(toggled.getText().equals("Off"))
+				{
+					lightStatus = 0;
+				}
+			}
+		});
+		//endregion
+
 
 
 		Scene scene = new Scene(grid, windowWidth, windowHight);
@@ -456,6 +597,11 @@ public class TrainController
 	public double getKI()
 	{
 		return ki;
+	}
+
+	public void Update()
+	{
+		System.out.println("Update");
 	}
 
 	//endregion

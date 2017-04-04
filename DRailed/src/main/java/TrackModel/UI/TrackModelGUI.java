@@ -469,7 +469,13 @@ public class TrackModelGUI {
                 {
                     track.importTrack(file.getName());
 
-                    track.randomDispatch(track.getLines().get(track.getLineCount()-1).getLine());
+                    try
+                    {
+                        track.randomDispatch(track.getLines().get(track.getLineCount()-1).getLine());
+                    } catch (IOException e1)
+                    {
+                        e1.printStackTrace();
+                    }
 
                     ScrollPane scrollPane = parseTrackForDisplay();
                     trackLayout.add(scrollPane, 0, 0);
