@@ -671,7 +671,7 @@ public class TrackModelGUI {
                     blockButton.setMinWidth(windowWidth);
                     blockButton.setAlignment(Pos.CENTER_LEFT);
                     blockButton.setTextAlignment(TextAlignment.LEFT);
-                    if(block.hasTrain()) {
+                    if(block.isOccupied()) {
                         blockButton.setTextFill(Color.web(BLUE_TEXT));
                     }
                     blockButton.setOnAction((event) -> {

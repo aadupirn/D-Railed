@@ -2,10 +2,7 @@ package TrackModel;
 
 import MBO.java.Train;
 import TrackController.TrackController;
-import TrackModel.Model.Block;
-import TrackModel.Model.Line;
-import TrackModel.Model.Section;
-import TrackModel.Model.TrackModel;
+import TrackModel.Model.*;
 
 import java.util.HashMap;
 
@@ -53,10 +50,18 @@ public class Track {
     }
 
     // @CTC: Places the train on the appropriate block coming from the Yard
-    public boolean dispatchTrainOnTrack(String line, Train train) {
+    public int dispatchTrainOnTrack(String line, Train train) {
 
-        tm.dipatchTrain(line, train);
-        return false;
+        System.out.println("Track Dispatch");
+        System.out.println("Line: " + line);
+        System.out.println("Train: " + train);
+        return tm.dipatchTrain(line, train);
+
+    }
+
+    public int findTrain(String line, int trainId){
+
+        return tm.findTrain(line, trainId);
 
     }
 
@@ -65,11 +70,13 @@ public class Track {
         String state = "ERROR";
 
         for(Line l : tm.getLines()){
-            for(Section s : l.getSections()){
-                for(Block b : s.getBlocks()) {
-                    if (b.getSwitch() != null) {
-                        b.getSwitch().toggleState();
-                        state = b.getSwitch().getState().toString();
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getSwitch() != null && b.getSwitch().getSwitchNumber() == switchId) {
+                            b.getSwitch().toggleState();
+                            state = b.getSwitch().getState().toString();
+                        }
                     }
                 }
             }
@@ -79,22 +86,72 @@ public class Track {
 
     }
 
+    public String setSwitchState(String line, int switchId, boolean state){
+
+        String out = "ERROR";
+        SwitchState switchState;
+
+        if(state){
+            switchState = SwitchState.TOP;
+        }else{
+            switchState = SwitchState.BOTTOM;
+        }
+
+        for(Line l : tm.getLines()){
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getSwitch() != null && b.getSwitch().getSwitchNumber() == switchId) {
+                            b.getSwitch().setSwitchState(switchState);
+                            out = b.getSwitch().getState().toString();
+                        }
+                    }
+                }
+            }
+        }
+
+        return out;
+    }
+
     public boolean toggleCrossing(String line, int crossingId){
 
         boolean state = true;
 
         for(Line l : tm.getLines()){
-            for(Section s : l.getSections()){
-                for(Block b : s.getBlocks()){
-                    if(b.getCrossing() != null) {
-                        b.getCrossing().toggleActive();
-                        state = b.getCrossing().isActive();
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getCrossing() != null && b.getCrossing().getCrossingNumber() == crossingId) {
+                            b.getCrossing().toggleActive();
+                            state = b.getCrossing().isActive();
+                        }
                     }
                 }
             }
         }
 
         return state;
+
+    }
+
+    public boolean setCrossingState(String line, int crossingId, boolean state){
+
+        boolean out = false;
+
+        for(Line l : tm.getLines()){
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getCrossing() != null && b.getCrossing().getCrossingNumber() == crossingId) {
+                            b.getCrossing().setActive(state);
+                            out = b.getCrossing().isActive();
+                        }
+                    }
+                }
+            }
+        }
+
+        return out;
 
     }
 
@@ -103,17 +160,40 @@ public class Track {
         boolean state = true;
 
         for(Line l : tm.getLines()){
-            for(Section s : l.getSections()){
-                for(Block b : s.getBlocks()){
-                    if(b.getLight() != null) {
-                        b.getLight().toggleActive();
-                        state = b.getLight().isActive();
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getLight() != null && b.getLight().getLightNumber() == lightId) {
+                            b.getLight().toggleActive();
+                            state = b.getLight().isActive();
+                        }
                     }
                 }
             }
         }
 
         return state;
+
+    }
+
+    public boolean setLightState(String line, int lightId, boolean state){
+
+        boolean out = false;
+
+        for(Line l : tm.getLines()){
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getLight() != null && b.getLight().getLightNumber() == lightId) {
+                            b.getLight().setActive(state);
+                            out = b.getLight().isActive();
+                        }
+                    }
+                }
+            }
+        }
+
+        return out;
 
     }
 

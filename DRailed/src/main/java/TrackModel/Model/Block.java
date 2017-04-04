@@ -43,7 +43,7 @@ public class Block {
 
     // Infrastructure and Functionality
     private Train train;
-    private boolean hasTrain;
+    private boolean occupied;
     private Switch aSwitch;
     private Station station;
     private Crossing crossing;
@@ -85,7 +85,7 @@ public class Block {
         this.station = null;
         this.light = null;
 
-        this.hasTrain = false;
+        this.occupied = false;
 
         // status
         this.powerState = false;
@@ -106,7 +106,7 @@ public class Block {
         this.station = null;
         this.light = new Light(blockNumber);
 
-        this.hasTrain = false;
+        this.occupied = false;
 
         // status
         this.powerState = true;
@@ -135,7 +135,7 @@ public class Block {
 
     public void trainEnter(Train newTrain){
         this.train = newTrain;
-        this.hasTrain = true;
+        this.occupied = true;
     }
 
     public Train getTrain(){
@@ -144,11 +144,11 @@ public class Block {
 
     public void trainExit(){
         this.train = null;
-        this.hasTrain = false;
+        this.occupied = false;
     }
 
-    public boolean hasTrain(){
-        return this.hasTrain;
+    public boolean isOccupied(){
+        return this.occupied;
     }
 
     public Integer getBlockNumber() {

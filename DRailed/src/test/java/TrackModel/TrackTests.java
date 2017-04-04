@@ -1,7 +1,10 @@
 package TrackModel;
 
+import MBO.java.Train;
+import TrackModel.Model.Block;
 import TrackModel.Model.Station;
-import TrainModel.Train;
+import TrackModel.Model.Switch;
+import TrackModel.Model.SwitchState;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertNotSame;
@@ -13,26 +16,45 @@ import static junit.framework.TestCase.assertEquals;
 public class TrackTests {
 
     @Test
-    public void testingExample() {
-        System.out.println("Hello Test Example");
-        assertEquals(1, 1);
-    }
-
-    @Test
     public void testSetSpeedAndAuthority() {
 
         Track track = new Track("greenTrackLayout.csv");
         String signal = track.setSpeedAndAuthority("GREEN",1, 24, 20, 0);
-        System.out.println(signal);
         assertEquals("0x118140", signal);
 
+    }
+
+    @Test
+    public void testSetSpeedAndAuth_ExpectTrainMove(){
+
+    }
+
+    @Test
+    public void testBlockOccupied(){
+        Track track = new Track("greenTrackLayout.csv");
+        Train train = new Train(1);
+
+        int blockNumber = track.dispatchTrainOnTrack("GREEN", train);
+
+        Block b = track.getBlock(blockNumber);
+
+        assertEquals(true, b.isOccupied());
+    }
+
+    @Test
+    public void testBlockUnoccupied(){
+        Track track = new Track("greenTrackLayout.csv");
+        Block b = track.getBlock(3);
+        assertEquals(false, b.isOccupied());
     }
 
     @Test
     public void testToggleSwitch() {
 
         Track track = new Track("greenTrackLayout.csv");
-        track.toggleSwitch("GREEN", 1);
+        String state = track.toggleSwitch("GREEN", 1);
+
+        assertEquals(SwitchState.BOTTOM.toString(), state);
 
     }
 
@@ -40,7 +62,9 @@ public class TrackTests {
     public void testToggleCrossing() {
 
         Track track = new Track("greenTrackLayout.csv");
-        track.toggleCrossing("GREEN", 1);
+        boolean state = track.toggleCrossing("GREEN", 1);
+
+        assertEquals(true, state);
 
     }
 
@@ -48,7 +72,54 @@ public class TrackTests {
     public void testToggleLight() {
 
         Track track = new Track("greenTrackLayout.csv");
-        track.toggleLight("GREEN", 1);
+        boolean state = track.toggleLight("GREEN", 1);
+
+        assertEquals(false, state);
+
+    }
+
+    @Test
+    public void testSetSwitch(){
+
+        Track track = new Track("greenTrackLayout.csv");
+        String state = track.setSwitchState("GREEN", 1, true);
+
+        assertEquals(SwitchState.TOP.toString(), state);
+
+    }
+
+    @Test
+    public void testSetCrossing(){
+
+        Track track = new Track("greenTrackLayout.csv");
+        boolean state = track.setCrossingState("GREEN", 1, true);
+
+        assertEquals(true, state);
+
+    }
+
+    @Test
+    public void testSetLights(){
+
+        Track track = new Track("greenTrackLayout.csv");
+        boolean state = track.setLightState("GREEN", 1, true);
+
+        assertEquals(true, state);
+
+    }
+
+    @Test
+    public void testRegulateTemperature(){
+
+    }
+
+    @Test
+    public void testCorrectFile(){
+
+    }
+
+    @Test
+    public void testImportTrack(){
 
     }
 
@@ -58,6 +129,16 @@ public class TrackTests {
         Station station = new Station("TEST", 12, "LEFT");
         station.depart();
         assertNotSame(12, station.getDeparting());
+
+    }
+
+    @Test
+    public void testSetStationTimes(){
+
+    }
+
+    @Test
+    public void testCloseBlock(){
 
     }
 
@@ -120,20 +201,6 @@ public class TrackTests {
         track.fixPower(2);
 
         assertEquals(true, track.getBlock(2).isPowerState());
-
-    }
-
-    @Test
-    public void testSetStationTimes(){
-
-        Station station = new Station("TEST", 12, "LEFT");
-        station.setTrainTimes("A[12:00]-D[1:30]");
-        assertEquals("A[12:00]-D[1:30]", station.getTrainTimes());
-
-    }
-
-    @Test
-    public void testProcessPLC(){
 
     }
 

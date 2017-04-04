@@ -219,15 +219,11 @@ public class Line {
         return count;
     }
 
-    public void placeTrain(Integer blockNo, Train train){
+    public void placeTrain(Block block, Train train){
 
-        for(Section s : sections){
-            if(s.existsBlock(blockNo))
-                    s.getBlock(blockNo).trainEnter(train);
-
-        }
-
+        block.trainEnter(train);
         trains.add(train);
+
     }
 
 }
