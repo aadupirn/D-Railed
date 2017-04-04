@@ -266,8 +266,8 @@ public class TrainModel {
 
         Train train = new Train();
         int i = 10000;
-        while(i > 0){
-            train.calculateSpeed(1000.0);
+        //while(i > 0){
+            //train.calculateSpeed(1000.0);
             /*Double velocity = train.TimeCalc();
             grid.getChildren().remove(speedLabelText);
             speedLabelText = new Text();
@@ -277,6 +277,6 @@ public class TrainModel {
             i--;
             grid.add(speedLabelText, 0, 1);
             */
-        }
+
     }
 }

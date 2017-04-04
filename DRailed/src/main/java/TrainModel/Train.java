@@ -9,7 +9,7 @@ import java.util.Random;
  */
 public class Train {
     private TrainModelMain trainModel;
-    TrainController trainController;
+    private TrainController trainController;
     private int block;
     private Double commandSpeed;
     private int id;
