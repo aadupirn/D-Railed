@@ -12,12 +12,15 @@ import java.util.ArrayList;
 public class PLC
     {
         private boolean isGood;
+        private ArrayList<String> green,red; //A string of conditions for each line
         private String input, output;
         private String[] inOut, getIn, getOut;
 
         public PLC(File file, Block[] Blocks)
         {
             isGood = true;
+            green = new ArrayList<>();
+            red = new ArrayList<>();
 
             try(BufferedReader br = new BufferedReader(new FileReader(file)))
             {
