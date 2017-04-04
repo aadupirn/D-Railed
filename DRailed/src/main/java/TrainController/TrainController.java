@@ -41,13 +41,6 @@ public class TrainController
 	private int windowHight = 500;
 	private int inset = 25;
 	private int colWidth = 75;
-	private int lightStatus;
-	private int lDoorStatus;
-	private int rDoorStatus;
-	private int acStatus;
-	private int heatStatus;
-	private int movementStatus;
-	private int locationStatus;
 	private int trainID;
 	private int currentBlockID;
 
@@ -62,6 +55,13 @@ public class TrainController
 
 	private boolean eBrakeStatus;
 	private boolean sBrakeStatus;
+	private boolean lightStatus;
+	private boolean lDoorStatus;
+	private boolean rDoorStatus;
+	private boolean acStatus;
+	private boolean heatStatus;
+	private boolean movementStatus;
+	private boolean locationStatus;
 
 	private Text speedText;
 	private Text powerText;
@@ -82,11 +82,11 @@ public class TrainController
 		train = iTrain;
 		trainID = train.getId();
 		route = "Green  Line";
-		acStatus = 0;
-		heatStatus = 0;
-		lDoorStatus = 0;
-		rDoorStatus = 0;
-		lightStatus = 0;
+		acStatus = false;
+		heatStatus = false;
+		lDoorStatus = false;
+		rDoorStatus = false;
+		lightStatus = false;
 		powerLimit = 1000;
 		speed = train.GetCurrentSpeed();
 		power = 0;
@@ -449,6 +449,26 @@ public class TrainController
 			}
 		});
 
+		manualBtn.setOnAction((ActionEvent e) ->
+		{
+
+		});
+
+		automaticBtn.setOnAction((ActionEvent e) ->
+		{
+
+		});
+
+		emerBtn.setOnAction((ActionEvent e) ->
+		{
+
+		});
+
+		brakeBtn.setOnAction((ActionEvent e) ->
+		{
+
+		});
+
 		//endregion
 
 		//region RadioButtonHandlers
@@ -460,11 +480,11 @@ public class TrainController
 				RadioButton toggled = (RadioButton)acToggleGroup.getSelectedToggle();
 				if(toggled.getText().equals("On"))
 				{
-					acStatus = 1;
+					acStatus = true;
 				}
 				else if(toggled.getText().equals("Off"))
 				{
-					acStatus = 0;
+					acStatus = false;
 				}
 			}
 		});
@@ -477,11 +497,11 @@ public class TrainController
 				RadioButton toggled = (RadioButton)heatToggleGroup.getSelectedToggle();
 				if(toggled.getText().equals("On"))
 				{
-					heatStatus = 1;
+					heatStatus = true;
 				}
 				else if(toggled.getText().equals("Off"))
 				{
-					heatStatus = 0;
+					heatStatus = false;
 				}
 			}
 		});
@@ -494,11 +514,11 @@ public class TrainController
 				RadioButton toggled = (RadioButton)lDoorToggleGroup.getSelectedToggle();
 				if(toggled.getText().equals("On"))
 				{
-					lDoorStatus = 1;
+					lDoorStatus = true;
 				}
 				else if(toggled.getText().equals("Off"))
 				{
-					lDoorStatus = 0;
+					lDoorStatus = false;
 				}
 			}
 		});
@@ -511,11 +531,11 @@ public class TrainController
 				RadioButton toggled = (RadioButton)rDoorToggleGroup.getSelectedToggle();
 				if(toggled.getText().equals("On"))
 				{
-					rDoorStatus = 1;
+					rDoorStatus = true;
 				}
 				else if(toggled.getText().equals("Off"))
 				{
-					rDoorStatus = 0;
+					rDoorStatus = false;
 				}
 			}
 		});
@@ -528,11 +548,11 @@ public class TrainController
 				RadioButton toggled = (RadioButton)rDoorToggleGroup.getSelectedToggle();
 				if(toggled.getText().equals("On"))
 				{
-					rDoorStatus = 1;
+					rDoorStatus = true;
 				}
 				else if(toggled.getText().equals("Off"))
 				{
-					rDoorStatus = 0;
+					rDoorStatus = false;
 				}
 			}
 		});
@@ -545,11 +565,11 @@ public class TrainController
 				RadioButton toggled = (RadioButton)lightsToggleGroup.getSelectedToggle();
 				if(toggled.getText().equals("On"))
 				{
-					lightStatus = 1;
+					lightStatus = true;
 				}
 				else if(toggled.getText().equals("Off"))
 				{
-					lightStatus = 0;
+					lightStatus = false;
 				}
 			}
 		});
@@ -570,7 +590,6 @@ public class TrainController
 	{
 		powerText.setText(in + " W");
 	}
-
 	public void SetSpeedText(String in)
 	{
 		powerText.setText(in + " mph");
