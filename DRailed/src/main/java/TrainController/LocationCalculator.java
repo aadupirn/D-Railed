@@ -37,8 +37,8 @@ public class LocationCalculator
 			blockLocation = blockLocation - block.getLength();
 			block = block.getNextBlock();
 		}
-		System.out.println("We are on block " + block.getBlockNumber()+"\n" +
-				"Meters we have traveled along block: " + blockLocation);
+		//System.out.println("We are on block " + block.getBlockNumber()+"\n" +
+				//"Meters we have traveled along block: " + blockLocation);
 	}
 	//endregion
 

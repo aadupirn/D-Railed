@@ -23,8 +23,8 @@ public class Train {
     private boolean leftDoors;
     private boolean rightDoors;
     private boolean lights;
-    private boolean ebrake;
-    private boolean sbrake;
+    private static boolean ebrake;
+    private static boolean sbrake;
 
     int unloading;
 
@@ -197,8 +197,9 @@ Calculates speed
         System.out.println("Speed is " + calculateSpeed(commandSpeed));
 
     }
-    public boolean SetEbrake(boolean bool){
+    public boolean setEbrake(boolean bool){
         ebrake = bool;
+        engine.setEbrake(ebrake);
         return true;
     }
     public boolean GetEbrake(){
@@ -206,6 +207,8 @@ Calculates speed
     }
     public boolean SetSbrake(boolean bool){
         sbrake = bool;
+        engine.setSbrake(sbrake);
+
         return true;
     }
     public boolean GetSbrake(){
