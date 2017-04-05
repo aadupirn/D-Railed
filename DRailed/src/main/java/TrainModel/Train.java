@@ -38,6 +38,8 @@ public class Train {
         lights = false;
         ebrake = false;
         sbrake = false;
+        currentSpeed = 0;
+        mass = 10000;
 
         trainController = new TrainController(this);
     }
@@ -49,6 +51,8 @@ public class Train {
         ac = new AC();
         ebrake = false;
         sbrake = false;
+        currentSpeed = 0;
+        mass = 10000;
 
         //trainModel = new TrainModel();
         this.id = id;
@@ -61,6 +65,8 @@ public class Train {
         ac = new AC();
         ebrake = false;
         sbrake = false;
+        currentSpeed = 0;
+        mass = 10000;
 
         block = blockLocation;
         id = newID;
@@ -73,6 +79,8 @@ public class Train {
         ac = new AC();
         ebrake = false;
         sbrake = false;
+        currentSpeed = 0;
+        mass = 10000;
 
         block = blockLocation;
         id = newID;
@@ -85,6 +93,8 @@ public class Train {
         trainController = new TrainController(this);
         ebrake = false;
         sbrake = false;
+        currentSpeed = 0;
+        mass = 10000;
 
         block = blockLocation;
         id = newID;
