@@ -11,7 +11,7 @@ import java.util.TimerTask;
  */
 public class DTime
 {
-	private int intervalMS = 1000;
+	private int multiplier;
 	private TrainController trainController;
 
 	Timer timer;
@@ -23,16 +23,13 @@ public class DTime
 		{
 			counter++;
 			trainController.update();
-			if(counter == 60)
-			{
-				timer.cancel();
-			}
 		}
 	}
 
 	public DTime(TrainController iTrainController)
 	{
-		intervalMS = 1000;
+		multiplier = 10;
+		int intervalMS = 1000/multiplier;
 		trainController = iTrainController;
 		timer = new Timer();
 		timer.schedule(new DRailedTask(), 0, intervalMS);
