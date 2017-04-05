@@ -21,9 +21,8 @@ public class DTime
 		private int counter = 0;
 		public void run()
 		{
-			System.out.println("test");
 			counter++;
-			trainController.Update();
+			trainController.update();
 			if(counter == 60)
 			{
 				timer.cancel();
@@ -37,11 +36,5 @@ public class DTime
 		trainController = iTrainController;
 		timer = new Timer();
 		timer.schedule(new DRailedTask(), 0, intervalMS);
-	}
-
-
-	private void Step()
-	{
-		trainController.Update();
 	}
 }

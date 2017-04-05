@@ -20,7 +20,9 @@ public class engine {
         if(emergencyBrake)
             return emergencyBrakeSpeedCalculation(mass, powerCommand, currentSpeed, grade);
         double newAcceleration = 0;
-        double theta = Math.atan(grade/100);
+        if(grade == 0.0)
+            grade = 0.1;
+        double theta = Math.atan(grade);///100);
         if(powerCommand <= 0 ){
             newAcceleration = 0;
         }

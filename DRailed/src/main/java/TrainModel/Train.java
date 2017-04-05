@@ -8,8 +8,8 @@ import java.util.Random;
  * Created by swaroopakkineni on 2/14/17.
  */
 public class Train {
-    private TrainModelMain trainModel;
     private TrainController trainController;
+    private TrainModel trainModel;
     private int block;
     private Double commandSpeed;
     private int id;
@@ -23,10 +23,12 @@ public class Train {
     private boolean leftDoors;
     private boolean rightDoors;
     private boolean lights;
+    private boolean ebrake;
+    private boolean sbrake;
 
     int unloading;
 
-    public Train() throws IOException {
+    public Train() throws IOException, Exception {
         System.out.println("train created");
        // trainModel = new TrainModel();
         Engine = new engine();
@@ -34,49 +36,73 @@ public class Train {
         leftDoors = false;
         rightDoors = false;
         lights = false;
+        ebrake = false;
+        sbrake = false;
+        currentSpeed = 0;
+        mass = 10000;
 
         trainController = new TrainController(this);
+        trainModel = new TrainModel();
     }
 
     // @ANDREW created for track model testing
-    public Train(int newId) throws IOException {
-        trainController = new TrainController(this);
+    public Train(int newId) throws IOException, Exception {
         Engine = new engine();
         ac = new AC();
+        ebrake = false;
+        sbrake = false;
+        currentSpeed = 0;
+        mass = 10000;
 
         //trainModel = new TrainModel();
         this.id = id;
+        trainController = new TrainController(this);
+        trainModel = new TrainModel();
         this.unloading = generateUnloading();
     }
 
-    public Train(int blockLocation, int newID) throws IOException {
-       trainController = new TrainController(this);
+    public Train(int blockLocation, int newID) throws IOException, Exception {
         Engine = new engine();
         ac = new AC();
+        ebrake = false;
+        sbrake = false;
+        currentSpeed = 0;
+        mass = 10000;
 
         block = blockLocation;
         id = newID;
+        trainController = new TrainController(this);
+        trainModel = new TrainModel();
       //  trainModel = new TrainModel();
 
     }
-    public Train(int blockLocation, int numberOfCarts, int newID) throws IOException {
-        trainController = new TrainController(this);
+    public Train(int blockLocation, int numberOfCarts, int newID) throws IOException, Exception {
         Engine = new engine();
         ac = new AC();
+        ebrake = false;
+        sbrake = false;
+        currentSpeed = 0;
+        mass = 10000;
 
         block = blockLocation;
         id = newID;
+        trainController = new TrainController(this);
+        trainModel = new TrainModel();
         //trainModel = new TrainModel();
         //trainController = new TrainController();
     }
-    public Train(int blockLocation, int numberOfCarts, Double newAuthority, Double newSpeed, int newID) throws IOException {
+    public Train(int blockLocation, int numberOfCarts, Double newAuthority, Double newSpeed, int newID) throws IOException, Exception {
         Engine = new engine();
         ac = new AC();
-        trainController = new TrainController(this);
-
+        ebrake = false;
+        sbrake = false;
+        currentSpeed = 0;
+        mass = 10000;
 
         block = blockLocation;
         id = newID;
+        trainController = new TrainController(this);
+        trainModel = new TrainModel();
         //trainModel = new TrainModel();
     }
 
@@ -86,7 +112,7 @@ public class Train {
     public TrainController GetTrainController(){
       return trainController;
     }
-    private boolean receiveBeacon(String beacon){
+    /*private boolean SetBeacon(String beacon){
         String[] beaconArray = beacon.split("");
         int beaconID = Integer.decode("0x" + beaconArray[0]);
         if(id == beaconID){
@@ -98,6 +124,7 @@ public class Train {
         }
         return false;
     }
+    */
 
 
     private boolean setBeaconImputs(Double beaconSpeed, Double beaconCommand, int beaconFailureStatus, int beaconPassengerCount) {
@@ -163,33 +190,42 @@ Calculates speed
     public void SetPowerCommand(Double pwrCMD){
         commandSpeed = pwrCMD;
     }
+    public double GetPowerCommand(){ return commandSpeed;}
     public void Update(){
-        System.out.println("TEmperature is 90");
+        ac.changeTemp();
+        System.out.println("TEmperature is " + ac.getTemp());
         System.out.println("Speed is " + calculateSpeed(commandSpeed));
 
     }
-
-
-
-    public boolean OpenLeftDoors(){
-        leftDoors = true;
-        return leftDoors;
+    public boolean SetEbrake(boolean bool){
+        ebrake = bool;
+        return true;
     }
-    public boolean CloseLeftDoors(){
-        leftDoors = false;
+    public boolean GetEbrake(){
+        return ebrake;
+    }
+    public boolean SetSbrake(boolean bool){
+        sbrake = bool;
+        return true;
+    }
+    public boolean GetSbrake(){
+        return sbrake;
+    }
+
+
+    public boolean SetLeftDoors(boolean bool){
+        leftDoors = bool;
         return leftDoors;
     }
     public boolean GetLeftDoorsStatus(){
         return leftDoors;
     }
-    public boolean OpenRightDoors(){
-        rightDoors = true;
+
+    public boolean SetRightDoors(boolean bool){
+        rightDoors = bool;
         return rightDoors;
     }
-    public boolean CloseRightDoors(){
-        leftDoors = false;
-        return rightDoors;
-    }
+
     public boolean GetRightDoorsStatus(){
         return rightDoors;
     }
@@ -214,6 +250,3 @@ Calculates speed
 }
 
 
-/*
-
- */
