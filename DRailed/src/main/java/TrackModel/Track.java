@@ -26,7 +26,7 @@ public class Track {
         tm = new TrackModel(trackLayout);
 
     }
-
+    
     // @Track Controller: Sets safe speed and authority for a train on a rail
     public boolean setSpeedAndAuthority(String line, int blockId, double speed, int authority){
         for(Line l : tm.getLines()){
