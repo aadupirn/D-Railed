@@ -11,7 +11,8 @@ public class engine {
     private final double standardAcceleration = -1.0;
     private final double emergencyBrakeAcceleration = -5.0;
     private double acceleration = 0;
-
+    private final double friction = 0.2;
+    private final double gravity = -9.81;
 
     /*
     * This method calculates speed.
@@ -25,6 +26,11 @@ public class engine {
             return serviceBrakeSpeedCalculation(mass, powerCommand, currentSpeed, grade);
         else {
             double newAcceleration = 0;
+            double gravityForce = 0;
+            double gravityAcceleration = 0;
+            double fricationForce = 0;
+            double frictionAcceleration = 0;
+
             if (grade == 0.0)
                 grade = 0.1;
             double theta = Math.atan(grade);///100);
@@ -35,8 +41,14 @@ public class engine {
             } else if (powerCommand > 0 && currentSpeed > 0) {
                 newAcceleration = powerCommand / (mass * currentSpeed);
             }
-            newAcceleration += acceleration;
-            currentSpeed += (timeStep * newAcceleration * Math.cos(theta));
+            gravityForce = mass*gravity*Math.sin(theta);
+            gravityAcceleration= gravityForce/mass;
+            fricationForce = gravityForce*friction;
+            frictionAcceleration = Math.abs(fricationForce/mass);
+            double totalAcceleration = (newAcceleration + gravityAcceleration + frictionAcceleration);
+            //newAcceleration += acceleration;
+            currentSpeed += (timeStep * totalAcceleration);// * Math.cos(theta));
+
             if (currentSpeed < 0)
                 currentSpeed = 0;
             return currentSpeed;
