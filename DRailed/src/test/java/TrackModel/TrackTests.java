@@ -21,10 +21,10 @@ public class TrackTests {
     public void testSetSpeedAndAuthority() {
 
         Track track = new Track("greenTrackLayout.csv");
-        boolean signal = track.setSpeedAndAuthority("GREEN", 2, 50, 5);
+        boolean signal = track.setSpeedAndAuthority("GREEN", 57, 50, 5);
 
-        double speed = track.getBlock("GREEN", 2).readSpeed();
-        int authority = track.getBlock("GREEN", 2).readAuthority();
+        double speed = track.getBlock("GREEN", 57).readSpeed();
+        int authority = track.getBlock("GREEN", 57).readAuthority();
 
         assertEquals(true, (speed == 50 && authority == 5));
 
@@ -36,9 +36,16 @@ public class TrackTests {
     }
 
     @Test
-    public void testBlockOccupied() throws IOException{
+    public void testBlockOccupied(){
         Track track = new Track("greenTrackLayout.csv");
-        Train train = new Train(1);
+
+        Train train = null;
+
+        try {
+            train = new Train(1);
+        }catch(IOException ioe){
+            System.out.println("Encountered IO Exception");
+        }
 
         int blockNumber = track.dispatchTrainOnTrack("GREEN", train);
 
@@ -245,12 +252,25 @@ public class TrackTests {
     @Test
     public void testLinkedTrackModel(){
 
-        Track track = new Track("greenTrackLayout.csv");
-        Block startBlock = track.getYardBlock("GREEN");
+        Track track = new Track("greenLine.csv");
+        Block startBlock = track.getFromYardBlock("GREEN");
+        Block nextBlock = null;
 
-        boolean conBlock = startBlock.getNextBlock() != null;
+        System.out.println(startBlock.getBlockNumber());
 
-        assertEquals(true, conBlock);
+        // check if can move up
+        if(startBlock.canMoveToBlock(true)){
+            nextBlock = startBlock.getNextUpBlock();
+        }
+
+        // check if can move down
+        if(startBlock.canMoveToBlock(false)){
+            nextBlock = startBlock.getNextDownBlock();
+        }
+
+        System.out.println(nextBlock.getBlockNumber());
+
+        assertEquals(63, nextBlock.getBlockNumber().intValue());
 
     }
 

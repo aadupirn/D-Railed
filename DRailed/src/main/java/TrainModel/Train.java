@@ -44,7 +44,7 @@ public class Train {
 
     // @ANDREW created for track model testing
     public Train(int newId) throws IOException {
-        trainController = new TrainController(this);
+        //trainController = new TrainController(this);
         Engine = new engine();
         ac = new AC();
         ebrake = false;

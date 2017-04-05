@@ -221,7 +221,7 @@ public class Line {
 
     public void placeTrain(Block block, Train train){
 
-        block.trainEnter(train);
+        block.setTrain(train);
         trains.add(train);
 
     }
