@@ -1,6 +1,8 @@
 package MBO.java;
 
 import javafx.application.Application;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -12,26 +14,29 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.io.File;
-
 public class MBOController extends Application {
+    private Scheduler scheduler;
+    private MBO mbo;
+
     private Stage primary;
-    private TrainSchedule trainSchedule;
-    private WorkerSchedule workSchedule;
-    private TrainInfo trainInfo;
 
 
     // TRAIN INFO TAB
     private Button testInfoButton;
     private ToggleButton mboToggle;
-    private TableView<InfoRow> infoTable = new TableView<InfoRow>();
+    private TableView<TrainInfo> infoTable = new TableView<>();
+    private TextField idTestInput;
+    private TextField speedTestInput;
+    private TextField safeSpeedTestInput;
+    private TextField authorityTestInput;
+    private TextField varianceTestInput;
+    private TextField locationTestInput;
 
     // TRAIN SCHEDULE DISPLAY TAB
-    private TableView<TrainRow> stationsTable = new TableView<TrainRow>();
+    private TableView<TrainRow> stationsTable = new TableView<>();
     private Button trainScheduleButton;
 
     // WORKER SCHEDULE DISPLAY TAB
@@ -48,12 +53,8 @@ public class MBOController extends Application {
     private ToggleButton murphyButton;
 
     // ACCESSORS
-    public TrainSchedule getSchedule() { return trainSchedule; }
-
-    // MUTATORS
-    public void setTrainInfo(int id, String loc){
-
-    }
+    //public Stack<Time> getSchedule() { return scheduler.getSchedule(); }
+    public MBO getMBO() { return mbo; }
 
     /*
     * Method in charge of setting up gettting the elements associated with the portions
@@ -66,8 +67,14 @@ public class MBOController extends Application {
     private void getUIElements(){
 
         mboToggle = (ToggleButton) primary.getScene().lookup("#mbo_toggle");
-        infoTable = (TableView<InfoRow>) primary.getScene().lookup("#train_info_table");
+        infoTable = (TableView<TrainInfo>) primary.getScene().lookup("#train_info_table");
         testInfoButton = (Button) primary.getScene().lookup("#test_info_btn");
+        idTestInput = (TextField) primary.getScene().lookup("#id_test_input");
+        speedTestInput = (TextField) primary.getScene().lookup("#speed_test_input");
+        safeSpeedTestInput = (TextField) primary.getScene().lookup("#safespeed_test_input");
+        authorityTestInput = (TextField) primary.getScene().lookup("#authority_test_input");
+        varianceTestInput = (TextField) primary.getScene().lookup("#variance_test_input");
+        locationTestInput = (TextField) primary.getScene().lookup("#location_test_input");
 
         stationsTable = (TableView<TrainRow>) primary.getScene().lookup("#schedule_table");
         trainScheduleButton = (Button) primary.getScene().lookup("#schedule_btn");
@@ -85,117 +92,72 @@ public class MBOController extends Application {
         stationsTable.setEditable(true);
 
         trainScheduleButton.setOnAction((ActionEvent a) -> {
-            FileChooser fc = new FileChooser();
-            fc.setTitle("Pick Train Schedule");
-            File schedule = fc.showOpenDialog(primary);
-            trainSchedule = new TrainSchedule(schedule);
 
-            setTrainColumns();
-            primary.show();
         });
 
         workerScheduleButton.setOnAction((ActionEvent a) -> {
-            FileChooser fc = new FileChooser();
-            fc.setTitle("Pick Worker Schedule");
-            File schedule = fc.showOpenDialog(primary);
-            workSchedule = new WorkerSchedule(schedule);
 
-            setWorkColumns();
-            primary.show();
         });
 
         testInfoButton.setOnAction((ActionEvent a) -> {
-            FileChooser fc = new FileChooser();
-            fc.setTitle("Pick Worker Schedule");
-            File schedule = fc.showOpenDialog(primary);
-            //trainInfo = new TrainInfo(schedule);
-
-            setInfoColumns();
-            primary.show();
+            int id = Integer.parseInt(idTestInput.getText());
+            double speed = Double.parseDouble(speedTestInput.getText());
+            double safeSpeed = Double.parseDouble(safeSpeedTestInput.getText());
+            int authority = Integer.parseInt(authorityTestInput.getText());
+            double variance = Double.parseDouble(varianceTestInput.getText());
+            String location = locationTestInput.getText();
+            mbo.setSpeed(id, speed);
+            mbo.setSafeSpeed(id, safeSpeed);
+            mbo.setAuthority(id, authority);
+            mbo.setVariance(id, variance);
+            mbo.setLocation(id, location);
         });
 
         submitButton.setOnAction((ActionEvent a) -> {
             Double passengerNo = Double.parseDouble(passengerInput.getText());
             Double conductorNo = Double.parseDouble(conductorInput.getText());
 
-            if(passengerNo/conductorNo > 1000)
-                resultPane.setContentText("FAIL");
-            else
-                resultPane.setContentText("SUCCESS");
+            resultPane.setContentText("SINGLE TRAIN DEPLOYMENT MODE");
+
+            scheduler = new Scheduler();
+            //scheduler.generateSchedule();
+
+            mbo = new MBO(1);
+
+            setInfoColumns();
 
         });
     }
 
     private void setInfoColumns() {
         TableColumn trainId = new TableColumn("Train ID");
-        trainId.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("trainId"));
-
-        TableColumn safeSpeed = new TableColumn("Safe Speed");
-        safeSpeed.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("safeSpeed"));
+        trainId.setCellValueFactory(new PropertyValueFactory<TrainInfo, SimpleIntegerProperty>("id"));
 
         TableColumn speed = new TableColumn("Speed");
-        speed.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("speed"));
+        speed.setCellValueFactory(new PropertyValueFactory<TrainRow, SimpleDoubleProperty>("speed"));
+
+        TableColumn safeSpeed = new TableColumn("Safe Speed");
+        safeSpeed.setCellValueFactory(new PropertyValueFactory<TrainRow, SimpleDoubleProperty>("safeSpeed"));
 
         TableColumn variance = new TableColumn("Variance");
-        variance.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("variance"));
+        variance.setCellValueFactory(new PropertyValueFactory<TrainRow, SimpleDoubleProperty>("variance"));
 
         TableColumn authority = new TableColumn("Authority");
-        authority.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("authority"));
-
-        TableColumn block = new TableColumn("Block");
-        block.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("block"));
+        authority.setCellValueFactory(new PropertyValueFactory<TrainRow, SimpleIntegerProperty>("authority"));
 
         TableColumn gps = new TableColumn("GPS");
-        gps.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("gps"));
+        gps.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("location"));
 
-        //infoTable.setItems(trainInfo.getRows());
-        infoTable.getColumns().addAll(trainId, safeSpeed, speed, variance, authority, block, gps);
+        infoTable.setItems(mbo.getRows());
+        infoTable.getColumns().addAll(trainId, speed, safeSpeed, variance, authority, gps);
     }
 
     private void setTrainColumns() {
-        TableColumn trainId = new TableColumn("Train ID");
-        trainId.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("trainId"));
 
-        TableColumn station1 = new TableColumn("Station 1");
-        station1.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("station1"));
-
-        TableColumn station2 = new TableColumn("Station 2");
-        station2.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("station2"));
-
-        TableColumn station3 = new TableColumn("Station 3");
-        station3.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("station3"));
-
-        TableColumn station4 = new TableColumn("Station 4");
-        station4.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("station4"));
-
-        TableColumn station5 = new TableColumn("Station 5");
-        station5.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("station5"));
-
-        TableColumn station6 = new TableColumn("Station 6");
-        station6.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("station6"));
-
-        TableColumn station7 = new TableColumn("Station 7");
-        station7.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("station7"));
-
-        TableColumn station8 = new TableColumn("Station 8");
-        station8.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("station8"));
-
-        stationsTable.setItems(trainSchedule.getRows());
-        stationsTable.getColumns().addAll(trainId, station1, station2, station3, station4, station5, station6, station7, station8);
     }
 
     private void setWorkColumns() {
-        TableColumn workerId = new TableColumn("Worker Id");
-        workerId.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("workerId"));
 
-        TableColumn name = new TableColumn("Worker Name");
-        name.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("name"));
-
-        TableColumn textSchedule= new TableColumn("Schedule");
-        textSchedule.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("schedule"));
-
-        workerTable.setItems(workSchedule.getRows());
-        workerTable.getColumns().addAll(workerId, name, textSchedule);
     }
 
     private void updateTrainInfo() {
@@ -203,7 +165,7 @@ public class MBOController extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/TrackModel/MBOUI.fxml"));          // Gets
+        Parent root = FXMLLoader.load(getClass().getResource("/MBO/MBOUI.fxml"));          // Gets
 
         Screen mainScreen = Screen.getPrimary();
         Rectangle2D screenBounds = mainScreen.getVisualBounds();

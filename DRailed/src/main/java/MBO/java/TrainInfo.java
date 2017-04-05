@@ -1,5 +1,8 @@
 package MBO.java;
 
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -15,63 +18,77 @@ import java.io.IOException;
  * Created by joero on 2/6/2017.
  */
 public class TrainInfo {
-    private int id;
-    private double speed;
-    private double safeSpeed;
-    private String location;
-    private int authority;
-    private double variance;
+    private final SimpleIntegerProperty id;
+    private final SimpleDoubleProperty speed;
+    private final SimpleDoubleProperty safeSpeed;
+    private final SimpleStringProperty location;
+    private final SimpleIntegerProperty authority;
+    private final SimpleDoubleProperty variance;
 
     public TrainInfo(int id, double speed, double safeSpeed, String location, int authority, double variance){
-        this.id = id;
-        this.speed = speed;
-        this.safeSpeed = safeSpeed;
-        this.location = location;
-        this.authority = authority;
-        this.variance = variance;
+        this.id  = new SimpleIntegerProperty(id);
+        this.speed = new SimpleDoubleProperty(speed);
+        this.safeSpeed = new SimpleDoubleProperty(safeSpeed);
+        this.location = new SimpleStringProperty(location);
+        this.authority = new SimpleIntegerProperty(authority);
+        this.variance = new SimpleDoubleProperty(variance);
     }
 
-    public int getId(){
-        return id;
-    }
+    public int getId(){ return id.get(); }
+
+    public void setId(int id){ this.id.set(id); }
 
     public double getSpeed(){
-        return speed;
+        return speed.get();
     }
 
     public void setSpeed(double speed){
-        this.speed = speed;
+        this.speed.set(speed);
     }
 
     public double getSafeSpeed(){
-        return safeSpeed;
+        return safeSpeed.doubleValue();
     }
 
-    public double calculateSafeSpeed(){
-        return 0;
+    public void setSafeSpeed(double speed) { this.safeSpeed.set(speed); }
+
+    public String getLocation(){
+        return location.get();
     }
 
-    public String updateLocation(){
-        return location;
-    }
-
-    public void setLocation(String location){
-        this.location = location;
-    }
+    public void setLocation(String location){ this.location.set(location); }
 
     public int getAuthority(){
-        return authority;
+        return authority.get();
     }
 
-    public void setAuthorithy(int authorithy){
-        this.authority = authority;
-    }
+    public void setAuthorithy(int authority){ this.authority.set(authority); }
 
     public double getVariance(){
-        return variance;
+        return variance.get();
     }
 
     public void setVariance(double variance){
-        this.variance = variance;
+        this.variance.set(variance);
+    }
+
+    // NEEDED FOR AUTO-UPDATING OF UI
+    public SimpleIntegerProperty idProperty() {
+        return id;
+    }
+    public SimpleDoubleProperty speedProperty() {
+        return speed;
+    }
+    public SimpleDoubleProperty safeSpeedProperty() {
+        return safeSpeed;
+    }
+    public SimpleStringProperty locationProperty() {
+        return location;
+    }
+    public SimpleIntegerProperty authorityProperty() {
+        return authority;
+    }
+    public SimpleDoubleProperty varianceProperty(){
+        return variance;
     }
 }

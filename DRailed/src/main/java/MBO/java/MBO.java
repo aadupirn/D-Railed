@@ -1,5 +1,8 @@
 package MBO.java;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 
 /**
@@ -7,10 +10,13 @@ import java.util.ArrayList;
  */
 public class MBO {
     private boolean active;
-    private ArrayList<TrainInfo> trainInfos;
+    private ObservableList<TrainInfo> trainInfos = FXCollections.observableArrayList();
+
 
     public MBO(int trainCount){
-        trainInfos = new ArrayList<TrainInfo>(trainCount);
+        for(int i = 0; i < trainCount; i++)
+            trainInfos.add(i, new TrainInfo(i + 1, 0, 0, null, 0, 0));
+
         active = false;
     }
 
@@ -19,17 +25,26 @@ public class MBO {
         return true;
     }
 
-    public void setLocation(int id, String gps){
-        if(!trainExists(id)) addTrain(id);
+    public void setLocation(int id, String location){
+        trainInfos.get(id - 1).setLocation(location);
     }
+
+    public void setSpeed(int id, double speed){ trainInfos.get(id - 1).setSpeed(speed); }
+
+    public void setSafeSpeed(int id, double safeSpeed){
+        trainInfos.get(id - 1).setSafeSpeed(safeSpeed);
+    }
+
+    public void setAuthority(int id, int authority){
+        trainInfos.get(id - 1).setAuthorithy(authority);
+    }
+
+    public void setVariance(int id, double variance) { trainInfos.get(id - 1).setVariance(variance); }
 
     public int getAuthority(int id){
         return 0;
     }
 
-    public void setSpeed(int id, double speed){
-
-    }
 
     public double getSafeSpeed(int id){
         return 0;
@@ -39,11 +54,11 @@ public class MBO {
         return false;
     }
 
-    public void toggleMBO(){
-
-    }
+    public void toggleMBO(){ active = !active; }
 
     private void addTrain(int id){
         trainInfos.add(id - 1, new TrainInfo(id, 0, 0, null, 0, 0));
     }
+
+    public ObservableList<TrainInfo> getRows() { return trainInfos; };
 }

@@ -16,21 +16,9 @@ import java.io.IOException;
  */
 public class TrainSchedule {
     private ObservableList<TrainRow> trainRows = FXCollections.observableArrayList();
-    public XSSFWorkbook schedule = new XSSFWorkbook();
 
     public TrainSchedule(File file) {
-        try {
-            FileInputStream fileIn = new FileInputStream(file);
-            schedule = new XSSFWorkbook(fileIn);
-            XSSFSheet worksheet = schedule.getSheet("Sheet1");
-            for(int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++)
-                this.createTrainRow(worksheet.getRow(i));
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void createTrainRow(XSSFRow data) {
@@ -48,7 +36,7 @@ public class TrainSchedule {
     }
 
     public XSSFWorkbook getExcelFile(){
-        return schedule;
+        return null;
     }
     public ObservableList<TrainRow> getRows() { return trainRows; }
 }
