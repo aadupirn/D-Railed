@@ -540,8 +540,8 @@ public class TrackModel
 
     private void getTestTrains() throws IOException
     {
-        testTrainList.add(new Train(0));
-        testTrainList.add(new Train(1));
+        //testTrainList.add(new Train(0));
+        //testTrainList.add(new Train(1));
     }
 
     private void connectTrack() {

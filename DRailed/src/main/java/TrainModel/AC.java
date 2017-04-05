@@ -37,17 +37,11 @@ public class AC {
         temperature--;
     }
     protected void changeTemp(){
-        if(!(temperature >= maxTemp || temperature <= minTemp)){
-            if(heat)
-                temperature += .1;
-            else if(ac)
-                temperature -= .1;
-            else if(ac && heat){
-                temperature -= .1;
-                heat = false;
-            }
-        }
-
+        if(heat)
+            temperature += .1;
+        else if(ac)
+            temperature -= .1;
+        else;
     }
     protected static Double getTemp(){
         return temperature;
