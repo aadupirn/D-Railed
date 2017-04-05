@@ -65,6 +65,7 @@ public class TrainController
 
 	private Text speedText;
 	private Text powerText;
+	private Text speedRight;
 
 	private Train train;
 
@@ -92,6 +93,7 @@ public class TrainController
 		power = 0;
 		eBrakeStatus = false;
 		sBrakeStatus = false;
+		desiredSpeed = 0;
 
 		locationCalculator = new LocationCalculator();
 		controlCalculator = new ControlCalculator(powerLimit, kp, ki);
@@ -337,9 +339,9 @@ public class TrainController
 		hIncSpeed.getChildren().add(incSpeed);
 		speedGrid.add(hIncSpeed, 0, 0);
 
-		Text speed = new Text("XX mph");
-		speed.setTextAlignment(TextAlignment.CENTER);
-		speedGrid.add(speed, 0, 1);
+		speedRight = new Text("XX mph");
+		speedRight.setTextAlignment(TextAlignment.CENTER);
+		speedGrid.add(speedRight, 0, 1);
 
 		Button decSpeed = new Button("-");
 		HBox hDecSpeed = new HBox();
@@ -461,12 +463,22 @@ public class TrainController
 
 		emerBtn.setOnAction((ActionEvent e) ->
 		{
-
+			train.SetEbrake(true);
 		});
 
 		brakeBtn.setOnAction((ActionEvent e) ->
 		{
+			train.SetSbrake(true);
+		});
 
+		incSpeed.setOnAction((ActionEvent e) ->
+		{
+			desiredSpeed++;
+		});
+
+		decSpeed.setOnAction((ActionEvent e) ->
+		{
+			desiredSpeed--;
 		});
 
 		//endregion
@@ -481,10 +493,12 @@ public class TrainController
 				if(toggled.getText().equals("On"))
 				{
 					acStatus = true;
+					train.SetAcOn();
 				}
 				else if(toggled.getText().equals("Off"))
 				{
 					acStatus = false;
+					train.SetAcOFF();
 				}
 			}
 		});
@@ -498,10 +512,12 @@ public class TrainController
 				if(toggled.getText().equals("On"))
 				{
 					heatStatus = true;
+					train.SetHeatOn();
 				}
 				else if(toggled.getText().equals("Off"))
 				{
 					heatStatus = false;
+					train.SetHeatOFF();
 				}
 			}
 		});
@@ -520,6 +536,7 @@ public class TrainController
 				{
 					lDoorStatus = false;
 				}
+				train.SetLeftDoors(lDoorStatus);
 			}
 		});
 
@@ -537,23 +554,7 @@ public class TrainController
 				{
 					rDoorStatus = false;
 				}
-			}
-		});
-
-		rDoorToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>()
-		{
-			@Override
-			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
-			{
-				RadioButton toggled = (RadioButton)rDoorToggleGroup.getSelectedToggle();
-				if(toggled.getText().equals("On"))
-				{
-					rDoorStatus = true;
-				}
-				else if(toggled.getText().equals("Off"))
-				{
-					rDoorStatus = false;
-				}
+				train.SetRightDoors(rDoorStatus);
 			}
 		});
 
@@ -571,6 +572,7 @@ public class TrainController
 				{
 					lightStatus = false;
 				}
+				train.SetLights(lightStatus);
 			}
 		});
 		//endregion
@@ -586,16 +588,17 @@ public class TrainController
 
 	//region Public Methods
 
-	public void SetPowerText(String in)
+	public void setPowerText(String in)
 	{
 		powerText.setText(in + " W");
 	}
-	public void SetSpeedText(String in)
+	public void setSpeedText(String in)
 	{
-		powerText.setText(in + " mph");
+		speedRight.setText(in + " mph");
+		speedText.setText(in + " mph");
 	}
 
-	public void MakeAnnouncement(String announcement)
+	public void makeAnnouncement(String announcement)
 	{
 		String newNotification;
 		if(notifications.getText().equals("Notifications here"))
@@ -614,6 +617,8 @@ public class TrainController
 	{
 		kp = kpIn;
 		ki = kiIn;
+		controlCalculator.setKI(ki);
+		controlCalculator.setKP(kp);
 	}
 
 	public double getKP()
@@ -626,11 +631,11 @@ public class TrainController
 		return ki;
 	}
 
-	public void Update()
+	public void update()
 	{
-		train.SetPowerCommand(controlCalculator.ComputeNextCommand());
+		train.SetPowerCommand(controlCalculator.computeNextCommand());
 		train.Update();
-		SetSpeedText(""+train.GetCurrentSpeed());
+		setSpeedText(""+train.GetCurrentSpeed());
 	}
 
 	//endregion

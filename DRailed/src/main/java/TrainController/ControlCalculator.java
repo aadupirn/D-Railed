@@ -26,9 +26,19 @@ public class ControlCalculator
 
 
 	//region Methods
-	public double ComputeNextCommand()
+	public double computeNextCommand()
 	{
 		return 10;
+	}
+
+	public void setKP(double ikp)
+	{
+		kp = ikp;
+	}
+
+	public void setKI(double iki)
+	{
+		ki = iki;
 	}
 
 	//endregion

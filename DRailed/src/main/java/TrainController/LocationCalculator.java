@@ -1,5 +1,7 @@
 package TrainController;
 
+import TrackModel.Track;
+
 /**
  * Created by aadu on 4/3/17.
  */
@@ -8,7 +10,7 @@ public class LocationCalculator
 	//region Class Variables
 
 	private int currentBlockID;
-	//private Track TrackModel;
+	private Track track;
 	private double currentBlockLength;
 	private double currentSpeed;
 	private int blockLocation;
@@ -20,7 +22,7 @@ public class LocationCalculator
 
 	public LocationCalculator()
 	{
-
+		track = new Track();
 	}
 
 	//endregion
