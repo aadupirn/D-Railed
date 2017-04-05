@@ -36,7 +36,7 @@ public class MBOController extends Application {
     private TextField locationTestInput;
 
     // TRAIN SCHEDULE DISPLAY TAB
-    private TableView<TrainRow> stationsTable = new TableView<>();
+    private TableView<TrainInfo> stationsTable = new TableView<>();
     private Button trainScheduleButton;
 
     // WORKER SCHEDULE DISPLAY TAB
@@ -76,7 +76,7 @@ public class MBOController extends Application {
         varianceTestInput = (TextField) primary.getScene().lookup("#variance_test_input");
         locationTestInput = (TextField) primary.getScene().lookup("#location_test_input");
 
-        stationsTable = (TableView<TrainRow>) primary.getScene().lookup("#schedule_table");
+        stationsTable = (TableView<TrainInfo>) primary.getScene().lookup("#schedule_table");
         trainScheduleButton = (Button) primary.getScene().lookup("#schedule_btn");
 
         workerScheduleButton = (Button) primary.getScene().lookup("#worker_schedule_btn");
@@ -134,19 +134,19 @@ public class MBOController extends Application {
         trainId.setCellValueFactory(new PropertyValueFactory<TrainInfo, SimpleIntegerProperty>("id"));
 
         TableColumn speed = new TableColumn("Speed");
-        speed.setCellValueFactory(new PropertyValueFactory<TrainRow, SimpleDoubleProperty>("speed"));
+        speed.setCellValueFactory(new PropertyValueFactory<TrainInfo, SimpleDoubleProperty>("speed"));
 
         TableColumn safeSpeed = new TableColumn("Safe Speed");
-        safeSpeed.setCellValueFactory(new PropertyValueFactory<TrainRow, SimpleDoubleProperty>("safeSpeed"));
+        safeSpeed.setCellValueFactory(new PropertyValueFactory<TrainInfo, SimpleDoubleProperty>("safeSpeed"));
 
         TableColumn variance = new TableColumn("Variance");
-        variance.setCellValueFactory(new PropertyValueFactory<TrainRow, SimpleDoubleProperty>("variance"));
+        variance.setCellValueFactory(new PropertyValueFactory<TrainInfo, SimpleDoubleProperty>("variance"));
 
         TableColumn authority = new TableColumn("Authority");
-        authority.setCellValueFactory(new PropertyValueFactory<TrainRow, SimpleIntegerProperty>("authority"));
+        authority.setCellValueFactory(new PropertyValueFactory<TrainInfo, SimpleIntegerProperty>("authority"));
 
         TableColumn gps = new TableColumn("GPS");
-        gps.setCellValueFactory(new PropertyValueFactory<TrainRow, String>("location"));
+        gps.setCellValueFactory(new PropertyValueFactory<TrainInfo, String>("location"));
 
         infoTable.setItems(mbo.getRows());
         infoTable.getColumns().addAll(trainId, speed, safeSpeed, variance, authority, gps);
