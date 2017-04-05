@@ -20,7 +20,7 @@ public class TrackTests {
     @Test
     public void testSetSpeedAndAuthority() {
 
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
         boolean signal = track.setSpeedAndAuthority("GREEN", 57, 50, 5);
 
         double speed = track.getBlock("GREEN", 57).readSpeed();
@@ -37,7 +37,7 @@ public class TrackTests {
 
     @Test
     public void testBlockOccupied(){
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
 
         Train train = null;
 
@@ -47,16 +47,18 @@ public class TrackTests {
             System.out.println("Encountered IO Exception");
         }
 
-        int blockNumber = track.dispatchTrainOnTrack("GREEN", train);
+        Block start = track.getFromYardBlock("GREEN");
 
-        Block b = track.getBlock("GREEN", blockNumber);
+        start.setTrain(train);
+
+        Block b = track.getBlock("GREEN", start.getBlockNumber());
 
         assertEquals(true, b.isOccupied());
     }
 
     @Test
     public void testBlockUnoccupied(){
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
         Block b = track.getBlock("GREEN", 3);
         assertEquals(false, b.isOccupied());
     }
@@ -64,7 +66,7 @@ public class TrackTests {
     @Test
     public void testToggleSwitch() {
 
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
         String state = track.toggleSwitch("GREEN", 1);
 
         assertEquals(SwitchState.BOTTOM.toString(), state);
@@ -74,7 +76,7 @@ public class TrackTests {
     @Test
     public void testToggleCrossing() {
 
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
         boolean state = track.toggleCrossing("GREEN", 1);
 
         assertEquals(true, state);
@@ -84,7 +86,7 @@ public class TrackTests {
     @Test
     public void testToggleLight() {
 
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
         boolean state = track.toggleLight("GREEN", 1);
 
         assertEquals(false, state);
@@ -94,7 +96,7 @@ public class TrackTests {
     @Test
     public void testSetSwitch(){
 
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
         String state = track.setSwitchState("GREEN", 1, true);
 
         assertEquals(SwitchState.TOP.toString(), state);
@@ -104,7 +106,7 @@ public class TrackTests {
     @Test
     public void testSetCrossing(){
 
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
         boolean state = track.setCrossingState("GREEN", 19, true);
 
         assertEquals(true, state);
@@ -114,7 +116,7 @@ public class TrackTests {
     @Test
     public void testSetLights(){
 
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
         boolean state = track.setLightState("GREEN", 1, true);
 
         assertEquals(true, state);
@@ -144,7 +146,7 @@ public class TrackTests {
     @Test
     public void testCorrectFile(){
 
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
         assertEquals(true, track != null);
 
     }
@@ -152,7 +154,7 @@ public class TrackTests {
     @Test
     public void testImportTrack(){
 
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
         assertEquals(true, track != null);
 
     }
@@ -179,7 +181,7 @@ public class TrackTests {
     @Test
     public void testCloseBlock(){
 
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
 
         track.getBlock("GREEN", 3).setTrackState("CLOSED");
 
@@ -190,7 +192,7 @@ public class TrackTests {
     @Test
     public void testBreakRail() {
 
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
         track.breakRail(2);
 
         assertEquals(false, track.getBlock("GREEN", 2).isRailState());
@@ -200,7 +202,7 @@ public class TrackTests {
     @Test
     public void testBreakCircuit() {
 
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
         track.breakCircuit(2);
 
         assertEquals(false, track.getBlock("GREEN", 2).isCircuitState());
@@ -210,7 +212,7 @@ public class TrackTests {
     @Test
     public void testBreakPower() {
 
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
         track.breakPower(2);
 
         assertEquals(false, track.getBlock("GREEN", 2).isPowerState());
@@ -220,7 +222,7 @@ public class TrackTests {
     @Test
     public void testFixRail() {
 
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
         track.breakRail(2);
         track.fixRail(2);
 
@@ -230,7 +232,7 @@ public class TrackTests {
     @Test
     public void testFixCircuit() {
 
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
         track.breakCircuit(2);
         track.fixCircuit(2);
 
@@ -241,7 +243,7 @@ public class TrackTests {
     @Test
     public void testFixPower(){
 
-        Track track = new Track("greenTrackLayout.csv");
+        Track track = new Track("greenLine.csv");
         track.breakPower(2);
         track.fixPower(2);
 

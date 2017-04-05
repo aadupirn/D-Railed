@@ -176,7 +176,10 @@ public class Block {
         return this.train;
     }
 
-    public void setTrain(Train train){ this.train = train; }
+    public void setTrain(Train train){
+        this.occupied = true;
+        this.train = train;
+    }
 
     public boolean isOccupied(){
         return this.occupied;
