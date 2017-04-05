@@ -11,7 +11,7 @@ public class engine {
     private final double standardAcceleration = -1.0;
     private final double emergencyBrakeAcceleration = -5.0;
     private double acceleration = 0;
-    private final double friction = -0.2;
+    private final double friction = 0.2;
     private final double gravity = -9.81;
 
     /*
@@ -44,9 +44,12 @@ public class engine {
             gravityForce = mass*gravity*Math.sin(theta);
             gravityAcceleration= gravityForce/mass;
             fricationForce = gravityForce*friction;
-            frictionAcceleration = fricationForce/mass;
+            frictionAcceleration = Math.abs(fricationForce/mass);
+            double totalAcceleration = (newAcceleration + gravityAcceleration + frictionAcceleration);
+            if(totalAcceleration <= 0)
+                totalAcceleration = 0;
             //newAcceleration += acceleration;
-            currentSpeed += (timeStep * (newAcceleration + gravityAcceleration + frictionAcceleration));// * Math.cos(theta));
+            currentSpeed += (timeStep * totalAcceleration);// * Math.cos(theta));
 
             if (currentSpeed < 0)
                 currentSpeed = 0;
