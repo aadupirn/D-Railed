@@ -83,7 +83,7 @@ public class AnnouncementWindow {
 		{
 			try
 			{
-				trainController.MakeAnnouncement(announcementField.getText());
+				trainController.makeAnnouncement(announcementField.getText());
 				stage.close();
 			} catch (Exception e1)
 			{
