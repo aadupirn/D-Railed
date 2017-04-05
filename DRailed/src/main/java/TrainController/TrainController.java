@@ -47,6 +47,7 @@ public class TrainController
 
 
 	private double speed;
+	private double speedLimit;
 	private double power;
 	private double kp;
 	private double ki;
@@ -67,6 +68,7 @@ public class TrainController
 	private Text speedText;
 	private Text powerText;
 	private Text speedRight;
+	private Text tempText;
 
 	private Track track;
 
@@ -85,6 +87,7 @@ public class TrainController
 	{
 		train = iTrain;
 		trainID = train.getId();
+		speedLimit = MpH2MpS(100);
 		route = "GREEN";
 		acStatus = false;
 		heatStatus = false;
@@ -100,6 +103,7 @@ public class TrainController
 		eBrakeStatus = false;
 		sBrakeStatus = false;
 		desiredSpeed = 0;
+		temperature = train.getTemperature();
 
 		track = new Track("greenTrackLayout.csv");
 
@@ -182,6 +186,18 @@ public class TrainController
 		grid.add(hAutomaticBtn, 5, 1, 3, 1);
 
 		//Row Index 2
+		Label tempLabel = new Label("Temperature: ");
+		tempLabel.setTextAlignment(TextAlignment.LEFT);
+		tempLabel.setMinWidth(colWidth);
+		tempLabel.setAlignment(Pos.CENTER_LEFT);
+		grid.add(tempLabel, 0, 2);
+
+		tempText = new Text();
+		tempText.setWrappingWidth(colWidth*2);
+		setTempText(temperature);
+		tempText.setTextAlignment(TextAlignment.RIGHT);
+		grid.add(tempText, 0, 2);
+
 		Label maStatusLabel = new Label("Control Status: ");
 		maStatusLabel.setTextAlignment(TextAlignment.RIGHT);
 		maStatusLabel.setMinWidth(colWidth * 1.5);
@@ -347,7 +363,8 @@ public class TrainController
 		hIncSpeed.getChildren().add(incSpeed);
 		speedGrid.add(hIncSpeed, 0, 0);
 
-		speedRight = new Text("XX mph");
+		speedRight = new Text();
+		setDesiredSpeedText(desiredSpeed);
 		speedRight.setTextAlignment(TextAlignment.CENTER);
 		speedGrid.add(speedRight, 0, 1);
 
@@ -481,14 +498,23 @@ public class TrainController
 
 		incSpeed.setOnAction((ActionEvent e) ->
 		{
-			desiredSpeed++;
+			desiredSpeed = desiredSpeed + MpH2MpS(1);
+			if(desiredSpeed > speedLimit)
+			{
+				desiredSpeed = speedLimit;
+			}
 			controlCalculator.setDesiredSpeed(desiredSpeed);
 			setDesiredSpeedText(desiredSpeed);
 		});
 
 		decSpeed.setOnAction((ActionEvent e) ->
 		{
-			desiredSpeed--;
+
+			desiredSpeed = desiredSpeed - MpH2MpS(1);
+			if(desiredSpeed<0)
+			{
+				desiredSpeed = 0;
+			}
 			controlCalculator.setDesiredSpeed(desiredSpeed);
 			setDesiredSpeedText(desiredSpeed);
 		});
@@ -505,6 +531,7 @@ public class TrainController
 				if(toggled.getText().equals("On"))
 				{
 					acStatus = true;
+					heatOff.setSelected(true);
 					train.SetAcOn();
 				}
 				else if(toggled.getText().equals("Off"))
@@ -524,6 +551,7 @@ public class TrainController
 				if(toggled.getText().equals("On"))
 				{
 					heatStatus = true;
+					acOff.setSelected(true);
 					train.SetHeatOn();
 				}
 				else if(toggled.getText().equals("Off"))
@@ -600,6 +628,16 @@ public class TrainController
 
 	//region Public Methods
 
+	public double MpS2MpH(double mps)
+	{
+		return mps*2.23694;
+	}
+
+	public double MpH2MpS(double mph)
+	{
+		return mph*0.44704;
+	}
+
 	public void setPowerText(double in)
 	{
 		double kw = in/1000;
@@ -614,7 +652,12 @@ public class TrainController
 	public void setDesiredSpeedText(double in)
 	{
 		double mph = 2.23694 * in;
-		speedRight.setText( String.format( "%.2f", mph )  + " mph");
+		speedRight.setText( String.format( "%.0f", mph )  + " mph");
+	}
+
+	public void setTempText(double in)
+	{
+		tempText.setText(String.format( "%.1f", in ) + " \u00b0F");
 	}
 
 	public void makeAnnouncement(String announcement)
@@ -658,6 +701,8 @@ public class TrainController
 		train.Update();
 		speed = train.GetCurrentSpeed();
 		setSpeedText(train.GetCurrentSpeed());
+		temperature = train.getTemperature();
+		setTempText(train.getTemperature());
 		locationCalculator.ComputeNextLocation(train.GetCurrentSpeed());
 	}
 
