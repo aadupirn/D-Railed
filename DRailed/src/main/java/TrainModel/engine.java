@@ -46,8 +46,6 @@ public class engine {
             fricationForce = gravityForce*friction;
             frictionAcceleration = Math.abs(fricationForce/mass);
             double totalAcceleration = (newAcceleration + gravityAcceleration + frictionAcceleration);
-            if(totalAcceleration <= 0)
-                totalAcceleration = 0;
             //newAcceleration += acceleration;
             currentSpeed += (timeStep * totalAcceleration);// * Math.cos(theta));
 
