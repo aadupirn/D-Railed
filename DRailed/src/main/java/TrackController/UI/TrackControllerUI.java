@@ -29,7 +29,7 @@ public class TrackControllerUI {
     private TextArea notifications;
     private Text controllerLine, controllerSection;
     private Button murphyButton, userInputsButton, engInputsButton, toTrackModelButton, murphyBreakTrackButton, murphyBreakCTCComms, murphyBreakTMComms, sendEngineer, loadPLC, blockIdButton, switchIdButton;
-    private RadioButton trainRB, blockRB, switchRB;
+    private RadioButton blockRB, switchRB;
     private TrackController tc;
     private PLC myPLC;
     private Block[] Blocks;
@@ -76,10 +76,10 @@ public class TrackControllerUI {
         MenuBar menuBar = new MenuBar();
         Menu menuController = new Menu("Choose Controller");
         MenuItem[] trackControllers = new MenuItem[4];
-        trackControllers[0] = new MenuItem("Red - A to G");
-        trackControllers[1] = new MenuItem("Red - H to U");
-        trackControllers[2] = new MenuItem("Green - A to N");
-        trackControllers[3] = new MenuItem("Green - O to YY");
+        trackControllers[0] = new MenuItem("Red - 1 to 40");
+        trackControllers[1] = new MenuItem("Red - 41 to 77");
+        trackControllers[2] = new MenuItem("Green - 1 to 80");
+        trackControllers[3] = new MenuItem("Green - 81 to 152");
         for (int i = 0; i < 4; i++)
             menuController.getItems().add(trackControllers[i]);
         menuBar.getMenus().addAll(menuController);
@@ -95,8 +95,8 @@ public class TrackControllerUI {
 
         //Set up section titles on main screen
         controllerLabel = new Label("Track Controller Controls:");
-        controllerLine = new Text("Line - Red");
-        controllerSection = new Text("Section - A to G");
+        controllerLine = new Text("Line - Green");
+        controllerSection = new Text("Blocks - 1 to 152");
         blockLabel = new Label("Block Info");
         controlLabel = new Label("Controls/Track Info");
         switchLabel = new Label("Switch Info");
@@ -199,22 +199,18 @@ public class TrackControllerUI {
         main.add(buttonSelect, 1, 2);
 
         //Put track pane in
-        notifications = new TextArea("Train ID: 1\nBlock: B.2\nSpeed: 15 m/s\nAuthority Left: 80 m\n---------------------------\n");
-        notifications.appendText("Train ID: 2\nBlock: G.1\nSpeed: 15 m/s\nAuthority Left: 80 m\n---------------------------\n");
-        notifications.appendText("Train ID: 3\nBlock: V.3\nSpeed: 15 m/s\nAuthority Left: 80 m\n---------------------------\n");
+        notifications = new TextArea("");
+        notifications.appendText("17");
         notifications.setFont(Font.font("Garamond", 12));
         notifications.setMinHeight(windowHeight / 3);
         trainInfo.setHgap(20);
         trainInfo.add(notifications, 0, 0);
-        trainRB = new RadioButton("Trains");
-        trainRB.setToggleGroup(tOrB);
         blockRB = new RadioButton("Blocks");
         blockRB.setToggleGroup(tOrB);
         switchRB = new RadioButton("Switches");
         switchRB.setToggleGroup(tOrB);
-        trainOrBlock.add(trainRB, 0, 0);
-        trainOrBlock.add(blockRB, 1, 0);
-        trainOrBlock.add(switchRB, 2, 0);
+        trainOrBlock.add(blockRB, 0, 0);
+        trainOrBlock.add(switchRB, 1, 0);
         trainInfo.add(trainOrBlock, 0, 1);
         main.add(trainInfo, 1, 3);
 
@@ -432,6 +428,16 @@ public class TrackControllerUI {
         mainStage.show();
     }
 
+    public void showUI()
+    {
+        mainStage.show();
+    }
+
+    public void hideUI()
+    {
+        mainStage.hide();
+    }
+
     public void EngineerButtonClicked(ActionEvent e)
     {
         Object source = e.getSource();
@@ -440,11 +446,13 @@ public class TrackControllerUI {
             FileChooser fileChooser = new FileChooser();
             Stage fileSelect = new Stage();
             fileSelect.setTitle("Choose a PLC file to import:");
-            //fileChooser.setInitialDirectory(new File("src/TrackController"));
-            File file = fileChooser.showOpenDialog(fileSelect);
-            if(file != null)
+            ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(classLoader.getResource("TrackController/PLC").getFile());
+            fileChooser.setInitialDirectory(file);
+            File file2 = fileChooser.showOpenDialog(fileSelect);
+            if(file2 != null)
             {
-               tc.setPLC(file);
+               tc.setPLC(file2);
             }
         }
     }

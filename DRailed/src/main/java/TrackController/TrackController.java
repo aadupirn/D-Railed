@@ -26,13 +26,41 @@ public class TrackController {
     private ArrayList<Block> blocks;
     private boolean trackComms, ctcComms, isLineMain;
     private Queue<Integer> messageQueue;
+    private TrackControllerUI ui;
 
 
     public TrackController() throws IOException
     {
         trackComms = true;
         ctcComms = true;
-        TrackControllerUI ui = new TrackControllerUI(this);
+        ui = new TrackControllerUI(this);
+
+    }
+
+    public TrackController(String line, int startBlock, int endBlock)
+    {
+        trackComms = true;
+        ctcComms = true;
+        this.line = line;
+        this.startBlock=startBlock;
+        this.endBlock=endBlock;
+
+        if (line.equals("GREEN"))
+        {
+            if (endBlock==152)
+                this.isLineMain=true;
+            else
+                this.isLineMain=false;
+        }
+        else
+        {
+            if (endBlock==77)
+                this.isLineMain=true;
+            else
+                this.isLineMain=false;
+        }
+
+        ui = new TrackControllerUI(this);
 
     }
 
