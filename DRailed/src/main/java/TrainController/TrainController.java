@@ -1,5 +1,6 @@
 package TrainController;
 
+import TrackModel.Track;
 import TrainModel.Train;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -67,6 +68,8 @@ public class TrainController
 	private Text powerText;
 	private Text speedRight;
 
+	private Track track;
+
 	private Train train;
 
 	private LocationCalculator locationCalculator;
@@ -82,7 +85,7 @@ public class TrainController
 	{
 		train = iTrain;
 		trainID = train.getId();
-		route = "Green  Line";
+		route = "GREEN";
 		acStatus = false;
 		heatStatus = false;
 		lDoorStatus = false;
@@ -95,7 +98,9 @@ public class TrainController
 		sBrakeStatus = false;
 		desiredSpeed = 0;
 
-		locationCalculator = new LocationCalculator();
+		track = new Track("greenTrackLayout.csv");
+
+		locationCalculator = new LocationCalculator(track, route);
 		controlCalculator = new ControlCalculator(powerLimit, kp, ki);
 
 		//region UI code
@@ -635,7 +640,9 @@ public class TrainController
 	{
 		train.SetPowerCommand(controlCalculator.computeNextCommand());
 		train.Update();
-		setSpeedText(""+train.GetCurrentSpeed());
+		//setSpeedText(""+train.GetCurrentSpeed());
+		setSpeedText("10");
+		locationCalculator.ComputeNextLocation(10);
 	}
 
 	//endregion

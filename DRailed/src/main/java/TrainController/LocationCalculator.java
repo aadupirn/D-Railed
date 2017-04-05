@@ -1,5 +1,6 @@
 package TrainController;
 
+import TrackModel.Model.Block;
 import TrackModel.Track;
 
 /**
@@ -9,28 +10,35 @@ public class LocationCalculator
 {
 	//region Class Variables
 
-	private int currentBlockID;
+	private Block block;
+	private String line;
 	private Track track;
-	private double currentBlockLength;
-	private double currentSpeed;
-	private int blockLocation;
-	private boolean atStation;
+	private double blockLocation;
 
 	//endregion
 
 	//region Constructors
 
-	public LocationCalculator()
+	public LocationCalculator(Track iTrack, String iLine)
 	{
-		track = new Track();
+		track = iTrack;
+		line = iLine;
+		block = track.getYardBlock(line);
 	}
 
 	//endregion
 
 	//region methods
-	public void ComputeNextLocation(double speed)
+	public void ComputeNextLocation(double iSpeed)
 	{
-
+		blockLocation += iSpeed;
+		while(block.getLength() < blockLocation)
+		{
+			blockLocation = blockLocation - block.getLength();
+			block = block.getNextBlock();
+		}
+		System.out.println("We are on block " + block.getBlockNumber()+"\n" +
+				"Meters we have traveled along block: " + blockLocation);
 	}
 	//endregion
 

@@ -21,7 +21,6 @@ public class DTime
 		private int counter = 0;
 		public void run()
 		{
-			System.out.println("test");
 			counter++;
 			trainController.update();
 			if(counter == 60)
