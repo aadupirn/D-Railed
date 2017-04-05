@@ -27,6 +27,7 @@ public class Switch {
         this.mainBlock = null;
         this.topBlock = null;
         this.bottomBlock = null;
+        this.heater = new Heater(""+switchNumber);
     }
 
     /***
@@ -42,6 +43,7 @@ public class Switch {
         this.mainBlock = mainBlock;
         this.topBlock = null;
         this.bottomBlock = null;
+        this.heater = new Heater(""+switchNumber);
     }
 
     /***
@@ -178,6 +180,14 @@ public class Switch {
         }else{
             return "SwitchNo: " + this.switchNumber + "| State: BOTTOM | Main: " + this.mainBlock + "| Top: " + this.topBlock + "| Bottom: " + this.bottomBlock;
         }
+    }
+
+    public Heater getHeater() {
+        return heater;
+    }
+
+    public void setHeater(Heater heater) {
+        this.heater = heater;
     }
 
 }

@@ -19,13 +19,13 @@ public class TrackModel
     private int trainToDispatch = 0;
     private int lineCount;
 
-    // Rail:: right to left 0x123456  Train:: right to left 0x123456
-    // [1] -> Train Id               [1] -> Train Id
-    // [2] -> Speed                  [2] -> Station
-    // [3] -> Authority              [3] -> Failures
-    // [4] -> Station Load           [4] -> ?
-    // [5] -> ?                      [5] -> ?
-    // [6] -> ?                      [6] -> ?
+    // Rail:: right to left 0x123456
+    // [1] -> Train Id
+    // [2] -> Speed
+    // [3] -> Speed
+    // [4] -> Speed
+    // [5] -> Authority
+    // [6] -> Authority
 
     public TrackModel(){
         lines = new ArrayList<>();
@@ -35,9 +35,8 @@ public class TrackModel
     public TrackModel(String trackLayout){
         lines = new ArrayList<>();
         testTrainList = new ArrayList<>();
-
         importTrack(trackLayout);
-
+        connectTrack();
     }
 
     public List<Line> getLines() {
@@ -84,11 +83,15 @@ public class TrackModel
                 Double blockCumulativeElevation = new Double(dataLine[8]);
                 String switchInfo = null;
                 String direction = null;
+                String beacon = null;
 
                 if(dataLine.length > 9) {
                     switchInfo = dataLine[9].toUpperCase();
                     if(dataLine.length > 10) {
                         direction = dataLine[10].toUpperCase();
+                        if(dataLine.length > 11){
+                            beacon = dataLine[11].toUpperCase();
+                        }
                     }
                 }
 
@@ -131,6 +134,9 @@ public class TrackModel
 
                     List<Object> infraSet = parseInfrastructure(updateLine, section, blockNumber, infrastructure, switchInfo);
 
+                    if(beacon != null) {
+                        updateBlock.setBeacon(beacon);
+                    }
                     Station updateStation = (Station) infraSet.get(0);
                     Crossing updateCrossing = (Crossing) infraSet.get(2);
                     String other = (String) infraSet.get(3);
@@ -466,7 +472,6 @@ public class TrackModel
             }
         }
 
-
         return aSwitch;
 
     }
@@ -537,6 +542,48 @@ public class TrackModel
     {
         testTrainList.add(new Train(0));
         testTrainList.add(new Train(1));
+    }
+
+    private void connectTrack() {
+
+        Block pastBlock = null;
+
+        for(Line l : lines){
+            for(Section s : l.getSections()){
+                for(Block b : s.getBlocks()){
+                    if(b.getSwitch() == null) {
+                        if (pastBlock == null) {
+                            pastBlock = b;
+                        }else{
+                            b.setNextBlock(pastBlock);
+                            pastBlock = b;
+                        }
+                    }else{
+                        if(pastBlock == null) {
+                            pastBlock = b;
+                        }else if(b.getSwitch() != null && b.getSwitch().getState().equals(SwitchState.TOP)){
+                            b.setNextBlock(l.getBlock(b.getSwitch().getTop()));
+                            pastBlock = b;
+                        }else if(b.getSwitch() != null && b.getSwitch().getState().equals(SwitchState.BOTTOM)){
+                            b.setNextBlock(l.getBlock(b.getSwitch().getBottom()));
+                            pastBlock = b;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public Block getYardBlock(String line){
+        for(Section s : getLine(line).getSections()){
+            for(Block b : s.getBlocks()){
+                if(b.getSwitch() != null && b.getSwitch().isFromYard()){
+                    return b;
+                }
+            }
+        }
+
+        return null;
     }
 
 }
