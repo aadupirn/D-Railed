@@ -226,4 +226,16 @@ public class Line {
 
     }
 
+    public Block getBlock(int blockId){
+        for(Section s : getSections()){
+            for(Block b : s.getBlocks()){
+                if(b.getBlockNumber() == blockId){
+                    return b;
+                }
+            }
+        }
+
+        return null;
+    }
+
 }

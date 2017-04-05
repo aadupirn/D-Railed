@@ -471,7 +471,6 @@ public class TrackModel
             }
         }
 
-
         return aSwitch;
 
     }
@@ -550,7 +549,7 @@ public class TrackModel
         for(Line l : lines){
             for(Section s : l.getSections()){
                 for(Block b : s.getBlocks()){
-                    if(b.getSwitch() != null) {
+                    if(b.getSwitch() == null) {
                         if (pastBlock == null) {
                             pastBlock = b;
                         }else{
@@ -558,18 +557,31 @@ public class TrackModel
                             pastBlock = b;
                         }
                     }else{
-                        if(b.getSwitch().getState() == SwitchState.TOP){
-                            b.setNextBlock(s.getBlock(b.getSwitch().getTop()));
+                        if(pastBlock == null) {
                             pastBlock = b;
-                        }else{
-                            b.setNextBlock(s.getBlock(b.getSwitch().getBottom()));
+                        }else if(b.getSwitch() != null && b.getSwitch().getState().equals(SwitchState.TOP)){
+                            b.setNextBlock(l.getBlock(b.getSwitch().getTop()));
+                            pastBlock = b;
+                        }else if(b.getSwitch() != null && b.getSwitch().getState().equals(SwitchState.BOTTOM)){
+                            b.setNextBlock(l.getBlock(b.getSwitch().getBottom()));
                             pastBlock = b;
                         }
                     }
                 }
             }
         }
+    }
 
+    public Block getYardBlock(String line){
+        for(Section s : getLine(line).getSections()){
+            for(Block b : s.getBlocks()){
+                if(b.getSwitch() != null && b.getSwitch().isFromYard()){
+                    return b;
+                }
+            }
+        }
+
+        return null;
     }
 
 }

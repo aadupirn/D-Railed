@@ -59,6 +59,10 @@ public class Block {
     private boolean circuitState;
     private boolean powerState;
 
+    // authority and speed
+    private int authority;
+    private Double speed;
+
     // Connected Blocks
     private Block nextBlock;
 
@@ -345,6 +349,19 @@ public class Block {
 
     public void setNextBlock(Block nextBlock){
         this.nextBlock = nextBlock;
+    }
+
+    public void setSpeedAndAuthority(Double speed, int authority){
+        this.speed = speed;
+        this.authority = authority;
+    }
+
+    public Double readSpeed(){
+        return this.speed;
+    }
+
+    public int readAuthority(){
+        return this.authority;
     }
 }
 
