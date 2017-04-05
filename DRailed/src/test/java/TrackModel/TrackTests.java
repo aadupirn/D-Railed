@@ -7,6 +7,8 @@ import TrackModel.Model.SwitchState;
 import TrainModel.Train;
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static junit.framework.TestCase.assertNotSame;
 import static junit.framework.TestCase.assertEquals;
 
@@ -34,7 +36,7 @@ public class TrackTests {
     }
 
     @Test
-    public void testBlockOccupied(){
+    public void testBlockOccupied() throws IOException{
         Track track = new Track("greenTrackLayout.csv");
         Train train = new Train(1);
 
