@@ -97,7 +97,7 @@ public class Train {
     public TrainController GetTrainController(){
       return trainController;
     }
-    private boolean receiveBeacon(String beacon){
+    /*private boolean SetBeacon(String beacon){
         String[] beaconArray = beacon.split("");
         int beaconID = Integer.decode("0x" + beaconArray[0]);
         if(id == beaconID){
@@ -109,6 +109,7 @@ public class Train {
         }
         return false;
     }
+    */
 
 
     private boolean setBeaconImputs(Double beaconSpeed, Double beaconCommand, int beaconFailureStatus, int beaconPassengerCount) {
@@ -176,7 +177,8 @@ Calculates speed
     }
     public double GetPowerCommand(){ return commandSpeed;}
     public void Update(){
-        System.out.println("TEmperature is 90");
+        ac.changeTemp();
+        System.out.println("TEmperature is " + ac.getTemp());
         System.out.println("Speed is " + calculateSpeed(commandSpeed));
 
     }
@@ -233,6 +235,3 @@ Calculates speed
 }
 
 
-/*
-
- */
