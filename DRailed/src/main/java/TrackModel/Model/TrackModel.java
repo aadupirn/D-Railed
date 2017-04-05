@@ -403,7 +403,8 @@ public class TrackModel
         this.lineCount = lineCount;
     }
 
-    public void randomDispatch(String line){
+    public void randomDispatch(String line) throws IOException
+    {
 
         getTestTrains();
 
@@ -537,7 +538,8 @@ public class TrackModel
         return light;
     }
 
-    private void getTestTrains(){
+    private void getTestTrains() throws IOException
+    {
         testTrainList.add(new Train(0));
         testTrainList.add(new Train(1));
     }

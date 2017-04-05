@@ -1,8 +1,5 @@
 package TrainController;
 
-/**
- * Created by aadu on 4/3/17.
- */
 public class ControlCalculator
 {
 	//region Class Variables
@@ -29,6 +26,10 @@ public class ControlCalculator
 
 
 	//region Methods
+	public double ComputeNextCommand()
+	{
+		return 10;
+	}
 
 	//endregion
 }

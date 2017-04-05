@@ -1,5 +1,7 @@
 package TrainModel;
+import TrainController.TrainController;
 
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -7,49 +9,94 @@ import java.util.Random;
  */
 public class Train {
     private TrainModelMain trainModel;
-    TrainControllerTest trainController;
+    private TrainController trainController;
     private int block;
     private Double commandSpeed;
     private int id;
+    private double currentSpeed;
+    private double mass;
+    private double grade;
+    private double authority;
+
+    private engine Engine;
+    private AC ac;
+    private boolean leftDoors;
+    private boolean rightDoors;
+    private boolean lights;
+    private boolean ebrake;
+    private boolean sbrake;
+
     int unloading;
 
-    public Train(){
-        trainModel = new TrainModelMain();
-        //trainController = new TrainController();
+    public Train() throws IOException {
+        System.out.println("train created");
+       // trainModel = new TrainModel();
+        Engine = new engine();
+        ac = new AC();
+        leftDoors = false;
+        rightDoors = false;
+        lights = false;
+        ebrake = false;
+        sbrake = false;
+
+        trainController = new TrainController(this);
     }
 
     // @ANDREW created for track model testing
-    public Train(int newId){
-        trainModel = new TrainModelMain();
+    public Train(int newId) throws IOException {
+        trainController = new TrainController(this);
+        Engine = new engine();
+        ac = new AC();
+        ebrake = false;
+        sbrake = false;
+
+        //trainModel = new TrainModel();
         this.id = id;
         this.unloading = generateUnloading();
     }
 
-    public Train(int blockLocation, int newID){
-        block = blockLocation;
-        trainModel = new TrainModelMain();
-        id = newID;
+    public Train(int blockLocation, int newID) throws IOException {
+       trainController = new TrainController(this);
+        Engine = new engine();
+        ac = new AC();
+        ebrake = false;
+        sbrake = false;
 
-        trainModel = new TrainModelMain();
-        //trainController = new TrainController();
-    }
-    public Train(int blockLocation, int numberOfCarts, int newID){
         block = blockLocation;
         id = newID;
-        trainModel = new TrainModelMain(numberOfCarts);
-        //trainController = new TrainController();
+      //  trainModel = new TrainModel();
+
     }
-    public Train(int blockLocation, int numberOfCarts, Double newAuthority, Double newSpeed, int newID){
+    public Train(int blockLocation, int numberOfCarts, int newID) throws IOException {
+        trainController = new TrainController(this);
+        Engine = new engine();
+        ac = new AC();
+        ebrake = false;
+        sbrake = false;
+
         block = blockLocation;
         id = newID;
-        trainModel = new TrainModelMain(numberOfCarts, newAuthority, newSpeed);
-        trainController = new TrainControllerTest();
+        //trainModel = new TrainModel();
+        //trainController = new TrainController();
+    }
+    public Train(int blockLocation, int numberOfCarts, Double newAuthority, Double newSpeed, int newID) throws IOException {
+        Engine = new engine();
+        ac = new AC();
+        trainController = new TrainController(this);
+        ebrake = false;
+        sbrake = false;
+
+        block = blockLocation;
+        id = newID;
+        //trainModel = new TrainModel();
     }
 
     public int getId(){
         return id;
     }
-
+    public TrainController GetTrainController(){
+      return trainController;
+    }
     private boolean receiveBeacon(String beacon){
         String[] beaconArray = beacon.split("");
         int beaconID = Integer.decode("0x" + beaconArray[0]);
@@ -63,10 +110,11 @@ public class Train {
         return false;
     }
 
+
     private boolean setBeaconImputs(Double beaconSpeed, Double beaconCommand, int beaconFailureStatus, int beaconPassengerCount) {
 
-        trainModel.distanceCalc(trainController.setBeaconArguments(beaconSpeed, beaconCommand, beaconFailureStatus));
-        trainModel.passengersLoading(beaconPassengerCount);
+        //trainModel.distanceCalc(trainController.setBeaconArguments(beaconSpeed, beaconCommand, beaconFailureStatus));
+        //trainModel.passengersLoading(beaconPassengerCount);
         return true;
     }
 
@@ -76,11 +124,32 @@ public class Train {
         calculateSpeed(power);
         return true;
     }*/
-
-    private boolean calculateSpeed(Double power){
+/*
+private double calculateSpeed(double mass, double powerCommand, double currentSpeed,
+                                double grade){
+Calculates speed
+ */
+    protected boolean calculateSpeed(Double power){
         //do some calculations
+        currentSpeed =  Engine.calculateSpeed(mass, commandSpeed, currentSpeed, grade);
+        System.out.println("Current Speed: "+currentSpeed);
         return true;
     }
+//AC Status
+    public void SetAcOn(){
+        ac.acOn();
+    }
+    public void SetAcOFF(){
+        ac.acOff();
+    }
+    public void SetHeatOn(){
+        ac.heatOn();
+    }
+    public void SetHeatOFF(){
+        ac.heatOff();
+    }
+    public double getTemperature(){ return ac.getTemp();}
+
 
     // @ANDREW also used in TrackModel tests
     private int generateUnloading() {
@@ -95,4 +164,75 @@ public class Train {
         this.unloading = generateUnloading();
     }
 
+    public double GetCurrentSpeed(){
+        return currentSpeed;
+    }
+    public double GetAuthority(){
+        authority = 0;
+        return authority;
+    }
+    public void SetPowerCommand(Double pwrCMD){
+        commandSpeed = pwrCMD;
+    }
+    public double GetPowerCommand(){ return commandSpeed;}
+    public void Update(){
+        System.out.println("TEmperature is 90");
+        System.out.println("Speed is " + calculateSpeed(commandSpeed));
+
+    }
+    public boolean SetEbrake(boolean bool){
+        ebrake = bool;
+        return true;
+    }
+    public boolean GetEbrake(){
+        return ebrake;
+    }
+    public boolean SetSbrake(boolean bool){
+        sbrake = bool;
+        return true;
+    }
+    public boolean GetSbrake(){
+        return sbrake;
+    }
+
+
+    public boolean SetLeftDoors(boolean bool){
+        leftDoors = bool;
+        return leftDoors;
+    }
+    public boolean GetLeftDoorsStatus(){
+        return leftDoors;
+    }
+
+    public boolean SetRightDoors(boolean bool){
+        rightDoors = bool;
+        return rightDoors;
+    }
+
+    public boolean GetRightDoorsStatus(){
+        return rightDoors;
+    }
+
+
+
+    public boolean SetLights(boolean lightsStatus){
+        lights = lightsStatus;
+        return true;
+    }
+    public boolean GetLights(){
+        return lights;
+    }
+
+    public boolean setGrade(Double newGrade){
+        grade = newGrade;
+        return true;
+    }
+    public double getGrade(){
+        return grade;
+    }
 }
+
+
+/*
+
+ */

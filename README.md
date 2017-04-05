@@ -76,3 +76,12 @@ Train Traffic Controller and Model Application
 * `git merge master`
 * `git push origin YOURBRANCH`
 * submit a pull request from YOURBRANCH to master on github
+
+## GitHub .gitignore untrack bad files commands
+
+* git rm --cached -r
+* git add .
+
+## If you fuck up master run these commands from the master branch to get the remote master locally.
+* git fetch origin
+* git reset --hard origin/master

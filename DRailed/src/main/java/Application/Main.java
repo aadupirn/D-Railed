@@ -12,7 +12,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import TrackController.TrackController;
+import DTime.DTime;
 import TrainModel.TrainModel;
+import TrainModel.Train;
 import MBO.java.MBOController;
 import ctc.MainFrame;
 
@@ -123,7 +125,7 @@ public class Main extends Application {
 		trainModelBtn.setOnAction((ActionEvent e) ->
 		{
 			try {
-				TrainModel trainModel = new TrainModel();
+				Train train = new Train();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -133,8 +135,13 @@ public class Main extends Application {
 		trainControllerBtn.setOnAction((ActionEvent e) ->
 		{
 			try {
-				TrainController trainController = new TrainController();
+				Train t = new Train();
+				DTime dt = new DTime(t.GetTrainController());
+				//dt.Run();
 			} catch (IOException e1) {
+				e1.printStackTrace();
+			} catch (Exception e1)
+			{
 				e1.printStackTrace();
 			}
 		});
