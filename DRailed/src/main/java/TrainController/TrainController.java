@@ -48,8 +48,8 @@ public class TrainController
 
 	private double speed;
 	private double power;
-	private double kp = 1;
-	private double ki = 1;
+	private double kp;
+	private double ki;
 	private double temperature;
 	private double powerLimit;
 	private double desiredSpeed;
@@ -92,8 +92,11 @@ public class TrainController
 		rDoorStatus = false;
 		lightStatus = false;
 		powerLimit = 1000;
+		kp = 100;
+		ki = 100;
 		speed = train.GetCurrentSpeed();
 		power = 0;
+		speed = 0;
 		eBrakeStatus = false;
 		sBrakeStatus = false;
 		desiredSpeed = 0;
@@ -101,7 +104,7 @@ public class TrainController
 		track = new Track("greenTrackLayout.csv");
 
 		locationCalculator = new LocationCalculator(track, route);
-		controlCalculator = new ControlCalculator(powerLimit, kp, ki);
+		controlCalculator = new ControlCalculator(desiredSpeed, kp, ki);
 
 		//region UI code
 		stage.setTitle(windowTitle);
@@ -479,11 +482,15 @@ public class TrainController
 		incSpeed.setOnAction((ActionEvent e) ->
 		{
 			desiredSpeed++;
+			controlCalculator.setDesiredSpeed(desiredSpeed);
+			setDesiredSpeedText(desiredSpeed);
 		});
 
 		decSpeed.setOnAction((ActionEvent e) ->
 		{
 			desiredSpeed--;
+			controlCalculator.setDesiredSpeed(desiredSpeed);
+			setDesiredSpeedText(desiredSpeed);
 		});
 
 		//endregion
@@ -593,14 +600,21 @@ public class TrainController
 
 	//region Public Methods
 
-	public void setPowerText(String in)
+	public void setPowerText(double in)
 	{
-		powerText.setText(in + " W");
+		double kw = in/1000;
+		powerText.setText( String.format( "%.2f", kw )  + " KW");
 	}
-	public void setSpeedText(String in)
+	public void setSpeedText(double in)
 	{
-		speedRight.setText(in + " mph");
-		speedText.setText(in + " mph");
+		double mph = 2.23694 * in;
+		speedText.setText( String.format( "%.2f", mph )  + " mph");
+	}
+
+	public void setDesiredSpeedText(double in)
+	{
+		double mph = 2.23694 * in;
+		speedRight.setText( String.format( "%.2f", mph )  + " mph");
 	}
 
 	public void makeAnnouncement(String announcement)
@@ -638,11 +652,13 @@ public class TrainController
 
 	public void update()
 	{
-		train.SetPowerCommand(controlCalculator.computeNextCommand());
+		double powerCommand = controlCalculator.computeNextCommand(speed);
+		train.SetPowerCommand(powerCommand);
+		setPowerText(powerCommand);
 		train.Update();
-		//setSpeedText(""+train.GetCurrentSpeed());
-		setSpeedText("10");
-		locationCalculator.ComputeNextLocation(10);
+		speed = train.GetCurrentSpeed();
+		setSpeedText(train.GetCurrentSpeed());
+		locationCalculator.ComputeNextLocation(train.GetCurrentSpeed());
 	}
 
 	//endregion
