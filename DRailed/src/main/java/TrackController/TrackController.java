@@ -3,10 +3,13 @@ package TrackController;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Queue;
+
 import TrackController.Classes.*;
 import TrackController.UI.*;
 import TrackModel.Model.*;
-
+import TrainModel.Train;
+import TrackModel.Track;
 
 /**
  * Created by Jonathan on 2/3/17.
@@ -17,10 +20,12 @@ public class TrackController {
     private PLC myPLC;
     private Block[] Blocks;
     private TrackModel model;
+    private Track track;
     private int ID, startBlock, endBlock;
     private String line;
     private ArrayList<Block> blocks;
     private boolean trackComms, ctcComms, isLineMain;
+    private Queue<Integer> messageQueue;
 
 
     public TrackController() throws IOException
@@ -93,11 +98,11 @@ public class TrackController {
         this.line = line;
     }
 
-    public boolean isLineMain() {
+    public boolean isMainController() {
         return isLineMain;
     }
 
-    public void setLineMain(boolean lineMain) {
+    public void setMainController(boolean lineMain) {
         isLineMain = lineMain;
     }
 
@@ -109,5 +114,24 @@ public class TrackController {
                 return true;
         }
         return false;
+    }
+
+    public void Update()
+    {
+        if (!messageQueue.isEmpty())
+        {
+            Integer message = messageQueue.remove();
+
+        }
+    }
+
+    public int dispatchTrain(Train train)
+    {
+        int returnVal = 0;
+        if (isLineMain)
+        {
+            returnVal = track.dispatchTrainOnTrack(this.line,train);
+        }
+        return returnVal;
     }
 }
