@@ -93,13 +93,13 @@ public class Heater {
     }
 
     private void heatOn(){
-        if(this.railTemp <= this.desiredTemp){
+        if(this.railTemp < this.desiredTemp){
             this.railTemp += this.heatRate;
         }
     }
 
     private void heatOff(){
-        if(this.railTemp >= this.enviromentTemp){
+        if(this.railTemp > this.enviromentTemp){
             this.railTemp -= this.heatRate;
         }
     }
