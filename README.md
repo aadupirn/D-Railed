@@ -81,3 +81,7 @@ Train Traffic Controller and Model Application
 
 * git rm --cached -r
 * git add .
+
+## If you fuck up master run these commands from the master branch to get the remote master locally.
+* git fetch origin
+* git reset --hard origin/master

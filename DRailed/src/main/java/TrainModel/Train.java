@@ -23,6 +23,8 @@ public class Train {
     private boolean leftDoors;
     private boolean rightDoors;
     private boolean lights;
+    private boolean ebrake;
+    private boolean sbrake;
 
     int unloading;
 
@@ -34,6 +36,8 @@ public class Train {
         leftDoors = false;
         rightDoors = false;
         lights = false;
+        ebrake = false;
+        sbrake = false;
 
         trainController = new TrainController(this);
     }
@@ -43,6 +47,8 @@ public class Train {
         trainController = new TrainController(this);
         Engine = new engine();
         ac = new AC();
+        ebrake = false;
+        sbrake = false;
 
         //trainModel = new TrainModel();
         this.id = id;
@@ -53,6 +59,8 @@ public class Train {
        trainController = new TrainController(this);
         Engine = new engine();
         ac = new AC();
+        ebrake = false;
+        sbrake = false;
 
         block = blockLocation;
         id = newID;
@@ -63,6 +71,8 @@ public class Train {
         trainController = new TrainController(this);
         Engine = new engine();
         ac = new AC();
+        ebrake = false;
+        sbrake = false;
 
         block = blockLocation;
         id = newID;
@@ -73,7 +83,8 @@ public class Train {
         Engine = new engine();
         ac = new AC();
         trainController = new TrainController(this);
-
+        ebrake = false;
+        sbrake = false;
 
         block = blockLocation;
         id = newID;
@@ -163,33 +174,41 @@ Calculates speed
     public void SetPowerCommand(Double pwrCMD){
         commandSpeed = pwrCMD;
     }
+    public double GetPowerCommand(){ return commandSpeed;}
     public void Update(){
         System.out.println("TEmperature is 90");
         System.out.println("Speed is " + calculateSpeed(commandSpeed));
 
     }
-
-
-
-    public boolean OpenLeftDoors(){
-        leftDoors = true;
-        return leftDoors;
+    public boolean SetEbrake(boolean bool){
+        ebrake = bool;
+        return true;
     }
-    public boolean CloseLeftDoors(){
-        leftDoors = false;
+    public boolean GetEbrake(){
+        return ebrake;
+    }
+    public boolean SetSbrake(boolean bool){
+        sbrake = bool;
+        return true;
+    }
+    public boolean GetSbrake(){
+        return sbrake;
+    }
+
+
+    public boolean SetLeftDoors(boolean bool){
+        leftDoors = bool;
         return leftDoors;
     }
     public boolean GetLeftDoorsStatus(){
         return leftDoors;
     }
-    public boolean OpenRightDoors(){
-        rightDoors = true;
+
+    public boolean SetRightDoors(boolean bool){
+        rightDoors = bool;
         return rightDoors;
     }
-    public boolean CloseRightDoors(){
-        leftDoors = false;
-        return rightDoors;
-    }
+
     public boolean GetRightDoorsStatus(){
         return rightDoors;
     }

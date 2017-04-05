@@ -51,6 +51,7 @@ public class Block {
     private String other;
 
     private Light light;
+    private Beacon beacon;
 
     // System State
     private String trackState;
@@ -58,13 +59,12 @@ public class Block {
     private boolean circuitState;
     private boolean powerState;
 
+    // authority and speed
+    private int authority;
+    private Double speed;
+
     // Connected Blocks
     private Block nextBlock;
-    private Block previousBlock;
-
-    // To Train: Send Power To Train
-    private Double setPointSpeed;
-    private Double authority;
 
     public Block(){
         // basic info
@@ -105,7 +105,7 @@ public class Block {
         this.aSwitch = null;
         this.crossing = null;
         this.station = null;
-        this.light = new Light(blockNumber);
+        this.light = null;
 
         this.occupied = false;
 
@@ -131,7 +131,10 @@ public class Block {
         this.aSwitch = aSwitch;
         this.crossing = crossing;
         this.other = other;
-        this.light = new Light(this.blockNumber);
+
+        if(station != null || aSwitch != null){
+            this.light = new Light(this.blockNumber);
+        }
     }
 
     public void trainEnter(Train newTrain){
@@ -152,6 +155,14 @@ public class Block {
         return this.occupied;
     }
 
+    public void setBeacon(String message){
+        this.beacon = new Beacon(blockNumber, message);
+    }
+
+    public Beacon getBeacon(){
+        return this.beacon;
+    }
+
     public Integer getBlockNumber() {
         return blockNumber;
     }
@@ -162,22 +173,6 @@ public class Block {
 
     public Double getLength(){
         return this.length;
-    }
-
-    public Double getSetPointSpeed() {
-        return setPointSpeed;
-    }
-
-    public void setSetPointSpeed(Double setPointSpeed) {
-        this.setPointSpeed = setPointSpeed;
-    }
-
-    public Double getAuthority() {
-        return authority;
-    }
-
-    public void setAuthority(Double authority) {
-        this.authority = authority;
     }
 
     public String getLine() {
@@ -346,6 +341,27 @@ public class Block {
 
     public String toString(){
         return section + blockNumber;
+    }
+
+    public Block getNextBlock(){
+        return nextBlock;
+    }
+
+    public void setNextBlock(Block nextBlock){
+        this.nextBlock = nextBlock;
+    }
+
+    public void setSpeedAndAuthority(Double speed, int authority){
+        this.speed = speed;
+        this.authority = authority;
+    }
+
+    public Double readSpeed(){
+        return this.speed;
+    }
+
+    public int readAuthority(){
+        return this.authority;
     }
 }
 
