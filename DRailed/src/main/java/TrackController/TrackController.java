@@ -164,8 +164,9 @@ public class TrackController {
         if (!messageQueue.isEmpty())
         {
             String message = messageQueue.remove();
-
         }
+
+        ui.Update();
     }
 
     public int dispatchTrain(Train train)

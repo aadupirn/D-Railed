@@ -514,6 +514,12 @@ public class TrackControllerUI {
             }
         }
     }
+
+    public void Update()
+    {
+        return;
+    }
+
     public void MainButtonClicked(ActionEvent e)
     {
         String newTitle = "Unknown Event";
