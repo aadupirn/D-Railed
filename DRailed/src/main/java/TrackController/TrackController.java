@@ -25,7 +25,7 @@ public class TrackController {
     private String line;
     private ArrayList<Block> blocks;
     private boolean trackComms, ctcComms, isLineMain;
-    private Queue<Integer> messageQueue;
+    private Queue<String> messageQueue;
     private TrackControllerUI ui;
 
 
@@ -35,6 +35,15 @@ public class TrackController {
         ctcComms = true;
         ui = new TrackControllerUI(this);
 
+    }
+
+    public void showUI()
+    {
+        ui.showUI();
+    }
+    public void hideUI()
+    {
+        ui.hideUI();
     }
 
     public TrackController(String line, int startBlock, int endBlock)
@@ -144,11 +153,17 @@ public class TrackController {
         return false;
     }
 
+    public void setSpeedAndAuthority(int trainID, double speed, int authority)
+    {
+        //TODO get this shit working, either set the speed and authority for a block or overwrite occupied blocks?
+        //TODO try maybe having something call a function on the Train?
+    }
+
     public void Update()
     {
         if (!messageQueue.isEmpty())
         {
-            Integer message = messageQueue.remove();
+            String message = messageQueue.remove();
 
         }
     }
@@ -161,5 +176,10 @@ public class TrackController {
             returnVal = track.dispatchTrainOnTrack(this.line,train);
         }
         return returnVal;
+    }
+
+    public boolean getOccupancy(int blockID)
+    {
+        return false;
     }
 }

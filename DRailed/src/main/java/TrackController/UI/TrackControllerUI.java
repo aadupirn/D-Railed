@@ -425,7 +425,6 @@ public class TrackControllerUI {
         //End From CTC---------------------------------------------------------------------
 
         mainStage.setScene(mainScene);
-        mainStage.show();
     }
 
     public void showUI()
