@@ -1,5 +1,6 @@
 package TrainController;
 
+import TrackModel.Track;
 import TrainModel.Train;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -41,13 +42,6 @@ public class TrainController
 	private int windowHight = 500;
 	private int inset = 25;
 	private int colWidth = 75;
-	private int lightStatus;
-	private int lDoorStatus;
-	private int rDoorStatus;
-	private int acStatus;
-	private int heatStatus;
-	private int movementStatus;
-	private int locationStatus;
 	private int trainID;
 	private int currentBlockID;
 
@@ -62,9 +56,19 @@ public class TrainController
 
 	private boolean eBrakeStatus;
 	private boolean sBrakeStatus;
+	private boolean lightStatus;
+	private boolean lDoorStatus;
+	private boolean rDoorStatus;
+	private boolean acStatus;
+	private boolean heatStatus;
+	private boolean movementStatus;
+	private boolean locationStatus;
 
 	private Text speedText;
 	private Text powerText;
+	private Text speedRight;
+
+	private Track track;
 
 	private Train train;
 
@@ -81,19 +85,22 @@ public class TrainController
 	{
 		train = iTrain;
 		trainID = train.getId();
-		route = "Green  Line";
-		acStatus = 0;
-		heatStatus = 0;
-		lDoorStatus = 0;
-		rDoorStatus = 0;
-		lightStatus = 0;
+		route = "GREEN";
+		acStatus = false;
+		heatStatus = false;
+		lDoorStatus = false;
+		rDoorStatus = false;
+		lightStatus = false;
 		powerLimit = 1000;
 		speed = train.GetCurrentSpeed();
 		power = 0;
 		eBrakeStatus = false;
 		sBrakeStatus = false;
+		desiredSpeed = 0;
 
-		locationCalculator = new LocationCalculator();
+		track = new Track("greenTrackLayout.csv");
+
+		locationCalculator = new LocationCalculator(track, route);
 		controlCalculator = new ControlCalculator(powerLimit, kp, ki);
 
 		//region UI code
@@ -337,9 +344,9 @@ public class TrainController
 		hIncSpeed.getChildren().add(incSpeed);
 		speedGrid.add(hIncSpeed, 0, 0);
 
-		Text speed = new Text("XX mph");
-		speed.setTextAlignment(TextAlignment.CENTER);
-		speedGrid.add(speed, 0, 1);
+		speedRight = new Text("XX mph");
+		speedRight.setTextAlignment(TextAlignment.CENTER);
+		speedGrid.add(speedRight, 0, 1);
 
 		Button decSpeed = new Button("-");
 		HBox hDecSpeed = new HBox();
@@ -449,6 +456,36 @@ public class TrainController
 			}
 		});
 
+		manualBtn.setOnAction((ActionEvent e) ->
+		{
+
+		});
+
+		automaticBtn.setOnAction((ActionEvent e) ->
+		{
+
+		});
+
+		emerBtn.setOnAction((ActionEvent e) ->
+		{
+			train.SetEbrake(true);
+		});
+
+		brakeBtn.setOnAction((ActionEvent e) ->
+		{
+			train.SetSbrake(true);
+		});
+
+		incSpeed.setOnAction((ActionEvent e) ->
+		{
+			desiredSpeed++;
+		});
+
+		decSpeed.setOnAction((ActionEvent e) ->
+		{
+			desiredSpeed--;
+		});
+
 		//endregion
 
 		//region RadioButtonHandlers
@@ -460,11 +497,13 @@ public class TrainController
 				RadioButton toggled = (RadioButton)acToggleGroup.getSelectedToggle();
 				if(toggled.getText().equals("On"))
 				{
-					acStatus = 1;
+					acStatus = true;
+					train.SetAcOn();
 				}
 				else if(toggled.getText().equals("Off"))
 				{
-					acStatus = 0;
+					acStatus = false;
+					train.SetAcOFF();
 				}
 			}
 		});
@@ -477,11 +516,13 @@ public class TrainController
 				RadioButton toggled = (RadioButton)heatToggleGroup.getSelectedToggle();
 				if(toggled.getText().equals("On"))
 				{
-					heatStatus = 1;
+					heatStatus = true;
+					train.SetHeatOn();
 				}
 				else if(toggled.getText().equals("Off"))
 				{
-					heatStatus = 0;
+					heatStatus = false;
+					train.SetHeatOFF();
 				}
 			}
 		});
@@ -494,12 +535,13 @@ public class TrainController
 				RadioButton toggled = (RadioButton)lDoorToggleGroup.getSelectedToggle();
 				if(toggled.getText().equals("On"))
 				{
-					lDoorStatus = 1;
+					lDoorStatus = true;
 				}
 				else if(toggled.getText().equals("Off"))
 				{
-					lDoorStatus = 0;
+					lDoorStatus = false;
 				}
+				train.SetLeftDoors(lDoorStatus);
 			}
 		});
 
@@ -511,29 +553,13 @@ public class TrainController
 				RadioButton toggled = (RadioButton)rDoorToggleGroup.getSelectedToggle();
 				if(toggled.getText().equals("On"))
 				{
-					rDoorStatus = 1;
+					rDoorStatus = true;
 				}
 				else if(toggled.getText().equals("Off"))
 				{
-					rDoorStatus = 0;
+					rDoorStatus = false;
 				}
-			}
-		});
-
-		rDoorToggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>()
-		{
-			@Override
-			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
-			{
-				RadioButton toggled = (RadioButton)rDoorToggleGroup.getSelectedToggle();
-				if(toggled.getText().equals("On"))
-				{
-					rDoorStatus = 1;
-				}
-				else if(toggled.getText().equals("Off"))
-				{
-					rDoorStatus = 0;
-				}
+				train.SetRightDoors(rDoorStatus);
 			}
 		});
 
@@ -545,12 +571,13 @@ public class TrainController
 				RadioButton toggled = (RadioButton)lightsToggleGroup.getSelectedToggle();
 				if(toggled.getText().equals("On"))
 				{
-					lightStatus = 1;
+					lightStatus = true;
 				}
 				else if(toggled.getText().equals("Off"))
 				{
-					lightStatus = 0;
+					lightStatus = false;
 				}
+				train.SetLights(lightStatus);
 			}
 		});
 		//endregion
@@ -566,17 +593,17 @@ public class TrainController
 
 	//region Public Methods
 
-	public void SetPowerText(String in)
+	public void setPowerText(String in)
 	{
 		powerText.setText(in + " W");
 	}
-
-	public void SetSpeedText(String in)
+	public void setSpeedText(String in)
 	{
-		powerText.setText(in + " mph");
+		speedRight.setText(in + " mph");
+		speedText.setText(in + " mph");
 	}
 
-	public void MakeAnnouncement(String announcement)
+	public void makeAnnouncement(String announcement)
 	{
 		String newNotification;
 		if(notifications.getText().equals("Notifications here"))
@@ -595,6 +622,8 @@ public class TrainController
 	{
 		kp = kpIn;
 		ki = kiIn;
+		controlCalculator.setKI(ki);
+		controlCalculator.setKP(kp);
 	}
 
 	public double getKP()
@@ -607,11 +636,13 @@ public class TrainController
 		return ki;
 	}
 
-	public void Update()
+	public void update()
 	{
-		train.SetPowerCommand(controlCalculator.ComputeNextCommand());
+		train.SetPowerCommand(controlCalculator.computeNextCommand());
 		train.Update();
-		SetSpeedText(""+train.GetCurrentSpeed());
+		//setSpeedText(""+train.GetCurrentSpeed());
+		setSpeedText("10");
+		locationCalculator.ComputeNextLocation(10);
 	}
 
 	//endregion
