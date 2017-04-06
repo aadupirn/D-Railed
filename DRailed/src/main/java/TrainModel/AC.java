@@ -9,6 +9,7 @@ public class AC {
     protected final double minTemp = 60;
     private final double maxTempCel = 26.667;
     private final double minTempCel = 15.556;
+    private final double normalTemp = 21.1111;
     protected static double temperature;
     private boolean ac;
     private boolean heat;
@@ -40,12 +41,20 @@ public class AC {
     }
     protected void changeTemp(){
         double tempCel = fahrToCel(temperature);
-        if(heat)
+        if(heat){
             tempCel = tempCel + ((maxTempCel - tempCel)* Math.exp(-11*.1));
-        else if(ac)
+            temperature = celToFah(tempCel);
+        }
+
+        else if(ac){
             tempCel = tempCel + ((minTempCel - tempCel)* Math.exp(-11*.1));
-        else;
-        temperature = celToFah(tempCel);
+            temperature = celToFah(tempCel);
+        }
+        else{
+            tempCel = tempCel + ((normalTemp - tempCel)* Math.exp(-11*.1));
+            temperature = celToFah(tempCel);
+        }
+
     }
     protected static Double getTemp(){
 
