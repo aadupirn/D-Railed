@@ -3,6 +3,7 @@ import TrainController.TrainController;
 
 import java.io.IOException;
 import java.util.Random;
+import TrackModel.Track;
 
 /**
  * Created by swaroopakkineni on 2/14/17.
@@ -10,6 +11,7 @@ import java.util.Random;
 public class Train {
     private TrainController trainController;
     private TrainModel trainModel;
+    private Track track;
     private int block;
     private Double commandSpeed;
     private int id;
@@ -40,8 +42,9 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         mass = 10000;
+        track = new Track();
 
-        trainController = new TrainController(this);
+        trainController = new TrainController(this, this.track);
         trainModel = new TrainModel();
     }
 
@@ -73,7 +76,8 @@ public class Train {
 
         block = blockLocation;
         id = newID;
-        trainController = new TrainController(this);
+        track = new Track();
+        trainController = new TrainController(this, this.track);
         trainModel = new TrainModel();
       //  trainModel = new TrainModel();
 
@@ -88,12 +92,13 @@ public class Train {
 
         block = blockLocation;
         id = newID;
-        trainController = new TrainController(this);
+        track = new Track();
+        trainController = new TrainController(this, track);
         trainModel = new TrainModel();
         //trainModel = new TrainModel();
         //trainController = new TrainController();
     }
-    public Train(int blockLocation, int numberOfCarts, Double newAuthority, Double newSpeed, int newID) throws IOException, Exception {
+    public Train(int blockLocation, int numberOfCarts, Double newAuthority, Double newSpeed, int newID, Track track) throws IOException, Exception {
         Engine = new engine();
         ac = new AC();
         ebrake = false;
@@ -103,7 +108,7 @@ public class Train {
 
         block = blockLocation;
         id = newID;
-        trainController = new TrainController(this);
+        trainController = new TrainController(this, track);
         trainModel = new TrainModel();
         //trainModel = new TrainModel();
     }

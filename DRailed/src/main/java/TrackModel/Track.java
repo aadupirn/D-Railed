@@ -3,6 +3,7 @@ package TrackModel;
 //import MBO.java.Train;
 import TrackController.TrackController;
 import TrackModel.Model.*;
+import TrainModel.Train;
 
 import java.util.HashMap;
 
@@ -17,8 +18,20 @@ public class Track {
     public Track(){
         //tc = new TrackController();
         tm = new TrackModel();
-        tm.importTrack("redTrackLayout.csv");
-        tm.importTrack("greenTrackLayout.csv");
+        //tm.importTrack("redTrackLayout.csv");
+        tm.importTrack("greenLine.csv");
+
+        Train t = null;
+
+        try {
+            t = new Train(1);
+        }catch(Exception e){
+            System.out.println("ERROR");
+        }
+
+        tm.getFromYardBlock("GREEN").setTrain(t);
+
+
     }
 
     public Track(String trackLayout){
