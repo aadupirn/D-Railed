@@ -39,7 +39,8 @@ public class MBOController extends Application {
 
     // TRAIN SCHEDULE DISPLAY TAB
     private TableView<TrainSchedule> trainScheduleTable = new TableView<>();
-    private Button trainScheduleButton;
+    private Button updateScheduleButton;
+    private TextField scheduleIdTestInput;
 
     // WORKER SCHEDULE DISPLAY TAB
     private Button workerScheduleButton;
@@ -79,8 +80,9 @@ public class MBOController extends Application {
         varianceTestInput = (TextField) primary.getScene().lookup("#variance_test_input");
         locationTestInput = (TextField) primary.getScene().lookup("#location_test_input");
 
-        trainScheduleTable= (TableView<TrainSchedule>) primary.getScene().lookup("#schedule_table");
-        trainScheduleButton = (Button) primary.getScene().lookup("#schedule_btn");
+        trainScheduleTable = (TableView<TrainSchedule>) primary.getScene().lookup("#schedule_table");
+        updateScheduleButton = (Button) primary.getScene().lookup("#schedule_btn");
+        scheduleIdTestInput = (TextField) primary.getScene().lookup("#update_id_test_input");
 
         workerScheduleButton = (Button) primary.getScene().lookup("#worker_schedule_btn");
         workerTable = (TableView) primary.getScene().lookup("#worker_schedule_table");
@@ -92,7 +94,7 @@ public class MBOController extends Application {
 
         murphyButton = (ToggleButton) primary.getScene().lookup("#mbo_murphy_toggle");
 
-        trainScheduleButton.setOnAction((ActionEvent a) -> {
+        updateScheduleButton.setOnAction((ActionEvent a) -> {
 
         });
 
@@ -115,16 +117,10 @@ public class MBOController extends Application {
         });
 
         submitButton.setOnAction((ActionEvent a) -> {
-            Double passengerNo = Double.parseDouble(passengerInput.getText());
-            Double conductorNo = Double.parseDouble(conductorInput.getText());
-
             resultPane.setContentText("SINGLE TRAIN DEPLOYMENT MODE");
 
             scheduler = new Scheduler(1);
-            //scheduler.generateSchedule();
-
             mbo = new MBO(1);
-
             setInfoColumns();
             setTrainColumns();
             setWorkColumns();
@@ -239,6 +235,11 @@ public class MBOController extends Application {
         primary.setScene(new Scene(root));
         primary.show();
         this.getUIElements();
+        scheduler = new Scheduler(1);
+        mbo = new MBO(1);
+        setInfoColumns();
+        setTrainColumns();
+        setWorkColumns();
     }
 
     public static void main(String[] args) {
