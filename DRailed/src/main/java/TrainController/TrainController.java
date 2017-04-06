@@ -1,5 +1,6 @@
 package TrainController;
 
+import TrackModel.Model.Block;
 import TrackModel.Track;
 import TrainModel.Train;
 import javafx.beans.value.ChangeListener;
@@ -499,7 +500,7 @@ public class TrainController
 
 		brakeBtn.setOnAction((ActionEvent e) ->
 		{
-			train.SetSbrake(true);
+			sBrake();
 		});
 
 		incSpeed.setOnAction((ActionEvent e) ->
@@ -636,6 +637,13 @@ public class TrainController
 
 	//region Public Methods
 
+	public void sBrake()
+	{
+		train.SetSbrake(true);
+		desiredSpeed = 0;
+		controlCalculator1.setDesiredSpeed(desiredSpeed);
+		controlCalculator2.setDesiredSpeed(desiredSpeed);
+	}
 	public double MpS2MpH(double mps)
 	{
 		return mps*2.23694;
@@ -715,6 +723,16 @@ public class TrainController
 		controlCalculator1.setDesiredSpeed(0);
 	}
 
+	public void setMBO(MBO imbo)
+	{
+		mbo = imbo;
+		locationCalculator.setMBO(mbo);
+	}
+
+	//endregion
+
+	//region UPDATE
+
 	public void update()
 	{
 		double powerCommand1 = controlCalculator1.computeNextCommand(speed);
@@ -740,13 +758,14 @@ public class TrainController
 		setTempText(train.getTemperature());
 		mbo.setSpeed(trainID, speed);
 		mbo.setAuthority(trainID, 100);
-		locationCalculator.ComputeNextLocation(train.GetCurrentSpeed());
-	}
+		Block currentBlock = locationCalculator.ComputeNextLocation(train.GetCurrentSpeed());
+		if(currentBlock.getBlockNumber() == 55)
+		{
+			sBrake();
+		}
+		//train.setGrade(currentBlock.getGrade());
+		//if(block.);
 
-	public void setMBO(MBO imbo)
-	{
-		mbo = imbo;
-		locationCalculator.setMBO(mbo);
 	}
 
 	//endregion

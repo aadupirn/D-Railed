@@ -37,7 +37,7 @@ public class LocationCalculator
 	//endregion
 
 	//region methods
-	public void ComputeNextLocation(double iSpeed)
+	public Block ComputeNextLocation(double iSpeed)
 	{
 		blockLocation += iSpeed;
 
@@ -77,6 +77,7 @@ public class LocationCalculator
 		mbo.setLocation(trainID, "Block: " + block);
 		System.out.println("We are on block " + block.getBlockNumber()+"\n" +
 				"Meters we have traveled along block: " + blockLocation);
+		return block;
 	}
 
 	public void setMBO(MBO imbo)
