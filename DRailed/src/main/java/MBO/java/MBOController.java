@@ -1,5 +1,6 @@
 package MBO.java;
 
+import com.sun.javafx.scene.control.TableColumnComparatorBase;
 import javafx.application.Application;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -152,6 +153,9 @@ public class MBOController extends Application {
     }
 
     private void setTrainColumns() {
+        TableColumn trainId = new TableColumn("Train ID");
+        trainId.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleIntegerProperty>("id"));
+
         TableColumn station2 = new TableColumn("Pioneer");
         station2.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station2"));
 
@@ -207,7 +211,7 @@ public class MBOController extends Application {
         station141.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station141"));
 
         trainScheduleTable.setItems(scheduler.getRows());
-        trainScheduleTable.getColumns().addAll(station2, station9, station16, station22, station31, station39, station48, station57, station65, station73, station77, station88, station96, station105, station114, station123, station132, station141);
+        trainScheduleTable.getColumns().addAll(trainId, station2, station9, station16, station22, station31, station39, station48, station57, station65, station73, station77, station88, station96, station105, station114, station123, station132, station141);
     }
 
     private void setWorkColumns() {

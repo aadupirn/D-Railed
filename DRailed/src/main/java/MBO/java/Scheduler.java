@@ -16,7 +16,7 @@ public class Scheduler {
 
 
     public Scheduler(int trainCount) {
-        trainSchedules.add(new TrainSchedule(LocalDateTime.now()));
+        trainSchedules.add(new TrainSchedule(1, LocalDateTime.now()));
     }
 
     public void geTrackData() {
