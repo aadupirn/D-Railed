@@ -77,6 +77,9 @@ public class TrainController
 	private LocationCalculator locationCalculator;
 	private ControlCalculator controlCalculator;
 
+
+
+
 	//endregion
 
 	//region Constructor

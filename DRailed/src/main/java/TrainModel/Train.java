@@ -44,7 +44,6 @@ public class Train {
         mass = 10000;
         startingBlock = 152;
         track = new Track();
-
         trainController = new TrainController(this, this.track);
         //trainModel = new TrainModel();
     }
