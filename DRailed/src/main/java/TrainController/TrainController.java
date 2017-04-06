@@ -92,7 +92,6 @@ public class TrainController
 		train = iTrain;
 		trainID = train.getId();
 		speedLimit = MpH2MpS(100);
-		mbo = new MBO(1);
 		route = "GREEN";
 		acStatus = false;
 		heatStatus = false;
@@ -733,6 +732,11 @@ public class TrainController
 		mbo.setLocation(trainID, "Block: " + String.valueOf(currentBlockID));
 
 		locationCalculator.ComputeNextLocation(train.GetCurrentSpeed());
+	}
+
+	public void setMBO(MBO imbo)
+	{
+		mbo = imbo;
 	}
 
 	//endregion

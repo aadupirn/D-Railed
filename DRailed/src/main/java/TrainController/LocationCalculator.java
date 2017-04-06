@@ -23,7 +23,7 @@ public class LocationCalculator
 	{
 		track = iTrack;
 		line = iLine;
-		block = track.getBlock(line, startingBlock);
+		block = track.getFromYardBlock(line);
 	}
 
 	//endregion
