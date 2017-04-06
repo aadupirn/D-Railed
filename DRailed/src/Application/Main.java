@@ -32,10 +32,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
-    	//Module initialization
-		TrackController trackController = new TrackController();
-
         primaryStage.setTitle(applicationTitle);
 
         GridPane grid = new GridPane();
@@ -110,8 +106,8 @@ public class Main extends Application {
 		trackControllerBtn.setOnAction((ActionEvent e) ->
 		{
 			try {
-				trackController.showUI();
-			} catch (Exception e1) {
+				TrackController trackController = new TrackController();
+			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		});
@@ -123,9 +119,6 @@ public class Main extends Application {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-            catch (Exception e2) {
-            	//lol
-			}
         });
 
 		trainModelBtn.setOnAction((ActionEvent e) ->
