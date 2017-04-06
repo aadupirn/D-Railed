@@ -12,13 +12,13 @@ public class Train {
     private TrainController trainController;
     private TrainModel trainModel;
     private Track track;
-    private int block;
+    private int startingBlock;
     private Double commandSpeed;
     private int id;
     private double currentSpeed;
     private double mass;
     private double grade;
-    private double authority;
+    private int authority;
 
     private engine Engine;
     private AC ac;
@@ -66,7 +66,7 @@ public class Train {
         this.unloading = generateUnloading();
     }
 
-    public Train(int blockLocation, int newID) throws IOException, Exception {
+    public Train(int startingBlock, int newID) throws IOException, Exception {
         Engine = new engine();
         ac = new AC();
         ebrake = false;
@@ -74,7 +74,7 @@ public class Train {
         currentSpeed = 0;
         mass = 10000;
 
-        block = blockLocation;
+        startingBlock = startingBlock;
         id = newID;
         track = new Track();
         trainController = new TrainController(this, this.track);
@@ -82,7 +82,7 @@ public class Train {
       //  trainModel = new TrainModel();
 
     }
-    public Train(int blockLocation, int numberOfCarts, int newID) throws IOException, Exception {
+    public Train(int startingBlock, int numberOfCarts, int newID) throws IOException, Exception {
         Engine = new engine();
         ac = new AC();
         ebrake = false;
@@ -90,7 +90,7 @@ public class Train {
         currentSpeed = 0;
         mass = 10000;
 
-        block = blockLocation;
+        startingBlock = startingBlock;
         id = newID;
         track = new Track();
         trainController = new TrainController(this, track);
@@ -98,7 +98,7 @@ public class Train {
         //trainModel = new TrainModel();
         //trainController = new TrainController();
     }
-    public Train(int blockLocation, int numberOfCarts, Double newAuthority, Double newSpeed, int newID, Track track) throws IOException, Exception {
+    public Train(int startingBlock, int numberOfCarts, int newAuthority, Double newSpeed, int newID, Track track) throws IOException, Exception {
         Engine = new engine();
         ac = new AC();
         ebrake = false;
@@ -106,7 +106,7 @@ public class Train {
         currentSpeed = 0;
         mass = 10000;
 
-        block = blockLocation;
+        startingBlock = startingBlock;
         id = newID;
         trainController = new TrainController(this, track);
         trainModel = new TrainModel();
@@ -190,9 +190,11 @@ Calculates speed
     public double GetCurrentSpeed(){
         return currentSpeed;
     }
-    public double GetAuthority(){
-        authority = 0;
+    public int GetAuthority(){
         return authority;
+    }
+    public int GetStartingBlock(){
+        return startingBlock;
     }
     public void SetPowerCommand(Double pwrCMD){
         commandSpeed = pwrCMD;

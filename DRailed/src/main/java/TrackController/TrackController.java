@@ -175,8 +175,7 @@ public class TrackController {
 
     public void dispatchTrain(int start, int numberOfCarts, int newAuthority, Double newSpeed, int newID) throws Exception
     {
-        double x = 0; //TODO delete me when he changes authority to int
-        Train train = new Train(start,numberOfCarts,x, newSpeed, newID, this.track);
+        Train train = new Train(start,numberOfCarts,newAuthority, newSpeed, newID, this.track);
         if (isLineMain)
         {
             track.dispatchTrainOnTrack(this.line,train);
