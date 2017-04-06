@@ -5,8 +5,10 @@ package TrainModel;
  */
 public class AC {
 
-    protected final double maxTemp = 75;
-    protected final double minTemp = 65;
+    protected final double maxTemp = 80;
+    protected final double minTemp = 60;
+    private final double maxTempCel = fahrToCel(maxTemp);
+    private final double minTempCel = fahrToCel(minTemp);
     protected static double temperature;
     private boolean ac;
     private boolean heat;
@@ -37,13 +39,22 @@ public class AC {
         temperature--;
     }
     protected void changeTemp(){
+        double tempCel = fahrToCel(temperature);
         if(heat)
-            temperature += .1;
+            tempCel = tempCel + (maxTemp - tempCel)* Math.exp(6.9*.1);
         else if(ac)
-            temperature -= .1;
+            tempCel = tempCel + (minTemp - tempCel)* Math.exp(6.9*.1);
         else;
+        temperature = celToFah(tempCel);
     }
     protected static Double getTemp(){
         return temperature;
+    }
+
+    private Double fahrToCel(Double fah){
+        return ((fah -32)*5/9);
+    }
+    private Double celToFah(Double cel){
+        return ((cel *5/9)+32);
     }
 }
