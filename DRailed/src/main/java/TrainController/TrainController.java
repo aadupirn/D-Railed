@@ -1,5 +1,6 @@
 package TrainController;
 
+import TrackModel.Model.Block;
 import TrackModel.Track;
 import TrainModel.Train;
 import javafx.beans.value.ChangeListener;
@@ -65,6 +66,7 @@ public class TrainController
 	private boolean heatStatus;
 	private boolean movementStatus;
 	private boolean locationStatus;
+	private boolean announcementMade;
 
 	private Text speedText;
 	private Text powerText;
@@ -109,6 +111,7 @@ public class TrainController
 		sBrakeStatus = false;
 		desiredSpeed = 0;
 		temperature = train.getTemperature();
+		announcementMade = false;
 
 		track = iTrack;
 
@@ -182,7 +185,7 @@ public class TrainController
 		powerText.setTextAlignment(TextAlignment.LEFT);
 		grid.add(powerText, 4, 1);
 
-		final Button automaticBtn = new Button("AUTOMATIC");
+		final Button automaticBtn = new Button("Release Brakes");
 		HBox hAutomaticBtn = new HBox(0);
 		hAutomaticBtn.setMinWidth(colWidth*3);
 		automaticBtn.setMinWidth(colWidth*2);
@@ -489,7 +492,7 @@ public class TrainController
 
 		automaticBtn.setOnAction((ActionEvent e) ->
 		{
-
+			releaseBrakes();
 		});
 
 		emerBtn.setOnAction((ActionEvent e) ->
@@ -499,7 +502,7 @@ public class TrainController
 
 		brakeBtn.setOnAction((ActionEvent e) ->
 		{
-			train.SetSbrake(true);
+			sBrake();
 		});
 
 		incSpeed.setOnAction((ActionEvent e) ->
@@ -636,6 +639,35 @@ public class TrainController
 
 	//region Public Methods
 
+	public void releaseBrakes()
+	{
+		train.setEbrake(false);
+		train.SetSbrake(false);
+		eBrakeStatus = false;
+		sBrakeStatus = false;
+	}
+
+	public void sBrake()
+	{
+		train.SetSbrake(true);
+		sBrakeStatus = true;
+		desiredSpeed = 0;
+		setDesiredSpeedText(desiredSpeed);
+		controlCalculator1.setDesiredSpeed(desiredSpeed);
+		controlCalculator2.setDesiredSpeed(desiredSpeed);
+	}
+
+	public void emergencyBrake()
+	{
+		train.SetPowerCommand(new Double(0));
+		setPowerText(0);
+		train.setEbrake(true);
+		desiredSpeed = 0;
+		eBrakeStatus = true;
+		setDesiredSpeedText(desiredSpeed);
+		controlCalculator2.setDesiredSpeed(0);
+		controlCalculator1.setDesiredSpeed(0);
+	}
 	public double MpS2MpH(double mps)
 	{
 		return mps*2.23694;
@@ -703,17 +735,17 @@ public class TrainController
 		return ki;
 	}
 
-	public void emergencyBrake()
+
+
+	public void setMBO(MBO imbo)
 	{
-		train.SetPowerCommand(new Double(0));
-		setPowerText(0);
-		train.setEbrake(true);
-		desiredSpeed = 0;
-		eBrakeStatus = true;
-		setDesiredSpeedText(desiredSpeed);
-		controlCalculator2.setDesiredSpeed(0);
-		controlCalculator1.setDesiredSpeed(0);
+		mbo = imbo;
+		locationCalculator.setMBO(mbo);
 	}
+
+	//endregion
+
+	//region UPDATE
 
 	public void update()
 	{
@@ -728,6 +760,7 @@ public class TrainController
 			train.SetPowerCommand(powerCommand1);
 			setPowerText(powerCommand1);
 		}
+		
 		if(eBrakeStatus == true)
 		{
 			train.SetPowerCommand(new Double(0));
@@ -740,13 +773,19 @@ public class TrainController
 		setTempText(train.getTemperature());
 		mbo.setSpeed(trainID, speed);
 		mbo.setAuthority(trainID, 100);
-		locationCalculator.ComputeNextLocation(train.GetCurrentSpeed());
-	}
+		Block currentBlock = locationCalculator.ComputeNextLocation(train.GetCurrentSpeed());
+		if(currentBlock.getBlockNumber() == 55)
+		{
+			sBrake();
+			if(!announcementMade)
+			{
+				announcementMade = true;
+				makeAnnouncement("Approaching Yard");
+			}
+		}
+		//train.setGrade(currentBlock.getGrade());
+		//if(block.);
 
-	public void setMBO(MBO imbo)
-	{
-		mbo = imbo;
-		locationCalculator.setMBO(mbo);
 	}
 
 	//endregion
