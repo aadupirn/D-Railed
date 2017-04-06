@@ -3,6 +3,7 @@ package MBO.java;
 import javafx.application.Application;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -36,7 +37,7 @@ public class MBOController extends Application {
     private TextField locationTestInput;
 
     // TRAIN SCHEDULE DISPLAY TAB
-    private TableView<TrainInfo> stationsTable = new TableView<>();
+    private TableView<TrainSchedule> trainScheduleTable = new TableView<>();
     private Button trainScheduleButton;
 
     // WORKER SCHEDULE DISPLAY TAB
@@ -76,7 +77,7 @@ public class MBOController extends Application {
         varianceTestInput = (TextField) primary.getScene().lookup("#variance_test_input");
         locationTestInput = (TextField) primary.getScene().lookup("#location_test_input");
 
-        stationsTable = (TableView<TrainInfo>) primary.getScene().lookup("#schedule_table");
+        trainScheduleTable= (TableView<TrainSchedule>) primary.getScene().lookup("#schedule_table");
         trainScheduleButton = (Button) primary.getScene().lookup("#schedule_btn");
 
         workerScheduleButton = (Button) primary.getScene().lookup("#worker_schedule_btn");
@@ -88,8 +89,6 @@ public class MBOController extends Application {
         resultPane = (DialogPane) primary.getScene().lookup("#result_pane");
 
         murphyButton = (ToggleButton) primary.getScene().lookup("#mbo_murphy_toggle");
-
-        stationsTable.setEditable(true);
 
         trainScheduleButton.setOnAction((ActionEvent a) -> {
 
@@ -125,7 +124,7 @@ public class MBOController extends Application {
             mbo = new MBO(1);
 
             setInfoColumns();
-
+            setTrainColumns();
         });
     }
 
@@ -153,26 +152,62 @@ public class MBOController extends Application {
     }
 
     private void setTrainColumns() {
-        TableColumn trainId = new TableColumn("Glenbury (65)");
-        trainId.setCellValueFactory(new PropertyValueFactory<TrainInfo, SimpleIntegerProperty>("id"));
+        TableColumn station2 = new TableColumn("Pioneer");
+        station2.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station2"));
 
-        TableColumn speed = new TableColumn("Dormont (73)");
-        speed.setCellValueFactory(new PropertyValueFactory<TrainInfo, SimpleDoubleProperty>("speed"));
+        TableColumn station9 = new TableColumn("Edgebrook");
+        station9.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station9"));
 
-        TableColumn safeSpeed = new TableColumn("Mt. Lebanon");
-        safeSpeed.setCellValueFactory(new PropertyValueFactory<TrainInfo, SimpleDoubleProperty>("safeSpeed"));
+        TableColumn station16 = new TableColumn("Station X");
+        station16.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station16"));
 
-        TableColumn variance = new TableColumn("Poplar");
-        variance.setCellValueFactory(new PropertyValueFactory<TrainInfo, SimpleDoubleProperty>("variance"));
+        TableColumn station22 = new TableColumn("Whited");
+        station22.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station22"));
 
-        TableColumn authority = new TableColumn("Authority");
-        authority.setCellValueFactory(new PropertyValueFactory<TrainInfo, SimpleIntegerProperty>("authority"));
+        TableColumn station31 = new TableColumn("South Bank");
+        station31.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station31"));
 
-        TableColumn gps = new TableColumn("GPS");
-        gps.setCellValueFactory(new PropertyValueFactory<TrainInfo, String>("location"));
+        TableColumn station39 = new TableColumn("Central");
+        station39.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station39"));
 
-        infoTable.setItems(mbo.getRows());
-        infoTable.getColumns().addAll(trainId, speed, safeSpeed, variance, authority, gps);
+        TableColumn station48 = new TableColumn("Inglewood");
+        station48.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station48"));
+
+        TableColumn station57 = new TableColumn("Overbrook");
+        station57.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station57"));
+
+        TableColumn station65 = new TableColumn("Glenbury");
+        station65.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station65"));
+
+        TableColumn station73 = new TableColumn("Dormont");
+        station73.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station73"));
+
+        TableColumn station77 = new TableColumn("Mt. Lebanon");
+        station77.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station77"));
+
+        TableColumn station88 = new TableColumn("Poplar");
+        station88.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station88"));
+
+        TableColumn station96 = new TableColumn("Castle Shannon");
+        station96.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station96"));
+
+        TableColumn station105 = new TableColumn("Dormont");
+        station105.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station105"));
+
+        TableColumn station114 = new TableColumn("Glenbury");
+        station114.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station114"));
+
+        TableColumn station123 = new TableColumn("Overbrook");
+        station123.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station123"));
+
+        TableColumn station132 = new TableColumn("Inglewood");
+        station132.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station132"));
+
+        TableColumn station141 = new TableColumn("Central");
+        station141.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station141"));
+
+        trainScheduleTable.setItems(scheduler.getRows());
+        trainScheduleTable.getColumns().addAll(station2, station9, station16, station22, station31, station39, station48, station57, station65, station73, station77, station88, station96, station105, station114, station123, station132, station141);
     }
 
     private void setWorkColumns() {
