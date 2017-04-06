@@ -13,10 +13,12 @@ import java.util.ArrayList;
  */
 public class Scheduler {
     private ObservableList<TrainSchedule> trainSchedules = FXCollections.observableArrayList();
+    private ObservableList<WorkerSchedule> workSchedules = FXCollections.observableArrayList();
 
 
     public Scheduler(int trainCount) {
         trainSchedules.add(new TrainSchedule(1, LocalDateTime.now()));
+        workSchedules.add(new WorkerSchedule(1, LocalDateTime.now()));
     }
 
     public TrainSchedule getSchedule() {
@@ -31,5 +33,7 @@ public class Scheduler {
         return null;
     }
 
-    public ObservableList<TrainSchedule> getRows() { return trainSchedules; }
+
+    public ObservableList<TrainSchedule> getTrainRows() { return trainSchedules; }
+    public ObservableList<WorkerSchedule> getWorkerRows() { return workSchedules; }
 }
