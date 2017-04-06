@@ -21,16 +21,6 @@ public class Track {
         //tm.importTrack("redTrackLayout.csv");
         tm.importTrack("greenLine.csv");
 
-        Train t = null;
-
-        try {
-            t = new Train(1);
-        }catch(Exception e){
-            System.out.println("ERROR");
-        }
-
-        tm.getFromYardBlock("GREEN").setTrain(t);
-
 
     }
 
