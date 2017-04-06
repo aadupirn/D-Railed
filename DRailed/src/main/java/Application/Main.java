@@ -122,8 +122,10 @@ public class Main extends Application {
             try {
 				dTime = new DTime();
 				Track track = new Track();
+				track.couple("GREEN");
 				TrackController trackController = new TrackController(dTime);
 				trackController.setTrack(track);
+				track.setTrackController(trackController);
 				TrackModelGUI trackModel = new TrackModelGUI(track);
 				trackController.showUI();
             } catch (IOException e1) {

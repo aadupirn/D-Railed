@@ -35,7 +35,8 @@ public class LocationCalculator
 		while(block.getLength() < blockLocation)
 		{
 			blockLocation = blockLocation - block.getLength();
-			block = block.getNextBlock(false);
+			block = track.getNextBlock(block.getLine(), block, false);
+
 		}
 		System.out.println("We are on block " + block.getBlockNumber()+"\n" +
 				"Meters we have traveled along block: " + blockLocation);
