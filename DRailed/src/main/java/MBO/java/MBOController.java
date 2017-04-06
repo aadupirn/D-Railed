@@ -119,7 +119,7 @@ public class MBOController extends Application {
 
             resultPane.setContentText("SINGLE TRAIN DEPLOYMENT MODE");
 
-            scheduler = new Scheduler();
+            scheduler = new Scheduler(1);
             //scheduler.generateSchedule();
 
             mbo = new MBO(1);
