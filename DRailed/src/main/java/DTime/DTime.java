@@ -18,10 +18,8 @@ public class DTime
 
 	class DRailedTask extends TimerTask
 	{
-		private int counter = 0;
 		public void run()
 		{
-			counter++;
 			trainController.update();
 		}
 	}
