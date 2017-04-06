@@ -17,6 +17,9 @@ public class LocationCalculator
 	private double blockLocation;
 	private MBO mbo;
 	int trainID;
+	int node85Seen = 0;
+	int node100Seen = 0;
+	int node77Seen = 0;
 
 	//endregion
 
@@ -46,11 +49,29 @@ public class LocationCalculator
 		{
 			blockLocation = blockLocation - block.getLength();
 
-			if(block.canMoveToBlock(false)){
+			if(node77Seen >= 1 && block.getBlockNumber() == 101) {
+				block = track.getNextBlock(block.getLine(), block, false);
+				System.out.println("101 MOVE DOWN");
+				node85Seen = -1;
+				node100Seen = -1;
+			}else if(node85Seen >= 1 && block.getBlockNumber() == 100){
+				System.out.println("100 MOVE DOWN ONE");
+				block = track.getNextBlock(block.getLine(), block, false);
+				node100Seen++;
+			}else if(node85Seen >= 1 && node100Seen >= 1 && node77Seen != 2){
+				System.out.println("MOVE UP");
+				block = track.getNextBlock(block.getLine(), block, true);
+			}else if(node85Seen <= 1 && block.getBlockNumber() != 100) {
+				System.out.println("85 ONCE MOVE DOWN");
+				block = track.getNextBlock(block.getLine(), block, false);
+				node85Seen++;
+			}else if(block.canMoveToBlock(false)){
+				System.out.println("MOVE DOWN");
 				block = block.getNextBlock(false);
+				if(block.getBlockNumber() == 77){
+					node77Seen++;
+				}
 			}
-
-			block = track.getNextBlock(block.getLine(), block, false);
 
 		}
 		mbo.setLocation(trainID, "Block: " + block);
