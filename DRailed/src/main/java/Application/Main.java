@@ -1,6 +1,7 @@
 package Application;
 
-import TrackModel.TrackModelGUI;
+import TrackModel.UI.TrackModelGUI;
+import TrainController.TrainController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -11,11 +12,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import TrackController.TrackController;
-import TrackModel.Track;
 import DTime.DTime;
+import TrainModel.TrainModel;
 import TrainModel.Train;
 import MBO.java.MBOController;
-import ctc.MainFrame;
+import ctc.CTCMain;
 
 import java.io.IOException;
 
@@ -28,14 +29,9 @@ public class Main extends Application {
     private int windowHight = 300;
     private int inset = 25;
     private int colWidth = 75;
-    private DTime dTime;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
-    	//Module initialization
-
-
         primaryStage.setTitle(applicationTitle);
 
         GridPane grid = new GridPane();
@@ -100,9 +96,8 @@ public class Main extends Application {
 		ctcBtn.setOnAction((ActionEvent e) ->
 		{
 			try{
-				MainFrame ctc = new MainFrame();
-				ctc.setVisible(true);
-				ctc.deleteFile();
+				CTCMain ctc = new CTCMain();
+				ctc.start(new Stage());
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -111,8 +106,8 @@ public class Main extends Application {
 		trackControllerBtn.setOnAction((ActionEvent e) ->
 		{
 			try {
-
-			} catch (Exception e1) {
+				TrackController trackController = new TrackController();
+			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		});
@@ -120,18 +115,10 @@ public class Main extends Application {
         trackModelBtn.setOnAction((ActionEvent e) ->
         {
             try {
-				dTime = new DTime();
-				Track track = new Track();
-				TrackController trackController = new TrackController(dTime);
-				trackController.setTrack(track);
-				TrackModelGUI trackModel = new TrackModelGUI(track);
-				trackController.showUI();
+                TrackModelGUI trackModel = new TrackModelGUI();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-            catch (Exception e2) {
-            	//lol
-			}
         });
 
 		trainModelBtn.setOnAction((ActionEvent e) ->
@@ -148,8 +135,8 @@ public class Main extends Application {
 		{
 			try {
 				Train t = new Train();
-				DTime dt = new DTime();
-				dt.addTC(t.GetTrainController());
+				DTime dt = new DTime(t.GetTrainController());
+				//dt.Run();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			} catch (Exception e1)

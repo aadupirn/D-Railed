@@ -19,14 +19,14 @@ public class TrainModelMain {
     public TrainModelMain(){
         powerCommand = 10000.0;
         velocity = 0.5;
-        //listOfCarts.add(new Cart());
+        listOfCarts.add(new Cart());
         calculatedAccleration = 0.5;
         mass = 37000.0;
         timeStep = 0.001;
         distance = 0.0;
         grade = 0.0;
         System.out.println("Initialized");
-       //TimeCalc();
+        TimeCalc();
     }
     public TrainModelMain(int numberOfCarts){
         for(int i = 0; i < numberOfCarts; i++)

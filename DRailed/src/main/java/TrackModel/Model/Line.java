@@ -221,21 +221,9 @@ public class Line {
 
     public void placeTrain(Block block, Train train){
 
-        block.setTrain(train);
+        block.trainEnter(train);
         trains.add(train);
 
-    }
-
-    public Block getBlock(int blockId){
-        for(Section s : getSections()){
-            for(Block b : s.getBlocks()){
-                if(b.getBlockNumber() == blockId){
-                    return b;
-                }
-            }
-        }
-
-        return null;
     }
 
 }

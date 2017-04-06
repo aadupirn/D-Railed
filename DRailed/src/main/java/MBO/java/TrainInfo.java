@@ -1,8 +1,5 @@
 package MBO.java;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -18,77 +15,50 @@ import java.io.IOException;
  * Created by joero on 2/6/2017.
  */
 public class TrainInfo {
-    private final SimpleIntegerProperty id;
-    private final SimpleDoubleProperty speed;
-    private final SimpleDoubleProperty safeSpeed;
-    private final SimpleStringProperty location;
-    private final SimpleIntegerProperty authority;
-    private final SimpleDoubleProperty variance;
+    private ObservableList<InfoRow> infoRows = FXCollections.observableArrayList();
+    public XSSFWorkbook schedule = new XSSFWorkbook();
 
-    public TrainInfo(int id, double speed, double safeSpeed, String location, int authority, double variance){
-        this.id  = new SimpleIntegerProperty(id);
-        this.speed = new SimpleDoubleProperty(speed);
-        this.safeSpeed = new SimpleDoubleProperty(safeSpeed);
-        this.location = new SimpleStringProperty(location);
-        this.authority = new SimpleIntegerProperty(authority);
-        this.variance = new SimpleDoubleProperty(variance);
+    public TrainInfo(File file) {
+        try {
+            FileInputStream fileIn = new FileInputStream(file);
+            schedule = new XSSFWorkbook(fileIn);
+            XSSFSheet worksheet = schedule.getSheet("Sheet1");
+            for(int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++)
+                this.createInfoRow(worksheet.getRow(i));
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public int getId(){ return id.get(); }
-
-    public void setId(int id){ this.id.set(id); }
-
-    public double getSpeed(){
-        return speed.get();
+    private void createInfoRow(XSSFRow data) {
+        InfoRow infoRow = new InfoRow(
+                data.getCell(0).getStringCellValue(),
+                data.getCell(1).getStringCellValue(),
+                data.getCell(2).getStringCellValue(),
+                data.getCell(3).getStringCellValue(),
+                data.getCell(4).getStringCellValue(),
+                data.getCell(5).getStringCellValue(),
+                data.getCell(6).getStringCellValue());
+        infoRows.add(infoRow);
     }
 
-    public void setSpeed(double speed){
-        this.speed.set(speed);
+    public void addRow(InfoRow data) {
+        infoRows.add(data);
     }
 
-    public double getSafeSpeed(){
-        return safeSpeed.doubleValue();
+    public InfoRow findRow(String id) {
+        for(InfoRow data : infoRows){
+            if(data.getTrainId().equals(id))
+                return data;
+        }
+        return null;
     }
 
-    public void setSafeSpeed(double speed) { this.safeSpeed.set(speed); }
-
-    public String getLocation(){
-        return location.get();
+    public XSSFWorkbook getExcelFile(){
+        return schedule;
     }
-
-    public void setLocation(String location){ this.location.set(location); }
-
-    public int getAuthority(){
-        return authority.get();
-    }
-
-    public void setAuthorithy(int authority){ this.authority.set(authority); }
-
-    public double getVariance(){
-        return variance.get();
-    }
-
-    public void setVariance(double variance){
-        this.variance.set(variance);
-    }
-
-    // NEEDED FOR AUTO-UPDATING OF UI
-    public SimpleIntegerProperty idProperty() {
-        return id;
-    }
-    public SimpleDoubleProperty speedProperty() {
-        return speed;
-    }
-    public SimpleDoubleProperty safeSpeedProperty() {
-        return safeSpeed;
-    }
-    public SimpleStringProperty locationProperty() {
-        return location;
-    }
-    public SimpleIntegerProperty authorityProperty() {
-        return authority;
-    }
-    public SimpleDoubleProperty varianceProperty(){
-        return variance;
-    }
+    public ObservableList<InfoRow> getRows() { return infoRows; }
 }

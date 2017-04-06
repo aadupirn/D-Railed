@@ -24,12 +24,12 @@ public class TrackControllerUI {
     //Class Objects
     private Stage mainStage, sideStage;
     private Scene mainScene, murphyScene, userInScene, engScene, toTMScene;
-    private Label controllerLabel,blockLabel, controlLabel, switchLabel, occupiedLabel, lightsLabel, crossLabel, switchAdjLabel, mainBlockLabel, subBlock1Label,subBlock2Label,connectedLabel, getTrainID, getSpeed,getAuth,getCarts;
-    private TextField blockID, occupiedStatus, lightsStatus,crossStatus, switchAdj, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText, getTrainIDText, getSpeedText, getAuthText, getCartsText;
+    private Label controllerLabel,blockLabel, controlLabel, switchLabel, openLabel, lightsLabel, crossLabel, stationLabel, switchAdjLabel, mainBlockLabel, subBlock1Label,subBlock2Label,connectedLabel;
+    private TextField blockID, openStatus, lightsStatus,crossStatus,stationStatus, switchAdj, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText;
     private TextArea notifications;
     private Text controllerLine, controllerSection;
-    private Button murphyButton, userInputsButton, engInputsButton, toTrackModelButton, murphyBreakTrackButton, murphyBreakCTCComms, murphyBreakTMComms, sendEngineer, loadPLC, blockIdButton, switchIdButton, dispatchButton;
-    private RadioButton blockRB, switchRB;
+    private Button murphyButton, userInputsButton, engInputsButton, toTrackModelButton, murphyBreakTrackButton, murphyBreakCTCComms, murphyBreakTMComms, sendEngineer, loadPLC, blockIdButton, switchIdButton;
+    private RadioButton trainRB, blockRB, switchRB;
     private TrackController tc;
     private PLC myPLC;
     private Block[] Blocks;
@@ -76,10 +76,10 @@ public class TrackControllerUI {
         MenuBar menuBar = new MenuBar();
         Menu menuController = new Menu("Choose Controller");
         MenuItem[] trackControllers = new MenuItem[4];
-        trackControllers[0] = new MenuItem("Red - 1 to 40");
-        trackControllers[1] = new MenuItem("Red - 41 to 77");
-        trackControllers[2] = new MenuItem("Green - 1 to 80");
-        trackControllers[3] = new MenuItem("Green - 81 to 152");
+        trackControllers[0] = new MenuItem("Red - A to G");
+        trackControllers[1] = new MenuItem("Red - H to U");
+        trackControllers[2] = new MenuItem("Green - A to N");
+        trackControllers[3] = new MenuItem("Green - O to YY");
         for (int i = 0; i < 4; i++)
             menuController.getItems().add(trackControllers[i]);
         menuBar.getMenus().addAll(menuController);
@@ -95,8 +95,8 @@ public class TrackControllerUI {
 
         //Set up section titles on main screen
         controllerLabel = new Label("Track Controller Controls:");
-        controllerLine = new Text("Line - Green");
-        controllerSection = new Text("Blocks - 1 to 152");
+        controllerLine = new Text("Line - Red");
+        controllerSection = new Text("Section - A to G");
         blockLabel = new Label("Block Info");
         controlLabel = new Label("Controls/Track Info");
         switchLabel = new Label("Switch Info");
@@ -124,18 +124,18 @@ public class TrackControllerUI {
         blockInfo.add(blockIdButton, 0, 0);
 
         //Block ID text
-        blockID = new TextField("1");
+        blockID = new TextField("A.1");
         blockInfo.add(blockID, 1, 0);
 
 
         //Open label
-        occupiedLabel = new Label("Occupied Status: ");
-        occupiedLabel.setFont(new Font("Garamond", 16));
-        blockInfo.add(occupiedLabel, 0, 1);
+        openLabel = new Label("Open Status: ");
+        openLabel.setFont(new Font("Garamond", 16));
+        blockInfo.add(openLabel, 0, 1);
 
         //Open status text
-        occupiedStatus = new TextField("Occupied/Not Occupied");
-        blockInfo.add(occupiedStatus, 1, 1);
+        openStatus = new TextField("Open/Closed/Occupied/Broken");
+        blockInfo.add(openStatus, 1, 1);
 
         //Lights label
         lightsLabel = new Label("Light Status: ");
@@ -143,7 +143,7 @@ public class TrackControllerUI {
         blockInfo.add(lightsLabel, 0, 2);
 
         //Lights status text
-        lightsStatus = new TextField("Greed/Red/ (N/A)");
+        lightsStatus = new TextField("Greed/Red");
         blockInfo.add(lightsStatus, 1, 2);
 
         //Crossroads label
@@ -155,14 +155,23 @@ public class TrackControllerUI {
         crossStatus = new TextField("On/Off/(N/A)");
         blockInfo.add(crossStatus, 1, 3);
 
+        //Station label
+        stationLabel = new Label("Station Name: ");
+        stationLabel.setFont(new Font("Garamond", 16));
+        blockInfo.add(stationLabel, 0, 4);
+
+        //Station status text
+        stationStatus = new TextField("Name/(N/A)");
+        blockInfo.add(stationStatus, 1, 4);
+
         //Switch label
         switchAdjLabel = new Label("Adjacent Switches: ");
         switchAdjLabel.setFont(new Font("Garamond", 16));
-        blockInfo.add(switchAdjLabel, 0, 4);
+        blockInfo.add(switchAdjLabel, 0, 5);
 
         //Switch GridPane
         switchAdj = new TextField("ID/(N/A)");
-        blockInfo.add(switchAdj, 1, 4);
+        blockInfo.add(switchAdj, 1, 5);
 
         blockInfo.setMinHeight(windowHeight * 2 / 3);
 
@@ -190,18 +199,22 @@ public class TrackControllerUI {
         main.add(buttonSelect, 1, 2);
 
         //Put track pane in
-        notifications = new TextArea("");
-        notifications.appendText("17");
+        notifications = new TextArea("Train ID: 1\nBlock: B.2\nSpeed: 15 m/s\nAuthority Left: 80 m\n---------------------------\n");
+        notifications.appendText("Train ID: 2\nBlock: G.1\nSpeed: 15 m/s\nAuthority Left: 80 m\n---------------------------\n");
+        notifications.appendText("Train ID: 3\nBlock: V.3\nSpeed: 15 m/s\nAuthority Left: 80 m\n---------------------------\n");
         notifications.setFont(Font.font("Garamond", 12));
         notifications.setMinHeight(windowHeight / 3);
         trainInfo.setHgap(20);
         trainInfo.add(notifications, 0, 0);
+        trainRB = new RadioButton("Trains");
+        trainRB.setToggleGroup(tOrB);
         blockRB = new RadioButton("Blocks");
         blockRB.setToggleGroup(tOrB);
         switchRB = new RadioButton("Switches");
         switchRB.setToggleGroup(tOrB);
-        trainOrBlock.add(blockRB, 0, 0);
-        trainOrBlock.add(switchRB, 1, 0);
+        trainOrBlock.add(trainRB, 0, 0);
+        trainOrBlock.add(blockRB, 1, 0);
+        trainOrBlock.add(switchRB, 2, 0);
         trainInfo.add(trainOrBlock, 0, 1);
         main.add(trainInfo, 1, 3);
 
@@ -214,7 +227,7 @@ public class TrackControllerUI {
         switchInfo.add(switchIdButton, 0, 0);
 
         //Switch ID text
-        switchIDText = new TextField("0");
+        switchIDText = new TextField("ID/(N/A)");
         switchInfo.add(switchIDText, 1, 0);
 
         //Main block label
@@ -363,7 +376,6 @@ public class TrackControllerUI {
         TextField sendSpeedText = new TextField("");
         TextField sendAuthText = new TextField("");
         Button sendData = new Button("Send to Track Model");
-        sendData.setOnAction(e->DispatchButtonClicked(e));
 
 
         //Assemble
@@ -387,16 +399,13 @@ public class TrackControllerUI {
         //End To Track Model ----------------------------------------------------------------------
 
         //From CTC
-        getTrainID = new Label("Set Train ID: ");
-        getSpeed = new Label("Set Speed: ");
-        getAuth = new Label("Set Authority: ");
-        getCarts = new Label("Number of Carts: ");
-        getTrainIDText = new TextField("");
-        getSpeedText = new TextField("");
-        getAuthText = new TextField("");
-        getCartsText = new TextField("");
-        dispatchButton = new Button("Dispatch Train");
-        dispatchButton.setOnAction(e->DispatchButtonClicked(e));
+        Label getTrainID = new Label("Set Train ID: ");
+        Label getSpeed = new Label("Set Speed: ");
+        Label getAuth = new Label("Set Authority: ");
+        TextField getTrainIDText = new TextField("");
+        TextField getSpeedText = new TextField("");
+        TextField getAuthText = new TextField("");
+        Button getData = new Button("Simulate");
         userInputs.setVgap(10);
 
 
@@ -410,31 +419,17 @@ public class TrackControllerUI {
         getAuth.setFont(new Font("Garamond", 16));
         userInputs.add(getAuth, 0, 2);
 
-        getCarts.setFont(new Font("Garamond", 16));
-        userInputs.add(getCarts,0,3);
-
         userInputs.add(getTrainIDText, 1, 0);
 
         userInputs.add(getSpeedText, 1, 1);
 
         userInputs.add(getAuthText, 1, 2);
 
-        userInputs.add(getCartsText,1,3);
-
-        userInputs.add(dispatchButton, 0, 4, 2, 1);
+        userInputs.add(getData, 0, 3, 2, 1);
         //End From CTC---------------------------------------------------------------------
 
         mainStage.setScene(mainScene);
-    }
-
-    public void showUI()
-    {
         mainStage.show();
-    }
-
-    public void hideUI()
-    {
-        mainStage.hide();
     }
 
     public void EngineerButtonClicked(ActionEvent e)
@@ -445,13 +440,11 @@ public class TrackControllerUI {
             FileChooser fileChooser = new FileChooser();
             Stage fileSelect = new Stage();
             fileSelect.setTitle("Choose a PLC file to import:");
-            ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(classLoader.getResource("TrackController/PLC").getFile());
-            fileChooser.setInitialDirectory(file);
-            File file2 = fileChooser.showOpenDialog(fileSelect);
-            if(file2 != null)
+            //fileChooser.setInitialDirectory(new File("src/TrackController"));
+            File file = fileChooser.showOpenDialog(fileSelect);
+            if(file != null)
             {
-               tc.setPLC(file2);
+               tc.setPLC(file);
             }
         }
     }
@@ -475,45 +468,45 @@ public class TrackControllerUI {
         Object source = e.getSource();
         if(source == blockIdButton)
         {
-            String[] s;
-            s = tc.getBlockInfo(Integer.parseInt(blockID.getText()));
-            occupiedStatus.setText(s[0]);
-            lightsStatus.setText(s[2]);
-            crossStatus.setText(s[1]);
-            switchAdj.setText(s[3]);
+            for(Block b : Blocks)
+            {
+                if(b.getBlockNumber() == (Integer.parseInt(blockID.getText())))
+                {
+                    openStatus.setText(b.getTrackState());
+                    lightsStatus.setText(Boolean.toString(b.getLight().isActive()));
+                    crossStatus.setText(Boolean.toString(b.getCrossing().isActive()));
+                    stationStatus.setText(b.getStation().getStationName());
+                    switchAdj.setText(Integer.toString(b.getSwitch().getSwitchNumber()));
+                }
+            }
         }
         else if(source == switchIdButton)
         {
-            String[] vals;
-            vals = tc.getSwitchInfo(Integer.parseInt(switchIDText.getText()));
-            mainBlockText.setText(vals[0]);
-            subBlock1Text.setText(vals[1]);
-            subBlock2Text.setText(vals[2]);
-            connectedText.setText(vals[3]);
-        }
-    }
+            Switch sw = null;
+            for(Block b : Blocks)
+            {
+                if(b.getSwitch() != null)
+                {
+                    sw = b.getSwitch();
 
-    public void Update()
-    {
-        return;
-    }
-
-    public void DispatchButtonClicked(ActionEvent e)
-    {
-        Object source = e.getSource();
-        System.out.println("Here we go!");
-        System.out.println("Source = " + source.toString());
-        if (source == dispatchButton)
-        {
-            try {
-                tc.dispatchTrain(152, Integer.parseInt(getCartsText.getText()), Integer.parseInt(getAuthText.getText()), Double.parseDouble(getSpeedText.getText()), Integer.parseInt(getTrainIDText.getText()));
-                System.out.println("Train created!");
-            } catch (Exception e1) {
-                System.out.println("We got an exception!!!");
+                }
+                if(sw != null)
+                {
+                    mainBlockText.setText(Integer.toString(sw.getMain()));
+                    subBlock1Text.setText((Integer.toString(sw.getTop())));
+                    subBlock2Text.setText(Integer.toString(sw.getBottom()));
+                    if (sw.getState() == SwitchState.TOP)
+                    {
+                        subBlock1Text.setText((Integer.toString(sw.getTop())));
+                    }
+                    else
+                    {
+                        subBlock2Text.setText(Integer.toString(sw.getBottom()));
+                    }
+                }
             }
         }
     }
-
     public void MainButtonClicked(ActionEvent e)
     {
         String newTitle = "Unknown Event";

@@ -123,8 +123,8 @@ public class TestingWindow {
 		double UK = previousUK + (.5)*(difference+previousError);
 		double command = (kp*difference) + (ki*UK);
 		powerCommand.setText("Power Command: " + command + " W");
-		trainController.setPowerText(command);
-		trainController.setSpeedText(actualSpeed);
+		trainController.SetPowerText(String.valueOf(command));
+		trainController.SetSpeedText(String.valueOf(actualSpeed));
 
 		previousError = difference;
 		previousUK = UK;
