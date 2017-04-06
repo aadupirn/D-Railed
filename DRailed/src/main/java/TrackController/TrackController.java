@@ -18,12 +18,9 @@ public class TrackController {
 
     //Class Objects
     private PLC myPLC;
-    private Block[] Blocks;
-    private TrackModel model;
     private Track track;
     private int ID, startBlock, endBlock;
     private String line;
-    private ArrayList<Block> blocks;
     private boolean trackComms, ctcComms, isLineMain;
     private Queue<String> messageQueue;
     private TrackControllerUI ui;
@@ -34,6 +31,10 @@ public class TrackController {
         trackComms = true;
         ctcComms = true;
         ui = new TrackControllerUI(this);
+        track = new Track("greenLine.csv");
+        line = "GREEN";
+        this.startBlock=1;
+        this.endBlock=152;
 
     }
 
@@ -75,13 +76,20 @@ public class TrackController {
 
 
     public void setPLC(File file) {
-        this.myPLC = new PLC(file,Blocks);
+        Block[] b = new Block[153];
+        for (int i = startBlock; i < endBlock; i++)
+        {
+            b[i] = track.getBlock(this.line,i);
+        }
+        this.myPLC = new PLC(file, b);
         System.out.println("\n\nPLC Valid: " + myPLC.isValid());
     }
 
-    public void setModel(TrackModel model) {
-        this.model = model;
+    public void setTrack(Track t) {
+        this.track = t;
     }
+
+
 
     public void setID(int ID) {
         this.ID = ID;
@@ -89,10 +97,6 @@ public class TrackController {
 
     public int getID() {
         return ID;
-    }
-
-    public void setBlocks(ArrayList<Block> blocks) {
-        this.blocks = blocks;
     }
 
     public void setTrackComms(boolean trackComms) {
@@ -182,5 +186,69 @@ public class TrackController {
     public boolean getOccupancy(int blockID)
     {
         return false;
+    }
+
+    public String[] getBlockInfo(int blockID)
+    {
+        String[] values = new String[4];
+        System.out.println(blockID);
+        Block b = track.getBlock(this.line,blockID);
+        if (b.isOccupied())
+            values[0] = "Occupied";
+        else
+            values[0] = "Not Occupied";
+        try {
+            if (b.getCrossing().isActive())
+                values[1] = "On";
+            else
+                values[1] = "Off";
+        } catch(NullPointerException e) {
+            values[1] = "N/A";
+        }
+        try {
+            if (b.getLight().isActive())
+                values[2] = "Green";
+            else
+                values[2] = "Red";
+        } catch(NullPointerException e) {
+            values[2] = "N/A";
+        }
+        try {
+            values[3] = b.getSwitch().getSwitchNumber().toString();
+        } catch(NullPointerException e) {
+            values[3] = "N/A";
+        }
+        return values;
+    }
+
+    public String[] getSwitchInfo(int switchID)
+    {
+        String[] values = new String[4];
+        Block b;
+        Switch s;
+        int blockID = -1;
+        for (int i = startBlock; i <= endBlock; i++)
+        {
+            b = track.getBlock(this.line,i);
+            if (b.getSwitch() != null) {
+                if (b.getSwitch().getSwitchNumber() == switchID) {
+                    blockID = b.getBlockNumber();
+                    break;
+                }
+            }
+        }
+
+        if (blockID > 0) {
+            b = track.getBlock(this.line, blockID);
+            s = b.getSwitch();
+            values[0] = s.getMain().toString();
+            values[1] = s.getTop().toString();
+            values[2] = s.getBottom().toString();
+            if (s.getSwitchInfo().equals(SwitchState.TOP))
+                values[3] = s.getTop().toString();
+            else
+                values[3] = s.getTop().toString();
+        }
+        return values;
     }
 }

@@ -24,8 +24,8 @@ public class TrackControllerUI {
     //Class Objects
     private Stage mainStage, sideStage;
     private Scene mainScene, murphyScene, userInScene, engScene, toTMScene;
-    private Label controllerLabel,blockLabel, controlLabel, switchLabel, openLabel, lightsLabel, crossLabel, stationLabel, switchAdjLabel, mainBlockLabel, subBlock1Label,subBlock2Label,connectedLabel;
-    private TextField blockID, openStatus, lightsStatus,crossStatus,stationStatus, switchAdj, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText;
+    private Label controllerLabel,blockLabel, controlLabel, switchLabel, occupiedLabel, lightsLabel, crossLabel, stationLabel, switchAdjLabel, mainBlockLabel, subBlock1Label,subBlock2Label,connectedLabel;
+    private TextField blockID, occupiedStatus, lightsStatus,crossStatus, switchAdj, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText;
     private TextArea notifications;
     private Text controllerLine, controllerSection;
     private Button murphyButton, userInputsButton, engInputsButton, toTrackModelButton, murphyBreakTrackButton, murphyBreakCTCComms, murphyBreakTMComms, sendEngineer, loadPLC, blockIdButton, switchIdButton;
@@ -124,18 +124,18 @@ public class TrackControllerUI {
         blockInfo.add(blockIdButton, 0, 0);
 
         //Block ID text
-        blockID = new TextField("A.1");
+        blockID = new TextField("1");
         blockInfo.add(blockID, 1, 0);
 
 
         //Open label
-        openLabel = new Label("Open Status: ");
-        openLabel.setFont(new Font("Garamond", 16));
-        blockInfo.add(openLabel, 0, 1);
+        occupiedLabel = new Label("Occupied Status: ");
+        occupiedLabel.setFont(new Font("Garamond", 16));
+        blockInfo.add(occupiedLabel, 0, 1);
 
         //Open status text
-        openStatus = new TextField("Open/Closed/Occupied/Broken");
-        blockInfo.add(openStatus, 1, 1);
+        occupiedStatus = new TextField("Occupied/Not Occupied");
+        blockInfo.add(occupiedStatus, 1, 1);
 
         //Lights label
         lightsLabel = new Label("Light Status: ");
@@ -143,7 +143,7 @@ public class TrackControllerUI {
         blockInfo.add(lightsLabel, 0, 2);
 
         //Lights status text
-        lightsStatus = new TextField("Greed/Red");
+        lightsStatus = new TextField("Greed/Red/ (N/A)");
         blockInfo.add(lightsStatus, 1, 2);
 
         //Crossroads label
@@ -155,23 +155,14 @@ public class TrackControllerUI {
         crossStatus = new TextField("On/Off/(N/A)");
         blockInfo.add(crossStatus, 1, 3);
 
-        //Station label
-        stationLabel = new Label("Station Name: ");
-        stationLabel.setFont(new Font("Garamond", 16));
-        blockInfo.add(stationLabel, 0, 4);
-
-        //Station status text
-        stationStatus = new TextField("Name/(N/A)");
-        blockInfo.add(stationStatus, 1, 4);
-
         //Switch label
         switchAdjLabel = new Label("Adjacent Switches: ");
         switchAdjLabel.setFont(new Font("Garamond", 16));
-        blockInfo.add(switchAdjLabel, 0, 5);
+        blockInfo.add(switchAdjLabel, 0, 4);
 
         //Switch GridPane
         switchAdj = new TextField("ID/(N/A)");
-        blockInfo.add(switchAdj, 1, 5);
+        blockInfo.add(switchAdj, 1, 4);
 
         blockInfo.setMinHeight(windowHeight * 2 / 3);
 
@@ -223,7 +214,7 @@ public class TrackControllerUI {
         switchInfo.add(switchIdButton, 0, 0);
 
         //Switch ID text
-        switchIDText = new TextField("ID/(N/A)");
+        switchIDText = new TextField("0");
         switchInfo.add(switchIDText, 1, 0);
 
         //Main block label
@@ -475,43 +466,21 @@ public class TrackControllerUI {
         Object source = e.getSource();
         if(source == blockIdButton)
         {
-            for(Block b : Blocks)
-            {
-                if(b.getBlockNumber() == (Integer.parseInt(blockID.getText())))
-                {
-                    openStatus.setText(b.getTrackState());
-                    lightsStatus.setText(Boolean.toString(b.getLight().isActive()));
-                    crossStatus.setText(Boolean.toString(b.getCrossing().isActive()));
-                    stationStatus.setText(b.getStation().getStationName());
-                    switchAdj.setText(Integer.toString(b.getSwitch().getSwitchNumber()));
-                }
-            }
+            String[] s;
+            s = tc.getBlockInfo(Integer.parseInt(blockID.getText()));
+            occupiedStatus.setText(s[0]);
+            lightsStatus.setText(s[2]);
+            crossStatus.setText(s[1]);
+            switchAdj.setText(s[3]);
         }
         else if(source == switchIdButton)
         {
-            Switch sw = null;
-            for(Block b : Blocks)
-            {
-                if(b.getSwitch() != null)
-                {
-                    sw = b.getSwitch();
-
-                }
-                if(sw != null)
-                {
-                    mainBlockText.setText(Integer.toString(sw.getMain()));
-                    subBlock1Text.setText((Integer.toString(sw.getTop())));
-                    subBlock2Text.setText(Integer.toString(sw.getBottom()));
-                    if (sw.getState() == SwitchState.TOP)
-                    {
-                        subBlock1Text.setText((Integer.toString(sw.getTop())));
-                    }
-                    else
-                    {
-                        subBlock2Text.setText(Integer.toString(sw.getBottom()));
-                    }
-                }
-            }
+            String[] vals;
+            vals = tc.getSwitchInfo(Integer.parseInt(switchIDText.getText()));
+            mainBlockText.setText(vals[0]);
+            subBlock1Text.setText(vals[1]);
+            subBlock2Text.setText(vals[2]);
+            connectedText.setText(vals[3]);
         }
     }
 
