@@ -1,9 +1,10 @@
 package MBO.java;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import sun.rmi.runtime.Log;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -11,6 +12,7 @@ import java.util.Collections;
  * Created by joero on 2/6/2017.
  */
 public class TrainSchedule {
+    private SimpleIntegerProperty id;
     private SimpleStringProperty station2;
     private SimpleStringProperty station9;
     private SimpleStringProperty station16;
@@ -34,39 +36,55 @@ public class TrainSchedule {
 
     private long[] stationDelays = {138, 138, 144, 162, 156, 114, 120, 120, 132, 150, 132, 264, 132, 138, 144, 126, 120, 120};
 
-    public TrainSchedule(LocalDateTime time) {
+    public TrainSchedule(int id, LocalDateTime time) {
         stationSchedule = new ArrayList<LocalDateTime>(Collections.nCopies(18, null));
         stationSchedule.set(7, time);
 
         for(int i = 0; i < 18; i++)
             stationSchedule.set((i + 8) % 18, stationSchedule.get((i + 7) % 18).plusSeconds(stationDelays[(i + 8) % 18]));
 
-        System.out.print(stationSchedule.toString());
+        this.id = new SimpleIntegerProperty(id);
         prepUIProperties();
     }
 
     private void prepUIProperties() {
-        station2 = new SimpleStringProperty(stationSchedule.get(0).getHour() + ":" + stationSchedule.get(0).getMinute() + ":" + stationSchedule.get(0).getSecond());
-        station9 = new SimpleStringProperty(stationSchedule.get(1).getHour() + ":" + stationSchedule.get(1).getMinute() + ":" + stationSchedule.get(1).getSecond());
-        station16 = new SimpleStringProperty(stationSchedule.get(2).getHour() + ":" + stationSchedule.get(2).getMinute() + ":" + stationSchedule.get(2).getSecond());
-        station22 = new SimpleStringProperty(stationSchedule.get(3).getHour() + ":" + stationSchedule.get(3).getMinute() + ":" + stationSchedule.get(3).getSecond());
-        station31 = new SimpleStringProperty(stationSchedule.get(4).getHour() + ":" + stationSchedule.get(4).getMinute() + ":" + stationSchedule.get(4).getSecond());
-        station39 = new SimpleStringProperty(stationSchedule.get(5).getHour() + ":" + stationSchedule.get(5).getMinute() + ":" + stationSchedule.get(5).getSecond());
-        station48 = new SimpleStringProperty(stationSchedule.get(6).getHour() + ":" + stationSchedule.get(6).getMinute() + ":" + stationSchedule.get(6).getSecond());
-        station57 = new SimpleStringProperty(stationSchedule.get(7).getHour() + ":" + stationSchedule.get(7).getMinute() + ":" + stationSchedule.get(7).getSecond());
-        station65 = new SimpleStringProperty(stationSchedule.get(8).getHour() + ":" + stationSchedule.get(8).getMinute() + ":" + stationSchedule.get(8).getSecond());
-        station73 = new SimpleStringProperty(stationSchedule.get(9).getHour() + ":" + stationSchedule.get(9).getMinute() + ":" + stationSchedule.get(9).getSecond());
-        station77 = new SimpleStringProperty(stationSchedule.get(10).getHour() + ":" + stationSchedule.get(10).getMinute() + ":" + stationSchedule.get(10).getSecond());
-        station88 = new SimpleStringProperty(stationSchedule.get(11).getHour() + ":" + stationSchedule.get(11).getMinute() + ":" + stationSchedule.get(11).getSecond());
-        station96 = new SimpleStringProperty(stationSchedule.get(12).getHour() + ":" + stationSchedule.get(12).getMinute() + ":" + stationSchedule.get(12).getSecond());
-        station105 = new SimpleStringProperty(stationSchedule.get(13).getHour() + ":" + stationSchedule.get(13).getMinute() + ":" + stationSchedule.get(13).getSecond());
-        station114 = new SimpleStringProperty(stationSchedule.get(14).getHour() + ":" + stationSchedule.get(14).getMinute() + ":" + stationSchedule.get(14).getSecond());
-        station123 = new SimpleStringProperty(stationSchedule.get(15).getHour() + ":" + stationSchedule.get(15).getMinute() + ":" + stationSchedule.get(15).getSecond());
-        station132 = new SimpleStringProperty(stationSchedule.get(16).getHour() + ":" + stationSchedule.get(16).getMinute() + ":" + stationSchedule.get(16).getSecond());
-        station141 = new SimpleStringProperty(stationSchedule.get(17).getHour() + ":" + stationSchedule.get(17).getMinute() + ":" + stationSchedule.get(17).getSecond());
+        station2 = new SimpleStringProperty(stationSchedule.get(0).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station9 = new SimpleStringProperty(stationSchedule.get(1).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station16 = new SimpleStringProperty(stationSchedule.get(2).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station22 = new SimpleStringProperty(stationSchedule.get(3).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station31 = new SimpleStringProperty(stationSchedule.get(4).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station39 = new SimpleStringProperty(stationSchedule.get(5).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station48 = new SimpleStringProperty(stationSchedule.get(6).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station57 = new SimpleStringProperty(stationSchedule.get(7).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station65 = new SimpleStringProperty(stationSchedule.get(8).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station73 = new SimpleStringProperty(stationSchedule.get(9).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station77 = new SimpleStringProperty(stationSchedule.get(10).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station88 = new SimpleStringProperty(stationSchedule.get(11).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station96 = new SimpleStringProperty(stationSchedule.get(12).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station105 = new SimpleStringProperty(stationSchedule.get(13).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station114 = new SimpleStringProperty(stationSchedule.get(14).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station123 = new SimpleStringProperty(stationSchedule.get(15).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station132 = new SimpleStringProperty(stationSchedule.get(16).format(DateTimeFormatter.ISO_LOCAL_TIME));
+        station141 = new SimpleStringProperty(stationSchedule.get(17).format(DateTimeFormatter.ISO_LOCAL_TIME));
+    }
+
+    public String getDeparture(int id) {
+        LocalDateTime now = LocalDateTime.now();
+        if(now.compareTo(stationSchedule.get(id - 1).minusMinutes(1)) == 1)
+            updateSchedule(id, now);
+
+        return stationSchedule.get(id - 1).format(DateTimeFormatter.ISO_LOCAL_TIME);
+    }
+
+    private void updateSchedule(int id, LocalDateTime arrival) {
+        stationSchedule.set((id - 1) % 18, arrival.plusMinutes(1));
+        for(int i = 0; i < 18; i++) {
+            stationSchedule.set((i + id - 1) % 18, stationSchedule.get((i + id - 2) % 18).plusSeconds(stationDelays[(i + id - 1) % 18]));
+        }
     }
 
     // NEEDED FOR UI UPDATES
+    public SimpleIntegerProperty idProperty() { return id; }
     public SimpleStringProperty station2Property() { return station2; }
     public SimpleStringProperty station9Property() { return station9; }
     public SimpleStringProperty station16Property() { return station16; }
