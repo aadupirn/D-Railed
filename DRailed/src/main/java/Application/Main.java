@@ -124,6 +124,7 @@ public class Main extends Application {
 				Track track = new Track();
 				TrackController trackController = new TrackController(dTime);
 				trackController.setTrack(track);
+				track.setTrackController(trackController);
 				TrackModelGUI trackModel = new TrackModelGUI(track);
 				trackController.showUI();
             } catch (IOException e1) {

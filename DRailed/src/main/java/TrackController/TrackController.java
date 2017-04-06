@@ -81,7 +81,7 @@ public class TrackController {
 
     public void setPLC(File file) {
         Block[] b = new Block[153];
-        for (int i = startBlock; i < endBlock; i++)
+        for (int i = startBlock; i <= endBlock; i++)
         {
             b[i] = track.getBlock(this.line,i);
         }
@@ -265,10 +265,10 @@ public class TrackController {
             values[0] = s.getMain().toString();
             values[1] = s.getTop().toString();
             values[2] = s.getBottom().toString();
-            if (s.getSwitchInfo().equals(SwitchState.TOP))
+            if (s.getState().equals(SwitchState.TOP))
                 values[3] = s.getTop().toString();
             else
-                values[3] = s.getTop().toString();
+                values[3] = s.getBottom().toString();
         }
         return values;
     }
