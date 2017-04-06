@@ -185,7 +185,7 @@ public class TrainController
 		powerText.setTextAlignment(TextAlignment.LEFT);
 		grid.add(powerText, 4, 1);
 
-		final Button automaticBtn = new Button("AUTOMATIC");
+		final Button automaticBtn = new Button("Release Brakes");
 		HBox hAutomaticBtn = new HBox(0);
 		hAutomaticBtn.setMinWidth(colWidth*3);
 		automaticBtn.setMinWidth(colWidth*2);
@@ -492,7 +492,7 @@ public class TrainController
 
 		automaticBtn.setOnAction((ActionEvent e) ->
 		{
-
+			releaseBrakes();
 		});
 
 		emerBtn.setOnAction((ActionEvent e) ->
@@ -639,12 +639,34 @@ public class TrainController
 
 	//region Public Methods
 
+	public void releaseBrakes()
+	{
+		train.setEbrake(false);
+		train.SetSbrake(false);
+		eBrakeStatus = false;
+		sBrakeStatus = false;
+	}
+
 	public void sBrake()
 	{
 		train.SetSbrake(true);
+		sBrakeStatus = true;
 		desiredSpeed = 0;
+		setDesiredSpeedText(desiredSpeed);
 		controlCalculator1.setDesiredSpeed(desiredSpeed);
 		controlCalculator2.setDesiredSpeed(desiredSpeed);
+	}
+
+	public void emergencyBrake()
+	{
+		train.SetPowerCommand(new Double(0));
+		setPowerText(0);
+		train.setEbrake(true);
+		desiredSpeed = 0;
+		eBrakeStatus = true;
+		setDesiredSpeedText(desiredSpeed);
+		controlCalculator2.setDesiredSpeed(0);
+		controlCalculator1.setDesiredSpeed(0);
 	}
 	public double MpS2MpH(double mps)
 	{
@@ -713,17 +735,7 @@ public class TrainController
 		return ki;
 	}
 
-	public void emergencyBrake()
-	{
-		train.SetPowerCommand(new Double(0));
-		setPowerText(0);
-		train.setEbrake(true);
-		desiredSpeed = 0;
-		eBrakeStatus = true;
-		setDesiredSpeedText(desiredSpeed);
-		controlCalculator2.setDesiredSpeed(0);
-		controlCalculator1.setDesiredSpeed(0);
-	}
+
 
 	public void setMBO(MBO imbo)
 	{
@@ -765,6 +777,11 @@ public class TrainController
 		if(currentBlock.getBlockNumber() == 55)
 		{
 			sBrake();
+			if(!announcementMade)
+			{
+				announcementMade = true;
+				makeAnnouncement("Approaching Yard");
+			}
 		}
 		//train.setGrade(currentBlock.getGrade());
 		//if(block.);
