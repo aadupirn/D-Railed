@@ -34,7 +34,6 @@ public class TrackTests {
     public void testSetSpeedAndAuth_ExpectTrainMove(){
 
     }
-    
 
     @Test
     public void testBlockOccupied(){
