@@ -26,7 +26,6 @@ public class MBOController extends Application {
 
     private Stage primary;
 
-
     // TRAIN INFO TAB
     private Button testInfoButton;
     private ToggleButton mboToggle;
@@ -108,10 +107,10 @@ public class MBOController extends Application {
             int authority = Integer.parseInt(authorityTestInput.getText());
             double variance = Double.parseDouble(varianceTestInput.getText());
             String location = locationTestInput.getText();
-            mbo.setSpeed(id, speed);
             mbo.setSafeSpeed(id, safeSpeed);
+            mbo.setSpeed(id, speed);
             mbo.setAuthority(id, authority);
-            mbo.setVariance(id, variance);
+            //mbo.setVariance(id, variance);
             mbo.setLocation(id, location);
         });
 
@@ -128,6 +127,7 @@ public class MBOController extends Application {
 
             setInfoColumns();
             setTrainColumns();
+            setWorkColumns();
         });
     }
 
@@ -212,12 +212,19 @@ public class MBOController extends Application {
         TableColumn station141 = new TableColumn("Central");
         station141.setCellValueFactory(new PropertyValueFactory<TrainSchedule, SimpleStringProperty>("station141"));
 
-        trainScheduleTable.setItems(scheduler.getRows());
+        trainScheduleTable.setItems(scheduler.getTrainRows());
         trainScheduleTable.getColumns().addAll(trainId, station2, station9, station16, station22, station31, station39, station48, station57, station65, station73, station77, station88, station96, station105, station114, station123, station132, station141);
     }
 
     private void setWorkColumns() {
+        TableColumn workerId = new TableColumn("Worker ID");
+        workerId.setCellValueFactory(new PropertyValueFactory<WorkerSchedule, SimpleIntegerProperty>("id"));
 
+        TableColumn schedule = new TableColumn("Schedule");
+        schedule.setCellValueFactory(new PropertyValueFactory<WorkerSchedule, SimpleStringProperty>("schedule"));
+
+        workerTable.setItems(scheduler.getWorkerRows());
+        workerTable.getColumns().addAll(workerId, schedule);
     }
 
     private void updateTrainInfo() {
@@ -226,7 +233,7 @@ public class MBOController extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/MBO/MBOUI.fxml"));          // Gets
+        Parent root = FXMLLoader.load(getClass().getResource("/MBO/MBOUI.fxml"));
         primary = primaryStage;
         primary.setTitle("MBO Interface");
         primary.setScene(new Scene(root));
