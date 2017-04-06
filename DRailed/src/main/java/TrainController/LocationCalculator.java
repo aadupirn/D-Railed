@@ -23,7 +23,7 @@ public class LocationCalculator
 	{
 		track = iTrack;
 		line = iLine;
-		block = track.getYardBlock(line);
+		block = track.getFromYardBlock(line);
 	}
 
 	//endregion
@@ -35,7 +35,7 @@ public class LocationCalculator
 		while(block.getLength() < blockLocation)
 		{
 			blockLocation = blockLocation - block.getLength();
-			block = block.getNextBlock();
+			block = block.getNextBlock(false);
 		}
 		//System.out.println("We are on block " + block.getBlockNumber()+"\n" +
 				//"Meters we have traveled along block: " + blockLocation);

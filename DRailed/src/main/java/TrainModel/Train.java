@@ -45,8 +45,10 @@ public class Train {
         trainModel = new TrainModel();
     }
 
-    // @ANDREW created for track model testing
+    // @ANDREW created for track model testing DON'T UNCOMMENT THE TRAIN MODEL AND TRAIN CONTROLLER THIS
+    // IS ONLY USED BY ME FOR TESTING AT THE MOMENT
     public Train(int newId) throws IOException, Exception {
+
         Engine = new engine();
         ac = new AC();
         ebrake = false;
@@ -56,8 +58,8 @@ public class Train {
 
         //trainModel = new TrainModel();
         this.id = id;
-        trainController = new TrainController(this);
-        trainModel = new TrainModel();
+        //trainController = new TrainController(this);
+        //trainModel = new TrainModel();
         this.unloading = generateUnloading();
     }
 
