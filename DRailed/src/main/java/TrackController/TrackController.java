@@ -28,10 +28,10 @@ public class TrackController {
     private DTime dTime;
 
 
-    public TrackController() throws IOException
+    public TrackController(DTime iDTime) throws IOException
     {
         trackComms = true;
-        dTime = new DTime();
+        dTime = iDTime;
         ctcComms = true;
         ui = new TrackControllerUI(this);
         track = new Track("greenLine.csv");

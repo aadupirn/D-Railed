@@ -28,14 +28,13 @@ public class Main extends Application {
     private int windowHight = 300;
     private int inset = 25;
     private int colWidth = 75;
+    private DTime dTime;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
 
     	//Module initialization
-		Track track = new Track();
-		TrackController trackController = new TrackController();
-		trackController.setTrack(track);
+
 
         primaryStage.setTitle(applicationTitle);
 
@@ -112,7 +111,7 @@ public class Main extends Application {
 		trackControllerBtn.setOnAction((ActionEvent e) ->
 		{
 			try {
-				trackController.showUI();
+
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -121,7 +120,12 @@ public class Main extends Application {
         trackModelBtn.setOnAction((ActionEvent e) ->
         {
             try {
-                TrackModelGUI trackModel = new TrackModelGUI(track);
+				dTime = new DTime();
+				Track track = new Track();
+				TrackController trackController = new TrackController(dTime);
+				trackController.setTrack(track);
+				TrackModelGUI trackModel = new TrackModelGUI(track);
+				trackController.showUI();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }

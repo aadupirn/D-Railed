@@ -1,5 +1,6 @@
 package DTime;
 
+import TrackModel.TrackModelGUI;
 import TrainController.TrainController;
 import javafx.concurrent.Task;
 
@@ -14,6 +15,7 @@ public class DTime
 {
 	private int multiplier;
 	private ArrayList<TrainController> trainControllers;
+	private TrackModelGUI trackModelGUI;
 
 	Timer timer;
 
@@ -25,6 +27,8 @@ public class DTime
 			{
 				tc.update();
 			}
+			if(trackModelGUI!= null)
+				trackModelGUI.update();
 		}
 	}
 
@@ -40,5 +44,10 @@ public class DTime
 	public void addTC(TrainController itc)
 	{
 		trainControllers.add(itc);
+	}
+
+	public void addTMGUI(TrackModelGUI itmgui)
+	{
+		trackModelGUI = itmgui;
 	}
 }
