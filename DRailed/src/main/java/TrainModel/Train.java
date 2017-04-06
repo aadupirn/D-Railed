@@ -42,7 +42,11 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         mass = 10000;
+<<<<<<< HEAD
+        startingBlock = 152;
+=======
         track = new Track();
+>>>>>>> master
 
         trainController = new TrainController(this, this.track);
         trainModel = new TrainModel();
@@ -58,6 +62,8 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         mass = 10000;
+        startingBlock = 152;
+
 
         //trainModel = new TrainModel();
         this.id = id;
