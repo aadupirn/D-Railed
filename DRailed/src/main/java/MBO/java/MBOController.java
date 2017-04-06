@@ -153,7 +153,26 @@ public class MBOController extends Application {
     }
 
     private void setTrainColumns() {
+        TableColumn trainId = new TableColumn("Glenbury (65)");
+        trainId.setCellValueFactory(new PropertyValueFactory<TrainInfo, SimpleIntegerProperty>("id"));
 
+        TableColumn speed = new TableColumn("Dormont (73)");
+        speed.setCellValueFactory(new PropertyValueFactory<TrainInfo, SimpleDoubleProperty>("speed"));
+
+        TableColumn safeSpeed = new TableColumn("Mt. Lebanon");
+        safeSpeed.setCellValueFactory(new PropertyValueFactory<TrainInfo, SimpleDoubleProperty>("safeSpeed"));
+
+        TableColumn variance = new TableColumn("Poplar");
+        variance.setCellValueFactory(new PropertyValueFactory<TrainInfo, SimpleDoubleProperty>("variance"));
+
+        TableColumn authority = new TableColumn("Authority");
+        authority.setCellValueFactory(new PropertyValueFactory<TrainInfo, SimpleIntegerProperty>("authority"));
+
+        TableColumn gps = new TableColumn("GPS");
+        gps.setCellValueFactory(new PropertyValueFactory<TrainInfo, String>("location"));
+
+        infoTable.setItems(mbo.getRows());
+        infoTable.getColumns().addAll(trainId, speed, safeSpeed, variance, authority, gps);
     }
 
     private void setWorkColumns() {
