@@ -122,6 +122,7 @@ public class Main extends Application {
             try {
 				dTime = new DTime();
 				Track track = new Track();
+				track.couple("GREEN");
 				TrackController trackController = new TrackController(dTime);
 				trackController.setTrack(track);
 				track.setTrackController(trackController);

@@ -352,6 +352,9 @@ public class Track {
         return tm.getToYardBlock(line);
     }
 
+    public void couple(String line){
+        tm.looseCoupling(line);
+    }
 
 }
 
