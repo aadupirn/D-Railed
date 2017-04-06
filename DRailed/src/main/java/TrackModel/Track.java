@@ -1,6 +1,6 @@
 package TrackModel;
 
-//import MBO.java.Train;
+import MBO.java.Train;
 import TrackController.TrackController;
 import TrackModel.Model.*;
 
@@ -13,50 +13,40 @@ public class Track {
 
     //TrackController tc = null;
     TrackModel tm = null;
+    private HashMap<String, String> signals;
 
     public Track(){
         //tc = new TrackController();
         tm = new TrackModel();
         tm.importTrack("redTrackLayout.csv");
         tm.importTrack("greenTrackLayout.csv");
+        initTrackSignals();
     }
 
     public Track(String trackLayout){
         //tc = new TrackController();
         tm = new TrackModel(trackLayout);
+        initTrackSignals();
 
     }
-    
+
+    private void initTrackSignals() {
+        signals = new HashMap<String, String>();
+
+        for(Line l :tm.getLines()){
+            signals.put(l.getLine(), "0x000000");
+        }
+    }
+
     // @Track Controller: Sets safe speed and authority for a train on a rail
-    public boolean setSpeedAndAuthority(String line, int blockId, double speed, int authority){
-        for(Line l : tm.getLines()){
-            if(l.getLine().equals(line)) {
-                l.getBlock(blockId).setSpeedAndAuthority(speed, authority);
-                return true;
-            }
-        }
+    public String setSpeedAndAuthority(String line, int trainId, int speed, int authority, int status){
 
-        return false;
-    }
+        String railSignal = signals.get(line);
+        railSignal = "0x" + Integer.toHexString(trainId) + Integer.toHexString(speed) + Integer.toHexString(authority) + Integer.toHexString(status);
+        signals.put(line, railSignal);
 
-    public double readSpeed(Line line, int blockId){
-        for(Line l : tm.getLines()){
-            if(l.getLine().equals(line)){
-                l.getBlock(blockId).readSpeed();
-            }
-        }
+        return railSignal;
 
-        return -1;
-    }
-
-    public int readAuthority(Line line, int blockId){
-        for(Line l : tm.getLines()){
-            if(l.getLine().equals(line)){
-                return l.getBlock(blockId).readAuthority();
-            }
-        }
-
-        return -1;
     }
 
     // @CTC: Places the train on the appropriate block coming from the Yard
@@ -288,7 +278,7 @@ public class Track {
         }
     }
 
-    public Block getBlock(String line, int blockId){
+    public Block getBlock(int blockId){
         for(Line l : tm.getLines()){
             for(Section s : l.getSections()){
                 for(Block b : s.getBlocks()){
@@ -300,14 +290,6 @@ public class Track {
         }
 
         return null;
-    }
-
-    public Block getFromYardBlock(String line){
-        return tm.getFromYardBlock(line);
-    }
-
-    public Block getToYardBlock(String line){
-        return tm.getToYardBlock(line);
     }
 
 
