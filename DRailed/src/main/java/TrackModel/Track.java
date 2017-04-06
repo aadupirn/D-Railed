@@ -17,8 +17,7 @@ public class Track {
     public Track(){
         //tc = new TrackController();
         tm = new TrackModel();
-        tm.importTrack("redTrackLayout.csv");
-        tm.importTrack("greenTrackLayout.csv");
+        tm.importTrack("greenLine.csv");
     }
 
     public Track(String trackLayout){
