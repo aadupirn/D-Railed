@@ -19,7 +19,7 @@ public class LocationCalculator
 
 	//region Constructors
 
-	public LocationCalculator(Track iTrack, String iLine)
+	public LocationCalculator(Track iTrack, String iLine, int startingBlock)
 	{
 		track = iTrack;
 		line = iLine;
