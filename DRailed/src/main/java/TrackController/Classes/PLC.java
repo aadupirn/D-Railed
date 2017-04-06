@@ -133,19 +133,19 @@ public class PLC
 
         public boolean getSwitchState(int switchID)
         {
-            return(runPLC(switches[switchID],switchID));
+            return(runPLC(switches[switchID],switchID,false));
         }
         public boolean getCrossingState(int blockID)
         {
-            return(runPLC(plcInputs[blockID][1],blockID));
+            return(runPLC(plcInputs[blockID][1],blockID, true));
         }
         public boolean getStopTrain(int blockID)
         {
-            return(runPLC(plcInputs[blockID][2],blockID));
+            return(runPLC(plcInputs[blockID][2],blockID, true));
         }
         public boolean getLights(int blockID)
         {
-            return(runPLC(plcInputs[blockID][0],blockID));
+            return(runPLC(plcInputs[blockID][0],blockID,true));
         }
 
         public void setBlocks(Block[] Blocks) {
@@ -157,9 +157,9 @@ public class PLC
             return(isGood);
         }
 
-        private boolean runPLC(String input, int id)
+        private boolean runPLC(String inString, int id, boolean isBlock)
         {
-            String boolIn = replaceAllInputs(input, id);
+            String boolIn = replaceAllInputs(inString, id, isBlock);
             boolean result;
             try {
 
@@ -176,11 +176,14 @@ public class PLC
 
             }
         }
-        private String replaceAllInputs(String in, int id)
+        private String replaceAllInputs(String in, int id, boolean isBlock)
         {
             String result;
-            result = in.replaceAll("this.occupied", Boolean.toString(blocks[id].isOccupied()));
-            for (int i = 1; i <= blocks.length; i++) {
+            if (isBlock)
+                result = in.replaceAll("this.occupied", Boolean.toString(blocks[id].isOccupied()));
+            else
+                result = in;
+            for (int i = 152; i > 0; i--) {
                 result = result.replaceAll(blocks[i].getBlockNumber() + ".occupied", Boolean.toString(blocks[i].isOccupied()));
                 result = result.replaceAll(blocks[i].getBlockNumber() + ".nextoccupied", Boolean.toString(blocks[i].isOccupied())); //TODO replace with next block!!
             }
@@ -188,6 +191,7 @@ public class PLC
             {
                 System.out.println("Haven't handled yet");
             }
+            System.out.println(result);
             return(result);
         }
     }
