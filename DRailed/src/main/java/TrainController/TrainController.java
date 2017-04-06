@@ -83,7 +83,7 @@ public class TrainController
 	//endregion
 
 	//region Constructor
-	public TrainController(Train iTrain) throws IOException
+	public TrainController(Train iTrain, Track iTrack) throws IOException
 	{
 		train = iTrain;
 		trainID = train.getId();
@@ -105,7 +105,7 @@ public class TrainController
 		desiredSpeed = 0;
 		temperature = train.getTemperature();
 
-		track = new Track("greenLine.csv");
+		track = iTrack;
 
 		locationCalculator = new LocationCalculator(track, route);
 		controlCalculator = new ControlCalculator(desiredSpeed, kp, ki);
