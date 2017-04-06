@@ -227,16 +227,10 @@ public class MBOController extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/MBO/MBOUI.fxml"));          // Gets
-
-        Screen mainScreen = Screen.getPrimary();
-        Rectangle2D screenBounds = mainScreen.getVisualBounds();
         primary = primaryStage;
-
         primary.setTitle("MBO Interface");
-        primary.setScene(new Scene(root, screenBounds.getWidth(), screenBounds.getHeight()));
-
+        primary.setScene(new Scene(root));
         primary.show();
-
         this.getUIElements();
     }
 
