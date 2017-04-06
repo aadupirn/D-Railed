@@ -34,6 +34,7 @@ public class TrackTests {
     public void testSetSpeedAndAuth_ExpectTrainMove(){
 
     }
+<<<<<<< HEAD
 
     @Test
 <<<<<<< HEAD
@@ -53,6 +54,9 @@ public class TrackTests {
 
         assertEquals(true, b.isOccupied());
     }
+=======
+    
+>>>>>>> master
 
     @Test
 >>>>>>> master
