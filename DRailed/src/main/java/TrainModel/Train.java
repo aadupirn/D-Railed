@@ -45,8 +45,10 @@ public class Train {
         trainModel = new TrainModel();
     }
 
-    // @ANDREW created for track model testing
+    // @ANDREW created for track model testing DON'T UNCOMMENT THE TRAIN MODEL AND TRAIN CONTROLLER THIS
+    // IS ONLY USED BY ME FOR TESTING AT THE MOMENT
     public Train(int newId) throws IOException, Exception {
+
         Engine = new engine();
         ac = new AC();
         ebrake = false;
@@ -56,8 +58,8 @@ public class Train {
 
         //trainModel = new TrainModel();
         this.id = id;
-        trainController = new TrainController(this);
-        trainModel = new TrainModel();
+        //trainController = new TrainController(this);
+        //trainModel = new TrainModel();
         this.unloading = generateUnloading();
     }
 
@@ -148,7 +150,7 @@ Calculates speed
     protected boolean calculateSpeed(Double power){
         //do some calculations
         currentSpeed =  Engine.calculateSpeed(mass, commandSpeed, currentSpeed, grade);
-        System.out.println("Current Speed: "+currentSpeed);
+        //System.out.println("Current Speed: "+currentSpeed);
         return true;
     }
 //AC Status
@@ -195,8 +197,9 @@ Calculates speed
     public double GetPowerCommand(){ return commandSpeed;}
     public void Update(){
         ac.changeTemp();
-        System.out.println("TEmperature is " + ac.getTemp());
-        System.out.println("Speed is " + calculateSpeed(commandSpeed));
+        calculateSpeed(commandSpeed);
+        //System.out.println("TEmperature is " + ac.getTemp());
+        //System.out.println("Speed is " + );
 
     }
     public boolean setEbrake(boolean bool){
