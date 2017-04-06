@@ -37,10 +37,25 @@ public class TrackTests {
 
     @Test
 <<<<<<< HEAD
+<<<<<<< HEAD
     public void testBlockOccupied() throws IOException{
         Track track = new Track("greenTrackLayout.csv");
         Train train = new Train(1);
 =======
+=======
+    public void testBlockOccupied() throws IOException{
+        Track track = new Track("greenTrackLayout.csv");
+        Train train = new Train(1);
+
+        int blockNumber = track.dispatchTrainOnTrack("GREEN", train);
+
+        Block b = track.getBlock("GREEN", blockNumber);
+
+        assertEquals(true, b.isOccupied());
+    }
+
+    @Test
+>>>>>>> master
     public void testBlockOccupied(){
         Track track = new Track("greenLine.csv");
 
