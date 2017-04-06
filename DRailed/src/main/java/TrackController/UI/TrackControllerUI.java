@@ -24,11 +24,11 @@ public class TrackControllerUI {
     //Class Objects
     private Stage mainStage, sideStage;
     private Scene mainScene, murphyScene, userInScene, engScene, toTMScene;
-    private Label controllerLabel,blockLabel, controlLabel, switchLabel, occupiedLabel, lightsLabel, crossLabel, stationLabel, switchAdjLabel, mainBlockLabel, subBlock1Label,subBlock2Label,connectedLabel;
-    private TextField blockID, occupiedStatus, lightsStatus,crossStatus, switchAdj, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText;
+    private Label controllerLabel,blockLabel, controlLabel, switchLabel, occupiedLabel, lightsLabel, crossLabel, switchAdjLabel, mainBlockLabel, subBlock1Label,subBlock2Label,connectedLabel, getTrainID, getSpeed,getAuth,getCarts;
+    private TextField blockID, occupiedStatus, lightsStatus,crossStatus, switchAdj, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText, getTrainIDText, getSpeedText, getAuthText, getCartsText;
     private TextArea notifications;
     private Text controllerLine, controllerSection;
-    private Button murphyButton, userInputsButton, engInputsButton, toTrackModelButton, murphyBreakTrackButton, murphyBreakCTCComms, murphyBreakTMComms, sendEngineer, loadPLC, blockIdButton, switchIdButton;
+    private Button murphyButton, userInputsButton, engInputsButton, toTrackModelButton, murphyBreakTrackButton, murphyBreakCTCComms, murphyBreakTMComms, sendEngineer, loadPLC, blockIdButton, switchIdButton, dispatchButton;
     private RadioButton blockRB, switchRB;
     private TrackController tc;
     private PLC myPLC;
@@ -363,6 +363,7 @@ public class TrackControllerUI {
         TextField sendSpeedText = new TextField("");
         TextField sendAuthText = new TextField("");
         Button sendData = new Button("Send to Track Model");
+        sendData.setOnAction(e->DispatchButtonClicked(e));
 
 
         //Assemble
@@ -386,13 +387,16 @@ public class TrackControllerUI {
         //End To Track Model ----------------------------------------------------------------------
 
         //From CTC
-        Label getTrainID = new Label("Set Train ID: ");
-        Label getSpeed = new Label("Set Speed: ");
-        Label getAuth = new Label("Set Authority: ");
-        TextField getTrainIDText = new TextField("");
-        TextField getSpeedText = new TextField("");
-        TextField getAuthText = new TextField("");
-        Button getData = new Button("Simulate");
+        getTrainID = new Label("Set Train ID: ");
+        getSpeed = new Label("Set Speed: ");
+        getAuth = new Label("Set Authority: ");
+        getCarts = new Label("Number of Carts: ");
+        getTrainIDText = new TextField("");
+        getSpeedText = new TextField("");
+        getAuthText = new TextField("");
+        getCartsText = new TextField("");
+        dispatchButton = new Button("Dispatch Train");
+        dispatchButton.setOnAction(e->DispatchButtonClicked(e));
         userInputs.setVgap(10);
 
 
@@ -406,13 +410,18 @@ public class TrackControllerUI {
         getAuth.setFont(new Font("Garamond", 16));
         userInputs.add(getAuth, 0, 2);
 
+        getCarts.setFont(new Font("Garamond", 16));
+        userInputs.add(getCarts,0,3);
+
         userInputs.add(getTrainIDText, 1, 0);
 
         userInputs.add(getSpeedText, 1, 1);
 
         userInputs.add(getAuthText, 1, 2);
 
-        userInputs.add(getData, 0, 3, 2, 1);
+        userInputs.add(getCartsText,1,3);
+
+        userInputs.add(dispatchButton, 0, 4, 2, 1);
         //End From CTC---------------------------------------------------------------------
 
         mainStage.setScene(mainScene);
@@ -487,6 +496,21 @@ public class TrackControllerUI {
     public void Update()
     {
         return;
+    }
+
+    public void DispatchButtonClicked(ActionEvent e)
+    {
+        Object source = e.getSource();
+        if (source == dispatchButton)
+        {
+            try {
+                tc.dispatchTrain(152, Integer.parseInt(getCartsText.getText()), Integer.parseInt(getAuthText.getText()), Double.parseDouble(getSpeedText.getText()), Integer.parseInt(getTrainIDText.getText()));
+                System.out.println("Train created!");
+            } catch (Exception e1) {
+                System.out.println("We got an exception: " + e1.toString() + "\n");
+                e1.printStackTrace();
+            }
+        }
     }
 
     public void MainButtonClicked(ActionEvent e)

@@ -14,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import MBO.java.MBO;
 
 import java.io.IOException;
 
@@ -75,7 +76,10 @@ public class TrainController
 	private Train train;
 
 	private LocationCalculator locationCalculator;
-	private ControlCalculator controlCalculator;
+	private ControlCalculator controlCalculator1;
+	private ControlCalculator controlCalculator2;
+
+	private MBO mbo;
 
 
 
@@ -88,6 +92,7 @@ public class TrainController
 		train = iTrain;
 		trainID = train.getId();
 		speedLimit = MpH2MpS(100);
+		mbo = new MBO(1);
 		route = "GREEN";
 		acStatus = false;
 		heatStatus = false;
@@ -107,8 +112,9 @@ public class TrainController
 
 		track = iTrack;
 
-		locationCalculator = new LocationCalculator(track, route);
-		controlCalculator = new ControlCalculator(desiredSpeed, kp, ki);
+		locationCalculator = new LocationCalculator(track, route, train.GetStartingBlock(), trainID);
+		controlCalculator1 = new ControlCalculator(desiredSpeed, kp, ki);
+		controlCalculator2 = new ControlCalculator(desiredSpeed, kp, ki);
 
 		//region UI code
 		stage.setTitle(windowTitle);
@@ -488,7 +494,7 @@ public class TrainController
 
 		emerBtn.setOnAction((ActionEvent e) ->
 		{
-			train.setEbrake(true);
+			emergencyBrake();
 		});
 
 		brakeBtn.setOnAction((ActionEvent e) ->
@@ -503,7 +509,8 @@ public class TrainController
 			{
 				desiredSpeed = speedLimit;
 			}
-			controlCalculator.setDesiredSpeed(desiredSpeed);
+			controlCalculator1.setDesiredSpeed(desiredSpeed);
+			controlCalculator2.setDesiredSpeed(desiredSpeed);
 			setDesiredSpeedText(desiredSpeed);
 		});
 
@@ -515,7 +522,8 @@ public class TrainController
 			{
 				desiredSpeed = 0;
 			}
-			controlCalculator.setDesiredSpeed(desiredSpeed);
+			controlCalculator1.setDesiredSpeed(desiredSpeed);
+			controlCalculator2.setDesiredSpeed(desiredSpeed);
 			setDesiredSpeedText(desiredSpeed);
 		});
 
@@ -679,8 +687,10 @@ public class TrainController
 	{
 		kp = kpIn;
 		ki = kiIn;
-		controlCalculator.setKI(ki);
-		controlCalculator.setKP(kp);
+		controlCalculator1.setKI(ki);
+		controlCalculator1.setKP(kp);
+		controlCalculator2.setKI(ki);
+		controlCalculator2.setKP(kp);
 	}
 
 	public double getKP()
@@ -693,17 +703,50 @@ public class TrainController
 		return ki;
 	}
 
+	public void emergencyBrake()
+	{
+		train.SetPowerCommand(new Double(0));
+		setPowerText(0);
+		train.setEbrake(true);
+		desiredSpeed = 0;
+		eBrakeStatus = true;
+		setDesiredSpeedText(desiredSpeed);
+		controlCalculator2.setDesiredSpeed(0);
+		controlCalculator1.setDesiredSpeed(0);
+	}
+
 	public void update()
 	{
-		double powerCommand = controlCalculator.computeNextCommand(speed);
-		train.SetPowerCommand(powerCommand);
-		setPowerText(powerCommand);
+		double powerCommand1 = controlCalculator1.computeNextCommand(speed);
+		double powerCommand2 = controlCalculator2.computeNextCommand(speed);
+		if(powerCommand1 != powerCommand2)
+		{
+			emergencyBrake();
+		}
+		else
+		{
+			train.SetPowerCommand(powerCommand1);
+			setPowerText(powerCommand1);
+		}
+		if(eBrakeStatus == true)
+		{
+			train.SetPowerCommand(new Double(0));
+			setPowerText(0);
+		}
 		train.Update();
 		speed = train.GetCurrentSpeed();
 		setSpeedText(train.GetCurrentSpeed());
 		temperature = train.getTemperature();
 		setTempText(train.getTemperature());
+		mbo.setSpeed(trainID, speed);
+		mbo.setAuthority(trainID, 100);
 		locationCalculator.ComputeNextLocation(train.GetCurrentSpeed());
+	}
+
+	public void setMBO(MBO imbo)
+	{
+		mbo = imbo;
+		locationCalculator.setMBO(mbo);
 	}
 
 	//endregion

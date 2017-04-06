@@ -44,13 +44,14 @@ public class TrainInfo {
 
     public void setSpeed(double speed){
         this.speed.set(speed);
+        this.setVariance(this.getSafeSpeed() - speed);
     }
 
     public double getSafeSpeed(){
         return safeSpeed.doubleValue();
     }
 
-    public void setSafeSpeed(double speed) { this.safeSpeed.set(speed); }
+    public void setSafeSpeed(double speed) { this.safeSpeed.set(50); }
 
     public String getLocation(){
         return location.get();

@@ -179,6 +179,7 @@ public class Block {
     public void setTrain(Train train){
         this.occupied = true;
         this.train = train;
+
     }
 
     public boolean isOccupied(){
@@ -375,32 +376,27 @@ public class Block {
 
     /**
      *
-     * @param train - the train that is moving
      * @param direction - the direction it is traveling up = true; down = false
      * @return
      */
-    public Block moveToNextBlock(Train train, boolean direction){
+    public Block moveToNextBlock(boolean direction){
 
         // remove train from current block
-        this.train = null;
         this.occupied = false;
-
         Block nextBlock = null;
 
         // if the direction of travel is UP and the track runs the same direction
-        if(direction && nextUpBlock != null){
+        if(direction == true && nextUpBlock != null){
 
             // move train to next block
             nextUpBlock.setOccupied();
-            nextUpBlock.setTrain(train);
             nextBlock = nextUpBlock;
 
         // if the direction of travel is DOWN and the track runs the same direction
-        }else if(!direction && nextDownBlock != null){
+        }else if(direction == false && nextDownBlock != null){
 
             // move train to next block
             nextDownBlock.setOccupied();
-            nextDownBlock.setTrain(train);
             nextBlock = nextDownBlock;
 
         }

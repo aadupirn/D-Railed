@@ -34,11 +34,9 @@ public class TrackModel
         lines = new ArrayList<>();
         importTrack(trackLayout);
 
-//        for(Line l : getLines()) {
-//            connectLine(l.getLine());
-//        }
-
-        connectLoosely("GREEN");
+        for(Line l : getLines()) {
+            looseCoupling(l.getLine());
+        }
 
     }
 
@@ -782,31 +780,57 @@ public class TrackModel
 
     }
 
-    public void connectLoosely(String lineName) {
+    public void looseCoupling(String inLine){
 
-        Line line = getLine(lineName);
+        Line line = getLine(inLine);
 
-        for(Section s : line.getSections()){
-            for(Block b : s.getBlocks()){
+        for(Section s : line.getSections()) {
+            for(Block b : s.getBlocks()) {
 
-                if(b.getDirection().contains("BI")){
+                System.out.println("BLOCK: " + b + "->");
 
-                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-
-                }else if(b.getDirection().contains("UP")){
-
-                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-
-                }else if(b.getDirection().contains("DOWN")){
+                if (b.getDirection().contains("BI")) {
 
                     b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
+                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
+
+                    System.out.print(b.getNextUpBlock() + "<-");
+                    System.out.print(b);
+                    System.out.println("->" + b.getNextDownBlock());
+
+                } else if (b.getDirection().contains("UP")) {
+
+                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
+
+                    System.out.print(b.getNextUpBlock() + "<-");
+                    System.out.println(b);
+
+                } else if (b.getDirection().contains("DOWN")) {
+
+                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
+
+                    System.out.print(b);
+                    System.out.println("->" + b.getNextDownBlock());
 
                 }
+            }
+        }
+    }
 
+    public Line getALine(String line){
+        return getLine(line);
+    }
+
+    public Block getBlock(String line, int blockId){
+        for(Section s : getLine(line).getSections()){
+            for(Block b : s.getBlocks()){
+                if(b.getBlockNumber().intValue() == blockId){
+                    return b;
+                }
             }
         }
 
+        return null;
     }
 
     public Block getFromYardBlock(String line){

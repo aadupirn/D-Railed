@@ -12,20 +12,26 @@ import java.util.HashMap;
  */
 public class Track {
 
-    //TrackController tc = null;
+    TrackController tc = null;
     TrackModel tm = null;
 
     public Track(){
-        //tc = new TrackController();
         tm = new TrackModel();
         tm.importTrack("greenLine.csv");
     }
 
     public Track(String trackLayout){
-        //tc = new TrackController();
         tm = new TrackModel(trackLayout);
     }
-    
+
+    public void setTrackController(TrackController tc){
+        this.tc = tc;
+    }
+
+    public TrackController getTrackController(){
+        return tc;
+    }
+
     // @Track Controller: Sets safe speed and authority for a train on a rail
     public boolean setSpeedAndAuthority(String line, int blockId, double speed, int authority){
         for(Line l : tm.getLines()){
@@ -61,8 +67,43 @@ public class Track {
     // @CTC: Places the train on the appropriate block coming from the Yard
     public int dispatchTrainOnTrack(String line, TrainModel.Train train) {
 
-        return tm.dipatchTrain(line, train);
+        Block block = getBlock(line, tm.dipatchTrain(line, train));
 
+        if(block.getSwitch() != null){
+            setSwitchState(block.getLine(), block.getSwitch().getSwitchNumber(), getTrackController().getPLCSwitch(block.getSwitch().getSwitchNumber()));
+        }
+
+        return block.getBlockNumber();
+
+    }
+
+    public Block getNextBlock(String line, Block currentBlock, boolean direction){
+
+        Block nextBlock = tm.getBlock(line, currentBlock.getBlockNumber().intValue()).moveToNextBlock(direction);
+
+        // PLC update old block
+        if(currentBlock.getSwitch() != null){
+            setSwitchState(line, currentBlock.getSwitch().getSwitchNumber(), getTrackController().getPLCSwitch(currentBlock.getSwitch().getSwitchNumber()));
+        }
+        if(currentBlock.getCrossing() != null){
+            setCrossingState(line, currentBlock.getBlockNumber(), getTrackController().getPLCCrossing(currentBlock.getBlockNumber()));
+        }
+        if(currentBlock.getLight() != null){
+            setLightState(line, currentBlock.getBlockNumber(), getTrackController().getPLCLight(currentBlock.getBlockNumber()));
+        }
+
+        // PLC update new block
+        if(nextBlock.getSwitch() != null){
+            setSwitchState(nextBlock.getLine(), nextBlock.getSwitch().getSwitchNumber(), getTrackController().getPLCSwitch(nextBlock.getSwitch().getSwitchNumber()));
+        }
+        if(nextBlock.getCrossing() != null){
+            setCrossingState(nextBlock.getLine(), nextBlock.getBlockNumber(), getTrackController().getPLCCrossing(nextBlock.getBlockNumber()));
+        }
+        if(nextBlock.getLight() != null){
+            setLightState(nextBlock.getLine(), nextBlock.getBlockNumber(), getTrackController().getPLCLight(nextBlock.getBlockNumber()));
+        }
+
+        return nextBlock;
     }
 
     public int findTrain(String line, int trainId){
@@ -289,10 +330,12 @@ public class Track {
 
     public Block getBlock(String line, int blockId){
         for(Line l : tm.getLines()){
-            for(Section s : l.getSections()){
-                for(Block b : s.getBlocks()){
-                    if(b.getBlockNumber() == blockId){
-                        return b;
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getBlockNumber() == blockId) {
+                            return b;
+                        }
                     }
                 }
             }
@@ -309,6 +352,9 @@ public class Track {
         return tm.getToYardBlock(line);
     }
 
+    public void couple(String line){
+        tm.looseCoupling(line);
+    }
 
 }
 

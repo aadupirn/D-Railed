@@ -44,9 +44,8 @@ public class Train {
         mass = 10000;
         startingBlock = 152;
         track = new Track();
-
         trainController = new TrainController(this, this.track);
-        trainModel = new TrainModel();
+        //trainModel = new TrainModel();
     }
 
     // @ANDREW created for track model testing DON'T UNCOMMENT THE TRAIN MODEL AND TRAIN CONTROLLER THIS
@@ -81,7 +80,7 @@ public class Train {
         id = newID;
         track = new Track();
         trainController = new TrainController(this, this.track);
-        trainModel = new TrainModel();
+        //trainModel = new TrainModel();
       //  trainModel = new TrainModel();
 
     }
@@ -97,7 +96,7 @@ public class Train {
         id = newID;
         track = new Track();
         trainController = new TrainController(this, track);
-        trainModel = new TrainModel();
+       // trainModel = new TrainModel();
         //trainModel = new TrainModel();
         //trainController = new TrainController();
     }
