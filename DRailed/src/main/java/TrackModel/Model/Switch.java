@@ -12,6 +12,9 @@ public class Switch {
     private SwitchState state;
     private Heater heater;
 
+    private boolean toYard;
+    private boolean fromYard;
+
     /***
      * Create a switch object with a switch number and an empty connection layout.
      *
@@ -24,7 +27,6 @@ public class Switch {
         this.mainBlock = null;
         this.topBlock = null;
         this.bottomBlock = null;
-        this.heater = new Heater(""+switchNumber);
     }
 
     /***
@@ -40,7 +42,6 @@ public class Switch {
         this.mainBlock = mainBlock;
         this.topBlock = null;
         this.bottomBlock = null;
-        this.heater = new Heater(""+switchNumber);
     }
 
     /***
@@ -57,6 +58,22 @@ public class Switch {
      */
     public void setSwitchNumber(Integer switchNumber) {
         this.switchNumber = switchNumber;
+    }
+
+    public boolean isToYard() {
+        return toYard;
+    }
+
+    public void setToYard(boolean toYard) {
+        this.toYard = toYard;
+    }
+
+    public boolean isFromYard() {
+        return fromYard;
+    }
+
+    public void setFromYard(boolean fromYard) {
+        this.fromYard = fromYard;
     }
 
     /***
@@ -89,6 +106,22 @@ public class Switch {
      */
     public void setTop(Integer top) {
         this.topBlock = top;
+    }
+
+    /***
+     * Sets the proper connection state based on current switch configuration
+     *
+     * @param connectingBlock - block to set
+     */
+    public void addConnector(Integer connectingBlock){
+        if(this.topBlock == null)
+        {
+            this.topBlock = connectingBlock;
+        }
+        else
+        {
+            this.bottomBlock = connectingBlock;
+        }
     }
 
     /***
@@ -145,14 +178,6 @@ public class Switch {
         }else{
             return "SwitchNo: " + this.switchNumber + "| State: BOTTOM | Main: " + this.mainBlock + "| Top: " + this.topBlock + "| Bottom: " + this.bottomBlock;
         }
-    }
-
-    public Heater getHeater() {
-        return heater;
-    }
-
-    public void setHeater(Heater heater) {
-        this.heater = heater;
     }
 
 }

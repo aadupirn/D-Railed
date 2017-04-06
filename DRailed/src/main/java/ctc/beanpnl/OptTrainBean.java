@@ -8,15 +8,15 @@ import TrainModel.Train;
 public class OptTrainBean extends Train{
 	
 	public OptTrainBean(int blockLocation, int numberOfCarts,
-			int newAuthority, Double newSpeed, int newID) throws Exception
+			Double newAuthority, Double newSpeed, int newID) throws IOException 
 	{
-		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ,blockLocationï¿½Çµï¿½Ç°Î»ï¿½ï¿½Ã´ï¿½ï¿½newSpeedï¿½Çµï¿½Ç°ï¿½Ù¶ï¿½Ã´ï¿½ï¿½numberOfCartsï¿½Ç³ï¿½ï¿½ï¿½ï¿½ï¿½Ã´
+		// Õâ¸ö¼¸¸ö²ÎÊıÖµ,blockLocationÊÇµ±Ç°Î»ÖÃÃ´£¬newSpeedÊÇµ±Ç°ËÙ¶ÈÃ´£¬numberOfCartsÊÇ³µ½ÚÊıÃ´
 		super(blockLocation, numberOfCarts, newAuthority, newSpeed, newID);
 	}
 
-	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	private String trainNo;   // ï¿½Ğ³ï¿½ï¿½ï¿½ï¿½
-	private String line;   // greenï¿½ï¿½ï¿½ï¿½Red
+	// ĞÂÔöÒÔÏÂÊôĞÔ
+	private String trainNo;   // ÁĞ³µ±àºÅ
+	private String line;   // green»¹ÊÇRed
 	private int authority;
 	private String depatureTime;
 	private String depatureBlock;   // 

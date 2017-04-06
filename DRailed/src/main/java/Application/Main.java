@@ -1,6 +1,7 @@
 package Application;
 
-import TrackModel.TrackModelGUI;
+import TrackModel.UI.TrackModelGUI;
+import TrainController.TrainController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -11,8 +12,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import TrackController.TrackController;
-import TrackModel.Track;
 import DTime.DTime;
+import TrainModel.TrainModel;
 import TrainModel.Train;
 import MBO.java.MBOController;
 import ctc.CTCMain;
@@ -31,12 +32,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
-    	//Module initialization
-		Track track = new Track();
-		TrackController trackController = new TrackController();
-		trackController.setTrack(track);
-
         primaryStage.setTitle(applicationTitle);
 
         GridPane grid = new GridPane();
@@ -120,7 +115,7 @@ public class Main extends Application {
         trackModelBtn.setOnAction((ActionEvent e) ->
         {
             try {
-                TrackModelGUI trackModel = new TrackModelGUI(track);
+                TrackModelGUI trackModel = new TrackModelGUI();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
