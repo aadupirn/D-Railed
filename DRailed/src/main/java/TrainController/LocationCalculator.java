@@ -3,9 +3,7 @@ package TrainController;
 import TrackModel.Model.Block;
 import TrackModel.Track;
 
-/**
- * Created by aadu on 4/3/17.
- */
+
 public class LocationCalculator
 {
 	//region Class Variables
@@ -19,11 +17,11 @@ public class LocationCalculator
 
 	//region Constructors
 
-	public LocationCalculator(Track iTrack, String iLine)
+	public LocationCalculator(Track iTrack, String iLine, int startingBlock)
 	{
 		track = iTrack;
 		line = iLine;
-		block = track.getFromYardBlock(line);
+		block = track.getBlock(line, startingBlock);
 	}
 
 	//endregion
