@@ -14,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import MBO.java.MBO;
 
 import java.io.IOException;
 
@@ -78,6 +79,8 @@ public class TrainController
 	private ControlCalculator controlCalculator1;
 	private ControlCalculator controlCalculator2;
 
+	private MBO mbo;
+
 
 
 
@@ -89,6 +92,7 @@ public class TrainController
 		train = iTrain;
 		trainID = train.getId();
 		speedLimit = MpH2MpS(100);
+		mbo = new MBO(1);
 		route = "GREEN";
 		acStatus = false;
 		heatStatus = false;
@@ -724,7 +728,16 @@ public class TrainController
 		setSpeedText(train.GetCurrentSpeed());
 		temperature = train.getTemperature();
 		setTempText(train.getTemperature());
+		mbo.setSpeed(trainID, speed);
+		mbo.setAuthority(trainID, 100);
+		mbo.setLocation(trainID, "Block: " + String.valueOf(currentBlockID));
+
 		locationCalculator.ComputeNextLocation(train.GetCurrentSpeed());
+	}
+
+	public void setMBO(MBO imbo)
+	{
+		mbo = imbo;
 	}
 
 	//endregion

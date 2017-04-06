@@ -84,7 +84,7 @@ public class Main extends Application {
         hTrainControllerBtn.setMinWidth(150);
         grid.add(hTrainControllerBtn, 0, 4);
 
-		final Button mboBtn = new Button("MBO");
+		final Button mboBtn = new Button("System Prototype");
 		mboBtn.setMinWidth(150);
 		HBox hMboBtn = new HBox(10);
 		hMboBtn.setAlignment(Pos.CENTER);
@@ -117,22 +117,17 @@ public class Main extends Application {
 			}
 		});
 
-        trackModelBtn.setOnAction((ActionEvent e) ->
-        {
-            try {
-				dTime = new DTime();
-				Track track = new Track();
-				TrackController trackController = new TrackController(dTime);
-				trackController.setTrack(track);
-				TrackModelGUI trackModel = new TrackModelGUI(track);
-				trackController.showUI();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            catch (Exception e2) {
-            	//lol
-			}
-        });
+//        trackModelBtn.setOnAction((ActionEvent e) ->
+//        {
+//            try {
+//
+//            } catch (IOException e1) {
+//                e1.printStackTrace();
+//            }
+//            catch (Exception e2) {
+//            	//lol
+//			}
+//        });
 
 		trainModelBtn.setOnAction((ActionEvent e) ->
 		{
@@ -163,6 +158,16 @@ public class Main extends Application {
 			MBOController MBO = new MBOController();
 			try {
 				MBO.start(new Stage());
+				dTime = new DTime();
+				Track track = new Track();
+				track.couple("GREEN");
+				TrackController trackController = new TrackController(dTime);
+				dTime.setMBO(MBO.getMBO());
+				trackController.setTrack(track);
+				track.setTrackController(trackController);
+				TrackModelGUI trackModel = new TrackModelGUI(track);
+				dTime.addTMGUI(trackModel);
+				trackController.showUI();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}

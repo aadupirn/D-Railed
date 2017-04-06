@@ -118,12 +118,6 @@ public class MBOController extends Application {
 
         submitButton.setOnAction((ActionEvent a) -> {
             resultPane.setContentText("SINGLE TRAIN DEPLOYMENT MODE");
-
-            scheduler = new Scheduler(1);
-            mbo = new MBO(1);
-            setInfoColumns();
-            setTrainColumns();
-            setWorkColumns();
         });
     }
 
