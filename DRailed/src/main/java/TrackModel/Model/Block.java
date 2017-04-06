@@ -389,17 +389,17 @@ public class Block {
         if(direction == true && nextUpBlock != null){
 
             // move train to next block
-            nextUpBlock.setOccupied();
             nextBlock = nextUpBlock;
 
         // if the direction of travel is DOWN and the track runs the same direction
         }else if(direction == false && nextDownBlock != null){
 
             // move train to next block
-            nextDownBlock.setOccupied();
             nextBlock = nextDownBlock;
 
         }
+
+        nextBlock.setOccupied();
 
         return nextBlock;
     }
@@ -464,6 +464,10 @@ public class Block {
 
     public void setOccupied(){
         this.occupied = true;
+    }
+
+    public void setUnoccupied(){
+        this.occupied = false;
     }
 
     public int getNextUpBlockNumber() {

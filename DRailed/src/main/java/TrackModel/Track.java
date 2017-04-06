@@ -103,6 +103,9 @@ public class Track {
             setLightState(nextBlock.getLine(), nextBlock.getBlockNumber(), getTrackController().getPLCLight(nextBlock.getBlockNumber()));
         }
 
+        tm.getBlock(currentBlock.getLine(), currentBlock.getBlockNumber()).setUnoccupied();
+        tm.getBlock(nextBlock.getLine(), nextBlock.getBlockNumber()).setOccupied();
+
         return nextBlock;
     }
 
