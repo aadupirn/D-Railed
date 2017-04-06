@@ -1,7 +1,6 @@
 package MBO.java;
 
 import com.sun.javafx.scene.control.TableColumnComparatorBase;
-import ctc.bean.Schedule;
 import javafx.application.Application;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
