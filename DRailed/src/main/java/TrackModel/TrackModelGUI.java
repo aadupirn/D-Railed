@@ -1,4 +1,4 @@
-package TrackModel.UI;
+package TrackModel;
 
 /**
  * Created by andrew on 1/21/17.
@@ -47,7 +47,7 @@ public class TrackModelGUI {
 
     // Model Structures
     private Block selectedBlock = new Block();
-    private TrackModel track = new TrackModel();
+    private Track track = new Track();
 
     // Main Grid
     private GridPane mainGrid = getGridPane();
@@ -78,9 +78,11 @@ public class TrackModelGUI {
     private ImageView circuitIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/circuitIcon.png").toString()));
     private ImageView powerIcon = new ImageView(new Image(getClass().getResource("/TrackModel/images/powerIcon.png").toString()));
 
-    public TrackModelGUI() throws IOException {
+    public TrackModelGUI(Track track) throws IOException {
 
         stage.setTitle(applicationTitle);
+
+        this.track = track;
 
         // Layout Menu
         Label layoutMenuTitle = getLayoutLabel();
@@ -469,7 +471,7 @@ public class TrackModelGUI {
                 File file = fileChooser.showOpenDialog(fileSelect);
                 if(file != null)
                 {
-                    track.importTrack(file.getName());
+                    track.tm.importTrack(file.getName());
                     ScrollPane scrollPane = parseTrackForDisplay();
                     trackLayout.add(scrollPane, 0, 0);
                 }
@@ -661,7 +663,7 @@ public class TrackModelGUI {
         List<Button> blockButtons = new ArrayList<>();
         List<VBox> buttonBoxes = new ArrayList<>();
 
-        for(Line line : track.getLines()){
+        for(Line line : track.tm.getLines()){
             Accordion sectionAccordion = new Accordion();
             for(Section section : line.getSections()){
                 VBox buttonBox = new VBox(5);
