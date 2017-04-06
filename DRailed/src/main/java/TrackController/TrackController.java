@@ -173,13 +173,15 @@ public class TrackController {
         ui.Update();
     }
 
-    public void dispatchTrain(int start, int numberOfCarts, int newAuthority, Double newSpeed, int newID) throws Exception
+    public boolean dispatchTrain(int start, int numberOfCarts, int newAuthority, Double newSpeed, int newID) throws Exception
     {
-        Train train = new Train(start,numberOfCarts,newAuthority, newSpeed, newID, this.track);
         if (isLineMain)
         {
+            Train train = new Train(start,numberOfCarts,newAuthority, newSpeed, newID, this.track);
             track.dispatchTrainOnTrack(this.line,train);
+            return true;
         }
+        return false;
     }
 
     public boolean getOccupancy(int blockID)
