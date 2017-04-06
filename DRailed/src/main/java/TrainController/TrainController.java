@@ -105,7 +105,7 @@ public class TrainController
 		desiredSpeed = 0;
 		temperature = train.getTemperature();
 
-		track = new Track("greenTrackLayout.csv");
+		track = new Track("greenLine.csv");
 
 		locationCalculator = new LocationCalculator(track, route);
 		controlCalculator = new ControlCalculator(desiredSpeed, kp, ki);
