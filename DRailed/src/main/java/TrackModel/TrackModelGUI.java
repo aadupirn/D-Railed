@@ -1037,20 +1037,7 @@ public class TrackModelGUI {
             cumElevationValue.setPadding(new Insets(0,0,0,10));
 
         Label direction = new Label("Direction: ");
-        String dir = null;
-        if(selectedBlock.getDirection() == null){
-            dir = "BI";
-        }else if(selectedBlock.getDirection().equals("HEAD")){
-            dir = "HEAD";
-        }else if(selectedBlock.getDirection().equals("TAIL")){
-            dir = "TAIL";
-        }else if(selectedBlock.getDirection().equals("HEAD/TAIL")){
-            dir = "UNI";
-        }else if(selectedBlock.getDirection().equals("HEAD/HEAD")){
-            dir = "BI";
-        }
-
-        Label directionValue = new Label("" + dir);
+        Label directionValue = new Label("" + selectedBlock.getDirection());
             direction.setPadding(new Insets(0,0,0,10));
             direction.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
             directionValue.setPadding(new Insets(0,0,0,10));
@@ -1060,6 +1047,12 @@ public class TrackModelGUI {
             temperature.setPadding(new Insets(0,0,0,10));
             temperature.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
             temperatureValue.setPadding(new Insets(0,0,0,10));
+
+        Label occupied = new Label("Occupied: ");
+        Label occupiedValue = new Label("" + selectedBlock.isOccupied());
+            occupied.setPadding(new Insets(0,0,0,10));
+            occupied.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
+            occupiedValue.setPadding(new Insets(0,0,0,10));
 
         blockInfoPanel.setAlignment(Pos.TOP_LEFT);
         blockInfoPanel.setMinHeight(windowHeight/2);
@@ -1088,6 +1081,8 @@ public class TrackModelGUI {
         blockInfoPanel.add(directionValue, 1, 9);
         blockInfoPanel.add(temperature, 0, 10);
         blockInfoPanel.add(temperatureValue, 1, 10);
+        blockInfoPanel.add(occupied, 0, 11);
+        blockInfoPanel.add(occupiedValue, 1, 11);
 
         return blockInfoPanel;
     }
@@ -1101,6 +1096,7 @@ public class TrackModelGUI {
     }
 
     public void update(){
+        selectedBlock = track.getBlock(selectedBlock.getLine(), selectedBlock.getBlockNumber());
         updateBlockMonitor();
     }
 

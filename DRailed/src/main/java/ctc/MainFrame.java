@@ -7,11 +7,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-
 import javax.swing.ButtonGroup;
-//import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,12 +16,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-//import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import ctc.bean.Schedule;
 import ctc.bean.Trace;
-import ctc.panel.MonitorMapPanel;
 import ctc.util.ExcelUtil;
 import ctc.util.ScheduleUtil;
 
@@ -184,10 +178,10 @@ public class MainFrame extends JFrame implements ActionListener{
 		// trackImg.setBackground(Color.DARK_GRAY);
 		// trackImg.setBounds(0, 2, 994, 516);
 		// contentPane.add(trackImg);
-		MonitorMapPanel mMPanel = new MonitorMapPanel();
-		mMPanel.setBounds(0, 2, 994, 516);
-		mMPanel.setBackground(Color.black);
-		contentPane.add(mMPanel);
+//		MonitorMapPanel mMPanel = new MonitorMapPanel();
+//		mMPanel.setBounds(0, 2, 994, 516);
+//		mMPanel.setBackground(Color.black);
+//		contentPane.add(mMPanel);
 		
 		Timer timer = new Timer(label);//compute Timer
 		timer.start();

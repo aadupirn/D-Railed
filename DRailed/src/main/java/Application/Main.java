@@ -1,5 +1,8 @@
 package Application;
 
+import TrackModel.Track;
+import TrackModel.TrackModelGUI;
+import TrainController.TrainController;
 import TrackModel.TrackModelGUI;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -15,7 +18,7 @@ import TrackModel.Track;
 import DTime.DTime;
 import TrainModel.Train;
 import MBO.java.MBOController;
-import ctc.MainFrame;
+import ctc.CTCMain;
 
 import java.io.IOException;
 
@@ -100,9 +103,8 @@ public class Main extends Application {
 		ctcBtn.setOnAction((ActionEvent e) ->
 		{
 			try{
-				MainFrame ctc = new MainFrame();
-				ctc.setVisible(true);
-				ctc.deleteFile();
+				CTCMain ctc = new CTCMain();
+				ctc.start(new Stage());
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -173,11 +175,6 @@ public class Main extends Application {
 			}
 		});
     }
-
-
-
-
-
 
     public static void main(String[] args) {
         launch(args);

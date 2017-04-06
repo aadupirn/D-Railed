@@ -35,9 +35,9 @@ public class TrackModel
         importTrack(trackLayout);
 
         for(Line l : getLines()) {
-            //connectLine(l.getLine());
             looseCoupling(l.getLine());
         }
+
     }
 
     public List<Line> getLines() {
@@ -533,6 +533,7 @@ public class TrackModel
 
                         // MAIN SWITCH BLOCK
                         if(b.getSwitch().getMain().equals(b.getBlockNumber())){
+
                             // Switch is in the TOP state
                             if(b.getSwitch().getState().equals(SwitchState.TOP)){
 
@@ -561,7 +562,6 @@ public class TrackModel
                                 if(b.getSwitch().getBottom().equals(b.getNextUpBlockNumber())){
                                     b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
                                     b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                    System.out.println("HITUBN");
                                 }else{
                                     b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
                                 }
@@ -715,12 +715,16 @@ public class TrackModel
 
                             if(b.getSwitch().getState().equals(SwitchState.TOP)){
 
+                                b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
+
                                 // Main -> Top [DOWN]
                                 if(b.getSwitch().getTop().equals(b.getNextDownBlockNumber())){
                                     b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
                                 }
 
                             }else if(b.getSwitch().getState().equals(SwitchState.BOTTOM)){
+
+                                b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
 
                                 // Main -> Bottom [DOWN]
                                 if(b.getSwitch().getBottom().equals(b.getNextDownBlockNumber())){
@@ -739,6 +743,8 @@ public class TrackModel
 
                             if(b.getSwitch().getState().equals(SwitchState.TOP)){
 
+                                b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
+
                                 // Top -> Main [DOWN]
                                 if(b.getSwitch().getMain().equals(b.getNextDownBlockNumber())){
                                     b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
@@ -750,6 +756,8 @@ public class TrackModel
                         }else if(b.getSwitch().getBottom().equals(b.getBlockNumber())){
 
                             if(b.getSwitch().getState().equals(SwitchState.BOTTOM)){
+
+                                b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
 
                                 // Bottom -> Main [DOWN]
                                 if(b.getSwitch().getMain().equals(b.getNextDownBlockNumber())){
@@ -779,30 +787,30 @@ public class TrackModel
         for(Section s : line.getSections()) {
             for(Block b : s.getBlocks()) {
 
-                System.out.println("BLOCK: " + b + "->");
+//                System.out.println("BLOCK: " + b + "->");
 
                 if (b.getDirection().contains("BI")) {
 
                     b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
                     b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
 
-                    System.out.print(b.getNextUpBlock() + "<-");
-                    System.out.print(b);
-                    System.out.println("->" + b.getNextDownBlock());
+//                    System.out.print(b.getNextUpBlock() + "<-");
+//                    System.out.print(b);
+//                    System.out.println("->" + b.getNextDownBlock());
 
                 } else if (b.getDirection().contains("UP")) {
 
                     b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
 
-                    System.out.print(b.getNextUpBlock() + "<-");
-                    System.out.println(b);
+//                    System.out.print(b.getNextUpBlock() + "<-");
+//                    System.out.println(b);
 
                 } else if (b.getDirection().contains("DOWN")) {
 
                     b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
 
-                    System.out.print(b);
-                    System.out.println("->" + b.getNextDownBlock());
+//                    System.out.print(b);
+//                    System.out.println("->" + b.getNextDownBlock());
 
                 }
             }
