@@ -67,7 +67,6 @@ public class TrackTests {
 
         assertEquals(true, b.isOccupied());
     }
->>>>>>> master
 
     @Test
     public void testBlockUnoccupied(){

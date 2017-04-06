@@ -173,19 +173,18 @@ public class TrackController {
         ui.Update();
     }
 
-    public int dispatchTrain(Train train)
+    public void dispatchTrain(int start, int numberOfCarts, int newAuthority, Double newSpeed, int newID) throws Exception
     {
-        int returnVal = 0;
+        Train train = new Train(start,numberOfCarts,newAuthority, newSpeed, newID, this.track);
         if (isLineMain)
         {
-            returnVal = track.dispatchTrainOnTrack(this.line,train);
+            track.dispatchTrainOnTrack(this.line,train);
         }
-        return returnVal;
     }
 
     public boolean getOccupancy(int blockID)
     {
-        return false;
+        return track.getBlock(this.line,blockID).isOccupied();
     }
 
     public String[] getBlockInfo(int blockID)
