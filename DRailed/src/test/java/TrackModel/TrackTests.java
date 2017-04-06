@@ -43,7 +43,7 @@ public class TrackTests {
 
         try {
             train = new Train(1);
-        }catch(IOException ioe){
+        }catch(Exception ioe){
             System.out.println("Encountered IO Exception");
         }
 

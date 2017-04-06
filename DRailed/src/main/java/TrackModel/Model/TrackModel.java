@@ -15,7 +15,6 @@ public class TrackModel
 {
 
     private List<Line> lines;
-    private List<Train> testTrainList;
     private int trainToDispatch = 0;
     private int lineCount;
 
@@ -29,12 +28,10 @@ public class TrackModel
 
     public TrackModel(){
         lines = new ArrayList<>();
-        testTrainList = new ArrayList<>();
     }
 
     public TrackModel(String trackLayout){
         lines = new ArrayList<>();
-        testTrainList = new ArrayList<>();
         importTrack(trackLayout);
 
         for(Line l : getLines()) {
@@ -394,22 +391,6 @@ public class TrackModel
         this.lineCount = lineCount;
     }
 
-    public void randomDispatch(String line) throws IOException
-    {
-
-        getTestTrains();
-
-        if(line != null && existsLine(line)) {
-            String secVal = "A";
-            int blockNo = 2;
-
-            System.out.println("Train dispatched to: " + line + ":" + secVal + ":" + blockNo);
-            Block b = getLine(line).getSection(secVal).getBlock(blockNo);
-            getLine(line).placeTrain(b, testTrainList.get(trainToDispatch));
-            trainToDispatch++;
-        }
-    }
-
     public int dipatchTrain(String line, Train train){
 
         int err = -1;
@@ -531,8 +512,8 @@ public class TrackModel
 
     private void getTestTrains() throws IOException
     {
-        testTrainList.add(new Train(0));
-        testTrainList.add(new Train(1));
+        //testTrainList.add(new Train(0));
+        //testTrainList.add(new Train(1));
     }
 
     private void connectLine(String lineName) {

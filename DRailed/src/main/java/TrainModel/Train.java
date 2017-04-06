@@ -8,8 +8,8 @@ import java.util.Random;
  * Created by swaroopakkineni on 2/14/17.
  */
 public class Train {
-    private TrainModelMain trainModel;
     private TrainController trainController;
+    private TrainModel trainModel;
     private int block;
     private Double commandSpeed;
     private int id;
@@ -23,12 +23,12 @@ public class Train {
     private boolean leftDoors;
     private boolean rightDoors;
     private boolean lights;
-    private boolean ebrake;
-    private boolean sbrake;
+    private static boolean ebrake;
+    private static boolean sbrake;
 
     int unloading;
 
-    public Train() throws IOException {
+    public Train() throws IOException, Exception {
         System.out.println("train created");
        // trainModel = new TrainModel();
         Engine = new engine();
@@ -38,56 +38,73 @@ public class Train {
         lights = false;
         ebrake = false;
         sbrake = false;
+        currentSpeed = 0;
+        mass = 10000;
 
         trainController = new TrainController(this);
+        trainModel = new TrainModel();
     }
 
-    // @ANDREW created for track model testing
-    public Train(int newId) throws IOException {
-        //trainController = new TrainController(this);
+    // @ANDREW created for track model testing DON'T UNCOMMENT THE TRAIN MODEL AND TRAIN CONTROLLER THIS
+    // IS ONLY USED BY ME FOR TESTING AT THE MOMENT
+    public Train(int newId) throws IOException, Exception {
+
         Engine = new engine();
         ac = new AC();
         ebrake = false;
         sbrake = false;
+        currentSpeed = 0;
+        mass = 10000;
 
         //trainModel = new TrainModel();
         this.id = id;
+        //trainController = new TrainController(this);
+        trainModel = new TrainModel();
         this.unloading = generateUnloading();
     }
 
-    public Train(int blockLocation, int newID) throws IOException {
-       trainController = new TrainController(this);
+    public Train(int blockLocation, int newID) throws IOException, Exception {
         Engine = new engine();
         ac = new AC();
         ebrake = false;
         sbrake = false;
+        currentSpeed = 0;
+        mass = 10000;
 
         block = blockLocation;
         id = newID;
+        trainController = new TrainController(this);
+        trainModel = new TrainModel();
       //  trainModel = new TrainModel();
 
     }
-    public Train(int blockLocation, int numberOfCarts, int newID) throws IOException {
-        trainController = new TrainController(this);
+    public Train(int blockLocation, int numberOfCarts, int newID) throws IOException, Exception {
         Engine = new engine();
         ac = new AC();
         ebrake = false;
         sbrake = false;
+        currentSpeed = 0;
+        mass = 10000;
 
         block = blockLocation;
         id = newID;
+        trainController = new TrainController(this);
+        trainModel = new TrainModel();
         //trainModel = new TrainModel();
         //trainController = new TrainController();
     }
-    public Train(int blockLocation, int numberOfCarts, Double newAuthority, Double newSpeed, int newID) throws IOException {
+    public Train(int blockLocation, int numberOfCarts, Double newAuthority, Double newSpeed, int newID) throws IOException, Exception {
         Engine = new engine();
         ac = new AC();
-        trainController = new TrainController(this);
         ebrake = false;
         sbrake = false;
+        currentSpeed = 0;
+        mass = 10000;
 
         block = blockLocation;
         id = newID;
+        trainController = new TrainController(this);
+        trainModel = new TrainModel();
         //trainModel = new TrainModel();
     }
 
@@ -97,7 +114,7 @@ public class Train {
     public TrainController GetTrainController(){
       return trainController;
     }
-    private boolean receiveBeacon(String beacon){
+    /*private boolean SetBeacon(String beacon){
         String[] beaconArray = beacon.split("");
         int beaconID = Integer.decode("0x" + beaconArray[0]);
         if(id == beaconID){
@@ -109,6 +126,7 @@ public class Train {
         }
         return false;
     }
+    */
 
 
     private boolean setBeaconImputs(Double beaconSpeed, Double beaconCommand, int beaconFailureStatus, int beaconPassengerCount) {
@@ -176,12 +194,14 @@ Calculates speed
     }
     public double GetPowerCommand(){ return commandSpeed;}
     public void Update(){
-        System.out.println("TEmperature is 90");
+        ac.changeTemp();
+        System.out.println("TEmperature is " + ac.getTemp());
         System.out.println("Speed is " + calculateSpeed(commandSpeed));
 
     }
-    public boolean SetEbrake(boolean bool){
+    public boolean setEbrake(boolean bool){
         ebrake = bool;
+        engine.setEbrake(ebrake);
         return true;
     }
     public boolean GetEbrake(){
@@ -189,6 +209,8 @@ Calculates speed
     }
     public boolean SetSbrake(boolean bool){
         sbrake = bool;
+        engine.setSbrake(sbrake);
+
         return true;
     }
     public boolean GetSbrake(){
@@ -233,6 +255,3 @@ Calculates speed
 }
 
 
-/*
-
- */
