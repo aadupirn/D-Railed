@@ -77,6 +77,9 @@ public class TrainController
 	private LocationCalculator locationCalculator;
 	private ControlCalculator controlCalculator;
 
+
+
+
 	//endregion
 
 	//region Constructor
@@ -104,7 +107,7 @@ public class TrainController
 
 		track = iTrack;
 
-		locationCalculator = new LocationCalculator(track, route, train.GetStartingBlock());
+		locationCalculator = new LocationCalculator(track, route);
 		controlCalculator = new ControlCalculator(desiredSpeed, kp, ki);
 
 		//region UI code
