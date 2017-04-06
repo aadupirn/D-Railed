@@ -1,6 +1,6 @@
 package TrackModel;
 
-import MBO.java.Train;
+//import MBO.java.Train;
 import TrackController.TrackController;
 import TrackModel.Model.*;
 
@@ -302,8 +302,12 @@ public class Track {
         return null;
     }
 
-    public Block getYardBlock(String line){
-        return tm.getYardBlock(line);
+    public Block getFromYardBlock(String line){
+        return tm.getFromYardBlock(line);
+    }
+
+    public Block getToYardBlock(String line){
+        return tm.getToYardBlock(line);
     }
 
 

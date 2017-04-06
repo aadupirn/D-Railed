@@ -40,7 +40,6 @@ public class Block {
     private Double elevation;
     private Double cumulativeElevation;
     private Double temperature;
-    private String direction;
 
     // Infrastructure and Functionality
     private Train train;
@@ -64,7 +63,15 @@ public class Block {
     private Double speed;
 
     // Connected Blocks
-    private Block nextBlock;
+    private String direction;
+    private int nextUpBlockNumber;
+    private int nextUpBlockSwitchBottom;
+    private int nextDownBlockNumber;
+    private int nextDownBlockSwitchBottom;
+    private Block nextUpBlock;
+    private Block nextDownBlock;
+    private boolean fromYard;
+    private boolean toYard;
 
     public Block(){
         // basic info
@@ -86,13 +93,27 @@ public class Block {
         this.station = null;
         this.light = null;
 
+        // train
         this.occupied = false;
+        this.speed = 0.0;
+        this.authority = 0;
 
         // status
         this.powerState = false;
         this.railState = false;
         this.circuitState = false;
         this.trackState = "CLOSED";
+
+        // block connection
+        this.nextUpBlockNumber = -1;
+        this.nextUpBlockSwitchBottom = -1;
+        this.nextDownBlockNumber = -1;
+        this.nextDownBlockSwitchBottom = -1;
+        this.nextUpBlock = null;
+        this.nextDownBlock = null;
+        this.fromYard = false;
+        this.toYard = false;
+
     }
 
     public Block(String line, String section, Integer blockNumber){
@@ -107,13 +128,27 @@ public class Block {
         this.station = null;
         this.light = null;
 
+        // train
         this.occupied = false;
+        this.speed = 0.0;
+        this.authority = 0;
 
         // status
         this.powerState = true;
         this.railState = true;
         this.circuitState = true;
         this.trackState = "OPEN";
+
+        // block connection
+        this.nextUpBlockNumber = -1;
+        this.nextUpBlockSwitchBottom = -1;
+        this.nextDownBlockNumber = -1;
+        this.nextDownBlockSwitchBottom = -1;
+        this.nextUpBlock = null;
+        this.nextDownBlock = null;
+        this.fromYard = false;
+        this.toYard = false;
+
     }
 
     public void setParameters(Double length, Double grade, Double speedLimit, Double elevation, Double cumElevation, Double temperature, String direction){
@@ -137,18 +172,13 @@ public class Block {
         }
     }
 
-    public void trainEnter(Train newTrain){
-        this.train = newTrain;
-        this.occupied = true;
-    }
-
     public Train getTrain(){
         return this.train;
     }
 
-    public void trainExit(){
-        this.train = null;
-        this.occupied = false;
+    public void setTrain(Train train){
+        this.occupied = true;
+        this.train = train;
     }
 
     public boolean isOccupied(){
@@ -343,12 +373,84 @@ public class Block {
         return section + blockNumber;
     }
 
-    public Block getNextBlock(){
+    /**
+     *
+     * @param train - the train that is moving
+     * @param direction - the direction it is traveling up = true; down = false
+     * @return
+     */
+    public Block moveToNextBlock(Train train, boolean direction){
+
+        // remove train from current block
+        this.train = null;
+        this.occupied = false;
+
+        Block nextBlock = null;
+
+        // if the direction of travel is UP and the track runs the same direction
+        if(direction && nextUpBlock != null){
+
+            // move train to next block
+            nextUpBlock.setOccupied();
+            nextUpBlock.setTrain(train);
+            nextBlock = nextUpBlock;
+
+        // if the direction of travel is DOWN and the track runs the same direction
+        }else if(!direction && nextDownBlock != null){
+
+            // move train to next block
+            nextDownBlock.setOccupied();
+            nextDownBlock.setTrain(train);
+            nextBlock = nextDownBlock;
+
+        }
+
         return nextBlock;
     }
 
-    public void setNextBlock(Block nextBlock){
-        this.nextBlock = nextBlock;
+    public Block getNextBlock(boolean direction){
+
+        Block nextBlock = null;
+
+        if(direction){
+            nextBlock = nextUpBlock;
+        }else{
+            nextBlock = nextDownBlock;
+        }
+
+        return nextBlock;
+    }
+
+    public boolean canMoveToBlock(boolean direction){
+
+        if(direction){
+            return nextUpBlockNumber != -1;
+        }else{
+            return nextDownBlockNumber != -1;
+        }
+
+    }
+
+    public Block getNextUpBlock() {
+        if(nextUpBlockNumber == -1) {
+            System.out.println("This block is UNI directional and a train can only travel DOWN");
+        }
+        return nextUpBlock;
+    }
+
+    public void setNextUpBlock(Block nextUpBlock) {
+        this.nextUpBlock = nextUpBlock;
+    }
+
+    public Block getNextDownBlock() {
+        if(nextUpBlockNumber == -1) {
+            System.out.println("This block is UNI directional and a train can only travel UP");
+        }
+        return nextDownBlock;
+    }
+
+    public void setNextDownBlock(Block nextDownBlock) {
+        this.nextDownBlock = nextDownBlock;
     }
 
     public void setSpeedAndAuthority(Double speed, int authority){
@@ -362,6 +464,58 @@ public class Block {
 
     public int readAuthority(){
         return this.authority;
+    }
+
+    public void setOccupied(){
+        this.occupied = true;
+    }
+
+    public int getNextUpBlockNumber() {
+        return nextUpBlockNumber;
+    }
+
+    public void setNextUpBlockNumber(int nextUpBlockNumber) {
+        this.nextUpBlockNumber = nextUpBlockNumber;
+    }
+
+    public int getNextDownBlockNumber() {
+        return nextDownBlockNumber;
+    }
+
+    public void setNextDownBlockNumber(int nextDownBlockNumber) {
+        this.nextDownBlockNumber = nextDownBlockNumber;
+    }
+
+    public int getNextUpBlockSwitchBottom() {
+        return nextUpBlockSwitchBottom;
+    }
+
+    public void setNextUpBlockSwitchBottom(int nextUpBlockSwitchBottom) {
+        this.nextUpBlockSwitchBottom = nextUpBlockSwitchBottom;
+    }
+
+    public int getNextDownBlockSwitchBottom() {
+        return nextDownBlockSwitchBottom;
+    }
+
+    public void setNextDownBlockSwitchBottom(int nextDownBlockSwitchBottom) {
+        this.nextDownBlockSwitchBottom = nextDownBlockSwitchBottom;
+    }
+
+    public void setFromYard(){
+        this.fromYard = true;
+    }
+
+    public void setToYard(){
+        this.toYard = true;
+    }
+
+    public boolean isFromYard(){
+        return this.fromYard;
+    }
+
+    public boolean isToYard(){
+        return this.toYard;
     }
 }
 
