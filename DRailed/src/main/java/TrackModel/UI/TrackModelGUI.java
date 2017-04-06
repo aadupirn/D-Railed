@@ -1105,4 +1105,8 @@ public class TrackModelGUI {
         return bd.doubleValue();
     }
 
+    public void update(){
+        updateBlockMonitor();
+    }
+
 }

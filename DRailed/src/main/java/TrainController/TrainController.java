@@ -69,7 +69,8 @@ public class TrainController
 	private Train train;
 
 	private LocationCalculator locationCalculator;
-	private ControlCalculator controlCalculator;
+	private ControlCalculator controlCalculator1;
+	private ControlCalculator controlCalculator2;
 
 
 
@@ -93,8 +94,14 @@ public class TrainController
 		eBrakeStatus = false;
 		sBrakeStatus = false;
 
+<<<<<<< HEAD
 		locationCalculator = new LocationCalculator();
 		controlCalculator = new ControlCalculator(powerLimit, kp, ki);
+=======
+		locationCalculator = new LocationCalculator(track, route, train.GetStartingBlock());
+		controlCalculator1 = new ControlCalculator(desiredSpeed, kp, ki);
+		controlCalculator2 = new ControlCalculator(desiredSpeed, kp, ki);
+>>>>>>> master
 
 		//region UI code
 		stage.setTitle(windowTitle);
@@ -449,6 +456,54 @@ public class TrainController
 			}
 		});
 
+<<<<<<< HEAD
+=======
+		manualBtn.setOnAction((ActionEvent e) ->
+		{
+
+		});
+
+		automaticBtn.setOnAction((ActionEvent e) ->
+		{
+
+		});
+
+		emerBtn.setOnAction((ActionEvent e) ->
+		{
+			emergencyBrake();
+		});
+
+		brakeBtn.setOnAction((ActionEvent e) ->
+		{
+			train.SetSbrake(true);
+		});
+
+		incSpeed.setOnAction((ActionEvent e) ->
+		{
+			desiredSpeed = desiredSpeed + MpH2MpS(1);
+			if(desiredSpeed > speedLimit)
+			{
+				desiredSpeed = speedLimit;
+			}
+			controlCalculator1.setDesiredSpeed(desiredSpeed);
+			controlCalculator2.setDesiredSpeed(desiredSpeed);
+			setDesiredSpeedText(desiredSpeed);
+		});
+
+		decSpeed.setOnAction((ActionEvent e) ->
+		{
+
+			desiredSpeed = desiredSpeed - MpH2MpS(1);
+			if(desiredSpeed<0)
+			{
+				desiredSpeed = 0;
+			}
+			controlCalculator1.setDesiredSpeed(desiredSpeed);
+			controlCalculator2.setDesiredSpeed(desiredSpeed);
+			setDesiredSpeedText(desiredSpeed);
+		});
+
+>>>>>>> master
 		//endregion
 
 		//region RadioButtonHandlers
@@ -595,6 +650,13 @@ public class TrainController
 	{
 		kp = kpIn;
 		ki = kiIn;
+<<<<<<< HEAD
+=======
+		controlCalculator1.setKI(ki);
+		controlCalculator1.setKP(kp);
+		controlCalculator2.setKI(ki);
+		controlCalculator2.setKP(kp);
+>>>>>>> master
 	}
 
 	public double getKP()
@@ -607,9 +669,32 @@ public class TrainController
 		return ki;
 	}
 
+<<<<<<< HEAD
 	public void Update()
 	{
 		train.SetPowerCommand(controlCalculator.ComputeNextCommand());
+=======
+	public void emergencyBrake()
+	{
+		train.SetPowerCommand(new Double(0));
+		setPowerText(0);
+		train.setEbrake(true);
+	}
+
+	public void update()
+	{
+		double powerCommand1 = controlCalculator1.computeNextCommand(speed);
+		double powerCommand2 = controlCalculator2.computeNextCommand(speed);
+		if(powerCommand1 != powerCommand2)
+		{
+			emergencyBrake();
+		}
+		else
+		{
+			train.SetPowerCommand(powerCommand1);
+			setPowerText(powerCommand1);
+		}
+>>>>>>> master
 		train.Update();
 		SetSpeedText(""+train.GetCurrentSpeed());
 	}

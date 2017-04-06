@@ -29,9 +29,17 @@ public class Main extends Application {
     private int windowHight = 300;
     private int inset = 25;
     private int colWidth = 75;
+    private DTime dTime;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+<<<<<<< HEAD
+=======
+
+    	//Module initialization
+
+
+>>>>>>> master
         primaryStage.setTitle(applicationTitle);
 
         GridPane grid = new GridPane();
@@ -106,8 +114,13 @@ public class Main extends Application {
 		trackControllerBtn.setOnAction((ActionEvent e) ->
 		{
 			try {
+<<<<<<< HEAD
 				TrackController trackController = new TrackController();
 			} catch (IOException e1) {
+=======
+
+			} catch (Exception e1) {
+>>>>>>> master
 				e1.printStackTrace();
 			}
 		});
@@ -115,7 +128,16 @@ public class Main extends Application {
         trackModelBtn.setOnAction((ActionEvent e) ->
         {
             try {
+<<<<<<< HEAD
                 TrackModelGUI trackModel = new TrackModelGUI();
+=======
+				dTime = new DTime();
+				Track track = new Track();
+				TrackController trackController = new TrackController(dTime);
+				trackController.setTrack(track);
+				TrackModelGUI trackModel = new TrackModelGUI(track);
+				trackController.showUI();
+>>>>>>> master
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -135,8 +157,8 @@ public class Main extends Application {
 		{
 			try {
 				Train t = new Train();
-				DTime dt = new DTime(t.GetTrainController());
-				//dt.Run();
+				DTime dt = new DTime();
+				dt.addTC(t.GetTrainController());
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			} catch (Exception e1)

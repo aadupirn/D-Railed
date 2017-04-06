@@ -34,6 +34,18 @@ public class Train {
         leftDoors = false;
         rightDoors = false;
         lights = false;
+<<<<<<< HEAD
+=======
+        ebrake = false;
+        sbrake = false;
+        currentSpeed = 0;
+        mass = 10000;
+        startingBlock = 152;
+        track = new Track();
+        trainController = new TrainController(this, this.track);
+        //trainModel = new TrainModel();
+    }
+>>>>>>> master
 
         trainController = new TrainController(this);
     }
@@ -56,6 +68,12 @@ public class Train {
 
         block = blockLocation;
         id = newID;
+<<<<<<< HEAD
+=======
+        track = new Track();
+        trainController = new TrainController(this, this.track);
+        //trainModel = new TrainModel();
+>>>>>>> master
       //  trainModel = new TrainModel();
 
     }
@@ -66,6 +84,12 @@ public class Train {
 
         block = blockLocation;
         id = newID;
+<<<<<<< HEAD
+=======
+        track = new Track();
+        trainController = new TrainController(this, track);
+       // trainModel = new TrainModel();
+>>>>>>> master
         //trainModel = new TrainModel();
         //trainController = new TrainController();
     }
@@ -77,6 +101,11 @@ public class Train {
 
         block = blockLocation;
         id = newID;
+<<<<<<< HEAD
+=======
+        trainController = new TrainController(this, track);
+       // trainModel = new TrainModel();
+>>>>>>> master
         //trainModel = new TrainModel();
     }
 
