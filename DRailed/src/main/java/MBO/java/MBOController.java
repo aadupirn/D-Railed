@@ -115,19 +115,8 @@ public class MBOController extends Application {
         });
 
         submitButton.setOnAction((ActionEvent a) -> {
-            Double passengerNo = Double.parseDouble(passengerInput.getText());
-            Double conductorNo = Double.parseDouble(conductorInput.getText());
-
             resultPane.setContentText("SINGLE TRAIN DEPLOYMENT MODE");
 
-            scheduler = new Scheduler(1);
-            //scheduler.generateSchedule();
-
-            mbo = new MBO(1);
-
-            setInfoColumns();
-            setTrainColumns();
-            setWorkColumns();
         });
     }
 
@@ -239,6 +228,12 @@ public class MBOController extends Application {
         primary.setScene(new Scene(root));
         primary.show();
         this.getUIElements();
+        scheduler = new Scheduler(1);
+        mbo = new MBO(1);
+        setInfoColumns();
+        setTrainColumns();
+        setWorkColumns();
+
     }
 
     public static void main(String[] args) {

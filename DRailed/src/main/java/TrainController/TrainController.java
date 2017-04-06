@@ -735,6 +735,11 @@ public class TrainController
 		locationCalculator.ComputeNextLocation(train.GetCurrentSpeed());
 	}
 
+	public void setMBO(MBO imbo)
+	{
+		mbo = imbo;
+	}
+
 	//endregion
 
 	//region Private Methods
