@@ -7,7 +7,6 @@ public class Crossing {
 
     private Integer crossingNumber;
     private boolean active;
-    private Heater heater;
 
     /***
      * Create crossing with the signal set to false initially for a given
@@ -15,7 +14,6 @@ public class Crossing {
     public Crossing(Integer crossingNumber){
         this.crossingNumber = crossingNumber;
         this.active = false;
-        this.heater = new Heater(""+crossingNumber);
     }
 
     public Integer getCrossingNumber(){
@@ -45,11 +43,4 @@ public class Crossing {
         this.active = !this.active;
     }
 
-    public Heater getHeater() {
-        return heater;
-    }
-
-    public void setHeater(Heater heater) {
-        this.heater = heater;
-    }
 }
