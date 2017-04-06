@@ -59,7 +59,7 @@ public class Train {
         //trainModel = new TrainModel();
         this.id = id;
         //trainController = new TrainController(this);
-        trainModel = new TrainModel();
+        //trainModel = new TrainModel();
         this.unloading = generateUnloading();
     }
 
@@ -150,7 +150,7 @@ Calculates speed
     protected boolean calculateSpeed(Double power){
         //do some calculations
         currentSpeed =  Engine.calculateSpeed(mass, commandSpeed, currentSpeed, grade);
-        System.out.println("Current Speed: "+currentSpeed);
+        //System.out.println("Current Speed: "+currentSpeed);
         return true;
     }
 //AC Status
@@ -195,8 +195,9 @@ Calculates speed
     public double GetPowerCommand(){ return commandSpeed;}
     public void Update(){
         ac.changeTemp();
-        System.out.println("TEmperature is " + ac.getTemp());
-        System.out.println("Speed is " + calculateSpeed(commandSpeed));
+        calculateSpeed(commandSpeed);
+        //System.out.println("TEmperature is " + ac.getTemp());
+        //System.out.println("Speed is " + );
 
     }
     public boolean setEbrake(boolean bool){
