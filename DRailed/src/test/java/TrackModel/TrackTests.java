@@ -34,12 +34,37 @@ public class TrackTests {
     public void testSetSpeedAndAuth_ExpectTrainMove(){
 
     }
+<<<<<<< HEAD
 
     @Test
+<<<<<<< HEAD
+<<<<<<< HEAD
+    public void testBlockOccupied() throws IOException{
+        Track track = new Track("greenTrackLayout.csv");
+        Train train = new Train(1);
+=======
+=======
+    public void testBlockOccupied() throws IOException{
+        Track track = new Track("greenTrackLayout.csv");
+        Train train = new Train(1);
+
+        int blockNumber = track.dispatchTrainOnTrack("GREEN", train);
+
+        Block b = track.getBlock("GREEN", blockNumber);
+
+        assertEquals(true, b.isOccupied());
+    }
+=======
+    
+>>>>>>> master
+
+    @Test
+>>>>>>> master
     public void testBlockOccupied(){
         Track track = new Track("greenLine.csv");
 
         Train train = null;
+>>>>>>> master
 
         try {
             train = new Train(1);

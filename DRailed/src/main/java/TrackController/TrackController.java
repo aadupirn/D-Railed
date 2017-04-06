@@ -3,16 +3,13 @@ package TrackController;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Queue;
+
 import TrackController.Classes.*;
 import TrackController.UI.*;
 import TrackModel.Model.*;
-<<<<<<< HEAD
-
-=======
 import TrainModel.Train;
 import TrackModel.Track;
-import DTime.DTime;
->>>>>>> master
 
 /**
  * Created by Jonathan on 2/3/17.
@@ -21,38 +18,79 @@ public class TrackController {
 
     //Class Objects
     private PLC myPLC;
-    private Block[] Blocks;
-    private TrackModel model;
+    private Track track;
     private int ID, startBlock, endBlock;
     private String line;
-    private ArrayList<Block> blocks;
     private boolean trackComms, ctcComms, isLineMain;
-<<<<<<< HEAD
-=======
     private Queue<String> messageQueue;
     private TrackControllerUI ui;
-    private DTime dTime;
->>>>>>> master
 
 
-    public TrackController(DTime iDTime) throws IOException
+    public TrackController() throws IOException
     {
         trackComms = true;
-        dTime = iDTime;
         ctcComms = true;
-        TrackControllerUI ui = new TrackControllerUI(this);
+        ui = new TrackControllerUI(this);
+        track = new Track("greenLine.csv");
+        line = "GREEN";
+        isLineMain = true;
+        this.startBlock=1;
+        this.endBlock=152;
+
+    }
+
+    public void showUI()
+    {
+        ui.showUI();
+    }
+    public void hideUI()
+    {
+        ui.hideUI();
+    }
+
+    public TrackController(String line, int startBlock, int endBlock)
+    {
+        trackComms = true;
+        ctcComms = true;
+        this.line = line;
+        this.startBlock=startBlock;
+        this.endBlock=endBlock;
+
+        if (line.equals("GREEN"))
+        {
+            if (endBlock==152)
+                this.isLineMain=true;
+            else
+                this.isLineMain=false;
+        }
+        else
+        {
+            if (endBlock==77)
+                this.isLineMain=true;
+            else
+                this.isLineMain=false;
+        }
+
+        ui = new TrackControllerUI(this);
 
     }
 
 
     public void setPLC(File file) {
-        this.myPLC = new PLC(file,Blocks);
+        Block[] b = new Block[153];
+        for (int i = startBlock; i < endBlock; i++)
+        {
+            b[i] = track.getBlock(this.line,i);
+        }
+        this.myPLC = new PLC(file, b);
         System.out.println("\n\nPLC Valid: " + myPLC.isValid());
     }
 
-    public void setModel(TrackModel model) {
-        this.model = model;
+    public void setTrack(Track t) {
+        this.track = t;
     }
+
+
 
     public void setID(int ID) {
         this.ID = ID;
@@ -60,10 +98,6 @@ public class TrackController {
 
     public int getID() {
         return ID;
-    }
-
-    public void setBlocks(ArrayList<Block> blocks) {
-        this.blocks = blocks;
     }
 
     public void setTrackComms(boolean trackComms) {
@@ -106,11 +140,11 @@ public class TrackController {
         this.line = line;
     }
 
-    public boolean isLineMain() {
+    public boolean isMainController() {
         return isLineMain;
     }
 
-    public void setLineMain(boolean lineMain) {
+    public void setMainController(boolean lineMain) {
         isLineMain = lineMain;
     }
 
@@ -123,8 +157,6 @@ public class TrackController {
         }
         return false;
     }
-<<<<<<< HEAD
-=======
 
     public void setSpeedAndAuthority(int trainID, double speed, int authority)
     {
@@ -148,7 +180,6 @@ public class TrackController {
         {
             Train train = new Train(start,numberOfCarts,newAuthority, newSpeed, newID, this.track);
             track.dispatchTrainOnTrack(this.line,train);
-            dTime.addTC(train.GetTrainController());
             return true;
         }
         return false;
@@ -222,5 +253,4 @@ public class TrackController {
         }
         return values;
     }
->>>>>>> master
 }

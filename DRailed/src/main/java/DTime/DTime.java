@@ -1,10 +1,8 @@
 package DTime;
 
-import TrackModel.TrackModelGUI;
 import TrainController.TrainController;
 import javafx.concurrent.Task;
 
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,69 +11,25 @@ import java.util.TimerTask;
  */
 public class DTime
 {
-<<<<<<< HEAD
-	private int intervalMS = 1000;
-	private TrainController trainController;
-=======
 	private int multiplier;
-	private ArrayList<TrainController> trainControllers;
-	private TrackModelGUI trackModelGUI;
->>>>>>> master
+	private TrainController trainController;
 
 	Timer timer;
 
 	class DRailedTask extends TimerTask
 	{
-		private int counter = 0;
 		public void run()
 		{
-<<<<<<< HEAD
-			System.out.println("test");
-			counter++;
-			trainController.Update();
-			if(counter == 60)
-			{
-				timer.cancel();
-			}
-=======
-			for(TrainController tc: trainControllers)
-			{
-				tc.update();
-			}
-			if(trackModelGUI!= null)
-				trackModelGUI.update();
->>>>>>> master
+			trainController.update();
 		}
 	}
 
-	public DTime()
+	public DTime(TrainController iTrainController)
 	{
-<<<<<<< HEAD
-		intervalMS = 1000;
-		trainController = iTrainController;
-=======
 		multiplier = 10;
 		int intervalMS = 1000/multiplier;
-		trainControllers = new ArrayList<TrainController>();
->>>>>>> master
+		trainController = iTrainController;
 		timer = new Timer();
 		timer.schedule(new DRailedTask(), 0, intervalMS);
-	}
-
-<<<<<<< HEAD
-
-	private void Step()
-	{
-		trainController.Update();
-=======
-	public void addTC(TrainController itc)
-	{
-		trainControllers.add(itc);
-	}
-
-	public void addTMGUI(TrackModelGUI itmgui)
-	{
-		trackModelGUI = itmgui;
->>>>>>> master
 	}
 }

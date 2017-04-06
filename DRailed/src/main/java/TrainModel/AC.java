@@ -5,56 +5,57 @@ package TrainModel;
  */
 public class AC {
 
-<<<<<<< HEAD
-=======
     protected final double maxTemp = 80;
     protected final double minTemp = 60;
     private final double maxTempCel = 26.667;
     private final double minTempCel = 15.556;
-    private final double normalTemp = 21.1111;
->>>>>>> master
     protected static double temperature;
+    private boolean ac;
+    private boolean heat;
 
     public AC(){
+        ac = false;
+        heat = false;
         temperature = 70.0;
     }
     protected void acOn(){
         //decrement temperature;
-        temperature--;
+        ac = true;
+        //temperature--;
 
     }
     protected void acOff(){
         //increment temperature
-        temperature++;
+        ac = false;
+        //temperature++;
     }
     protected void heatOn(){
+        heat = true;
         temperature++;
     }
     protected void heatOff(){
         //decrement temperature;
+        heat = false;
         temperature--;
     }
-<<<<<<< HEAD
-=======
     protected void changeTemp(){
         double tempCel = fahrToCel(temperature);
-        if(heat){
+        if(heat)
             tempCel = tempCel + ((maxTempCel - tempCel)* Math.exp(-11*.1));
-            temperature = celToFah(tempCel);
-        }
-
-        else if(ac){
+        else if(ac)
             tempCel = tempCel + ((minTempCel - tempCel)* Math.exp(-11*.1));
-            temperature = celToFah(tempCel);
-        }
-        else{
-            tempCel = tempCel + ((normalTemp - tempCel)* Math.exp(-11*.1));
-            temperature = celToFah(tempCel);
-        }
-
+        else;
+        temperature = celToFah(tempCel);
     }
->>>>>>> master
     protected static Double getTemp(){
+
         return temperature;
+    }
+
+    private Double fahrToCel(Double fah){
+        return ((fah - 32)*.5555);
+    }
+    private Double celToFah(Double cel){
+        return ((cel * 1.8)+32);
     }
 }

@@ -1,7 +1,6 @@
 package Application;
 
-import TrackModel.UI.TrackModelGUI;
-import TrainController.TrainController;
+import TrackModel.TrackModelGUI;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -12,8 +11,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import TrackController.TrackController;
+import TrackModel.Track;
 import DTime.DTime;
-import TrainModel.TrainModel;
 import TrainModel.Train;
 import MBO.java.MBOController;
 import ctc.CTCMain;
@@ -29,17 +28,15 @@ public class Main extends Application {
     private int windowHight = 300;
     private int inset = 25;
     private int colWidth = 75;
-    private DTime dTime;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-<<<<<<< HEAD
-=======
 
     	//Module initialization
+		Track track = new Track();
+		TrackController trackController = new TrackController();
+		trackController.setTrack(track);
 
-
->>>>>>> master
         primaryStage.setTitle(applicationTitle);
 
         GridPane grid = new GridPane();
@@ -114,13 +111,8 @@ public class Main extends Application {
 		trackControllerBtn.setOnAction((ActionEvent e) ->
 		{
 			try {
-<<<<<<< HEAD
 				TrackController trackController = new TrackController();
 			} catch (IOException e1) {
-=======
-
-			} catch (Exception e1) {
->>>>>>> master
 				e1.printStackTrace();
 			}
 		});
@@ -128,16 +120,7 @@ public class Main extends Application {
         trackModelBtn.setOnAction((ActionEvent e) ->
         {
             try {
-<<<<<<< HEAD
-                TrackModelGUI trackModel = new TrackModelGUI();
-=======
-				dTime = new DTime();
-				Track track = new Track();
-				TrackController trackController = new TrackController(dTime);
-				trackController.setTrack(track);
-				TrackModelGUI trackModel = new TrackModelGUI(track);
-				trackController.showUI();
->>>>>>> master
+                TrackModelGUI trackModel = new TrackModelGUI(track);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -157,8 +140,8 @@ public class Main extends Application {
 		{
 			try {
 				Train t = new Train();
-				DTime dt = new DTime();
-				dt.addTC(t.GetTrainController());
+				DTime dt = new DTime(t.GetTrainController());
+				//dt.Run();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			} catch (Exception e1)

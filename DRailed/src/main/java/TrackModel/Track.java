@@ -18,15 +18,12 @@ public class Track {
     public Track(){
         //tc = new TrackController();
         tm = new TrackModel();
-        tm.importTrack("redTrackLayout.csv");
-        tm.importTrack("greenTrackLayout.csv");
-        initTrackSignals();
+        tm.importTrack("greenLine.csv");
     }
 
     public Track(String trackLayout){
         //tc = new TrackController();
         tm = new TrackModel(trackLayout);
-        initTrackSignals();
 
     }
 
