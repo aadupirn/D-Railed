@@ -19,8 +19,16 @@ public class Scheduler {
         trainSchedules.add(new TrainSchedule(1, LocalDateTime.now()));
     }
 
-    public void geTrackData() {
+    public TrainSchedule getSchedule() {
+        return trainSchedules.get(0);
+    }
 
+    public String getDeparture(int trainId, int stationId) {
+        for(TrainSchedule t : trainSchedules)
+            if(t.idProperty().equals(Integer.toString(trainId)))
+                return t.getDeparture(stationId);
+
+        return null;
     }
 
     public ObservableList<TrainSchedule> getRows() { return trainSchedules; }

@@ -1,6 +1,7 @@
 package MBO.java;
 
 import com.sun.javafx.scene.control.TableColumnComparatorBase;
+import ctc.bean.Schedule;
 import javafx.application.Application;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -55,8 +56,9 @@ public class MBOController extends Application {
     private ToggleButton murphyButton;
 
     // ACCESSORS
-    //public Stack<Time> getSchedule() { return scheduler.getSchedule(); }
     public MBO getMBO() { return mbo; }
+    public Scheduler getScheduler() { return scheduler; };
+    public TrainSchedule getSchedule() { return scheduler.getSchedule(); }
 
     /*
     * Method in charge of setting up gettting the elements associated with the portions
@@ -219,6 +221,7 @@ public class MBOController extends Application {
     }
 
     private void updateTrainInfo() {
+
     }
 
     @Override

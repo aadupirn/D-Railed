@@ -68,6 +68,21 @@ public class TrainSchedule {
         station141 = new SimpleStringProperty(stationSchedule.get(17).format(DateTimeFormatter.ISO_LOCAL_TIME));
     }
 
+    public String getDeparture(int id) {
+        LocalDateTime now = LocalDateTime.now();
+        if(now.compareTo(stationSchedule.get(id - 1).minusMinutes(1)) == 1)
+            updateSchedule(id, now);
+
+        return stationSchedule.get(id - 1).format(DateTimeFormatter.ISO_LOCAL_TIME);
+    }
+
+    private void updateSchedule(int id, LocalDateTime arrival) {
+        stationSchedule.set((id - 1) % 18, arrival.plusMinutes(1));
+        for(int i = 0; i < 18; i++) {
+            stationSchedule.set((i + id - 1) % 18, stationSchedule.get((i + id - 2) % 18).plusSeconds(stationDelays[(i + id - 1) % 18]));
+        }
+    }
+
     // NEEDED FOR UI UPDATES
     public SimpleIntegerProperty idProperty() { return id; }
     public SimpleStringProperty station2Property() { return station2; }
