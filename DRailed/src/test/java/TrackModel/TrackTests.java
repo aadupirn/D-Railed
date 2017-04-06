@@ -35,17 +35,17 @@ public class TrackTests {
 
     }
 
-    @Test
-    public void testBlockOccupied() throws IOException{
-        Track track = new Track("greenTrackLayout.csv");
-        Train train = new Train(1);
-
-        int blockNumber = track.dispatchTrainOnTrack("GREEN", train);
-
-        Block b = track.getBlock("GREEN", blockNumber);
-
-        assertEquals(true, b.isOccupied());
-    }
+//    @Test
+//    public void testBlockOccupied() throws IOException{
+//        Track track = new Track("greenTrackLayout.csv");
+//        Train train = new Train(1);
+//
+//        int blockNumber = track.dispatchTrainOnTrack("GREEN", train);
+//
+//        Block b = track.getBlock("GREEN", blockNumber);
+//
+//        assertEquals(true, b.isOccupied());
+//    }
 
     @Test
     public void testBlockOccupied(){
