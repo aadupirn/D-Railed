@@ -189,8 +189,6 @@ Calculates speed
         this.unloading = generateUnloading();
     }
 
-    public TrainController getTrainController(){return trainController;}
-
     public double GetCurrentSpeed(){
         return currentSpeed;
     }
