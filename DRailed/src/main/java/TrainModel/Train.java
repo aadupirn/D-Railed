@@ -3,6 +3,7 @@ import TrainController.TrainController;
 
 import java.io.IOException;
 import java.util.Random;
+import TrackModel.Track;
 
 /**
  * Created by swaroopakkineni on 2/14/17.
@@ -10,6 +11,7 @@ import java.util.Random;
 public class Train {
     private TrainController trainController;
     private TrainModel trainModel;
+    private Track track;
     private int startingBlock;
     private Double commandSpeed;
     private int id;
@@ -40,8 +42,10 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         mass = 10000;
+        startingBlock = 152;
+        track = new Track();
 
-        trainController = new TrainController(this);
+        trainController = new TrainController(this, this.track);
         trainModel = new TrainModel();
     }
 
@@ -55,6 +59,8 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         mass = 10000;
+        startingBlock = 152;
+
 
         //trainModel = new TrainModel();
         this.id = id;
@@ -73,7 +79,8 @@ public class Train {
 
         startingBlock = startingBlock;
         id = newID;
-        trainController = new TrainController(this);
+        track = new Track();
+        trainController = new TrainController(this, this.track);
         trainModel = new TrainModel();
       //  trainModel = new TrainModel();
 
@@ -88,12 +95,13 @@ public class Train {
 
         startingBlock = startingBlock;
         id = newID;
-        trainController = new TrainController(this);
+        track = new Track();
+        trainController = new TrainController(this, track);
         trainModel = new TrainModel();
         //trainModel = new TrainModel();
         //trainController = new TrainController();
     }
-    public Train(int startingBlock, int numberOfCarts, int newAuthority, Double newSpeed, int newID) throws IOException, Exception {
+    public Train(int startingBlock, int numberOfCarts, int newAuthority, Double newSpeed, int newID, Track track) throws IOException, Exception {
         Engine = new engine();
         ac = new AC();
         ebrake = false;
@@ -103,7 +111,7 @@ public class Train {
 
         startingBlock = startingBlock;
         id = newID;
-        trainController = new TrainController(this);
+        trainController = new TrainController(this, track);
         trainModel = new TrainModel();
         //trainModel = new TrainModel();
     }

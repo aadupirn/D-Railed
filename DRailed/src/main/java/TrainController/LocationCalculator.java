@@ -32,9 +32,19 @@ public class LocationCalculator
 	public void ComputeNextLocation(double iSpeed)
 	{
 		blockLocation += iSpeed;
+
+		if(block == null){
+			System.out.println("ERROR");
+		}
+
 		while(block.getLength() < blockLocation)
 		{
 			blockLocation = blockLocation - block.getLength();
+
+			if(block.canMoveToBlock(false)){
+				block = block.getNextBlock(false);
+			}
+
 			block = block.getNextBlock(false);
 		}
 		System.out.println("We are on block " + block.getBlockNumber()+"\n" +

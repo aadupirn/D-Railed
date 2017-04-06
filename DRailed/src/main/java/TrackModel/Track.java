@@ -3,6 +3,7 @@ package TrackModel;
 //import MBO.java.Train;
 import TrackController.TrackController;
 import TrackModel.Model.*;
+import TrainModel.Train;
 
 import java.util.HashMap;
 
@@ -23,7 +24,6 @@ public class Track {
     public Track(String trackLayout){
         //tc = new TrackController();
         tm = new TrackModel(trackLayout);
-
     }
     
     // @Track Controller: Sets safe speed and authority for a train on a rail

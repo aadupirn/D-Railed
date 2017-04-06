@@ -3,6 +3,7 @@ package Application;
 import TrackModel.Track;
 import TrackModel.TrackModelGUI;
 import TrainController.TrainController;
+import TrackModel.TrackModelGUI;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -13,8 +14,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import TrackController.TrackController;
+import TrackModel.Track;
 import DTime.DTime;
-import TrainModel.TrainModel;
 import TrainModel.Train;
 import MBO.java.MBOController;
 import ctc.MainFrame;
@@ -35,8 +36,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
 
     	//Module initialization
-		TrackController trackController = new TrackController();
 		Track track = new Track();
+		TrackController trackController = new TrackController();
+		trackController.setTrack(track);
 
         primaryStage.setTitle(applicationTitle);
 
@@ -165,11 +167,6 @@ public class Main extends Application {
 			}
 		});
     }
-
-
-
-
-
 
     public static void main(String[] args) {
         launch(args);

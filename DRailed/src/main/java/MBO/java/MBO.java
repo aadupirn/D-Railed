@@ -3,8 +3,6 @@ package MBO.java;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-
 /**
  * Created by joero on 4/4/2017.
  */
