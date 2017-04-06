@@ -112,7 +112,7 @@ public class TrainController
 
 		track = iTrack;
 
-		locationCalculator = new LocationCalculator(track, route, train.GetStartingBlock());
+		locationCalculator = new LocationCalculator(track, route, train.GetStartingBlock(), trainID);
 		controlCalculator1 = new ControlCalculator(desiredSpeed, kp, ki);
 		controlCalculator2 = new ControlCalculator(desiredSpeed, kp, ki);
 
@@ -708,6 +708,11 @@ public class TrainController
 		train.SetPowerCommand(new Double(0));
 		setPowerText(0);
 		train.setEbrake(true);
+		desiredSpeed = 0;
+		eBrakeStatus = true;
+		setDesiredSpeedText(desiredSpeed);
+		controlCalculator2.setDesiredSpeed(0);
+		controlCalculator1.setDesiredSpeed(0);
 	}
 
 	public void update()
@@ -723,6 +728,11 @@ public class TrainController
 			train.SetPowerCommand(powerCommand1);
 			setPowerText(powerCommand1);
 		}
+		if(eBrakeStatus == true)
+		{
+			train.SetPowerCommand(new Double(0));
+			setPowerText(0);
+		}
 		train.Update();
 		speed = train.GetCurrentSpeed();
 		setSpeedText(train.GetCurrentSpeed());
@@ -730,14 +740,13 @@ public class TrainController
 		setTempText(train.getTemperature());
 		mbo.setSpeed(trainID, speed);
 		mbo.setAuthority(trainID, 100);
-		mbo.setLocation(trainID, "Block: " + String.valueOf(currentBlockID));
-
 		locationCalculator.ComputeNextLocation(train.GetCurrentSpeed());
 	}
 
 	public void setMBO(MBO imbo)
 	{
 		mbo = imbo;
+		locationCalculator.setMBO(mbo);
 	}
 
 	//endregion
