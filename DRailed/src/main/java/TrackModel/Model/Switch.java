@@ -12,9 +12,6 @@ public class Switch {
     private SwitchState state;
     private Heater heater;
 
-    private boolean toYard;
-    private boolean fromYard;
-
     /***
      * Create a switch object with a switch number and an empty connection layout.
      *
@@ -62,22 +59,6 @@ public class Switch {
         this.switchNumber = switchNumber;
     }
 
-    public boolean isToYard() {
-        return toYard;
-    }
-
-    public void setToYard(boolean toYard) {
-        this.toYard = toYard;
-    }
-
-    public boolean isFromYard() {
-        return fromYard;
-    }
-
-    public void setFromYard(boolean fromYard) {
-        this.fromYard = fromYard;
-    }
-
     /***
      * @return the block connected to the initial state
      */
@@ -108,22 +89,6 @@ public class Switch {
      */
     public void setTop(Integer top) {
         this.topBlock = top;
-    }
-
-    /***
-     * Sets the proper connection state based on current switch configuration
-     *
-     * @param connectingBlock - block to set
-     */
-    public void addConnector(Integer connectingBlock){
-        if(this.topBlock == null)
-        {
-            this.topBlock = connectingBlock;
-        }
-        else
-        {
-            this.bottomBlock = connectingBlock;
-        }
     }
 
     /***
