@@ -1,6 +1,7 @@
 package Application;
 
-import TrackModel.UI.TrackModelGUI;
+import TrackModel.Track;
+import TrackModel.TrackModelGUI;
 import TrainController.TrainController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -35,6 +36,7 @@ public class Main extends Application {
 
     	//Module initialization
 		TrackController trackController = new TrackController();
+		Track track = new Track();
 
         primaryStage.setTitle(applicationTitle);
 
@@ -120,7 +122,7 @@ public class Main extends Application {
         trackModelBtn.setOnAction((ActionEvent e) ->
         {
             try {
-                TrackModelGUI trackModel = new TrackModelGUI();
+                TrackModelGUI trackModel = new TrackModelGUI(track);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
