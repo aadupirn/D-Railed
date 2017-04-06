@@ -164,6 +164,21 @@ public class TrackController {
         //TODO try maybe having something call a function on the Train?
     }
 
+    public boolean getPLCSwitch(int switchID)
+    {
+       return  myPLC.getSwitchState(switchID);
+    }
+
+    public boolean getPLCCrossing(int blockID)
+    {
+        return myPLC.getCrossingState(blockID);
+    }
+
+    public boolean getPLCLight(int blockID)
+    {
+        return myPLC.getLights(blockID);
+    }
+
     public void Update()
     {
         if (!messageQueue.isEmpty())
