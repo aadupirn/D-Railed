@@ -7,8 +7,8 @@ public class AC {
 
     protected final double maxTemp = 80;
     protected final double minTemp = 60;
-    private final double maxTempCel = fahrToCel(maxTemp);
-    private final double minTempCel = fahrToCel(minTemp);
+    private final double maxTempCel = 26.667;
+    private final double minTempCel = 15.556;
     protected static double temperature;
     private boolean ac;
     private boolean heat;
@@ -41,20 +41,21 @@ public class AC {
     protected void changeTemp(){
         double tempCel = fahrToCel(temperature);
         if(heat)
-            tempCel = tempCel + (maxTemp - tempCel)* Math.exp(6.9*.1);
+            tempCel = tempCel + ((maxTempCel - tempCel)* Math.exp(-11*.1));
         else if(ac)
-            tempCel = tempCel + (minTemp - tempCel)* Math.exp(6.9*.1);
+            tempCel = tempCel + ((minTempCel - tempCel)* Math.exp(-11*.1));
         else;
         temperature = celToFah(tempCel);
     }
     protected static Double getTemp(){
+
         return temperature;
     }
 
     private Double fahrToCel(Double fah){
-        return ((fah -32)*5/9);
+        return ((fah - 32)*.5555);
     }
     private Double celToFah(Double cel){
-        return ((cel *5/9)+32);
+        return ((cel * 1.8)+32);
     }
 }

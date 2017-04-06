@@ -40,6 +40,7 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         mass = 10000;
+        startingBlock = 152;
 
         trainController = new TrainController(this);
         trainModel = new TrainModel();
@@ -55,6 +56,8 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         mass = 10000;
+        startingBlock = 152;
+
 
         //trainModel = new TrainModel();
         this.id = id;
