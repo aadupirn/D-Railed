@@ -33,6 +33,7 @@ public class TrackController {
         ui = new TrackControllerUI(this);
         track = new Track("greenLine.csv");
         line = "GREEN";
+        isLineMain = true;
         this.startBlock=1;
         this.endBlock=152;
 
