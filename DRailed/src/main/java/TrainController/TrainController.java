@@ -468,7 +468,7 @@ public class TrainController
 
 		emerBtn.setOnAction((ActionEvent e) ->
 		{
-			//train.SetEbrake(true);
+			train.SetEbrake(true);
 		});
 
 		brakeBtn.setOnAction((ActionEvent e) ->
