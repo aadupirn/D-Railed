@@ -65,6 +65,7 @@ public class TrainController
 	private boolean heatStatus;
 	private boolean movementStatus;
 	private boolean locationStatus;
+	private boolean announcementMade;
 
 	private Text speedText;
 	private Text powerText;
@@ -109,6 +110,7 @@ public class TrainController
 		sBrakeStatus = false;
 		desiredSpeed = 0;
 		temperature = train.getTemperature();
+		announcementMade = false;
 
 		track = iTrack;
 
@@ -728,6 +730,7 @@ public class TrainController
 			train.SetPowerCommand(powerCommand1);
 			setPowerText(powerCommand1);
 		}
+		
 		if(eBrakeStatus == true)
 		{
 			train.SetPowerCommand(new Double(0));
