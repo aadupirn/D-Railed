@@ -501,15 +501,14 @@ public class TrackControllerUI {
     public void DispatchButtonClicked(ActionEvent e)
     {
         Object source = e.getSource();
-        System.out.println("Here we go!");
-        System.out.println("Source = " + source.toString());
         if (source == dispatchButton)
         {
             try {
                 tc.dispatchTrain(152, Integer.parseInt(getCartsText.getText()), Integer.parseInt(getAuthText.getText()), Double.parseDouble(getSpeedText.getText()), Integer.parseInt(getTrainIDText.getText()));
                 System.out.println("Train created!");
             } catch (Exception e1) {
-                System.out.println("We got an exception!!!");
+                System.out.println("We got an exception: " + e1.toString() + "\n");
+                e1.printStackTrace();
             }
         }
     }

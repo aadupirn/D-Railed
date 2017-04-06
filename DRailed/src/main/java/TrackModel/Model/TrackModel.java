@@ -35,7 +35,8 @@ public class TrackModel
         importTrack(trackLayout);
 
         for(Line l : getLines()) {
-            connectLine(l.getLine());
+            //connectLine(l.getLine());
+            looseCoupling(l.getLine());
         }
     }
 
@@ -769,6 +770,59 @@ public class TrackModel
             }
         }
 
+    }
+
+    public void looseCoupling(String inLine){
+
+        Line line = getLine(inLine);
+
+        for(Section s : line.getSections()) {
+            for(Block b : s.getBlocks()) {
+
+                System.out.println("BLOCK: " + b + "->");
+
+                if (b.getDirection().contains("BI")) {
+
+                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
+                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
+
+                    System.out.print(b.getNextUpBlock() + "<-");
+                    System.out.print(b);
+                    System.out.println("->" + b.getNextDownBlock());
+
+                } else if (b.getDirection().contains("UP")) {
+
+                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
+
+                    System.out.print(b.getNextUpBlock() + "<-");
+                    System.out.println(b);
+
+                } else if (b.getDirection().contains("DOWN")) {
+
+                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
+
+                    System.out.print(b);
+                    System.out.println("->" + b.getNextDownBlock());
+
+                }
+            }
+        }
+    }
+
+    public Line getALine(String line){
+        return getLine(line);
+    }
+
+    public Block getBlock(String line, int blockId){
+        for(Section s : getLine(line).getSections()){
+            for(Block b : s.getBlocks()){
+                if(b.getBlockNumber().intValue() == blockId){
+                    return b;
+                }
+            }
+        }
+
+        return null;
     }
 
     public Block getFromYardBlock(String line){

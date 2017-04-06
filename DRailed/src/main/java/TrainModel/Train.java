@@ -111,7 +111,7 @@ public class Train {
         startingBlock = startingBlock;
         id = newID;
         trainController = new TrainController(this, track);
-       // trainModel = new TrainModel();
+        trainModel = new TrainModel();
         //trainModel = new TrainModel();
     }
 
