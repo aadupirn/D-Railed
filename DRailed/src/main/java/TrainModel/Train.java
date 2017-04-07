@@ -27,8 +27,8 @@ public class Train {
     private boolean lights;
     private static boolean ebrake;
     private static boolean sbrake;
+    private static int people;
 
-    int unloading;
 
     public Train() throws IOException, Exception {
         System.out.println("train created");
@@ -44,6 +44,7 @@ public class Train {
         mass = 10000;
         startingBlock = 152;
         track = new Track();
+        people = 0;
         trainController = new TrainController(this, this.track);
         //trainModel = new TrainModel();
     }
@@ -59,13 +60,14 @@ public class Train {
         currentSpeed = 0;
         mass = 10000;
         startingBlock = 152;
+        people = 0;
 
 
         //trainModel = new TrainModel();
         this.id = id;
         //trainController = new TrainController(this);
         //trainModel = new TrainModel();
-        this.unloading = generateUnloading();
+        //this.unloading = generateUnloading();
     }
 
     public Train(int startingBlock, int newID) throws IOException, Exception {
@@ -75,6 +77,7 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         mass = 10000;
+        people = 0;
 
         startingBlock = startingBlock;
         id = newID;
@@ -91,6 +94,7 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         mass = 10000;
+        people = 0;
 
         startingBlock = startingBlock;
         id = newID;
@@ -107,6 +111,7 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         mass = 10000;
+        people = 0;
 
         startingBlock = startingBlock;
         id = newID;
@@ -177,7 +182,7 @@ Calculates speed
 
 
     // @ANDREW also used in TrackModel tests
-    private int generateUnloading() {
+/*    private int generateUnloading() {
         return new Random().nextInt(222 - 74) + 74;
     }
 
@@ -185,8 +190,14 @@ Calculates speed
         return unloading;
     }
 
-    public void unload(){
-        this.unloading = generateUnloading();
+*/
+    public int unload(){
+       int peepsLeaving = new Random().nextInt(people);
+        people -= peepsLeaving;
+        return peepsLeaving;
+    }
+    public void load(double load){
+        people += load;
     }
 
     public double GetCurrentSpeed(){
