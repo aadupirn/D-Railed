@@ -6,6 +6,7 @@ package TrackModel;
 
 import TrackModel.Model.*;
 import TrainModel.Train;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -81,6 +82,8 @@ public class TrackModelGUI {
     public TrackModelGUI(Track track) throws IOException {
 
         stage.setTitle(applicationTitle);
+
+        startUpdateThread();
 
         this.track = track;
 
@@ -563,6 +566,16 @@ public class TrackModelGUI {
             }
         });
 
+        Button updateModel = new Button("Update");
+        updateModel.setMinHeight(30);
+        updateModel.setMaxHeight(30);
+
+        updateModel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                update();
+            }
+        });
 
         Button murphyCtrl = new Button("Murphy Controls");
         murphyCtrl.setMinHeight(30);
@@ -645,7 +658,7 @@ public class TrackModelGUI {
             }
         });
 
-        menu.getChildren().addAll(importTrack, infraSettings, murphyCtrl);
+        menu.getChildren().addAll(importTrack, infraSettings, updateModel, murphyCtrl);
         return menu;
     }
 
@@ -1095,8 +1108,25 @@ public class TrackModelGUI {
         return bd.doubleValue();
     }
 
+    private void startUpdateThread() {
+        Task task = new Task<Void>() {
+            @Override
+            public Void call() throws Exception {
+                while (true) {
+                    update();
+                    Thread.sleep(10);
+                }
+            }
+        };
+        Thread th = new Thread(task);
+        th.setDaemon(true);
+        th.start();
+    }
+
     public void update(){
-        selectedBlock = track.getBlock(selectedBlock.getLine(), selectedBlock.getBlockNumber());
+        if(selectedBlock.getBlockNumber() != null) {
+            selectedBlock = track.getBlock(selectedBlock.getLine(), selectedBlock.getBlockNumber());
+        }
         updateBlockMonitor();
     }
 

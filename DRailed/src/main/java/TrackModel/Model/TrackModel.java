@@ -517,7 +517,7 @@ public class TrackModel
         //testTrainList.add(new Train(1));
     }
 
-    private void connectLine(String lineName) {
+    public void tightCoupling(String lineName) {
 
         Line line = getLine(lineName);
 

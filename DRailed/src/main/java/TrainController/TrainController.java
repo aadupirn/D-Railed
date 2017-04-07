@@ -113,7 +113,7 @@ public class TrainController
 
 		track = iTrack;
 
-		locationCalculator = new LocationCalculator(track, route, train.GetStartingBlock(), trainID);
+		locationCalculator = new LocationCalculator(iTrain, track, route, train.GetStartingBlock(), trainID);
 		controlCalculator1 = new ControlCalculator(desiredSpeed, kp, ki);
 		controlCalculator2 = new ControlCalculator(desiredSpeed, kp, ki);
 

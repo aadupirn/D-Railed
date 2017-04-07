@@ -379,10 +379,12 @@ public class Block {
      * @param direction - the direction it is traveling up = true; down = false
      * @return
      */
-    public Block moveToNextBlock(boolean direction){
+    public Block moveToNextBlock(Train train, boolean direction){
 
         // remove train from current block
         this.occupied = false;
+        this.train = null;
+
         Block nextBlock = null;
 
         // if the direction of travel is UP and the track runs the same direction
@@ -400,6 +402,7 @@ public class Block {
         }
 
         nextBlock.setOccupied();
+        nextBlock.setTrain(train);
 
         return nextBlock;
     }
