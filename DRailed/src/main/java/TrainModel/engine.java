@@ -34,7 +34,7 @@ public class engine {
 
             if (grade == 0.0)
                 grade = 0.1;
-            double theta = Math.atan(grade);///100); //this is probably why grade is off
+            //double theta = Math.atan(grade);///100); //this is probably why grade is off
             if (powerCommand <= 0) {
                 newAcceleration = 0;
             } else if (powerCommand > 0 && currentSpeed == 0) {
@@ -43,7 +43,7 @@ public class engine {
                 newAcceleration = powerCommand / (mass * currentSpeed);
             }
 
-            gravityForce = mass*gravity*Math.sin(theta);
+            gravityForce = mass*gravity*Math.sin(grade);
             gravityAcceleration= gravityForce/mass;
             fricationForce = gravityForce*friction;
             frictionAcceleration = Math.abs(fricationForce/mass);

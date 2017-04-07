@@ -191,12 +191,17 @@ Calculates speed
     }
 
 */
+    public void weightUpdate(){
+        mass = 10000 + (people * 150);
+    }
     public int unload(){
        int peepsLeaving = new Random().nextInt(people);
         people -= peepsLeaving;
+        weightUpdate();
         return peepsLeaving;
     }
     public void load(double load){
+        weightUpdate();
         people += load;
     }
 
