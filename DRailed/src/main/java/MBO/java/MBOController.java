@@ -38,8 +38,7 @@ public class MBOController extends Application {
 
     // TRAIN SCHEDULE DISPLAY TAB
     private TableView<TrainSchedule> trainScheduleTable = new TableView<>();
-    private Button updateScheduleButton;
-    private TextField scheduleIdTestInput;
+    private Button trainScheduleButton;
 
     // WORKER SCHEDULE DISPLAY TAB
     private Button workerScheduleButton;
@@ -79,9 +78,8 @@ public class MBOController extends Application {
         varianceTestInput = (TextField) primary.getScene().lookup("#variance_test_input");
         locationTestInput = (TextField) primary.getScene().lookup("#location_test_input");
 
-        trainScheduleTable = (TableView<TrainSchedule>) primary.getScene().lookup("#schedule_table");
-        updateScheduleButton = (Button) primary.getScene().lookup("#schedule_btn");
-        scheduleIdTestInput = (TextField) primary.getScene().lookup("#update_id_test_input");
+        trainScheduleTable= (TableView<TrainSchedule>) primary.getScene().lookup("#schedule_table");
+        trainScheduleButton = (Button) primary.getScene().lookup("#schedule_btn");
 
         workerScheduleButton = (Button) primary.getScene().lookup("#worker_schedule_btn");
         workerTable = (TableView) primary.getScene().lookup("#worker_schedule_table");
@@ -93,7 +91,7 @@ public class MBOController extends Application {
 
         murphyButton = (ToggleButton) primary.getScene().lookup("#mbo_murphy_toggle");
 
-        updateScheduleButton.setOnAction((ActionEvent a) -> {
+        trainScheduleButton.setOnAction((ActionEvent a) -> {
 
         });
 
@@ -117,6 +115,7 @@ public class MBOController extends Application {
 
         submitButton.setOnAction((ActionEvent a) -> {
             resultPane.setContentText("SINGLE TRAIN DEPLOYMENT MODE");
+
         });
     }
 
@@ -233,6 +232,7 @@ public class MBOController extends Application {
         setInfoColumns();
         setTrainColumns();
         setWorkColumns();
+
     }
 
     public static void main(String[] args) {
