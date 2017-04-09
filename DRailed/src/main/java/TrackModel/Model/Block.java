@@ -65,11 +65,12 @@ public class Block {
     // Connected Blocks
     private String direction;
     private int nextUpBlockNumber;
-    private int nextUpBlockSwitchBottom;
     private int nextDownBlockNumber;
-    private int nextDownBlockSwitchBottom;
+    private int nextSwitchBlockNumber;
     private Block nextUpBlock;
     private Block nextDownBlock;
+    private Block nextSwitchBlock;
+    private boolean nextSwitchBlockDir; //true=UP false=DOWN
     private boolean fromYard;
     private boolean toYard;
 
@@ -106,11 +107,12 @@ public class Block {
 
         // block connection
         this.nextUpBlockNumber = -1;
-        this.nextUpBlockSwitchBottom = -1;
         this.nextDownBlockNumber = -1;
-        this.nextDownBlockSwitchBottom = -1;
+        this.nextSwitchBlockNumber = -1;
         this.nextUpBlock = null;
         this.nextDownBlock = null;
+        this.nextSwitchBlock = null;
+        this.nextSwitchBlockDir = false;
         this.fromYard = false;
         this.toYard = false;
 
@@ -141,11 +143,12 @@ public class Block {
 
         // block connection
         this.nextUpBlockNumber = -1;
-        this.nextUpBlockSwitchBottom = -1;
         this.nextDownBlockNumber = -1;
-        this.nextDownBlockSwitchBottom = -1;
+        this.nextSwitchBlockNumber = -1;
         this.nextUpBlock = null;
         this.nextDownBlock = null;
+        this.nextSwitchBlock = null;
+        this.nextSwitchBlockDir = false;
         this.fromYard = false;
         this.toYard = false;
 
@@ -179,7 +182,6 @@ public class Block {
     public void setTrain(Train train){
         this.occupied = true;
         this.train = train;
-
     }
 
     public boolean isOccupied(){
@@ -374,11 +376,6 @@ public class Block {
         return section + blockNumber;
     }
 
-    /**
-     *
-     * @param direction - the direction it is traveling up = true; down = false
-     * @return
-     */
     public Block moveToNextBlock(Train train, boolean direction){
 
         // remove train from current block
@@ -452,6 +449,14 @@ public class Block {
         this.nextDownBlock = nextDownBlock;
     }
 
+    public void setNextSwitchBlock(Block nextSwitchBlock){
+        this.nextSwitchBlock = nextSwitchBlock;
+    }
+
+    public Block getNextSwitchBlock(){
+        return this.nextSwitchBlock;
+    }
+
     public void setSpeedAndAuthority(Double speed, int authority){
         this.speed = speed;
         this.authority = authority;
@@ -474,7 +479,7 @@ public class Block {
     }
 
     public int getNextUpBlockNumber() {
-        return nextUpBlockNumber;
+        return this.nextUpBlockNumber;
     }
 
     public void setNextUpBlockNumber(int nextUpBlockNumber) {
@@ -482,27 +487,22 @@ public class Block {
     }
 
     public int getNextDownBlockNumber() {
-        return nextDownBlockNumber;
+        return this.nextDownBlockNumber;
     }
 
     public void setNextDownBlockNumber(int nextDownBlockNumber) {
         this.nextDownBlockNumber = nextDownBlockNumber;
     }
 
-    public int getNextUpBlockSwitchBottom() {
-        return nextUpBlockSwitchBottom;
+    public int getNextSwitchBlockNumber() {
+        return this.nextSwitchBlockNumber;
     }
 
-    public void setNextUpBlockSwitchBottom(int nextUpBlockSwitchBottom) {
-        this.nextUpBlockSwitchBottom = nextUpBlockSwitchBottom;
-    }
+    public boolean getNextSwitchRedirect(){return this.nextSwitchBlockDir; }
 
-    public int getNextDownBlockSwitchBottom() {
-        return nextDownBlockSwitchBottom;
-    }
-
-    public void setNextDownBlockSwitchBottom(int nextDownBlockSwitchBottom) {
-        this.nextDownBlockSwitchBottom = nextDownBlockSwitchBottom;
+    public void setNextSwitch(int nextSwitchBlockNumber, boolean dir){
+        this.nextSwitchBlockNumber = nextSwitchBlockNumber;
+        this.nextSwitchBlockDir = dir;
     }
 
     public void setFromYard(){

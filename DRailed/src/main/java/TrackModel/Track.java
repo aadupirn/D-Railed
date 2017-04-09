@@ -109,7 +109,7 @@ public class Track {
         return nextBlock;
     }
 
-    public int findTrain(String line, int trainId){
+    public Block findTrain(String line, int trainId){
 
         return tm.findTrain(line, trainId);
 
@@ -334,9 +334,9 @@ public class Track {
     public boolean suggestTrainDirection(Block block, boolean direction, Switch aSwitch){
 
         Block up = block.getNextUpBlock();
-        Block upBottom = tm.getBlock(block.getLine(), block.getNextUpBlockSwitchBottom());
         Block down = block.getNextDownBlock();
-        Block downButtom = tm.getBlock(block.getLine(), block.getNextDownBlockSwitchBottom());
+        Block switchn = block.getNextSwitchBlock();
+        boolean redirect = block.getNextSwitchRedirect();
 
         if(aSwitch != null){
             if(aSwitch.getState().equals(SwitchState.TOP)) {

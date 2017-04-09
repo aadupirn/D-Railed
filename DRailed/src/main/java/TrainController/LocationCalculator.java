@@ -77,6 +77,7 @@ public class LocationCalculator
 				block = track.getNextBlock(block.getLine(), block, true, train);
 			}
 
+
 		}
 		mbo.setLocation(trainID, "Block: " + block);
 		System.out.println("We are on block " + block.getBlockNumber()+"\n" +

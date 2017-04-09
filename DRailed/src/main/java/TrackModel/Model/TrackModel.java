@@ -91,7 +91,8 @@ public class TrackModel
                 String direction = dataLine[10].toUpperCase();
                 String nextUpBlock = dataLine[11].toUpperCase();
                 String nextDownBlock = dataLine[12].toUpperCase();
-                String beacon = dataLine[13].toUpperCase();
+                String nextSwitchBlock = dataLine[13].toUpperCase();
+                String beacon = dataLine[14].toUpperCase();
                 Double temperature = generateTemperature();
 
                 updateLine = new Line(line);
@@ -144,19 +145,20 @@ public class TrackModel
                     if(!beacon.equals("NULL"))
                         updateBlock.setBeacon(beacon);
 
-                    // add connections
-                    if(nextUpBlock.contains("X")){
-                        updateBlock.setNextUpBlockNumber(new Integer(nextUpBlock.split("X")[0]));
-                        updateBlock.setNextUpBlockSwitchBottom(new Integer(nextUpBlock.split("X")[1]));
-                    }else{
-                        updateBlock.setNextUpBlockNumber(new Integer(nextUpBlock));
-                    }
+                    // set next block numbers
+                    updateBlock.setNextUpBlockNumber(new Integer(nextUpBlock));
+                    updateBlock.setNextDownBlockNumber(new Integer(nextDownBlock));
 
-                    if(nextDownBlock.contains("X")){
-                        updateBlock.setNextDownBlockNumber(new Integer(nextDownBlock.split("X")[0]));
-                        updateBlock.setNextDownBlockSwitchBottom(new Integer(nextDownBlock.split("X")[1]));
-                    }else{
-                        updateBlock.setNextDownBlockNumber(new Integer(nextDownBlock));
+                    // handle switch specific information
+                    if(!nextSwitchBlock.equals("NULL")){
+                        boolean dir = false;
+                        if(nextSwitchBlock.split(";")[1].equals("UP")){
+                            dir = true;
+                        }else if(nextSwitchBlock.split(";")[1].equals("DOWN")){
+                            dir = false;
+                        }
+
+                        updateBlock.setNextSwitch(new Integer(nextSwitchBlock.split(";")[0]), dir);
                     }
 
                     Station updateStation = null;
@@ -408,19 +410,19 @@ public class TrackModel
         return err;
     }
 
-    public int findTrain(String line, int trainId){
+    public Block findTrain(String line, int trainId){
 
         if(lines == null || lines.isEmpty()){
             System.out.println("Track model is not available. Please import a track first");
-            return -1;
+            return null;
         }
 
-        int block = -1;
+        Block block = null;
 
         for(Section s : getLine(line).getSections()){
             for(Block b : s.getBlocks()){
-                if(b.getTrain() != null || b.getTrain().getId() == trainId){
-                    block = b.getBlockNumber();
+                if(b.getTrain() != null && b.getTrain().getId() == trainId){
+                    return b;
                 }
             }
         }
@@ -566,22 +568,6 @@ public class TrackModel
                                     b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
                                 }
 
-                                // [DOWN] <- Main -> Bottom [UP]
-                                if(b.getSwitch().getBottom().equals(b.getNextUpBlockSwitchBottom())){
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockSwitchBottom()));
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                }else{
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                }
-
-                                // [UP] < Main -> Bottom [DOWN]
-                                if(b.getSwitch().getBottom().equals(b.getNextDownBlockSwitchBottom())){
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockSwitchBottom()));
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                }else{
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                }
-
                                 // if Main -> Bottom [DOWN]
                                 if(b.getSwitch().getBottom().equals(b.getNextDownBlockNumber())){
                                     b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
@@ -665,13 +651,8 @@ public class TrackModel
                             }else if(b.getSwitch().getState().equals(SwitchState.BOTTOM)){
 
                                 // Main -> Bottom [UP]
-                                if(b.getSwitch().getBottom().equals(b.getNextUpBlockNumber())){
+                                if(b.getSwitch().getBottom().equals(b.getNextUpBlockNumber())) {
                                     b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                }
-
-                                // Main -> Bottom [UP]
-                                if(b.getSwitch().getBottom().equals(b.getNextUpBlockSwitchBottom())){
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockSwitchBottom()));
                                 }
 
                             }
@@ -729,11 +710,6 @@ public class TrackModel
                                 // Main -> Bottom [DOWN]
                                 if(b.getSwitch().getBottom().equals(b.getNextDownBlockNumber())){
                                     b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                }
-
-                                // Main -> Bottom [DOWN]
-                                if(b.getSwitch().getBottom().equals(b.getNextDownBlockSwitchBottom())){
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockSwitchBottom()));
                                 }
 
                             }
