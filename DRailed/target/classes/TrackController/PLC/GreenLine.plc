@@ -1,0 +1,9 @@
+this.lights = this.occupied
+this.crossing = this.occupied
+this.stop = this.nextoccupied
+3.switch = !57.occupied
+1.switch = 13.occupied || !1.occupied
+2.switch = 12.occupuied || !150.occupied
+0.switch = 152.occupied
+4.switch = 77.occupied || !86.occupied
+5.switch = 85.occupied || !100.occupied
