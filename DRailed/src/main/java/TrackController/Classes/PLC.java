@@ -129,6 +129,11 @@ public class PLC
             {
                 System.out.println("Block " + i + " has PLC:\nLights: " + plcInputs[i][0] + "\nCrossings: " + plcInputs[i][1] + "\nStop: "+plcInputs[i][2] +"\n");
             }
+
+            for(int i = 0; i < 6; i++)
+            {
+                System.out.println("Switch: "+ i + " has PLC: " + switches[i] +"\n");
+            }
         }
 
         public boolean getSwitchState(int switchID)
