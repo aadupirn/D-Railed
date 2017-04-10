@@ -162,7 +162,7 @@ public class Main extends Application {
 				MBO.start(new Stage());
 				dTime = new DTime();
 				Track track = new Track();
-				track.couple("GREEN", "LOOSE");
+				track.couple("GREEN", "TIGHT");
 				TrackController trackController = new TrackController(dTime);
 				dTime.setMBO(MBO.getMBO());
 				trackController.setTrack(track);

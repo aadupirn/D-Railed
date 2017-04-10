@@ -7,6 +7,8 @@ package TrackModel.Model;
 
 import TrainModel.Train;
 
+import static java.lang.Math.abs;
+
 /***
  * Blocks represent track infrastructure and physical attributes. They serve as pieces and the
  * building "blocks" of the overall track model.
@@ -283,8 +285,10 @@ public class Block {
     public void toggleTrackState(){
         if(trackState.equals("OPEN")){
             trackState = "CLOSED";
+            this.occupied = true;
         }else{
             trackState = "OPEN";
+            this.occupied = false;
         }
     }
 
@@ -294,10 +298,24 @@ public class Block {
 
     public void setRailState(boolean railState) {
         this.railState = railState;
+        if(railState == false){
+            this.occupied = true;
+            this.trackState = "CLOSED";
+        }else{
+            this.occupied = false;
+            this.trackState = "OPEN";
+        }
     }
 
     public void toggleRailState(){
         this.railState = (!this.railState);
+        if(this.railState == false){
+            this.occupied = true;
+            this.trackState = "CLOSED";
+        }else{
+            this.occupied = false;
+            this.trackState = "OPEN";
+        }
     }
 
     public boolean isCircuitState() {
@@ -306,10 +324,24 @@ public class Block {
 
     public void setCircuitState(boolean circuitState) {
         this.circuitState = circuitState;
+        if(this.circuitState == false){
+            this.occupied = true;
+            this.trackState = "CLOSED";
+        }else{
+            this.occupied = false;
+            this.trackState = "OPEN";
+        }
     }
 
     public void toggleCircuitState(){
         this.circuitState = (!this.circuitState);
+        if(this.circuitState == false){
+            this.occupied = true;
+            this.trackState = "CLOSED";
+        }else{
+            this.occupied = false;
+            this.trackState = "OPEN";
+        }
     }
 
     public boolean isPowerState() {
@@ -318,10 +350,24 @@ public class Block {
 
     public void setPowerState(boolean powerState) {
         this.powerState = powerState;
+        if(this.powerState == false){
+            this.occupied = true;
+            this.trackState = "CLOSED";
+        }else{
+            this.occupied = false;
+            this.trackState = "OPEN";
+        }
     }
 
     public void togglePowerState(){
         this.powerState = (!this.powerState);
+        if(this.powerState == false){
+            this.occupied = true;
+            this.trackState = "CLOSED";
+        }else{
+            this.occupied = false;
+            this.trackState = "OPEN";
+        }
     }
 
     public Switch getSwitch() {
@@ -376,25 +422,71 @@ public class Block {
         return section + blockNumber;
     }
 
-    public Block moveToNextBlock(Train train, boolean direction){
+    public Block moveToNextBlock(Train train, boolean direction) {
 
         // remove train from current block
         this.occupied = false;
         this.train = null;
 
+        // calculation based
+        int authority = train.GetAuthority();
+        int cur = this.getBlockNumber();
+        int next = this.getNextUpBlockNumber();
+        int nswitch = this.getNextSwitchBlockNumber();
+
         Block nextBlock = null;
 
         // if the direction of travel is UP and the track runs the same direction
-        if(direction == true && nextUpBlock != null){
+        if (direction == true && nextUpBlock == null && nextSwitchBlock != null){
+            System.out.println("Up And Switch");
+            nextBlock = nextSwitchBlock;
 
-            // move train to next block
-            nextBlock = nextUpBlock;
+        } else if (direction == false && nextDownBlock == null && nextSwitchBlock != null){
+            System.out.println("Down And Switch");
+            nextBlock = nextSwitchBlock;
 
-        // if the direction of travel is DOWN and the track runs the same direction
-        }else if(direction == false && nextDownBlock != null){
+        }if (direction == true && nextUpBlock != null) {
 
-            // move train to next block
-            nextBlock = nextDownBlock;
+            if(nextSwitchBlock != null){
+                int cndiff = Math.abs(authority - next);
+                int csdiff = Math.abs(authority - nswitch);
+
+                if(cndiff < csdiff){
+                    nextBlock = nextUpBlock;
+                    System.out.println("Switch And Up");
+                }else {
+                    nextBlock = nextSwitchBlock;
+                    System.out.println("Switch And Switch [Up]");
+                }
+            }else{
+                // move train to next block
+                System.out.println("Up");
+                nextBlock = nextUpBlock;
+            }
+
+
+
+            // if the direction of travel is DOWN and the track runs the same direction
+        } else if (direction == false && nextDownBlock != null) {
+
+            if(nextSwitchBlock != null){
+                int cndiff = Math.abs(authority - next);
+                int csdiff = Math.abs(authority - nswitch);
+
+                if(cndiff < csdiff) {
+                    nextBlock = nextDownBlock;
+                    System.out.println("Switch And Down");
+                }else{
+                    nextBlock = nextSwitchBlock;
+                    System.out.println("Switch And Switch [Down]");
+                }
+
+            }else{
+                // move train to next block
+                System.out.println("Down");
+                nextBlock = nextDownBlock;
+            }
+
 
         }
 
@@ -409,8 +501,15 @@ public class Block {
         Block nextBlock = null;
 
         if(direction){
+            if(nextUpBlock == null){
+                nextBlock = nextSwitchBlock;
+            }
             nextBlock = nextUpBlock;
         }else{
+            if(nextDownBlock == null){
+                nextBlock = nextSwitchBlock;
+            }
+
             nextBlock = nextDownBlock;
         }
 
@@ -419,10 +518,26 @@ public class Block {
 
     public boolean canMoveToBlock(boolean direction){
 
-        if(direction){
-            return nextUpBlockNumber != -1;
+        System.out.println("DIRECTION:" + direction);
+
+        if(direction == true){
+            if (nextUpBlockNumber != -1){
+                System.out.println("GO UP");
+                return true;
+            }else{
+                System.out.println("GO DOWN");
+                return false;
+            }
+        }else if(direction == false){
+            if (nextDownBlockNumber != -1){
+                System.out.println("GO DOWN");
+                return false;
+            }else{
+                System.out.println("GO UP");
+                return true;
+            }
         }else{
-            return nextDownBlockNumber != -1;
+            return direction;
         }
 
     }

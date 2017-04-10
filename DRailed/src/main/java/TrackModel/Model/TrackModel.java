@@ -159,6 +159,8 @@ public class TrackModel
                         }
 
                         updateBlock.setNextSwitch(new Integer(nextSwitchBlock.split(";")[0]), dir);
+                    }else{
+                        updateBlock.setNextSwitch(-1, false);
                     }
 
                     Station updateStation = null;
@@ -523,237 +525,37 @@ public class TrackModel
 
         Line line = getLine(lineName);
 
-        //System.out.print("CONNECTED BLOCKS UP: ");
-        //System.out.print("CONNECTED BLOCKS DOWN: ");
-
-        for(Section s : line.getSections()){
+        for(Section s : line.getSections()) {
             for(Block b : s.getBlocks()) {
 
-                if(b.getDirection().contains("BI")){
-                    // if the block is a switch block determine connection
-                    if(b.getSwitch() != null){
+                if (b.getDirection().contains("BI")) {
 
-                        // MAIN SWITCH BLOCK
-                        if(b.getSwitch().getMain().equals(b.getBlockNumber())){
+                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
+                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
 
-                            // Switch is in the TOP state
-                            if(b.getSwitch().getState().equals(SwitchState.TOP)){
-
-                                // [DOWN] <- Main -> Top [UP]
-                                if(b.getSwitch().getTop().equals(b.getNextUpBlockNumber())){
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                // [DOWN] <- Main
-                                }else{
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                }
-
-                                // [UP] <- Main -> Top [Down]
-                                if(b.getSwitch().getTop().equals(b.getNextDownBlockNumber())){
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                // [DOWN] <- Main
-                                }else{
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                }
-
-                            // Switch is in BOTTOM state
-                            }else if(b.getSwitch().getState().equals(SwitchState.BOTTOM)){
-
-                                // [DOWN] <- Main -> Bottom [UP]
-                                if(b.getSwitch().getBottom().equals(b.getNextUpBlockNumber())){
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                }else{
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                }
-
-                                // if Main -> Bottom [DOWN]
-                                if(b.getSwitch().getBottom().equals(b.getNextDownBlockNumber())){
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                }else{
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                }
-
-                            }
-
-                        // TOP SWITCH BLOCK CONNECTOR
-                        }else if(b.getSwitch().getTop().equals(b.getBlockNumber())){
-
-                            // Switch is in the TOP state
-                            if(b.getSwitch().getState().equals(SwitchState.TOP)){
-
-                                // [DOWN] <- Top -> Main [UP]
-                                if(b.getSwitch().getMain().equals(b.getNextUpBlockNumber())){
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                }else{
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                }
-
-                                // [UP] <- Top -> Main [DOWN]
-                                if(b.getSwitch().getMain().equals(b.getNextDownBlockNumber())){
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                }else{
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                }
-
-                            }
-
-                        // BOTTOM SWITCH BLOCK CONNECTOR
-                        }else if(b.getSwitch().getBottom().equals(b.getBlockNumber())){
-
-                            // Switch is in BOTTOM state
-                            if(b.getSwitch().getState().equals(SwitchState.BOTTOM)){
-
-                                // if [DOWN] <- Bottom -> Main [UP]
-                                if(b.getSwitch().getMain().equals(b.getNextUpBlockNumber())){
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                }else{
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                }
-
-                                // if [UP] <- Bottom -> Main [Down]
-                                if(b.getSwitch().getMain().equals(b.getNextDownBlockNumber())){
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                }else{
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                }
-
-                            }
-
-                        }
-
-                    // otherwise the block can be directly linked
-                    }else{
-                        b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                        b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
+                    if(b.getSwitch() != null && b.getNextSwitchBlockNumber() != -1){
+                        b.setNextSwitchBlock(line.getBlock(b.getNextSwitchBlockNumber()));
                     }
 
-                }else if(b.getDirection().contains("UP")){
+                } else if (b.getDirection().contains("UP")) {
 
-                    if(b.getSwitch() != null) {
+                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
 
-                        // MAIN SWITCH
-                        if(b.getSwitch().getMain().equals(b.getBlockNumber())){
-
-                            if(b.getSwitch().getState().equals(SwitchState.TOP)){
-
-                                // Main -> Top [UP]
-                                if(b.getSwitch().getTop().equals(b.getNextUpBlockNumber())){
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                }
-
-                            }else if(b.getSwitch().getState().equals(SwitchState.BOTTOM)){
-
-                                // Main -> Bottom [UP]
-                                if(b.getSwitch().getBottom().equals(b.getNextUpBlockNumber())) {
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                }
-
-                            }
-
-                        // TOP SWITCH
-                        }else if(b.getSwitch().getTop().equals(b.getBlockNumber())){
-
-                            if(b.getSwitch().getState().equals(SwitchState.TOP)){
-
-                                // Top -> Main [UP]
-                                if(b.getSwitch().getMain().equals(b.getNextUpBlockNumber())){
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                }
-
-                            }
-
-                        // BOTTOM SWITCH
-                        }else if(b.getSwitch().getBottom().equals(b.getBlockNumber())){
-
-                            if(b.getSwitch().getState().equals(SwitchState.BOTTOM)){
-
-                                // Bottom -> Main [UP]
-                                if(b.getSwitch().getMain().equals(b.getNextUpBlockNumber())){
-                                    b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
-                                }
-
-                            }
-
-                        }
-
-                    }else{
-                        b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
+                    if(b.getSwitch() != null && b.getNextSwitchBlockNumber() != -1){
+                        b.setNextSwitchBlock(line.getBlock(b.getNextSwitchBlockNumber()));
                     }
 
-                }else if(b.getDirection().contains("DOWN")){
+                } else if (b.getDirection().contains("DOWN")) {
 
-                    if(b.getSwitch() != null) {
+                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
 
-                        // MAIN SWITCH
-                        if(b.getSwitch().getMain().equals(b.getBlockNumber())){
-
-                            if(b.getSwitch().getState().equals(SwitchState.TOP)){
-
-                                b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-
-                                // Main -> Top [DOWN]
-                                if(b.getSwitch().getTop().equals(b.getNextDownBlockNumber())){
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                }
-
-                            }else if(b.getSwitch().getState().equals(SwitchState.BOTTOM)){
-
-                                b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-
-                                // Main -> Bottom [DOWN]
-                                if(b.getSwitch().getBottom().equals(b.getNextDownBlockNumber())){
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                }
-
-                            }
-
-                        // TOP SWITCH
-                        }else if(b.getSwitch().getTop().equals(b.getBlockNumber())){
-
-                            if(b.getSwitch().getState().equals(SwitchState.TOP)){
-
-                                b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-
-                                // Top -> Main [DOWN]
-                                if(b.getSwitch().getMain().equals(b.getNextDownBlockNumber())){
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                }
-
-                            }
-
-                        // BOTTOM SWITCH
-                        }else if(b.getSwitch().getBottom().equals(b.getBlockNumber())){
-
-                            if(b.getSwitch().getState().equals(SwitchState.BOTTOM)){
-
-                                b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-
-                                // Bottom -> Main [DOWN]
-                                if(b.getSwitch().getMain().equals(b.getNextDownBlockNumber())){
-                                    b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-                                }
-
-                            }
-
-                        }
-
-                    }else{
-
-                        b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-
+                    if(b.getSwitch() != null && b.getNextSwitchBlockNumber() != -1){
+                        b.setNextSwitchBlock(line.getBlock(b.getNextSwitchBlockNumber()));
                     }
 
                 }
             }
         }
-
     }
 
     public void looseCoupling(String inLine){

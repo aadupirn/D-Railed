@@ -44,6 +44,7 @@ public class LocationCalculator
 	//region methods
 	public Block ComputeNextLocation(double iSpeed)
 	{
+		dir = true;
 		blockLocation += iSpeed;
 
 		if(block == null){
@@ -54,8 +55,19 @@ public class LocationCalculator
 		{
 			blockLocation = blockLocation - block.getLength();
 
+			dir = block.canMoveToBlock(dir);
+			//int switchNum = block.getNextSwitchBlockNumber();
+
+			block = track.getNextBlock(block.getLine(), block, dir, train);
+
+//			if(block.getBlockNumber() == switchNum){
+//				dir = block.getNextSwitchRedirect();
+//				System.out.println("HIT" + dir);
+//			}
+
 			//track.suggestTrainDirection(block, dir, block.getSwitch());
 
+			/*
 			if(node77Seen >= 1 && block.getBlockNumber() == 101) {
 				block = track.getNextBlock(block.getLine(), block, false, train);
 				node85Seen = -1;
@@ -76,7 +88,7 @@ public class LocationCalculator
 			}else if(block.canMoveToBlock(true)){
 				block = track.getNextBlock(block.getLine(), block, true, train);
 			}
-
+			*/
 
 		}
 		mbo.setLocation(trainID, "Block: " + block);

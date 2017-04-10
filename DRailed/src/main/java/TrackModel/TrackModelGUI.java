@@ -1255,13 +1255,6 @@ public class TrackModelGUI {
         if(selectedBlock.getBlockNumber() != null) {
             selectedBlock = track.getBlock(selectedBlock.getLine(), selectedBlock.getBlockNumber());
         }
-
-        boolean trackTheTrain = true;
-
-        if(trackTheTrain){
-            selectedBlock = track.findTrain("GREEN", 1);
-        }
-
         updateBlockMonitor();
     }
 
