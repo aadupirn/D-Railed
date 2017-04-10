@@ -30,8 +30,8 @@ public class DTime
 			{
 				tc.update();
 			}
-			//if(trackModelGUI!= null)
-				//trackModelGUI.update();
+//			if(trackModelGUI!= null)
+//				trackModelGUI.update();
 		}
 	}
 
