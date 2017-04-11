@@ -32,7 +32,7 @@ public class Track {
         return tc;
     }
 
-    // @Track Controller: Sets safe speed and authority for a train on a rail
+   /* // @Track Controller: Sets safe speed and authority for a train on a rail
     public boolean setSpeedAndAuthority(String line, int blockId, double speed, int authority){
         for(Line l : tm.getLines()){
             if(l.getLine().equals(line)) {
@@ -62,7 +62,7 @@ public class Track {
         }
 
         return -1;
-    }
+    }*/
 
     // @CTC: Places the train on the appropriate block coming from the Yard
     public int dispatchTrainOnTrack(String line, TrainModel.Train train) {
