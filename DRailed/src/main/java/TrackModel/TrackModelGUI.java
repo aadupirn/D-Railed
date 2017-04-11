@@ -6,7 +6,6 @@ package TrackModel;
 
 import TrackModel.Model.*;
 import TrainModel.Train;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -50,8 +49,6 @@ public class TrackModelGUI {
     private Block selectedBlock = new Block();
     private Track track = new Track();
 
-    private int heatUpdater = 0;
-
     // Main Grid
     private GridPane mainGrid = getGridPane();
 
@@ -85,8 +82,6 @@ public class TrackModelGUI {
 
         stage.setTitle(applicationTitle);
 
-        startUpdateThread();
-
         this.track = track;
 
         // Layout Menu
@@ -109,6 +104,7 @@ public class TrackModelGUI {
         blockInfraLabel.setTextAlignment(TextAlignment.LEFT);
         blockInfraLabel.setFont(Font.font(blockInfraLabel.getFont().getFamily(), FontWeight.BOLD, blockInfraLabel.getFont().getSize()+5));
 
+
         blockInfra.setMinHeight(windowHeight/2);
         blockInfra.setMaxHeight(windowHeight/2);
         blockInfra.setMinWidth(windowWidth/3);
@@ -119,31 +115,18 @@ public class TrackModelGUI {
         FlowPane stationInfra = null;
         FlowPane crossingInfra = null;
         FlowPane lightsInfra = null;
-        FlowPane heaterInfra = null;
-        FlowPane beaconInfra = null;
 
         Train train = selectedBlock.getTrain();
         if(train != null)
             trainInfra = getTrainInfoPane();
 
         Switch dispSwitch = selectedBlock.getSwitch();
-        if(dispSwitch != null) {
+        if(dispSwitch != null)
             switchInfra = getSwitchInfoPane(blockInfra.getMinHeight(), blockInfra.getMinWidth(), dispSwitch);
 
-            Heater heater = selectedBlock.getSwitch().getHeater();
-            if(heater != null)
-                heaterInfra = getHeaterInfoPane(heater);
-
-        }
-
         Station dispStation = selectedBlock.getStation();
-        if(dispStation != null) {
+        if(dispStation != null)
             stationInfra = getStationInfoPane(blockInfra.getMinHeight(), blockInfra.getMinWidth(), dispStation);
-
-            Heater heater = selectedBlock.getStation().getHeater();
-            if(heater != null)
-                heaterInfra = getHeaterInfoPane(heater);
-        }
 
         Crossing dispCrossing = selectedBlock.getCrossing();
         if(dispCrossing != null)
@@ -153,12 +136,7 @@ public class TrackModelGUI {
         if(light != null)
             lightsInfra = getLightInfoPane();
 
-        Beacon beacon = selectedBlock.getBeacon();
-        if(beacon != null){
-            beaconInfra = getBeaconInfoPane(beacon);
-        }
-
-        blockInfra = populateBlockInfrastructure(blockInfraLabel, trainInfra, switchInfra, stationInfra, crossingInfra, lightsInfra, heaterInfra, beaconInfra);
+        blockInfra = populateBlockInfrastructure(blockInfraLabel, trainInfra, switchInfra, stationInfra, crossingInfra, lightsInfra);
         blockMonitorLayout.add(blockInfra, 1,0);
 
         ///////////////////////////////////////////////
@@ -192,7 +170,7 @@ public class TrackModelGUI {
         stage.show();
     }
 
-    private GridPane populateBlockInfrastructure(Label blockInfraLabel, FlowPane trainInfra, FlowPane switchInfra, FlowPane stationInfra, FlowPane crossingInfra, FlowPane lightsInfra, FlowPane heaterInfra, FlowPane beaconInfra) {
+    private GridPane populateBlockInfrastructure(Label blockInfraLabel, FlowPane trainInfra, FlowPane switchInfra, FlowPane stationInfra, FlowPane crossingInfra, FlowPane lightsInfra) {
 
         GridPane blockInfra = new GridPane();
         blockInfra.setMinHeight(windowHeight/2);
@@ -222,14 +200,6 @@ public class TrackModelGUI {
         }
         if(lightsInfra != null){
             blockInfra.add(lightsInfra, 0, i);
-            i++;
-        }
-        if(heaterInfra != null){
-            blockInfra.add(heaterInfra, 0, i);
-            i++;
-        }
-        if(beaconInfra != null){
-            blockInfra.add(beaconInfra, 0, i);
             i++;
         }
 
@@ -270,85 +240,6 @@ public class TrackModelGUI {
         lightsInfra.getChildren().add(lightsIcon);
         lightsInfra.getChildren().add(lightsLabels);
         return lightsInfra;
-    }
-
-    private FlowPane getBeaconInfoPane(Beacon beacon) {
-
-        FlowPane beaconInfra = new FlowPane();
-        beaconInfra.setMaxHeight((blockInfra.getMaxHeight()/6)-3);
-        beaconInfra.setMinHeight((blockInfra.getMinHeight()/6)-3);
-        beaconInfra.setMaxWidth(blockInfra.getMinWidth());
-        beaconInfra.setMinWidth(blockInfra.getMaxWidth());
-
-        beaconIcon.setFitHeight(beaconInfra.getMaxHeight());
-        beaconIcon.setFitWidth(50);
-
-        GridPane beaconLabels = new GridPane();
-        beaconLabels.setAlignment(Pos.CENTER_LEFT);
-
-        Label beaconIdLabel = new Label("Beacon Id: ");
-        Label beaconIdValue = new Label("" + beacon.getBeaconNumber() + "(" + selectedBlock.getStation().getStationName() + ")");
-        beaconIdLabel.setFont(Font.font(beaconIdLabel.getFont().getFamily(), FontWeight.BOLD, beaconIdLabel.getFont().getSize()));
-
-        Label msgLabel = new Label("Message: ");
-        Label msgValue = new Label("" + beacon.readMessage());
-        beaconIdLabel.setFont(Font.font(beaconIdLabel.getFont().getFamily(), FontWeight.BOLD, beaconIdLabel.getFont().getSize()));
-
-        beaconLabels.add(beaconIdLabel, 0, 0);
-        beaconLabels.add(beaconIdValue, 1, 0);
-        beaconLabels.add(msgLabel, 0, 1);
-        beaconLabels.add(msgValue, 1, 1);
-        beaconLabels.setPadding(new Insets(0, 0, 0, 10));
-
-        beaconInfra.getChildren().add(beaconIcon);
-        beaconInfra.getChildren().add(beaconLabels);
-        return beaconInfra;
-    }
-
-    private FlowPane getHeaterInfoPane(Heater heater) {
-
-        FlowPane heaterInfra = new FlowPane();
-        heaterInfra.setMaxHeight((blockInfra.getMaxHeight()/6)-4);
-        heaterInfra.setMinHeight((blockInfra.getMinHeight()/6)-4);
-        heaterInfra.setMaxWidth(blockInfra.getMinWidth());
-        heaterInfra.setMinWidth(blockInfra.getMaxWidth());
-
-        GridPane heaterLabels = new GridPane();
-        heaterLabels.setAlignment(Pos.CENTER_LEFT);
-
-        Label heaterLabel = new Label("Heater: ");
-        Label heaterValue = new Label("" + heater.getHeaterNumber());
-        heaterLabel.setFont(Font.font(heaterLabel.getFont().getFamily(), FontWeight.BOLD, heaterLabel.getFont().getSize()));
-
-        Label railTempLabel = new Label("Rail Temp: ");
-        Label railTempValue = new Label("" + heater.getRailTemp());
-        railTempLabel.setFont(Font.font(railTempLabel.getFont().getFamily(), FontWeight.BOLD, railTempLabel.getFont().getSize()));
-
-        Label desTempLabel = new Label("Desired Temp: ");
-        Label desTempValue = new Label("" + heater.getDesiredTemp());
-        desTempLabel.setFont(Font.font(desTempLabel.getFont().getFamily(), FontWeight.BOLD, desTempLabel.getFont().getSize()));
-
-        Label rateLabel = new Label("Heat Rate: ");
-        Label rateValue = new Label("" + heater.getHeatRate());
-        rateLabel.setFont(Font.font(rateLabel.getFont().getFamily(), FontWeight.BOLD, rateLabel.getFont().getSize()));
-
-        heaterLabels.add(heaterLabel, 0, 0);
-        heaterLabels.add(heaterValue, 1, 0);
-        heaterLabels.add(railTempLabel, 0, 1);
-        heaterLabels.add(railTempValue, 1, 1);
-        heaterLabels.add(desTempLabel, 0,2);
-        heaterLabels.add(desTempValue, 1, 2);
-        heaterLabels.add(rateLabel, 2, 0);
-        heaterLabels.add(rateValue, 3, 0);
-        heaterLabels.setPadding(new Insets(0,0,0,10));
-
-        heaterIcon.setFitHeight(heaterInfra.getMaxHeight());
-        heaterIcon.setFitWidth(50);
-
-        heaterInfra.getChildren().add(heaterIcon);
-        heaterInfra.getChildren().add(heaterLabels);
-        return heaterInfra;
-
     }
 
     private FlowPane getTrainInfoPane() {
@@ -672,16 +563,6 @@ public class TrackModelGUI {
             }
         });
 
-        Button updateModel = new Button("Update");
-        updateModel.setMinHeight(30);
-        updateModel.setMaxHeight(30);
-
-        updateModel.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                update();
-            }
-        });
 
         Button murphyCtrl = new Button("Murphy Controls");
         murphyCtrl.setMinHeight(30);
@@ -764,7 +645,7 @@ public class TrackModelGUI {
             }
         });
 
-        menu.getChildren().addAll(importTrack, infraSettings, updateModel, murphyCtrl);
+        menu.getChildren().addAll(importTrack, infraSettings, murphyCtrl);
         return menu;
     }
 
@@ -836,33 +717,18 @@ public class TrackModelGUI {
         FlowPane stationInfra = null;
         FlowPane crossingInfra = null;
         FlowPane lightsInfra = null;
-        FlowPane heaterInfra = null;
-        FlowPane beaconInfra = null;
 
         Train train = selectedBlock.getTrain();
         if(train != null)
             trainInfra = getTrainInfoPane();
 
         Switch dispSwitch = selectedBlock.getSwitch();
-        if(dispSwitch != null) {
+        if(dispSwitch != null)
             switchInfra = getSwitchInfoPane(blockInfra.getMinHeight(), blockInfra.getMinWidth(), dispSwitch);
 
-            Heater heater = selectedBlock.getSwitch().getHeater();
-            if(heater != null) {
-                heaterInfra = getHeaterInfoPane(heater);
-            }
-
-        }
-
         Station dispStation = selectedBlock.getStation();
-        if(dispStation != null) {
+        if(dispStation != null)
             stationInfra = getStationInfoPane(blockInfra.getMinHeight(), blockInfra.getMinWidth(), dispStation);
-
-            Heater heater = selectedBlock.getStation().getHeater();
-            if(heater != null) {
-                heaterInfra = getHeaterInfoPane(heater);
-            }
-        }
 
         Crossing dispCrossing = selectedBlock.getCrossing();
         if(dispCrossing != null)
@@ -872,16 +738,9 @@ public class TrackModelGUI {
         if(light != null)
             lightsInfra = getLightInfoPane();
 
-        Beacon beacon = selectedBlock.getBeacon();
-        if(beacon != null){
-            beaconInfra = getBeaconInfoPane(beacon);
-        }
-
-        heatUpdater++;
-
         blockMonitorLayout.getChildren().remove(1);
 
-        blockInfra = populateBlockInfrastructure(blockInfraLabel, trainInfra, switchInfra, stationInfra, crossingInfra, lightsInfra, heaterInfra, beaconInfra);
+        blockInfra = populateBlockInfrastructure(blockInfraLabel, trainInfra, switchInfra, stationInfra, crossingInfra, lightsInfra);
         blockMonitorLayout.add(blockInfra, 2, 0);
     }
 
@@ -1236,25 +1095,8 @@ public class TrackModelGUI {
         return bd.doubleValue();
     }
 
-    private void startUpdateThread() {
-        Task task = new Task<Void>() {
-            @Override
-            public Void call() throws Exception {
-                while (true) {
-                    update();
-                    Thread.sleep(10);
-                }
-            }
-        };
-        Thread th = new Thread(task);
-        th.setDaemon(true);
-        th.start();
-    }
-
     public void update(){
-        if(selectedBlock.getBlockNumber() != null) {
-            selectedBlock = track.getBlock(selectedBlock.getLine(), selectedBlock.getBlockNumber());
-        }
+        selectedBlock = track.getBlock(selectedBlock.getLine(), selectedBlock.getBlockNumber());
         updateBlockMonitor();
     }
 

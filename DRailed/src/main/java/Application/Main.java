@@ -162,12 +162,13 @@ public class Main extends Application {
 				MBO.start(new Stage());
 				dTime = new DTime();
 				Track track = new Track();
-				track.couple("GREEN", "TIGHT");
+				track.couple("GREEN");
 				TrackController trackController = new TrackController(dTime);
 				dTime.setMBO(MBO.getMBO());
 				trackController.setTrack(track);
 				track.setTrackController(trackController);
 				TrackModelGUI trackModel = new TrackModelGUI(track);
+				dTime.addTMGUI(trackModel);
 				trackController.showUI();
 			} catch (Exception e1) {
 				e1.printStackTrace();

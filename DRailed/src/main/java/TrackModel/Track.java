@@ -77,9 +77,9 @@ public class Track {
 
     }
 
-    public Block getNextBlock(String line, Block currentBlock, boolean direction, Train train){
+    public Block getNextBlock(String line, Block currentBlock, boolean direction){
 
-        Block nextBlock = tm.getBlock(line, currentBlock.getBlockNumber().intValue()).moveToNextBlock(train, direction);
+        Block nextBlock = tm.getBlock(line, currentBlock.getBlockNumber().intValue()).moveToNextBlock(direction);
 
         // PLC update old block
         if(currentBlock.getSwitch() != null){
@@ -109,7 +109,7 @@ public class Track {
         return nextBlock;
     }
 
-    public Block findTrain(String line, int trainId){
+    public int findTrain(String line, int trainId){
 
         return tm.findTrain(line, trainId);
 
@@ -331,42 +331,6 @@ public class Track {
         }
     }
 
-    public boolean suggestTrainDirection(Block block, boolean direction, Switch aSwitch){
-
-        Block up = block.getNextUpBlock();
-        Block down = block.getNextDownBlock();
-        Block switchn = block.getNextSwitchBlock();
-        boolean redirect = block.getNextSwitchRedirect();
-
-        if(aSwitch != null){
-            if(aSwitch.getState().equals(SwitchState.TOP)) {
-                if(direction == true && up.getDirection().contains("BI")){
-
-                } else if (direction == true && up.getDirection().contains("UP")) {
-
-                } else if (direction == false && down.getDirection().contains("BI")) {
-
-                } else if(direction == false && down.getDirection().contains("DOWN")){
-
-                }
-            }else if(aSwitch.getState().equals(SwitchState.BOTTOM)){
-
-            }
-        }else{
-            if(direction == true){
-
-            }else if(direction == true){
-
-            }else if(direction == false){
-
-            }else if(direction == false){
-
-            }
-        }
-
-        return false;
-    }
-
     public Block getBlock(String line, int blockId){
         for(Line l : tm.getLines()){
             if(l.getLine().equals(line)) {
@@ -391,12 +355,8 @@ public class Track {
         return tm.getToYardBlock(line);
     }
 
-    public void couple(String line, String setting){
-        if(setting.equals("LOOSE")) {
-            tm.looseCoupling(line);
-        }else if(setting.equals("TIGHT")){
-            tm.tightCoupling(line);
-        }
+    public void couple(String line){
+        tm.looseCoupling(line);
     }
 
 }

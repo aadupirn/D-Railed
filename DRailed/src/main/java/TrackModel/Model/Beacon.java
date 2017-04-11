@@ -13,10 +13,6 @@ public class Beacon {
         this.message = message;
     }
 
-    public int getBeaconNumber(){
-        return this.beaconNumber;
-    }
-
     public String readMessage(){
         return this.message;
     }

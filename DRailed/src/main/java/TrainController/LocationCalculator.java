@@ -3,7 +3,6 @@ package TrainController;
 import TrackModel.Model.Block;
 import TrackModel.Track;
 import MBO.java.MBO;
-import TrainModel.Train;
 
 /**
  * Created by aadu on 4/3/17.
@@ -17,22 +16,18 @@ public class LocationCalculator
 	private Track track;
 	private double blockLocation;
 	private MBO mbo;
-	private Train train;
 	int trainID;
 	int node85Seen = 0;
 	int node100Seen = 0;
 	int node77Seen = 0;
-	boolean dir = true;
-
 
 	//endregion
 
 	//region Constructors
 
-	public LocationCalculator(Train iTrain, Track iTrack, String iLine, int startingBlock, int iTrainID)
+	public LocationCalculator(Track iTrack, String iLine, int startingBlock, int iTrainID)
 	{
 		track = iTrack;
-		train = iTrain;
 		line = iLine;
 		block = track.getFromYardBlock(line);
 		trainID = iTrainID;
@@ -44,61 +39,39 @@ public class LocationCalculator
 	//region methods
 	public Block ComputeNextLocation(double iSpeed)
 	{
-		dir = true;
 		blockLocation += iSpeed;
 
 		if(block == null){
 			System.out.println("ERROR");
 		}
 
-		int redirect = 0;
-
 		while(block.getLength() < blockLocation)
 		{
 			blockLocation = blockLocation - block.getLength();
 
-			if(redirect == 0) {
-				dir = block.canMoveToBlock(dir);
-			}else{
-				redirect = 0;
-				System.out.println("REDIRECTING");
-			}
-
-			int switchNum = block.getNextSwitchBlockNumber();
-
-			System.out.println("Train Moving: " + dir);
-			block = track.getNextBlock(block.getLine(), block, dir, train);
-
-			if(block.getBlockNumber() == switchNum){
-				dir = block.getNextSwitchRedirect();
-				System.out.println("HIT " + dir);
-				redirect = 1;
-			}
-
-			//track.suggestTrainDirection(block, dir, block.getSwitch());
-
-			/*
 			if(node77Seen >= 1 && block.getBlockNumber() == 101) {
-				block = track.getNextBlock(block.getLine(), block, false, train);
+				block = track.getNextBlock(block.getLine(), block, false);
+				System.out.println("101 MOVE DOWN");
 				node85Seen = -1;
 				node100Seen = -1;
 			}else if(node85Seen >= 1 && block.getBlockNumber() == 100){
-				block = track.getNextBlock(block.getLine(), block, false, train);
+				System.out.println("100 MOVE DOWN ONE");
+				block = track.getNextBlock(block.getLine(), block, false);
 				node100Seen++;
 			}else if(node85Seen >= 1 && node100Seen >= 1 && node77Seen != 2){
-				block = track.getNextBlock(block.getLine(), block, true, train);
+				System.out.println("MOVE UP");
+				block = track.getNextBlock(block.getLine(), block, true);
 			}else if(node85Seen <= 1 && block.getBlockNumber() != 100) {
-				block = track.getNextBlock(block.getLine(), block, false, train);
+				System.out.println("85 ONCE MOVE DOWN");
+				block = track.getNextBlock(block.getLine(), block, false);
 				node85Seen++;
 			}else if(block.canMoveToBlock(false)){
-				block = track.getNextBlock(block.getLine(), block, false, train);
+				System.out.println("MOVE DOWN");
+				block = block.getNextBlock(false);
 				if(block.getBlockNumber() == 77){
 					node77Seen++;
 				}
-			}else if(block.canMoveToBlock(true)){
-				block = track.getNextBlock(block.getLine(), block, true, train);
 			}
-			*/
 
 		}
 		mbo.setLocation(trainID, "Block: " + block);

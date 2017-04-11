@@ -107,8 +107,8 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         mass = 10000;
-        this.authority = newAuthority;
-        this.startingBlock = startingBlock;
+
+        startingBlock = startingBlock;
         id = newID;
         trainController = new TrainController(this, track);
         trainModel = new TrainModel();
@@ -193,7 +193,7 @@ Calculates speed
         return currentSpeed;
     }
     public int GetAuthority(){
-        return this.authority;
+        return authority;
     }
     public int GetStartingBlock(){
         return startingBlock;
