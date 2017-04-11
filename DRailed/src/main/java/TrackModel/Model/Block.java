@@ -436,16 +436,8 @@ public class Block {
 
         Block nextBlock = null;
 
-        // if the direction of travel is UP and the track runs the same direction
-        if (direction == true && nextUpBlock == null && nextSwitchBlock != null){
-            System.out.println("Up And Switch");
-            nextBlock = nextSwitchBlock;
 
-        } else if (direction == false && nextDownBlock == null && nextSwitchBlock != null){
-            System.out.println("Down And Switch");
-            nextBlock = nextSwitchBlock;
-
-        }if (direction == true && nextUpBlock != null) {
+        if (direction == true && nextUpBlock != null) {
 
             if(nextSwitchBlock != null){
                 int cndiff = Math.abs(authority - next);
@@ -487,6 +479,14 @@ public class Block {
                 nextBlock = nextDownBlock;
             }
 
+            // if the direction of travel is UP and the track runs the same direction
+        }else if (direction == true && nextUpBlock == null && nextSwitchBlock != null){
+            System.out.println("Up And Switch");
+            nextBlock = nextSwitchBlock;
+
+        } else if (direction == false && nextDownBlock == null && nextSwitchBlock != null) {
+            System.out.println("Down And Switch");
+            nextBlock = nextSwitchBlock;
 
         }
 

@@ -51,19 +51,29 @@ public class LocationCalculator
 			System.out.println("ERROR");
 		}
 
+		int redirect = 0;
+
 		while(block.getLength() < blockLocation)
 		{
 			blockLocation = blockLocation - block.getLength();
 
-			dir = block.canMoveToBlock(dir);
-			//int switchNum = block.getNextSwitchBlockNumber();
+			if(redirect == 0) {
+				dir = block.canMoveToBlock(dir);
+			}else{
+				redirect = 0;
+				System.out.println("REDIRECTING");
+			}
 
+			int switchNum = block.getNextSwitchBlockNumber();
+
+			System.out.println("Train Moving: " + dir);
 			block = track.getNextBlock(block.getLine(), block, dir, train);
 
-//			if(block.getBlockNumber() == switchNum){
-//				dir = block.getNextSwitchRedirect();
-//				System.out.println("HIT" + dir);
-//			}
+			if(block.getBlockNumber() == switchNum){
+				dir = block.getNextSwitchRedirect();
+				System.out.println("HIT " + dir);
+				redirect = 1;
+			}
 
 			//track.suggestTrainDirection(block, dir, block.getSwitch());
 
