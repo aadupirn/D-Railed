@@ -23,7 +23,7 @@ public class TrackController {
     private int ID, startBlock, endBlock;
     private String line;
     private boolean trackComms, ctcComms, isLineMain;
-    private Queue<String> messageQueue;
+    private Queue<ThreeBaudMessage> messageQueue;
     private TrackControllerUI ui;
     private DTime dTime;
 
@@ -93,8 +93,6 @@ public class TrackController {
         this.track = t;
     }
 
-
-
     public void setID(int ID) {
         this.ID = ID;
     }
@@ -155,16 +153,30 @@ public class TrackController {
     {
         if (line.equals(this.line))
         {
-            if (id < this.endBlock && id > this.startBlock)
+            if (id <= this.endBlock && id >= this.startBlock)
+                return true;
+            if ((id == 151 || id == 152) && isLineMain)
                 return true;
         }
         return false;
     }
 
-    public void setSpeedAndAuthority(int trainID, double speed, int authority)
+    public void setSpeedAndAuthority(int trainID, double speed, int authority) //TODO make sure to do this before any PLC outputs, so PLC can make it zero again
     {
-        //TODO get this shit working, either set the speed and authority for a block or overwrite occupied blocks?
-        //TODO try maybe having something call a function on the Train?
+        Block block;
+        for(int i = startBlock; i < endBlock; i++)
+        {
+            ThreeBaudMessage message = new ThreeBaudMessage();
+            block = track.getBlock(this.line,i);
+            if (block.isOccupied())
+            {
+                if (speed > block.getSpeedLimit())
+                    speed = block.getSpeedLimit();
+                message.setTrainID((char)trainID);
+                message.setSpeed((char)speed);
+                message.setAuthority((char)authority);
+            }
+        }
     }
 
     public boolean getPLCSwitch(int switchID)
@@ -184,11 +196,6 @@ public class TrackController {
 
     public void Update()
     {
-        if (!messageQueue.isEmpty())
-        {
-            String message = messageQueue.remove();
-        }
-
         ui.Update();
     }
 

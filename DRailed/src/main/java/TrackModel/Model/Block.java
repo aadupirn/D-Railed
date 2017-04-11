@@ -6,6 +6,7 @@ package TrackModel.Model;
 
 
 import TrainModel.Train;
+import TrackController.Classes.ThreeBaudMessage;
 
 /***
  * Blocks represent track infrastructure and physical attributes. They serve as pieces and the
@@ -58,9 +59,8 @@ public class Block {
     private boolean circuitState;
     private boolean powerState;
 
-    // authority and speed
-    private int authority;
-    private Double speed;
+    // three baud message
+    private ThreeBaudMessage message;
 
     // Connected Blocks
     private String direction;
@@ -95,8 +95,9 @@ public class Block {
 
         // train
         this.occupied = false;
-        this.speed = 0.0;
-        this.authority = 0;
+        this.message.setAuthority((char)0);
+        this.message.setTrainID((char)255);
+        this.message.setSpeed((char)0);
 
         // status
         this.powerState = false;
@@ -130,8 +131,9 @@ public class Block {
 
         // train
         this.occupied = false;
-        this.speed = 0.0;
-        this.authority = 0;
+        this.message.setAuthority((char)0);
+        this.message.setTrainID((char)255);
+        this.message.setSpeed((char)0);
 
         // status
         this.powerState = true;
@@ -449,18 +451,15 @@ public class Block {
         this.nextDownBlock = nextDownBlock;
     }
 
-    public void setSpeedAndAuthority(Double speed, int authority){
-        this.speed = speed;
-        this.authority = authority;
+    public void setMessageInfo(char id,char speed, char authority){
+        this.message.setTrainID(id);
+        this.message.setAuthority(authority);
+        this.message.setSpeed(speed);
     }
 
-    public Double readSpeed(){
-        return this.speed;
-    }
+    public void setMessage(ThreeBaudMessage message) {this.message = message;}
 
-    public int readAuthority(){
-        return this.authority;
-    }
+    public ThreeBaudMessage getMessage() {return message;}
 
     public void setOccupied(){
         this.occupied = true;
