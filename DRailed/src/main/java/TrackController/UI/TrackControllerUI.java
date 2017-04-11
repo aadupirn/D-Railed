@@ -25,10 +25,10 @@ public class TrackControllerUI {
     private Stage mainStage, sideStage;
     private Scene mainScene, murphyScene, userInScene, engScene, toTMScene;
     private Label controllerLabel,blockLabel, controlLabel, switchLabel, occupiedLabel, lightsLabel, crossLabel, switchAdjLabel, mainBlockLabel, subBlock1Label,subBlock2Label,connectedLabel, getTrainID, getSpeed,getAuth,getCarts;
-    private TextField blockID, occupiedStatus, lightsStatus,crossStatus, switchAdj, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText, getTrainIDText, getSpeedText, getAuthText, getCartsText;
+    private TextField blockID, occupiedStatus, lightsStatus,crossStatus, switchAdj, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText, getTrainIDText, getSpeedText, getAuthText, getCartsText, sendTrainIDText, sendSpeedText, sendAuthText;
     private TextArea notifications;
     private Text controllerLine, controllerSection;
-    private Button murphyButton, userInputsButton, engInputsButton, toTrackModelButton, murphyBreakTrackButton, murphyBreakCTCComms, murphyBreakTMComms, sendEngineer, loadPLC, blockIdButton, switchIdButton, dispatchButton;
+    private Button murphyButton, userInputsButton, engInputsButton, toTrackModelButton, murphyBreakTrackButton, murphyBreakCTCComms, murphyBreakTMComms, sendEngineer, loadPLC, blockIdButton, switchIdButton, dispatchButton, sendData;
     private RadioButton blockRB, switchRB;
     private TrackController tc;
     private PLC myPLC;
@@ -360,11 +360,11 @@ public class TrackControllerUI {
         Label sendTrainID = new Label("Set Train ID: ");
         Label sendSpeed = new Label("Set Speed: ");
         Label sendAuth = new Label("Set Authority: ");
-        TextField sendTrainIDText = new TextField("");
-        TextField sendSpeedText = new TextField("");
-        TextField sendAuthText = new TextField("");
-        Button sendData = new Button("Send to Track Model");
-        sendData.setOnAction(e->DispatchButtonClicked(e));
+        sendTrainIDText = new TextField("");
+        sendSpeedText = new TextField("");
+        sendAuthText = new TextField("");
+        sendData = new Button("Send to Track Model");
+        sendData.setOnAction(e->setSpeedAndAuthorityClicked(e));
 
 
         //Assemble
@@ -462,12 +462,7 @@ public class TrackControllerUI {
         Object source = e.getSource();
         if(source == murphyBreakTrackButton)
         {
-            for(int i = 0; i < 10; i++)
-            {
-                int caretPosition = notifications.caretPositionProperty().get();
-                notifications.appendText("Here i am appending text to text area"+"\n");
-                notifications.positionCaret(caretPosition);
-            }
+            //TODO something, maybe display in same pane?
         }
     }
 
@@ -525,7 +520,13 @@ public class TrackControllerUI {
 
     public void setSpeedAndAuthorityClicked(ActionEvent e)
     {
+        int id, auth;
+        double speed;
 
+        id = Integer.parseInt(sendTrainIDText.getText());
+        auth = Integer.parseInt(sendAuthText.getText());
+        speed = Double.parseDouble(sendSpeedText.getText());
+        tc.setSpeedAndAuthority(id,speed,auth);
     }
 
     public void MainButtonClicked(ActionEvent e)
