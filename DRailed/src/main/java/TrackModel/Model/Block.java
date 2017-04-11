@@ -95,9 +95,7 @@ public class Block {
 
         // train
         this.occupied = false;
-        this.message.setAuthority((char)0);
-        this.message.setTrainID((char)255);
-        this.message.setSpeed((char)0);
+        this.message = new ThreeBaudMessage();
 
         // status
         this.powerState = false;
@@ -131,9 +129,7 @@ public class Block {
 
         // train
         this.occupied = false;
-        this.message.setAuthority((char)0);
-        this.message.setTrainID((char)255);
-        this.message.setSpeed((char)0);
+        this.message = new ThreeBaudMessage();
 
         // status
         this.powerState = true;

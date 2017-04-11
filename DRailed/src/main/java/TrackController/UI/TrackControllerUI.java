@@ -95,8 +95,8 @@ public class TrackControllerUI {
 
         //Set up section titles on main screen
         controllerLabel = new Label("Track Controller Controls:");
-        controllerLine = new Text("Line - Green");
-        controllerSection = new Text("Blocks - 1 to 152");
+        controllerLine = new Text("Line - " + tc.getLine());
+        controllerSection = new Text("Blocks - " + tc.getStartBlock() + " to " + tc.getEndBlock());
         blockLabel = new Label("Block Info");
         controlLabel = new Label("Controls/Track Info");
         switchLabel = new Label("Switch Info");
@@ -191,12 +191,13 @@ public class TrackControllerUI {
 
         //Put track pane in
         notifications = new TextArea("");
-        notifications.appendText("17");
+        notifications.setText("Display Block Occupancy");
         notifications.setFont(Font.font("Garamond", 12));
         notifications.setMinHeight(windowHeight / 3);
         trainInfo.setHgap(20);
         trainInfo.add(notifications, 0, 0);
         blockRB = new RadioButton("Blocks");
+        blockRB.setSelected(true);
         blockRB.setToggleGroup(tOrB);
         switchRB = new RadioButton("Switches");
         switchRB.setToggleGroup(tOrB);
@@ -495,22 +496,36 @@ public class TrackControllerUI {
 
     public void Update()
     {
-        return;
+        // update the notifications field
+        double point;
+        if (blockRB.isSelected())
+        {
+            point = notifications.getScrollTop();
+            notifications.setText(tc.getAllBlockOccupancies());
+            notifications.setScrollTop(point);
+        }
+        else
+        {
+            point = notifications.getScrollTop();
+            notifications.setText(tc.getAllSwitchStates());
+            notifications.setScrollTop(point);
+        }
     }
 
     public void DispatchButtonClicked(ActionEvent e)
     {
-        Object source = e.getSource();
-        if (source == dispatchButton)
-        {
-            try {
-                tc.dispatchTrain(152, Integer.parseInt(getCartsText.getText()), Integer.parseInt(getAuthText.getText()), Double.parseDouble(getSpeedText.getText()), Integer.parseInt(getTrainIDText.getText()));
-                System.out.println("Train created!");
-            } catch (Exception e1) {
-                System.out.println("We got an exception: " + e1.toString() + "\n");
-                e1.printStackTrace();
-            }
+        try {
+            tc.dispatchTrain(152, Integer.parseInt(getCartsText.getText()), Integer.parseInt(getAuthText.getText()), Double.parseDouble(getSpeedText.getText()), Integer.parseInt(getTrainIDText.getText()));
+            System.out.println("Train created!");
+        } catch (Exception e1) {
+            System.out.println("We got an exception: " + e1.toString() + "\n");
+            e1.printStackTrace();
         }
+    }
+
+    public void setSpeedAndAuthorityClicked(ActionEvent e)
+    {
+
     }
 
     public void MainButtonClicked(ActionEvent e)
