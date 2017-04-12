@@ -16,6 +16,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import MBO.java.MBO;
+import TrackController.Classes.ThreeBaudMessage;
 
 import java.io.IOException;
 
@@ -54,8 +55,8 @@ public class TrainController
 	private double kp;
 	private double ki;
 	private double temperature;
-	private double powerLimit;
 	private double desiredSpeed;
+	private double authority;
 
 	private boolean eBrakeStatus;
 	private boolean sBrakeStatus;
@@ -67,6 +68,7 @@ public class TrainController
 	private boolean movementStatus;
 	private boolean locationStatus;
 	private boolean announcementMade;
+	private boolean controlMode;
 
 	private Text speedText;
 	private Text powerText;
@@ -101,7 +103,7 @@ public class TrainController
 		lDoorStatus = false;
 		rDoorStatus = false;
 		lightStatus = false;
-		powerLimit = 1000;
+		controlMode = false;
 		kp = 100;
 		ki = 100;
 		speed = train.GetCurrentSpeed();
@@ -152,6 +154,10 @@ public class TrainController
 		grid.add(speedText, 4, 0);
 
 		final Button manualBtn = new Button("MANUAL");
+		if(controlMode)
+		{
+			manualBtn.setText("AUTOMATIC");
+		}
 		HBox hManualBtn = new HBox(0);
 		hManualBtn.setMinWidth(colWidth*3);
 		manualBtn.setMinWidth(colWidth*2);
@@ -487,7 +493,15 @@ public class TrainController
 
 		manualBtn.setOnAction((ActionEvent e) ->
 		{
-
+			controlMode = !controlMode;
+			if(controlMode)
+			{
+				manualBtn.setText("AUTOMATIC");
+			}
+			else
+			{
+				manualBtn.setText("MANUAL");
+			}
 		});
 
 		automaticBtn.setOnAction((ActionEvent e) ->
@@ -749,42 +763,59 @@ public class TrainController
 
 	public void update()
 	{
+
+		//Compute Next Location, get desired speed and authority, set grade in the train model.
+		Block currentBlock = locationCalculator.ComputeNextLocation(train.GetCurrentSpeed());
+		train.setGrade(currentBlock.getGrade());
+//		ThreeBaudMessage message = currentBlock.getMessage();
+//		double messageTrainID = message.getTrainID();
+//
+//
+//		if(messageTrainID == 255)
+//		{
+//			speedLimit = message.getSpeed();
+//		}
+//		else if(messageTrainID == trainID)
+//		{
+//			speedLimit = message.getSpeed();
+//			authority = message.getAuthority();
+//		}
+//		else if(messageTrainID == 0)
+//		{
+//			emergencyBrake();
+//		}
+//		else
+//		{
+//			//
+//		}
+
 		double powerCommand1 = controlCalculator1.computeNextCommand(speed);
 		double powerCommand2 = controlCalculator2.computeNextCommand(speed);
-		if(powerCommand1 != powerCommand2)
+		if(powerCommand1 != powerCommand2) //power command calculation failute brake!!!
 		{
 			emergencyBrake();
 		}
-		else
+		else//set power to train
 		{
 			train.SetPowerCommand(powerCommand1);
 			setPowerText(powerCommand1);
 		}
-		
 		if(eBrakeStatus == true)
 		{
 			train.SetPowerCommand(new Double(0));
 			setPowerText(0);
 		}
+
 		train.Update();
+
 		speed = train.GetCurrentSpeed();
 		setSpeedText(train.GetCurrentSpeed());
 		temperature = train.getTemperature();
 		setTempText(train.getTemperature());
+
 		mbo.setSpeed(trainID, speed);
 		mbo.setAuthority(trainID, 100);
-		Block currentBlock = locationCalculator.ComputeNextLocation(train.GetCurrentSpeed());
-		if(currentBlock.getBlockNumber() == 55)
-		{
-			sBrake();
-			if(!announcementMade)
-			{
-				announcementMade = true;
-				makeAnnouncement("Approaching Yard");
-			}
-		}
-		//train.setGrade(currentBlock.getGrade());
-		//if(block.);
+
 
 	}
 
