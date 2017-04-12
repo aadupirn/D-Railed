@@ -535,6 +535,7 @@ public class TrackModel
 
                     if(b.getSwitch() != null && b.getNextSwitchBlockNumber() != -1){
                         b.setNextSwitchBlock(line.getBlock(b.getNextSwitchBlockNumber()));
+                        b.setNextSwitchRedirect(b.getNextSwitchRedirect());
                     }
 
                 } else if (b.getDirection().contains("UP")) {
@@ -543,6 +544,7 @@ public class TrackModel
 
                     if(b.getSwitch() != null && b.getNextSwitchBlockNumber() != -1){
                         b.setNextSwitchBlock(line.getBlock(b.getNextSwitchBlockNumber()));
+                        b.setNextSwitchRedirect(b.getNextSwitchRedirect());
                     }
 
                 } else if (b.getDirection().contains("DOWN")) {
@@ -551,6 +553,7 @@ public class TrackModel
 
                     if(b.getSwitch() != null && b.getNextSwitchBlockNumber() != -1){
                         b.setNextSwitchBlock(line.getBlock(b.getNextSwitchBlockNumber()));
+                        b.setNextSwitchRedirect(b.getNextSwitchRedirect());
                     }
 
                 }
@@ -565,30 +568,18 @@ public class TrackModel
         for(Section s : line.getSections()) {
             for(Block b : s.getBlocks()) {
 
-//                System.out.println("BLOCK: " + b + "->");
-
                 if (b.getDirection().contains("BI")) {
 
                     b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
                     b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
 
-//                    System.out.print(b.getNextUpBlock() + "<-");
-//                    System.out.print(b);
-//                    System.out.println("->" + b.getNextDownBlock());
-
                 } else if (b.getDirection().contains("UP")) {
 
                     b.setNextUpBlock(line.getBlock(b.getNextUpBlockNumber()));
 
-//                    System.out.print(b.getNextUpBlock() + "<-");
-//                    System.out.println(b);
-
                 } else if (b.getDirection().contains("DOWN")) {
 
                     b.setNextDownBlock(line.getBlock(b.getNextDownBlockNumber()));
-
-//                    System.out.print(b);
-//                    System.out.println("->" + b.getNextDownBlock());
 
                 }
             }

@@ -436,20 +436,14 @@ public class Block {
 
         Block nextBlock = null;
 
-        // if the direction of travel is UP and the track runs the same direction
-        if (direction == true && nextUpBlock == null && nextSwitchBlock != null){
-            System.out.println("Up And Switch");
-            nextBlock = nextSwitchBlock;
-
-        } else if (direction == false && nextDownBlock == null && nextSwitchBlock != null){
-            System.out.println("Down And Switch");
-            nextBlock = nextSwitchBlock;
-
-        }if (direction == true && nextUpBlock != null) {
+        if (direction == true && nextUpBlock != null) {
 
             if(nextSwitchBlock != null){
                 int cndiff = Math.abs(authority - next);
                 int csdiff = Math.abs(authority - nswitch);
+
+                System.out.println(cndiff);
+                System.out.println(csdiff);
 
                 if(cndiff < csdiff){
                     nextBlock = nextUpBlock;
@@ -464,8 +458,6 @@ public class Block {
                 nextBlock = nextUpBlock;
             }
 
-
-
             // if the direction of travel is DOWN and the track runs the same direction
         } else if (direction == false && nextDownBlock != null) {
 
@@ -473,7 +465,10 @@ public class Block {
                 int cndiff = Math.abs(authority - next);
                 int csdiff = Math.abs(authority - nswitch);
 
-                if(cndiff < csdiff) {
+                System.out.println(cndiff);
+                System.out.println(csdiff);
+
+                if(cndiff > csdiff) {
                     nextBlock = nextDownBlock;
                     System.out.println("Switch And Down");
                 }else{
@@ -487,7 +482,14 @@ public class Block {
                 nextBlock = nextDownBlock;
             }
 
+         // if the direction of travel is UP and the track runs the same direction
+        } else if (direction == true && nextUpBlock == null && nextSwitchBlock != null){
+            System.out.println("Up And Switch");
+            nextBlock = nextSwitchBlock;
 
+        } else if (direction == false && nextDownBlock == null && nextSwitchBlock != null) {
+            System.out.println("Down And Switch");
+            nextBlock = nextSwitchBlock;
         }
 
         nextBlock.setOccupied();
@@ -611,6 +613,10 @@ public class Block {
 
     public int getNextSwitchBlockNumber() {
         return this.nextSwitchBlockNumber;
+    }
+
+    public void setNextSwitchRedirect(boolean dir){
+        this.nextSwitchBlockDir = dir;
     }
 
     public boolean getNextSwitchRedirect(){return this.nextSwitchBlockDir; }
