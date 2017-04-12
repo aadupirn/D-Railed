@@ -23,29 +23,29 @@ import ctc.CTCMain;
 import java.io.IOException;
 
 public class Main extends Application {
-    //Class strings
-    private String applicationTitle = "D-Railed";
+	//Class strings
+	private String applicationTitle = "D-Railed";
 
-    //Class integers
-    private int windowWidth = 300;
-    private int windowHight = 300;
-    private int inset = 25;
-    private int colWidth = 75;
-    private DTime dTime;
+	//Class integers
+	private int windowWidth = 300;
+	private int windowHight = 300;
+	private int inset = 25;
+	private int colWidth = 75;
+	private DTime dTime;
 
-    @Override
-    public void start(Stage primaryStage) throws Exception{
+	@Override
+	public void start(Stage primaryStage) throws Exception{
 
-    	//Module initialization
+		//Module initialization
 
 
-        primaryStage.setTitle(applicationTitle);
+		primaryStage.setTitle(applicationTitle);
 
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setPadding(new Insets(inset, inset, inset, inset));
-        //grid.setHgap(10);
-        grid.setVgap(10);
+		GridPane grid = new GridPane();
+		grid.setAlignment(Pos.CENTER);
+		grid.setPadding(new Insets(inset, inset, inset, inset));
+		//grid.setHgap(10);
+		grid.setVgap(10);
 
 		final Button ctcBtn = new Button("CTC");
 		ctcBtn.setMinWidth(150);
@@ -79,13 +79,13 @@ public class Main extends Application {
 		hTrainModelBtn.setMinWidth(150);
 		grid.add(hTrainModelBtn, 0, 3);
 
-        final Button trainControllerBtn = new Button("Train Controller");
+		final Button trainControllerBtn = new Button("Train Controller");
 		trainControllerBtn.setMinWidth(150);
-        HBox hTrainControllerBtn = new HBox(10);
-        hTrainControllerBtn.setAlignment(Pos.CENTER);
-        hTrainControllerBtn.getChildren().add(trainControllerBtn);
-        hTrainControllerBtn.setMinWidth(150);
-        grid.add(hTrainControllerBtn, 0, 4);
+		HBox hTrainControllerBtn = new HBox(10);
+		hTrainControllerBtn.setAlignment(Pos.CENTER);
+		hTrainControllerBtn.getChildren().add(trainControllerBtn);
+		hTrainControllerBtn.setMinWidth(150);
+		grid.add(hTrainControllerBtn, 0, 4);
 
 		final Button mboBtn = new Button("System Prototype");
 		mboBtn.setMinWidth(150);
@@ -99,7 +99,7 @@ public class Main extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
-        //handle button press
+		//handle button press
 		ctcBtn.setOnAction((ActionEvent e) ->
 		{
 			try{
@@ -162,21 +162,21 @@ public class Main extends Application {
 				MBO.start(new Stage());
 				dTime = new DTime();
 				Track track = new Track();
-				track.couple("GREEN");
+				track.couple("GREEN", "TIGHT");
 				TrackController trackController = new TrackController(dTime);
+				dTime.addTrackC(trackController);
 				dTime.setMBO(MBO.getMBO());
 				trackController.setTrack(track);
 				track.setTrackController(trackController);
 				TrackModelGUI trackModel = new TrackModelGUI(track);
-				dTime.addTMGUI(trackModel);
 				trackController.showUI();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 		});
-    }
+	}
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+	public static void main(String[] args) {
+		launch(args);
+	}
 }
