@@ -366,7 +366,7 @@ public class TrackModelGUI {
         trainLabel.setFont(Font.font(trainLabel.getFont().getFamily(), FontWeight.BOLD, trainLabel.getFont().getSize()));
 
         Label trainLoadLabel = new Label("Unloading: ");
-        Label trainLoadValue = new Label("" + selectedBlock.getTrain().getTemperature());
+        Label trainLoadValue = new Label("" + selectedBlock.getTrain().getPeople());
         trainLoadLabel.setFont(Font.font(trainLoadLabel.getFont().getFamily(), FontWeight.BOLD, trainLoadLabel.getFont().getSize()));
 
         trainLabels.add(trainLabel, 0, 0);

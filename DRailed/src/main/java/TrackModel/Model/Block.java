@@ -434,35 +434,24 @@ public class Block {
 
         Block nextBlock = null;
 
-        // if the direction of travel is UP and the track runs the same direction
-        if (direction == true && nextUpBlock == null && nextSwitchBlock != null){
-            System.out.println("Up And Switch");
-            nextBlock = nextSwitchBlock;
-
-        } else if (direction == false && nextDownBlock == null && nextSwitchBlock != null){
-            System.out.println("Down And Switch");
-            nextBlock = nextSwitchBlock;
-
-        }if (direction == true && nextUpBlock != null) {
+        if (direction == true && nextUpBlock != null) {
 
             if(nextSwitchBlock != null){
                 int cndiff = Math.abs(authority - next);
                 int csdiff = Math.abs(authority - nswitch);
 
+                //System.out.println(cndiff);
+                //System.out.println(csdiff);
+
                 if(cndiff < csdiff){
                     nextBlock = nextUpBlock;
-                    System.out.println("Switch And Up");
                 }else {
                     nextBlock = nextSwitchBlock;
-                    System.out.println("Switch And Switch [Up]");
                 }
             }else{
                 // move train to next block
-                System.out.println("Up");
                 nextBlock = nextUpBlock;
             }
-
-
 
             // if the direction of travel is DOWN and the track runs the same direction
         } else if (direction == false && nextDownBlock != null) {
@@ -471,21 +460,26 @@ public class Block {
                 int cndiff = Math.abs(authority - next);
                 int csdiff = Math.abs(authority - nswitch);
 
-                if(cndiff < csdiff) {
+                //System.out.println(cndiff);
+                //System.out.println(csdiff);
+
+                if(cndiff > csdiff) {
                     nextBlock = nextDownBlock;
-                    System.out.println("Switch And Down");
                 }else{
                     nextBlock = nextSwitchBlock;
-                    System.out.println("Switch And Switch [Down]");
                 }
 
             }else{
                 // move train to next block
-                System.out.println("Down");
                 nextBlock = nextDownBlock;
             }
 
+         // if the direction of travel is UP and the track runs the same direction
+        } else if (direction == true && nextUpBlock == null && nextSwitchBlock != null){
+            nextBlock = nextSwitchBlock;
 
+        } else if (direction == false && nextDownBlock == null && nextSwitchBlock != null) {
+            nextBlock = nextSwitchBlock;
         }
 
         nextBlock.setOccupied();
@@ -516,22 +510,16 @@ public class Block {
 
     public boolean canMoveToBlock(boolean direction){
 
-        System.out.println("DIRECTION:" + direction);
-
         if(direction == true){
             if (nextUpBlockNumber != -1){
-                System.out.println("GO UP");
                 return true;
             }else{
-                System.out.println("GO DOWN");
                 return false;
             }
         }else if(direction == false){
             if (nextDownBlockNumber != -1){
-                System.out.println("GO DOWN");
                 return false;
             }else{
-                System.out.println("GO UP");
                 return true;
             }
         }else{
@@ -605,6 +593,10 @@ public class Block {
 
     public int getNextSwitchBlockNumber() {
         return this.nextSwitchBlockNumber;
+    }
+
+    public void setNextSwitchRedirect(boolean dir){
+        this.nextSwitchBlockDir = dir;
     }
 
     public boolean getNextSwitchRedirect(){return this.nextSwitchBlockDir; }

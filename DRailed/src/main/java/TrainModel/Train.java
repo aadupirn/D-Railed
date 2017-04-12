@@ -79,6 +79,7 @@ public class Train {
         mass = 10000;
         people = 0;
 
+
         startingBlock = startingBlock;
         id = newID;
         track = new Track();
@@ -111,7 +112,7 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         mass = 10000;
-        people = 0;
+        people = new Random().nextInt(222);
 
         startingBlock = startingBlock;
         id = newID;
@@ -200,9 +201,17 @@ Calculates speed
         weightUpdate();
         return peepsLeaving;
     }
-    public void load(double load){
+    public void load(double load) {
         weightUpdate();
         people += load;
+    }
+
+    public void setPeople(int people){
+        this.people = people;
+    }
+
+    public int getPeople(){
+        return people;
     }
 
     public double GetCurrentSpeed(){
