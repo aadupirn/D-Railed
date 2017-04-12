@@ -3,8 +3,7 @@ package TrackController;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Queue;
-
+import java.util.concurrent.LinkedBlockingDeque;
 import TrackController.Classes.*;
 import TrackController.UI.*;
 import TrackModel.Model.*;
@@ -23,7 +22,7 @@ public class TrackController {
     private int ID, startBlock, endBlock;
     private String line;
     private boolean trackComms, ctcComms, isLineMain;
-    private Queue<String> messageQueue;
+    private LinkedBlockingDeque<ThreeBaudMessage> messageQueue;
     private TrackControllerUI ui;
     private DTime dTime;
 
@@ -33,12 +32,15 @@ public class TrackController {
         trackComms = true;
         dTime = iDTime;
         ctcComms = true;
-        ui = new TrackControllerUI(this);
         track = new Track("greenLine.csv");
         line = "GREEN";
         isLineMain = true;
+        messageQueue = new LinkedBlockingDeque<>();
         this.startBlock=1;
         this.endBlock=152;
+
+        // lastly, make the UI
+        ui = new TrackControllerUI(this);
 
     }
 
@@ -79,6 +81,14 @@ public class TrackController {
     }
 
 
+    public boolean plcLoaded()
+    {
+        if (myPLC==null)
+            return false;
+        if(!myPLC.isValid())
+            return false;
+        return true;
+    }
     public void setPLC(File file) {
         Block[] b = new Block[153];
         for (int i = startBlock; i <= endBlock; i++)
@@ -92,8 +102,6 @@ public class TrackController {
     public void setTrack(Track t) {
         this.track = t;
     }
-
-
 
     public void setID(int ID) {
         this.ID = ID;
@@ -155,16 +163,39 @@ public class TrackController {
     {
         if (line.equals(this.line))
         {
-            if (id < this.endBlock && id > this.startBlock)
+            if (id <= this.endBlock && id >= this.startBlock)
+                return true;
+            if ((id == 151 || id == 152) && isLineMain)
                 return true;
         }
         return false;
     }
 
-    public void setSpeedAndAuthority(int trainID, double speed, int authority)
+    public void setSpeedAndAuthority(int trainID, double speed, int authority) //TODO make sure to do this before any PLC outputs, so PLC can make it zero again
     {
-        //TODO get this shit working, either set the speed and authority for a block or overwrite occupied blocks?
-        //TODO try maybe having something call a function on the Train?
+            ThreeBaudMessage message = new ThreeBaudMessage();
+            message.setTrainID((char)trainID);
+            message.setSpeed((char)speed);
+            message.setAuthority((char)authority);
+            messageQueue.add(message);
+    }
+
+    private void sendSpeedAndAuthority(ThreeBaudMessage message)
+    {
+        Block block;
+        double speed = (double)message.getSpeed();
+        for(int i = startBlock; i < endBlock; i++)
+        {
+            block = track.getBlock(this.line,i);
+            if (block.isOccupied())
+            {
+                if (speed > block.getSpeedLimit()) {
+                    speed = block.getSpeedLimit();
+                    message.setSpeed((char)speed);
+                }
+                block.setMessage(message);
+            }
+        }
     }
 
     public boolean getPLCSwitch(int switchID)
@@ -186,9 +217,8 @@ public class TrackController {
     {
         if (!messageQueue.isEmpty())
         {
-            String message = messageQueue.remove();
+            sendSpeedAndAuthority(messageQueue.remove());
         }
-
         ui.Update();
     }
 
@@ -271,5 +301,43 @@ public class TrackController {
                 values[3] = s.getBottom().toString();
         }
         return values;
+    }
+
+    public String getAllBlockOccupancies()
+    {
+        StringBuilder returnString = new StringBuilder("");
+        Block block;
+        for (int i = startBlock; i <= endBlock; i++)
+        {
+            block = track.getBlock(this.line,i);
+            returnString.append("Block: " + block.getBlockNumber() + "\n");
+            returnString.append("Occupancy: " + Boolean.toString(block.isOccupied()) + "\n");
+            returnString.append("--------------\n");
+        }
+        return(returnString.toString());
+    }
+
+    public String getAllSwitchStates()
+    {
+        StringBuilder returnString = new StringBuilder("");
+        ArrayList<Integer> switches = new ArrayList<Integer>();
+        Block block;
+        Switch sw;
+        for (int i = startBlock; i <= endBlock; i++)
+        {
+            block = track.getBlock(this.line,i);
+            if ((sw = block.getSwitch()) != null && !switches.contains(sw.getSwitchNumber()))
+            {
+                returnString.append("Switch: " + sw.getSwitchNumber() + "\n");
+                returnString.append("Main Block: " + sw.getMain()+"\n");
+                if (sw.getState()==SwitchState.TOP)
+                    returnString.append("Connected: " + sw.getTop() + "\n");
+                else
+                    returnString.append("Connected: " + sw.getBottom() + "\n");
+                returnString.append("--------------\n");
+                switches.add(sw.getSwitchNumber());
+            }
+        }
+        return returnString.toString();
     }
 }

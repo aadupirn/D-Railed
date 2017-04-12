@@ -164,6 +164,7 @@ public class Main extends Application {
 				Track track = new Track();
 				track.couple("GREEN", "TIGHT");
 				TrackController trackController = new TrackController(dTime);
+				dTime.addTrackC(trackController);
 				dTime.setMBO(MBO.getMBO());
 				trackController.setTrack(track);
 				track.setTrackController(trackController);

@@ -6,6 +6,7 @@ package TrackModel.Model;
 
 
 import TrainModel.Train;
+import TrackController.Classes.ThreeBaudMessage;
 
 import static java.lang.Math.abs;
 
@@ -60,9 +61,8 @@ public class Block {
     private boolean circuitState;
     private boolean powerState;
 
-    // authority and speed
-    private int authority;
-    private Double speed;
+    // three baud message
+    private ThreeBaudMessage message;
 
     // Connected Blocks
     private String direction;
@@ -98,8 +98,7 @@ public class Block {
 
         // train
         this.occupied = false;
-        this.speed = 0.0;
-        this.authority = 0;
+        this.message = new ThreeBaudMessage();
 
         // status
         this.powerState = false;
@@ -134,8 +133,7 @@ public class Block {
 
         // train
         this.occupied = false;
-        this.speed = 0.0;
-        this.authority = 0;
+        this.message = new ThreeBaudMessage();
 
         // status
         this.powerState = true;
@@ -566,6 +564,11 @@ public class Block {
         this.nextDownBlock = nextDownBlock;
     }
 
+    public void setMessageInfo(char id,char speed, char authority) {
+        this.message.setTrainID(id);
+        this.message.setAuthority(authority);
+        this.message.setSpeed(speed);
+    }
     public void setNextSwitchBlock(Block nextSwitchBlock){
         this.nextSwitchBlock = nextSwitchBlock;
     }
@@ -574,18 +577,9 @@ public class Block {
         return this.nextSwitchBlock;
     }
 
-    public void setSpeedAndAuthority(Double speed, int authority){
-        this.speed = speed;
-        this.authority = authority;
-    }
+    public void setMessage(ThreeBaudMessage message) {this.message = message;}
 
-    public Double readSpeed(){
-        return this.speed;
-    }
-
-    public int readAuthority(){
-        return this.authority;
-    }
+    public ThreeBaudMessage getMessage() {return message;}
 
     public void setOccupied(){
         this.occupied = true;
