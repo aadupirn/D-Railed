@@ -785,13 +785,22 @@ public class TrainController
 				speedLimit = (double)message.getSpeed();
 			}
 		}
+		if(controlMode)//Automatic mode
+		{
+			setDesiredSpeedText(speedLimit);
+			controlCalculator1.setDesiredSpeed(speedLimit);
+			controlCalculator2.setDesiredSpeed(speedLimit);
+		}
+		else//Manual Mode
+		{
+			if (speed > speedLimit)
+			{
+				controlCalculator1.setDesiredSpeed(speedLimit);
+				controlCalculator2.setDesiredSpeed(speedLimit);
+				setDesiredSpeedText(speedLimit);
+			}
 
-//		if (speed > speedLimit) //TODO difference between manual and automatic?
-//		{
-//			controlCalculator1.setDesiredSpeed(speedLimit);
-//			controlCalculator2.setDesiredSpeed(speedLimit);
-//		}
-
+		}
 		double powerCommand1 = controlCalculator1.computeNextCommand(speed);
 		double powerCommand2 = controlCalculator2.computeNextCommand(speed);
 		if(powerCommand1 != powerCommand2) //power command calculation failute brake!!!
