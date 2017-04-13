@@ -446,8 +446,9 @@ public class TrackControllerUI {
             FileChooser fileChooser = new FileChooser();
             Stage fileSelect = new Stage();
             fileSelect.setTitle("Choose a PLC file to import:");
-            ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(classLoader.getResource("TrackController/PLC").getFile());
+            //ClassLoader classLoader = getClass().getClassLoader();
+            //File file = new File(classLoader.getResource("TrackController/PLC").getFile());
+            File file = new File("src/main/resources/PLC");
             fileChooser.setInitialDirectory(file);
             File file2 = fileChooser.showOpenDialog(fileSelect);
             if(file2 != null)
