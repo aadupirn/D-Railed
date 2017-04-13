@@ -32,6 +32,11 @@ public class TrackController {
     {
         ArrayList<Integer> b = new ArrayList<>();
         ArrayList<Integer> plc = new ArrayList<>();
+        for(int i = 1; i <= 152; i++)
+        {
+            b.add(i);
+            plc.add(i);
+        }
 
         Init("GREEN",b,plc,iDTime, 1);
     }
@@ -234,12 +239,36 @@ public class TrackController {
         return myPLC.getLights(blockID);
     }
 
+    public void plcStopTrains()
+    {
+        Block b;
+        for (int i:blocks)
+        {
+            b = track.getBlock(line,i);
+            if (b != null) {
+                if (myPLC.getStopTrain(i) && b.isOccupied()) {
+                    b = track.getBlock(line, i);
+                    b.setMessage(new ThreeBaudMessage((char) 255, (char) 0, (char) 0));
+                }
+            }
+        }
+    }
+
     public void Update()
     {
+        Block b;
+        for (int i:blocks)
+        {
+            b = track.getBlock(this.line, i);
+            b.clearMessage();
+        }
+
         if (!messageQueue.isEmpty())
         {
             sendSpeedAndAuthority(messageQueue.remove());
         }
+        if (plcLoaded())
+            plcStopTrains();
         ui.Update();
     }
 

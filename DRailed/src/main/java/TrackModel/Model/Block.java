@@ -98,7 +98,7 @@ public class Block {
 
         // train
         this.occupied = false;
-        this.message = null;
+        this.message = new ThreeBaudMessage();
 
         // status
         this.powerState = false;
@@ -133,7 +133,7 @@ public class Block {
 
         // train
         this.occupied = false;
-        this.message = null;
+        this.message = new ThreeBaudMessage();
 
         // status
         this.powerState = true;
@@ -550,11 +550,6 @@ public class Block {
         this.nextDownBlock = nextDownBlock;
     }
 
-    public void setMessageInfo(char id,char speed, char authority) {
-        this.message.setTrainID(id);
-        this.message.setAuthority(authority);
-        this.message.setSpeed(speed);
-    }
     public void setNextSwitchBlock(Block nextSwitchBlock){
         this.nextSwitchBlock = nextSwitchBlock;
     }
