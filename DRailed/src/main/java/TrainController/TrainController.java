@@ -782,9 +782,15 @@ public class TrainController
 			}
 			else if (messageTrainID == 255)
 			{
-				speedLimit = (double)Character.getNumericValue(message.getSpeed());
+				speedLimit = (double)message.getSpeed();
 			}
 		}
+
+//		if (speed > speedLimit) //TODO difference between manual and automatic?
+//		{
+//			controlCalculator1.setDesiredSpeed(speedLimit);
+//			controlCalculator2.setDesiredSpeed(speedLimit);
+//		}
 
 		double powerCommand1 = controlCalculator1.computeNextCommand(speed);
 		double powerCommand2 = controlCalculator2.computeNextCommand(speed);
