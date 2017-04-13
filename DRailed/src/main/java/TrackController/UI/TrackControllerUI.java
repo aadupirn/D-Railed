@@ -96,7 +96,7 @@ public class TrackControllerUI {
         //Set up section titles on main screen
         controllerLabel = new Label("Track Controller Controls:");
         controllerLine = new Text("Line - " + tc.getLine());
-        controllerSection = new Text("Blocks - " + tc.getStartBlock() + " to " + tc.getEndBlock());
+        controllerSection = new Text("Controller Number - " + tc.getID());
         blockLabel = new Label("Block Info");
         controlLabel = new Label("Controls/Track Info");
         switchLabel = new Label("Switch Info");

@@ -22,6 +22,7 @@ public class Heater {
         this.active = false;
         this.railTemp = generateRailTemp();
         this.enviromentTemp = this.railTemp;
+        this.desiredTemp=0.0;
     }
 
     public Heater(String heaterNumber, double railTemp){
@@ -29,6 +30,7 @@ public class Heater {
         this.active = false;
         this.railTemp = railTemp;
         this.enviromentTemp = this.railTemp;
+        this.desiredTemp=0.0;
     }
 
     public String getHeaterNumber() {

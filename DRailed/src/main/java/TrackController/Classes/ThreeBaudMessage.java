@@ -15,7 +15,7 @@ public class ThreeBaudMessage {
 
     public ThreeBaudMessage(char id, char speed, char authority)
     {
-        trainID=id;
+        this.trainID=id;
         this.speed=speed;
         this.authority=authority;
     }

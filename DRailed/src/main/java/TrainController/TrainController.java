@@ -767,26 +767,29 @@ public class TrainController
 		//Compute Next Location, get desired speed and authority, set grade in the train model.
 		Block currentBlock = locationCalculator.ComputeNextLocation(train.GetCurrentSpeed());
 		train.setGrade(currentBlock.getGrade());
-//		ThreeBaudMessage message = currentBlock.getMessage();
-//		double messageTrainID = message.getTrainID();
-//
-//
-//		if(messageTrainID == 255)
+		ThreeBaudMessage message = currentBlock.getMessage();
+		if (message != null)
+		{
+			int messageTrainID = (int)message.getTrainID();
+			if (messageTrainID == trainID)
+			{
+				speedLimit = (double)message.getSpeed();
+				authority = (double)message.getAuthority();
+			}
+			else if (messageTrainID == 0)
+			{
+				emergencyBrake();
+			}
+			else if (messageTrainID == 255)
+			{
+				speedLimit = (double)message.getSpeed();
+			}
+		}
+
+//		if (speed > speedLimit) //TODO difference between manual and automatic?
 //		{
-//			speedLimit = message.getSpeed();
-//		}
-//		else if(messageTrainID == trainID)
-//		{
-//			speedLimit = message.getSpeed();
-//			authority = message.getAuthority();
-//		}
-//		else if(messageTrainID == 0)
-//		{
-//			emergencyBrake();
-//		}
-//		else
-//		{
-//			//
+//			controlCalculator1.setDesiredSpeed(speedLimit);
+//			controlCalculator2.setDesiredSpeed(speedLimit);
 //		}
 
 		double powerCommand1 = controlCalculator1.computeNextCommand(speed);

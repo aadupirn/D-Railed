@@ -550,11 +550,6 @@ public class Block {
         this.nextDownBlock = nextDownBlock;
     }
 
-    public void setMessageInfo(char id,char speed, char authority) {
-        this.message.setTrainID(id);
-        this.message.setAuthority(authority);
-        this.message.setSpeed(speed);
-    }
     public void setNextSwitchBlock(Block nextSwitchBlock){
         this.nextSwitchBlock = nextSwitchBlock;
     }
@@ -564,6 +559,8 @@ public class Block {
     }
 
     public void setMessage(ThreeBaudMessage message) {this.message = message;}
+
+    public void clearMessage() {this.message = null;}
 
     public ThreeBaudMessage getMessage() {return message;}
 
