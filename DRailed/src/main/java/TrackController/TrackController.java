@@ -19,29 +19,58 @@ public class TrackController {
     //Class Objects
     private PLC myPLC;
     private Track track;
-    private int ID, startBlock, endBlock;
+    private int ID;
     private String line;
     private boolean trackComms, ctcComms, isLineMain;
     private LinkedBlockingDeque<ThreeBaudMessage> messageQueue;
     private TrackControllerUI ui;
     private DTime dTime;
+    private ArrayList<Integer> blocks, plcBlocks;
 
 
     public TrackController(DTime iDTime) throws IOException
     {
+        ArrayList<Integer> b = new ArrayList<>();
+        ArrayList<Integer> plc = new ArrayList<>();
+
+        Init("GREEN",b,plc,iDTime, 1);
+    }
+
+
+
+    public TrackController(String line, ArrayList<Integer> b, ArrayList<Integer> plc, DTime iDTime, int id)
+    {
+        Init(line,b,plc,iDTime, id);
+    }
+
+    private void Init(String line, ArrayList<Integer> b, ArrayList<Integer> plc, DTime iDTime, int id)
+    {
         trackComms = true;
-        dTime = iDTime;
         ctcComms = true;
-        track = new Track("greenLine.csv");
-        line = "GREEN";
-        isLineMain = true;
+        dTime = iDTime;
+        this.line = line;
+        ID = id;
+        blocks = b;
         messageQueue = new LinkedBlockingDeque<>();
-        this.startBlock=1;
-        this.endBlock=152;
 
-        // lastly, make the UI
+        if (line.equals("GREEN"))
+        {
+            track = new Track("greenLine.csv");
+            if (b.contains(152))
+                this.isLineMain=true;
+            else
+                this.isLineMain=false;
+        }
+        else
+        {
+            track = new Track("redLine.csv");
+            if (b.contains(77))
+                this.isLineMain=true;
+            else
+                this.isLineMain=false;
+        }
+
         ui = new TrackControllerUI(this);
-
     }
 
     public void showUI()
@@ -51,33 +80,6 @@ public class TrackController {
     public void hideUI()
     {
         ui.hideUI();
-    }
-
-    public TrackController(String line, int startBlock, int endBlock)
-    {
-        trackComms = true;
-        ctcComms = true;
-        this.line = line;
-        this.startBlock=startBlock;
-        this.endBlock=endBlock;
-
-        if (line.equals("GREEN"))
-        {
-            if (endBlock==152)
-                this.isLineMain=true;
-            else
-                this.isLineMain=false;
-        }
-        else
-        {
-            if (endBlock==77)
-                this.isLineMain=true;
-            else
-                this.isLineMain=false;
-        }
-
-        ui = new TrackControllerUI(this);
-
     }
 
 
@@ -91,7 +93,7 @@ public class TrackController {
     }
     public void setPLC(File file) {
         Block[] b = new Block[153];
-        for (int i = startBlock; i <= endBlock; i++)
+        for (int i:blocks)
         {
             b[i] = track.getBlock(this.line,i);
         }
@@ -127,22 +129,6 @@ public class TrackController {
         return ctcComms;
     }
 
-    public int getStartBlock() {
-        return startBlock;
-    }
-
-    public void setStartBlock(int startBlock) {
-        this.startBlock = startBlock;
-    }
-
-    public int getEndBlock() {
-        return endBlock;
-    }
-
-    public void setEndBlock(int endBlock) {
-        this.endBlock = endBlock;
-    }
-
     public String getLine() {
         return line;
     }
@@ -163,12 +149,47 @@ public class TrackController {
     {
         if (line.equals(this.line))
         {
-            if (id <= this.endBlock && id >= this.startBlock)
-                return true;
-            if ((id == 151 || id == 152) && isLineMain)
-                return true;
+            for (int i:blocks)
+            {
+                if (i==id)
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean hasSwitch(String line, int id)
+    {
+        Switch sw;
+        if (line.equals(this.line))
+        {
+            for (int i:blocks)
+            {
+                sw = track.getBlock(line,i).getSwitch();
+                if(sw != null)
+                {
+                    if (sw.getSwitchNumber() == id)
+                        return true;
+                }
+            }
         }
         return false;
+    }
+
+    private Switch getSwitch(int id)
+    {
+        Switch sw;
+        for (int i:blocks)
+        {
+            sw = track.getBlock(line,i).getSwitch();
+            if(sw != null)
+            {
+                if (sw.getSwitchNumber() == id)
+                    return sw;
+            }
+        }
+        return null;
     }
 
     public void setSpeedAndAuthority(int trainID, double speed, int authority) //TODO make sure to do this before any PLC outputs, so PLC can make it zero again
@@ -184,7 +205,7 @@ public class TrackController {
     {
         Block block;
         double speed = (double)message.getSpeed();
-        for(int i = startBlock; i < endBlock; i++)
+        for (int i:blocks)
         {
             block = track.getBlock(this.line,i);
             if (block.isOccupied())
@@ -242,32 +263,40 @@ public class TrackController {
     public String[] getBlockInfo(int blockID)
     {
         String[] values = new String[4];
-        System.out.println(blockID);
-        Block b = track.getBlock(this.line,blockID);
-        if (b.isOccupied())
-            values[0] = "Occupied";
+        if (hasBlock(this.line,blockID)) {
+            Block b = track.getBlock(this.line, blockID);
+            if (b.isOccupied())
+                values[0] = "Occupied";
+            else
+                values[0] = "Not Occupied";
+            try {
+                if (b.getCrossing().isActive())
+                    values[1] = "On";
+                else
+                    values[1] = "Off";
+            } catch (NullPointerException e) {
+                values[1] = "N/A";
+            }
+            try {
+                if (b.getLight().isActive())
+                    values[2] = "Green";
+                else
+                    values[2] = "Red";
+            } catch (NullPointerException e) {
+                values[2] = "N/A";
+            }
+            try {
+                values[3] = b.getSwitch().getSwitchNumber().toString();
+            } catch (NullPointerException e) {
+                values[3] = "N/A";
+            }
+        }
         else
-            values[0] = "Not Occupied";
-        try {
-            if (b.getCrossing().isActive())
-                values[1] = "On";
-            else
-                values[1] = "Off";
-        } catch(NullPointerException e) {
-            values[1] = "N/A";
-        }
-        try {
-            if (b.getLight().isActive())
-                values[2] = "Green";
-            else
-                values[2] = "Red";
-        } catch(NullPointerException e) {
-            values[2] = "N/A";
-        }
-        try {
-            values[3] = b.getSwitch().getSwitchNumber().toString();
-        } catch(NullPointerException e) {
-            values[3] = "N/A";
+        {
+            for (int i=0; i < values.length; i++)
+            {
+                values[i] = "N/A";
+            }
         }
         return values;
     }
@@ -275,23 +304,9 @@ public class TrackController {
     public String[] getSwitchInfo(int switchID)
     {
         String[] values = new String[4];
-        Block b;
         Switch s;
-        int blockID = -1;
-        for (int i = startBlock; i <= endBlock; i++)
+        if ((s = getSwitch(switchID))!=null)
         {
-            b = track.getBlock(this.line,i);
-            if (b.getSwitch() != null) {
-                if (b.getSwitch().getSwitchNumber() == switchID) {
-                    blockID = b.getBlockNumber();
-                    break;
-                }
-            }
-        }
-
-        if (blockID > 0) {
-            b = track.getBlock(this.line, blockID);
-            s = b.getSwitch();
             values[0] = s.getMain().toString();
             values[1] = s.getTop().toString();
             values[2] = s.getBottom().toString();
@@ -300,6 +315,13 @@ public class TrackController {
             else
                 values[3] = s.getBottom().toString();
         }
+        else
+        {
+            for (int i=0; i < values.length; i++)
+            {
+                values[i] = "N/A";
+            }
+        }
         return values;
     }
 
@@ -307,7 +329,7 @@ public class TrackController {
     {
         StringBuilder returnString = new StringBuilder("");
         Block block;
-        for (int i = startBlock; i <= endBlock; i++)
+        for (int i:blocks)
         {
             block = track.getBlock(this.line,i);
             returnString.append("Block: " + block.getBlockNumber() + "\n");
@@ -323,7 +345,7 @@ public class TrackController {
         ArrayList<Integer> switches = new ArrayList<Integer>();
         Block block;
         Switch sw;
-        for (int i = startBlock; i <= endBlock; i++)
+        for (int i:blocks)
         {
             block = track.getBlock(this.line,i);
             if ((sw = block.getSwitch()) != null && !switches.contains(sw.getSwitchNumber()))

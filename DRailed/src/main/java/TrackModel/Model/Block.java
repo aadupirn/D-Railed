@@ -98,7 +98,7 @@ public class Block {
 
         // train
         this.occupied = false;
-        this.message = new ThreeBaudMessage();
+        this.message = null;
 
         // status
         this.powerState = false;
@@ -133,7 +133,7 @@ public class Block {
 
         // train
         this.occupied = false;
-        this.message = new ThreeBaudMessage();
+        this.message = null;
 
         // status
         this.powerState = true;
@@ -564,6 +564,8 @@ public class Block {
     }
 
     public void setMessage(ThreeBaudMessage message) {this.message = message;}
+
+    public void clearMessage() {this.message = null;}
 
     public ThreeBaudMessage getMessage() {return message;}
 
