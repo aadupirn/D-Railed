@@ -92,9 +92,7 @@ public class TrackController {
     {
         if (myPLC==null)
             return false;
-        if(!myPLC.isValid())
-            return false;
-        return true;
+        return myPLC.isValid();
     }
     public void setPLC(File file) {
         Block[] b = new Block[153];
@@ -154,17 +152,14 @@ public class TrackController {
     {
         if (line.equals(this.line))
         {
-            for (int i:blocks)
-            {
-                if (i==id)
-                    return true;
-            }
+            if (blocks.contains(id))
+                return true;
         }
 
         return false;
     }
 
-    public boolean hasSwitch(String line, int id)
+    public boolean setSwitch(String line, int id, int blockID)
     {
         Switch sw;
         if (line.equals(this.line))
@@ -174,8 +169,13 @@ public class TrackController {
                 sw = track.getBlock(line,i).getSwitch();
                 if(sw != null)
                 {
-                    if (sw.getSwitchNumber() == id)
+                    if (sw.getSwitchNumber() == id) {
+                        if (sw.getBottom() == blockID)
+                            sw.setSwitchState(SwitchState.BOTTOM);
+                        else
+                            sw.setSwitchState(SwitchState.TOP);
                         return true;
+                    }
                 }
             }
         }
