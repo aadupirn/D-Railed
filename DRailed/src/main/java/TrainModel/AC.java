@@ -27,9 +27,6 @@ public class AC {
         temperature = 70.0;
         k = kValue;
     }
-    protected void setK(int kValue){
-        k = kValue;
-    }
     protected void acOn(){
         //decrement temperature;
         ac = true;
@@ -71,7 +68,7 @@ public class AC {
 
         return temperature;
     }
-    private static void setK(double newK){
+    protected static void setK(double newK){
         k = newK;
     }
 

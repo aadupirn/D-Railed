@@ -307,8 +307,8 @@ public class Train {
         engine.setGravity(newFriction);
     }
 
-    private void setFrictiony(double newK){
-        ac.setK(newK);
+    private void setK(double newK){
+        ac.setK( newK);
     }
 
 }
