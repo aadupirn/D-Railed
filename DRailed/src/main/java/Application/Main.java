@@ -87,13 +87,21 @@ public class Main extends Application {
 		hTrainControllerBtn.setMinWidth(150);
 		grid.add(hTrainControllerBtn, 0, 4);
 
-		final Button mboBtn = new Button("System Prototype");
+		final Button mboBtn = new Button("MBO");
 		mboBtn.setMinWidth(150);
 		HBox hMboBtn = new HBox(10);
 		hMboBtn.setAlignment(Pos.CENTER);
 		hMboBtn.getChildren().add(mboBtn);
 		hMboBtn.setMinWidth(150);
 		grid.add(hMboBtn, 0, 5);
+
+		final Button sysBtn = new Button("System Prototype");
+		sysBtn.setMinWidth(150);
+		HBox hSysBtn = new HBox(10);
+		hSysBtn.setAlignment(Pos.CENTER);
+		hSysBtn.getChildren().add(sysBtn);
+		hSysBtn.setMinWidth(150);
+		grid.add(hSysBtn, 0, 6);
 
 		Scene scene = new Scene(grid, windowWidth, windowHight);
 		primaryStage.setScene(scene);
@@ -155,17 +163,24 @@ public class Main extends Application {
 			}
 		});
 
-		mboBtn.setOnAction((ActionEvent e) ->
+		mboBtn.setOnAction((ActionEvent a) -> {
+			MBOController mboCtrl = new MBOController();
+
+			try 				{ mboCtrl.start(new Stage());  }
+			catch (Exception e) { e.printStackTrace(); }
+		});
+
+		sysBtn.setOnAction((ActionEvent e) ->
 		{
-			MBOController MBO = new MBOController();
+			MBOController MBOCtrl = new MBOController();
 			try {
-				MBO.start(new Stage());
+				MBOCtrl.start(new Stage());
 				dTime = new DTime();
 				Track track = new Track();
 				track.couple("GREEN", "TIGHT");
 				TrackController trackController = new TrackController(dTime);
 				dTime.addTrackC(trackController);
-				dTime.setMBO(MBO.getMBO());
+				dTime.setMBO(MBOCtrl.getMBO());
 				trackController.setTrack(track);
 				track.setTrackController(trackController);
 				TrackModelGUI trackModel = new TrackModelGUI(track);
