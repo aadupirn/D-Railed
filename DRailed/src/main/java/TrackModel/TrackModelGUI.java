@@ -6,6 +6,7 @@ package TrackModel;
 
 import TrackModel.Model.*;
 import TrainModel.Train;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -49,6 +50,8 @@ public class TrackModelGUI {
     private Block selectedBlock = new Block();
     private Track track = new Track();
 
+    private int heatUpdater = 0;
+
     // Main Grid
     private GridPane mainGrid = getGridPane();
 
@@ -82,6 +85,8 @@ public class TrackModelGUI {
 
         stage.setTitle(applicationTitle);
 
+        startUpdateThread();
+
         this.track = track;
 
         // Layout Menu
@@ -104,7 +109,6 @@ public class TrackModelGUI {
         blockInfraLabel.setTextAlignment(TextAlignment.LEFT);
         blockInfraLabel.setFont(Font.font(blockInfraLabel.getFont().getFamily(), FontWeight.BOLD, blockInfraLabel.getFont().getSize()+5));
 
-
         blockInfra.setMinHeight(windowHeight/2);
         blockInfra.setMaxHeight(windowHeight/2);
         blockInfra.setMinWidth(windowWidth/3);
@@ -115,18 +119,31 @@ public class TrackModelGUI {
         FlowPane stationInfra = null;
         FlowPane crossingInfra = null;
         FlowPane lightsInfra = null;
+        FlowPane heaterInfra = null;
+        FlowPane beaconInfra = null;
 
         Train train = selectedBlock.getTrain();
         if(train != null)
             trainInfra = getTrainInfoPane();
 
         Switch dispSwitch = selectedBlock.getSwitch();
-        if(dispSwitch != null)
+        if(dispSwitch != null) {
             switchInfra = getSwitchInfoPane(blockInfra.getMinHeight(), blockInfra.getMinWidth(), dispSwitch);
 
+            Heater heater = selectedBlock.getSwitch().getHeater();
+            if(heater != null)
+                heaterInfra = getHeaterInfoPane(heater);
+
+        }
+
         Station dispStation = selectedBlock.getStation();
-        if(dispStation != null)
+        if(dispStation != null) {
             stationInfra = getStationInfoPane(blockInfra.getMinHeight(), blockInfra.getMinWidth(), dispStation);
+
+            Heater heater = selectedBlock.getStation().getHeater();
+            if(heater != null)
+                heaterInfra = getHeaterInfoPane(heater);
+        }
 
         Crossing dispCrossing = selectedBlock.getCrossing();
         if(dispCrossing != null)
@@ -136,7 +153,12 @@ public class TrackModelGUI {
         if(light != null)
             lightsInfra = getLightInfoPane();
 
-        blockInfra = populateBlockInfrastructure(blockInfraLabel, trainInfra, switchInfra, stationInfra, crossingInfra, lightsInfra);
+        Beacon beacon = selectedBlock.getBeacon();
+        if(beacon != null){
+            beaconInfra = getBeaconInfoPane(beacon);
+        }
+
+        blockInfra = populateBlockInfrastructure(blockInfraLabel, trainInfra, switchInfra, stationInfra, crossingInfra, lightsInfra, heaterInfra, beaconInfra);
         blockMonitorLayout.add(blockInfra, 1,0);
 
         ///////////////////////////////////////////////
@@ -170,7 +192,7 @@ public class TrackModelGUI {
         stage.show();
     }
 
-    private GridPane populateBlockInfrastructure(Label blockInfraLabel, FlowPane trainInfra, FlowPane switchInfra, FlowPane stationInfra, FlowPane crossingInfra, FlowPane lightsInfra) {
+    private GridPane populateBlockInfrastructure(Label blockInfraLabel, FlowPane trainInfra, FlowPane switchInfra, FlowPane stationInfra, FlowPane crossingInfra, FlowPane lightsInfra, FlowPane heaterInfra, FlowPane beaconInfra) {
 
         GridPane blockInfra = new GridPane();
         blockInfra.setMinHeight(windowHeight/2);
@@ -200,6 +222,14 @@ public class TrackModelGUI {
         }
         if(lightsInfra != null){
             blockInfra.add(lightsInfra, 0, i);
+            i++;
+        }
+        if(heaterInfra != null){
+            blockInfra.add(heaterInfra, 0, i);
+            i++;
+        }
+        if(beaconInfra != null){
+            blockInfra.add(beaconInfra, 0, i);
             i++;
         }
 
@@ -242,6 +272,85 @@ public class TrackModelGUI {
         return lightsInfra;
     }
 
+    private FlowPane getBeaconInfoPane(Beacon beacon) {
+
+        FlowPane beaconInfra = new FlowPane();
+        beaconInfra.setMaxHeight((blockInfra.getMaxHeight()/6)-3);
+        beaconInfra.setMinHeight((blockInfra.getMinHeight()/6)-3);
+        beaconInfra.setMaxWidth(blockInfra.getMinWidth());
+        beaconInfra.setMinWidth(blockInfra.getMaxWidth());
+
+        beaconIcon.setFitHeight(beaconInfra.getMaxHeight());
+        beaconIcon.setFitWidth(50);
+
+        GridPane beaconLabels = new GridPane();
+        beaconLabels.setAlignment(Pos.CENTER_LEFT);
+
+        Label beaconIdLabel = new Label("Beacon Id: ");
+        Label beaconIdValue = new Label("" + beacon.getBeaconNumber() + "(" + selectedBlock.getStation().getStationName() + ")");
+        beaconIdLabel.setFont(Font.font(beaconIdLabel.getFont().getFamily(), FontWeight.BOLD, beaconIdLabel.getFont().getSize()));
+
+        Label msgLabel = new Label("Message: ");
+        Label msgValue = new Label("" + beacon.readMessage());
+        beaconIdLabel.setFont(Font.font(beaconIdLabel.getFont().getFamily(), FontWeight.BOLD, beaconIdLabel.getFont().getSize()));
+
+        beaconLabels.add(beaconIdLabel, 0, 0);
+        beaconLabels.add(beaconIdValue, 1, 0);
+        beaconLabels.add(msgLabel, 0, 1);
+        beaconLabels.add(msgValue, 1, 1);
+        beaconLabels.setPadding(new Insets(0, 0, 0, 10));
+
+        beaconInfra.getChildren().add(beaconIcon);
+        beaconInfra.getChildren().add(beaconLabels);
+        return beaconInfra;
+    }
+
+    private FlowPane getHeaterInfoPane(Heater heater) {
+
+        FlowPane heaterInfra = new FlowPane();
+        heaterInfra.setMaxHeight((blockInfra.getMaxHeight()/6)-4);
+        heaterInfra.setMinHeight((blockInfra.getMinHeight()/6)-4);
+        heaterInfra.setMaxWidth(blockInfra.getMinWidth());
+        heaterInfra.setMinWidth(blockInfra.getMaxWidth());
+
+        GridPane heaterLabels = new GridPane();
+        heaterLabels.setAlignment(Pos.CENTER_LEFT);
+
+        Label heaterLabel = new Label("Heater: ");
+        Label heaterValue = new Label("" + heater.getHeaterNumber());
+        heaterLabel.setFont(Font.font(heaterLabel.getFont().getFamily(), FontWeight.BOLD, heaterLabel.getFont().getSize()));
+
+        Label railTempLabel = new Label("Rail Temp: ");
+        Label railTempValue = new Label("" + heater.getRailTemp());
+        railTempLabel.setFont(Font.font(railTempLabel.getFont().getFamily(), FontWeight.BOLD, railTempLabel.getFont().getSize()));
+
+        Label desTempLabel = new Label("Desired Temp: ");
+        Label desTempValue = new Label("" + heater.getDesiredTemp());
+        desTempLabel.setFont(Font.font(desTempLabel.getFont().getFamily(), FontWeight.BOLD, desTempLabel.getFont().getSize()));
+
+        Label rateLabel = new Label("Heat Rate: ");
+        Label rateValue = new Label("" + heater.getHeatRate());
+        rateLabel.setFont(Font.font(rateLabel.getFont().getFamily(), FontWeight.BOLD, rateLabel.getFont().getSize()));
+
+        heaterLabels.add(heaterLabel, 0, 0);
+        heaterLabels.add(heaterValue, 1, 0);
+        heaterLabels.add(railTempLabel, 0, 1);
+        heaterLabels.add(railTempValue, 1, 1);
+        heaterLabels.add(desTempLabel, 0,2);
+        heaterLabels.add(desTempValue, 1, 2);
+        heaterLabels.add(rateLabel, 2, 0);
+        heaterLabels.add(rateValue, 3, 0);
+        heaterLabels.setPadding(new Insets(0,0,0,10));
+
+        heaterIcon.setFitHeight(heaterInfra.getMaxHeight());
+        heaterIcon.setFitWidth(50);
+
+        heaterInfra.getChildren().add(heaterIcon);
+        heaterInfra.getChildren().add(heaterLabels);
+        return heaterInfra;
+
+    }
+
     private FlowPane getTrainInfoPane() {
         FlowPane trainInfra = new FlowPane();
         trainInfra.setMaxHeight((blockInfra.getMaxHeight()/6)-4);
@@ -257,7 +366,7 @@ public class TrackModelGUI {
         trainLabel.setFont(Font.font(trainLabel.getFont().getFamily(), FontWeight.BOLD, trainLabel.getFont().getSize()));
 
         Label trainLoadLabel = new Label("Unloading: ");
-        Label trainLoadValue = new Label("" + selectedBlock.getTrain().getUnloading());
+        Label trainLoadValue = new Label("" + selectedBlock.getTrain().getPeople());
         trainLoadLabel.setFont(Font.font(trainLoadLabel.getFont().getFamily(), FontWeight.BOLD, trainLoadLabel.getFont().getSize()));
 
         trainLabels.add(trainLabel, 0, 0);
@@ -563,6 +672,16 @@ public class TrackModelGUI {
             }
         });
 
+        Button updateModel = new Button("Update");
+        updateModel.setMinHeight(30);
+        updateModel.setMaxHeight(30);
+
+        updateModel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                update();
+            }
+        });
 
         Button murphyCtrl = new Button("Murphy Controls");
         murphyCtrl.setMinHeight(30);
@@ -645,7 +764,7 @@ public class TrackModelGUI {
             }
         });
 
-        menu.getChildren().addAll(importTrack, infraSettings, murphyCtrl);
+        menu.getChildren().addAll(importTrack, infraSettings, updateModel, murphyCtrl);
         return menu;
     }
 
@@ -717,18 +836,33 @@ public class TrackModelGUI {
         FlowPane stationInfra = null;
         FlowPane crossingInfra = null;
         FlowPane lightsInfra = null;
+        FlowPane heaterInfra = null;
+        FlowPane beaconInfra = null;
 
         Train train = selectedBlock.getTrain();
         if(train != null)
             trainInfra = getTrainInfoPane();
 
         Switch dispSwitch = selectedBlock.getSwitch();
-        if(dispSwitch != null)
+        if(dispSwitch != null) {
             switchInfra = getSwitchInfoPane(blockInfra.getMinHeight(), blockInfra.getMinWidth(), dispSwitch);
 
+            Heater heater = selectedBlock.getSwitch().getHeater();
+            if(heater != null) {
+                heaterInfra = getHeaterInfoPane(heater);
+            }
+
+        }
+
         Station dispStation = selectedBlock.getStation();
-        if(dispStation != null)
+        if(dispStation != null) {
             stationInfra = getStationInfoPane(blockInfra.getMinHeight(), blockInfra.getMinWidth(), dispStation);
+
+            Heater heater = selectedBlock.getStation().getHeater();
+            if(heater != null) {
+                heaterInfra = getHeaterInfoPane(heater);
+            }
+        }
 
         Crossing dispCrossing = selectedBlock.getCrossing();
         if(dispCrossing != null)
@@ -738,9 +872,16 @@ public class TrackModelGUI {
         if(light != null)
             lightsInfra = getLightInfoPane();
 
+        Beacon beacon = selectedBlock.getBeacon();
+        if(beacon != null){
+            beaconInfra = getBeaconInfoPane(beacon);
+        }
+
+        heatUpdater++;
+
         blockMonitorLayout.getChildren().remove(1);
 
-        blockInfra = populateBlockInfrastructure(blockInfraLabel, trainInfra, switchInfra, stationInfra, crossingInfra, lightsInfra);
+        blockInfra = populateBlockInfrastructure(blockInfraLabel, trainInfra, switchInfra, stationInfra, crossingInfra, lightsInfra, heaterInfra, beaconInfra);
         blockMonitorLayout.add(blockInfra, 2, 0);
     }
 
@@ -965,26 +1106,26 @@ public class TrackModelGUI {
         GridPane blockInfoPanel = new GridPane();
 
         Label blockInfoLabel = new Label("Block Info:");
-            blockInfoLabel.setPadding(new Insets(0,0,20,10));
-            blockInfoLabel.setFont(Font.font(blockInfoLabel.getFont().getFamily(), FontWeight.BOLD, blockInfoLabel.getFont().getSize()+5));
+        blockInfoLabel.setPadding(new Insets(0,0,20,10));
+        blockInfoLabel.setFont(Font.font(blockInfoLabel.getFont().getFamily(), FontWeight.BOLD, blockInfoLabel.getFont().getSize()+5));
 
         Label blockLineLabel = new Label( "Line: ");
         Label blockLineValue = new Label("" + selectedBlock.getLine());
-            blockLineLabel.setPadding(new Insets(0,0,0,10));
-            blockLineLabel.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
-            blockLineValue.setPadding(new Insets(0,0,0,10));
+        blockLineLabel.setPadding(new Insets(0,0,0,10));
+        blockLineLabel.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
+        blockLineValue.setPadding(new Insets(0,0,0,10));
 
         Label blockSectionLabel = new Label("Section: ");
         Label blockSectionValue = new Label("" + selectedBlock.getSection());
-            blockSectionLabel.setPadding(new Insets(0,0,0,10));
-            blockSectionLabel.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
-            blockSectionValue.setPadding(new Insets(0,0,0,10));
+        blockSectionLabel.setPadding(new Insets(0,0,0,10));
+        blockSectionLabel.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
+        blockSectionValue.setPadding(new Insets(0,0,0,10));
 
         Label blockLabel = new Label("Block: ");
         Label blockValue = new Label("" + selectedBlock.getBlockNumber());
-            blockLabel.setPadding(new Insets(0,0,20,10));
-            blockLabel.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
-            blockValue.setPadding(new Insets(0,0,20,10));
+        blockLabel.setPadding(new Insets(0,0,20,10));
+        blockLabel.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
+        blockValue.setPadding(new Insets(0,0,20,10));
 
         Label length = new Label("Length (mi): ");
         Label lengthValue = null;
@@ -993,9 +1134,9 @@ public class TrackModelGUI {
         }else{
             lengthValue = new Label("" + selectedBlock.getLength());
         }
-            length.setPadding(new Insets(0,0,0,10));
-            length.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
-            lengthValue.setPadding(new Insets(0,0,0,10));
+        length.setPadding(new Insets(0,0,0,10));
+        length.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
+        lengthValue.setPadding(new Insets(0,0,0,10));
 
         Label speedLimit = new Label("Speed Limit (mph): ");
         Label speedLimitValue = null;
@@ -1004,15 +1145,15 @@ public class TrackModelGUI {
         }else{
             speedLimitValue = new Label("" + selectedBlock.getSpeedLimit());
         }
-            speedLimit.setPadding(new Insets(0,0,0,10));
-            speedLimit.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
-            speedLimitValue.setPadding(new Insets(0,0,0,10));
+        speedLimit.setPadding(new Insets(0,0,0,10));
+        speedLimit.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
+        speedLimitValue.setPadding(new Insets(0,0,0,10));
 
         Label grade = new Label("Grade (%): ");
         Label gradeValue = new Label("" + selectedBlock.getGrade());
-            grade.setPadding(new Insets(0,0,0,10));
-            grade.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
-            gradeValue.setPadding(new Insets(0,0,0,10));
+        grade.setPadding(new Insets(0,0,0,10));
+        grade.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
+        gradeValue.setPadding(new Insets(0,0,0,10));
 
         Label elevation = new Label("Elevation (ft): ");
         Label elevationValue = null;
@@ -1021,9 +1162,9 @@ public class TrackModelGUI {
         }else{
             elevationValue = new Label("" + selectedBlock.getElevation());
         }
-            elevation.setPadding(new Insets(0,0,0,10));
-            elevation.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
-            elevationValue.setPadding(new Insets(0,0,0,10));
+        elevation.setPadding(new Insets(0,0,0,10));
+        elevation.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
+        elevationValue.setPadding(new Insets(0,0,0,10));
 
         Label cumElevation = new Label("Cumulative Elevation (ft): ");
         Label cumElevationValue = null;
@@ -1032,27 +1173,27 @@ public class TrackModelGUI {
         }else{
             cumElevationValue = new Label("" + selectedBlock.getCumulativeElevation());
         }
-            cumElevation.setPadding(new Insets(0,0,0,10));
-            cumElevation.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
-            cumElevationValue.setPadding(new Insets(0,0,0,10));
+        cumElevation.setPadding(new Insets(0,0,0,10));
+        cumElevation.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
+        cumElevationValue.setPadding(new Insets(0,0,0,10));
 
         Label direction = new Label("Direction: ");
         Label directionValue = new Label("" + selectedBlock.getDirection());
-            direction.setPadding(new Insets(0,0,0,10));
-            direction.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
-            directionValue.setPadding(new Insets(0,0,0,10));
+        direction.setPadding(new Insets(0,0,0,10));
+        direction.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
+        directionValue.setPadding(new Insets(0,0,0,10));
 
         Label temperature = new Label("Temperature (F): ");
         Label temperatureValue = new Label("" + selectedBlock.getTemperature());
-            temperature.setPadding(new Insets(0,0,0,10));
-            temperature.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
-            temperatureValue.setPadding(new Insets(0,0,0,10));
+        temperature.setPadding(new Insets(0,0,0,10));
+        temperature.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
+        temperatureValue.setPadding(new Insets(0,0,0,10));
 
         Label occupied = new Label("Occupied: ");
         Label occupiedValue = new Label("" + selectedBlock.isOccupied());
-            occupied.setPadding(new Insets(0,0,0,10));
-            occupied.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
-            occupiedValue.setPadding(new Insets(0,0,0,10));
+        occupied.setPadding(new Insets(0,0,0,10));
+        occupied.setFont(Font.font(blockLineLabel.getFont().getFamily(), FontWeight.BOLD, blockLineLabel.getFont().getSize()));
+        occupiedValue.setPadding(new Insets(0,0,0,10));
 
         blockInfoPanel.setAlignment(Pos.TOP_LEFT);
         blockInfoPanel.setMinHeight(windowHeight/2);
@@ -1095,8 +1236,25 @@ public class TrackModelGUI {
         return bd.doubleValue();
     }
 
+    private void startUpdateThread() {
+        Task task = new Task<Void>() {
+            @Override
+            public Void call() throws Exception {
+                while (true) {
+                    update();
+                    Thread.sleep(10);
+                }
+            }
+        };
+        Thread th = new Thread(task);
+        th.setDaemon(true);
+        th.start();
+    }
+
     public void update(){
-        selectedBlock = track.getBlock(selectedBlock.getLine(), selectedBlock.getBlockNumber());
+        if(selectedBlock.getBlockNumber() != null) {
+            selectedBlock = track.getBlock(selectedBlock.getLine(), selectedBlock.getBlockNumber());
+        }
         updateBlockMonitor();
     }
 

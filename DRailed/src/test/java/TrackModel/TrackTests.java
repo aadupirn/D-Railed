@@ -17,7 +17,7 @@ import static junit.framework.TestCase.assertEquals;
  */
 public class TrackTests {
 
-    @Test
+    /*@Test
     public void testSetSpeedAndAuthority() {
 
         Track track = new Track("greenLine.csv");
@@ -28,7 +28,7 @@ public class TrackTests {
 
         assertEquals(true, (speed == 50 && authority == 5));
 
-    }
+    }*/
 
     @Test
     public void testSetSpeedAndAuth_ExpectTrainMove(){

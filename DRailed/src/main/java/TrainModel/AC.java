@@ -13,11 +13,22 @@ public class AC {
     protected static double temperature;
     private boolean ac;
     private boolean heat;
+    private double k;
 
     public AC(){
         ac = false;
         heat = false;
         temperature = 70.0;
+        k = 15;
+    }
+    public AC(double kValue){
+        ac = false;
+        heat = false;
+        temperature = 70.0;
+        k = kValue;
+    }
+    protected void setK(int kValue){
+        k = kValue;
     }
     protected void acOn(){
         //decrement temperature;
@@ -42,16 +53,16 @@ public class AC {
     protected void changeTemp(){
         double tempCel = fahrToCel(temperature);
         if(heat){
-            tempCel = tempCel + ((maxTempCel - tempCel)* Math.exp(-11*.1));
+            tempCel = tempCel + ((maxTempCel - tempCel)* Math.exp(-k*.1));
             temperature = celToFah(tempCel);
         }
 
         else if(ac){
-            tempCel = tempCel + ((minTempCel - tempCel)* Math.exp(-11*.1));
+            tempCel = tempCel + ((minTempCel - tempCel)* Math.exp(-k*.1));
             temperature = celToFah(tempCel);
         }
         else{
-            tempCel = tempCel + ((normalTemp - tempCel)* Math.exp(-11*.1));
+            tempCel = tempCel + ((normalTemp - tempCel)* Math.exp(-k*.1));
             temperature = celToFah(tempCel);
         }
 

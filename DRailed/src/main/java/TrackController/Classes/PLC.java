@@ -29,7 +29,6 @@ public class PLC
             {
                 for(String line; (line = br.readLine()) != null; )
                 {
-                    System.out.println("\nWhole string: " + line);
                     if(!line.contains("="))
                     {
                         isGood = false;
@@ -47,7 +46,6 @@ public class PLC
                             output = inOut[0].trim();
                             input = inOut[1].trim();
 
-                            System.out.println("output: " + output + "\n" + "input: " + input);
                             getOut = output.split("\\.");
                             String out = getOut[getOut.length-1];
                             String id = getOut[0];
@@ -56,7 +54,6 @@ public class PLC
                                 if (!id.equals("this")) {
                                     try {
                                         outputID = Integer.parseInt(id);
-                                        System.out.println("Setting " + outputID + " crossing to " + input);
                                         plcInputs[outputID][1] = input;
                                     } catch (NumberFormatException e) {
                                         System.out.println("ID not valid");
@@ -74,7 +71,6 @@ public class PLC
                                 if (!id.equals("this")) {
                                     try {
                                         outputID = Integer.parseInt(id);
-                                        System.out.println("Setting " + outputID + " lights to " + input);
                                         plcInputs[outputID][0] = input;
                                     } catch (NumberFormatException e) {
                                         System.out.println("ID not valid");
@@ -92,7 +88,6 @@ public class PLC
                                 if (!id.equals("this")) {
                                     try {
                                         outputID = Integer.parseInt(id);
-                                        System.out.println("Setting " + outputID + " stop to " + input);
                                         plcInputs[outputID][2] = input;
                                     } catch (NumberFormatException e) {
                                         System.out.println("ID not valid");
@@ -110,7 +105,6 @@ public class PLC
                                 try
                                 {
                                     outputID = Integer.parseInt(id);
-                                    System.out.println("Setting " + outputID + " switch to " + input);
                                     switches[outputID] = input;
                                 } catch (NumberFormatException e)
                                 {
@@ -128,6 +122,17 @@ public class PLC
                 }
             } catch (Exception e) {
                 System.out.println("There is an exception: " + e.toString());
+            }
+
+            // print out all of the PLC
+            for (int i = 1; i < 153; i++)
+            {
+                System.out.println("Block " + i + " has PLC:\nLights: " + plcInputs[i][0] + "\nCrossings: " + plcInputs[i][1] + "\nStop: "+plcInputs[i][2] +"\n");
+            }
+
+            for(int i = 0; i < 6; i++)
+            {
+                System.out.println("Switch: "+ i + " has PLC: " + switches[i] +"\n");
             }
         }
 
@@ -185,13 +190,12 @@ public class PLC
                 result = in;
             for (int i = 152; i > 0; i--) {
                 result = result.replaceAll(blocks[i].getBlockNumber() + ".occupied", Boolean.toString(blocks[i].isOccupied()));
-                result = result.replaceAll(blocks[i].getBlockNumber() + ".nextoccupied", Boolean.toString(blocks[i].isOccupied())); //TODO replace with next block!!
+                result = result.replaceAll(blocks[i].getBlockNumber() + ".nextoccupied", Boolean.toString(false)); //TODO replace with next block!!
             }
             if (result.contains(".occupied")) //The other track controller has this block
             {
                 System.out.println("Haven't handled yet");
             }
-            System.out.println(result);
             return(result);
         }
     }

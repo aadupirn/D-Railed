@@ -25,10 +25,10 @@ public class TrackControllerUI {
     private Stage mainStage, sideStage;
     private Scene mainScene, murphyScene, userInScene, engScene, toTMScene;
     private Label controllerLabel,blockLabel, controlLabel, switchLabel, occupiedLabel, lightsLabel, crossLabel, switchAdjLabel, mainBlockLabel, subBlock1Label,subBlock2Label,connectedLabel, getTrainID, getSpeed,getAuth,getCarts;
-    private TextField blockID, occupiedStatus, lightsStatus,crossStatus, switchAdj, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText, getTrainIDText, getSpeedText, getAuthText, getCartsText;
+    private TextField blockID, occupiedStatus, lightsStatus,crossStatus, switchAdj, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText, getTrainIDText, getSpeedText, getAuthText, getCartsText, sendTrainIDText, sendSpeedText, sendAuthText;
     private TextArea notifications;
     private Text controllerLine, controllerSection;
-    private Button murphyButton, userInputsButton, engInputsButton, toTrackModelButton, murphyBreakTrackButton, murphyBreakCTCComms, murphyBreakTMComms, sendEngineer, loadPLC, blockIdButton, switchIdButton, dispatchButton;
+    private Button murphyButton, userInputsButton, engInputsButton, toTrackModelButton, murphyBreakTrackButton, murphyBreakCTCComms, murphyBreakTMComms, sendEngineer, loadPLC, blockIdButton, switchIdButton, dispatchButton, sendData;
     private RadioButton blockRB, switchRB;
     private TrackController tc;
     private PLC myPLC;
@@ -95,8 +95,8 @@ public class TrackControllerUI {
 
         //Set up section titles on main screen
         controllerLabel = new Label("Track Controller Controls:");
-        controllerLine = new Text("Line - Green");
-        controllerSection = new Text("Blocks - 1 to 152");
+        controllerLine = new Text("Line - " + tc.getLine());
+        controllerSection = new Text("Controller Number - " + tc.getID());
         blockLabel = new Label("Block Info");
         controlLabel = new Label("Controls/Track Info");
         switchLabel = new Label("Switch Info");
@@ -191,12 +191,13 @@ public class TrackControllerUI {
 
         //Put track pane in
         notifications = new TextArea("");
-        notifications.appendText("17");
+        notifications.setText("Display Block Occupancy");
         notifications.setFont(Font.font("Garamond", 12));
         notifications.setMinHeight(windowHeight / 3);
         trainInfo.setHgap(20);
         trainInfo.add(notifications, 0, 0);
         blockRB = new RadioButton("Blocks");
+        blockRB.setSelected(true);
         blockRB.setToggleGroup(tOrB);
         switchRB = new RadioButton("Switches");
         switchRB.setToggleGroup(tOrB);
@@ -359,11 +360,11 @@ public class TrackControllerUI {
         Label sendTrainID = new Label("Set Train ID: ");
         Label sendSpeed = new Label("Set Speed: ");
         Label sendAuth = new Label("Set Authority: ");
-        TextField sendTrainIDText = new TextField("");
-        TextField sendSpeedText = new TextField("");
-        TextField sendAuthText = new TextField("");
-        Button sendData = new Button("Send to Track Model");
-        sendData.setOnAction(e->DispatchButtonClicked(e));
+        sendTrainIDText = new TextField("");
+        sendSpeedText = new TextField("");
+        sendAuthText = new TextField("");
+        sendData = new Button("Send to Track Model");
+        sendData.setOnAction(e->setSpeedAndAuthorityClicked(e));
 
 
         //Assemble
@@ -445,8 +446,9 @@ public class TrackControllerUI {
             FileChooser fileChooser = new FileChooser();
             Stage fileSelect = new Stage();
             fileSelect.setTitle("Choose a PLC file to import:");
-            ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(classLoader.getResource("TrackController/PLC").getFile());
+            //ClassLoader classLoader = getClass().getClassLoader();
+            //File file = new File(classLoader.getResource("TrackController/PLC").getFile());
+            File file = new File("src/main/resources/PLC");
             fileChooser.setInitialDirectory(file);
             File file2 = fileChooser.showOpenDialog(fileSelect);
             if(file2 != null)
@@ -461,12 +463,7 @@ public class TrackControllerUI {
         Object source = e.getSource();
         if(source == murphyBreakTrackButton)
         {
-            for(int i = 0; i < 10; i++)
-            {
-                int caretPosition = notifications.caretPositionProperty().get();
-                notifications.appendText("Here i am appending text to text area"+"\n");
-                notifications.positionCaret(caretPosition);
-            }
+            //TODO something, maybe display in same pane?
         }
     }
 
@@ -495,22 +492,42 @@ public class TrackControllerUI {
 
     public void Update()
     {
-        return;
+        // update the notifications field
+        double point;
+        if (blockRB.isSelected())
+        {
+            point = notifications.getScrollTop();
+            notifications.setText(tc.getAllBlockOccupancies());
+            notifications.setScrollTop(point);
+        }
+        else
+        {
+            point = notifications.getScrollTop();
+            notifications.setText(tc.getAllSwitchStates());
+            notifications.setScrollTop(point);
+        }
     }
 
     public void DispatchButtonClicked(ActionEvent e)
     {
-        Object source = e.getSource();
-        if (source == dispatchButton)
-        {
-            try {
-                tc.dispatchTrain(152, Integer.parseInt(getCartsText.getText()), Integer.parseInt(getAuthText.getText()), Double.parseDouble(getSpeedText.getText()), Integer.parseInt(getTrainIDText.getText()));
-                System.out.println("Train created!");
-            } catch (Exception e1) {
-                System.out.println("We got an exception: " + e1.toString() + "\n");
-                e1.printStackTrace();
-            }
+        try {
+            tc.dispatchTrain(152, Integer.parseInt(getCartsText.getText()), Integer.parseInt(getAuthText.getText()), Double.parseDouble(getSpeedText.getText()), Integer.parseInt(getTrainIDText.getText()));
+            System.out.println("Train created!");
+        } catch (Exception e1) {
+            System.out.println("We got an exception: " + e1.toString() + "\n");
+            e1.printStackTrace();
         }
+    }
+
+    public void setSpeedAndAuthorityClicked(ActionEvent e)
+    {
+        int id, auth;
+        double speed;
+
+        id = Integer.parseInt(sendTrainIDText.getText());
+        auth = Integer.parseInt(sendAuthText.getText());
+        speed = Double.parseDouble(sendSpeedText.getText());
+        tc.setSpeedAndAuthority(id,speed,auth);
     }
 
     public void MainButtonClicked(ActionEvent e)
