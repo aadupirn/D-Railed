@@ -226,12 +226,12 @@ public class MBOController extends Application {
         primary.setTitle("MBO Interface");
         primary.setScene(new Scene(root));
         primary.show();
-        this.getUIElements();
+        //this.getUIElements();
         scheduler = new Scheduler(1);
         mbo = new MBO(1);
-        setInfoColumns();
-        setTrainColumns();
-        setWorkColumns();
+        //setInfoColumns();
+        //setTrainColumns();
+        //setWorkColumns();
 
     }
 
