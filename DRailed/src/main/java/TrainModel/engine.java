@@ -12,8 +12,8 @@ public class engine {
     private final double serviceBrakeAcceleration = -1.0;
     private final double emergencyBrakeAcceleration = -5.0;
     private double acceleration = 0;
-    private final double friction = 0.2;
-    private final double gravity = -9.81;
+    private static double friction = 0.2;
+    private static double gravity = -9.81;
 
     /*
     * This method calculates speed.
@@ -108,5 +108,11 @@ public class engine {
     private boolean emergencyBrakeActivated(){
         emergencyBrake = true;
         return true;
+    }
+    protected static void setGravity(double newGrav){
+        gravity = newGrav;
+    }
+    protected static void setFrictiony(double newFriction){
+        friction = newFriction;
     }
 }

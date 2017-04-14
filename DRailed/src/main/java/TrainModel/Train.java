@@ -300,6 +300,17 @@ public class Train {
     }
 
 
+    private void setGravity(double newGrav){
+        engine.setGravity(newGrav);
+    }
+    private void setFriction(double newFriction){
+        engine.setGravity(newFriction);
+    }
+
+    private void setFrictiony(double newK){
+        ac.setK(newK);
+    }
+
 }
 
 /* Unused Code
