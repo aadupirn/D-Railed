@@ -264,13 +264,18 @@ public class TrainModel {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+    }
+}
+
+/*
+//Unused code
 //        Train train = new Train();
-        int i = 10000;
-       // while(i > 0){
-  //          train.calculateSpeed(1000.0);
-        //while(i > 0){
-            //train.calculateSpeed(1000.0);
-            /*Double velocity = train.TimeCalc();
+
+// while(i > 0){
+//          train.calculateSpeed(1000.0);
+//while(i > 0){
+//train.calculateSpeed(1000.0);
+            Double velocity = train.TimeCalc();
             grid.getChildren().remove(speedLabelText);
             speedLabelText = new Text();
             speedLabelText.setWrappingWidth(colWidth*2);
@@ -278,7 +283,5 @@ public class TrainModel {
             speedLabelText.setTextAlignment(TextAlignment.CENTER);
             i--;
             grid.add(speedLabelText, 0, 1);
-            */
 
-    }
-}
+Unused code */

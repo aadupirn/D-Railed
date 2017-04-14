@@ -8,9 +8,9 @@ public class engine {
     private static boolean emergencyBrake = false;
     private static boolean serviceBrake = false;
 
-    private final double standardAcceleration = 3.0;
-    private final double serviceBrakeAcceleration = -1.0;
-    private final double emergencyBrakeAcceleration = -5.0;
+    private static double standardAcceleration = 3.0;
+    private static double serviceBrakeAcceleration = -1.0;
+    private static double emergencyBrakeAcceleration = -5.0;
     private double acceleration = 0;
     private static double friction = 0.2;
     private static double gravity = -9.81;
@@ -112,7 +112,15 @@ public class engine {
     protected static void setGravity(double newGrav){
         gravity = newGrav;
     }
-    protected static void setFrictiony(double newFriction){
+    protected static void setFriction(double newFriction){
         friction = newFriction;
     }
+
+    protected static void setEmergencyBrakeAcceleration(double newEbrakeAccel){
+        emergencyBrakeAcceleration = newEbrakeAccel;
+    }
+    protected static void setServiceBrakeAcceleration(double newSBrakeAccel){
+        serviceBrakeAcceleration = newSBrakeAccel;
+    }
+
 }
