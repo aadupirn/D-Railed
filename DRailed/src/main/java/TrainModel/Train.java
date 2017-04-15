@@ -55,6 +55,7 @@ public class Train {
         people = 0;
         trainController = new TrainController(this, this.track);
         ui = new TrainModel();
+        Update();
 
     }
 
@@ -81,7 +82,7 @@ public class Train {
         people = 0;
         trainController = new TrainController(this, this.track);
         ui = new TrainModel();
-
+        Update();
     }
 
     public Train(int startingBlock, int newID) throws IOException, Exception {
@@ -99,6 +100,7 @@ public class Train {
         track = new Track();
         trainController = new TrainController(this, this.track);
         ui = new TrainModel(newID);
+        Update();
     }
 
     public Train(int startingBlock, int numberOfCarts, int newID) throws IOException, Exception {
@@ -116,6 +118,7 @@ public class Train {
         trainController = new TrainController(this, track);
         this.numberOfCarts = numberOfCarts;
         ui = new TrainModel(newID, numberOfCarts);
+        Update();
         //trainModel = new TrainModel();
         //trainController = new TrainController();
     }
@@ -133,6 +136,7 @@ public class Train {
         trainController = new TrainController(this, track);
         ui = new TrainModel();
         this.numberOfCarts = numberOfCarts;
+        Update();
     }
 
     /*
@@ -156,6 +160,7 @@ public class Train {
         ui.updateHeat(heatBool);
         ui.updateAC(acBool);
         ui.updateTemp(temperature);
+        ui.instantiateUI();
     }
 
     public TrainController GetTrainController(){
@@ -233,7 +238,6 @@ public class Train {
         people += load;
     }
 
-
     /*
         Controller Setters and Getters
             This block has setters and getters for things the controllers does
@@ -248,7 +252,6 @@ public class Train {
         commandSpeed = pwrCMD;
     }
     public double GetPowerCommand(){ return commandSpeed;}
-
 
     /*
         Brake Block

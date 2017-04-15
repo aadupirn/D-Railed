@@ -170,8 +170,8 @@ public class TrainModel {
         AC = bool;
     }
 
-    protected void updateTemp(double bool){
-        Temperature = bool;
+    protected void updateTemp(double newTemp){
+        Temperature = newTemp;
     }
 
     public void instantiateUI(){
@@ -281,17 +281,17 @@ public class TrainModel {
         distanceLabelText.setTextAlignment(TextAlignment.CENTER);
         grid.add(distanceLabelText, 1, 2);
 
-        temperuateLabel = new Label("Temperature : ");
+        temperuateLabel = new Label("Temperature : " + Temperature + "F");
         temperuateLabel.setMinWidth(colWidth*1.5);
         temperuateLabel.setTextAlignment(TextAlignment.CENTER);
         temperuateLabel.setAlignment(Pos.CENTER);
         grid.add(temperuateLabel, 3, 2);
 
-        temperuateLabelText = new Text();
+        /*temperuateLabelText = new Text();
         temperuateLabelText.setText(Temperature + "  F");
         temperuateLabelText.setWrappingWidth(colWidth*1.5);
         temperuateLabelText.setTextAlignment(TextAlignment.LEFT);
-        grid.add(temperuateLabelText, 4, 2);
+        grid.add(temperuateLabelText, 4, 2);*/
 
         acButton = new Button("Air Conditioning On");
         HBox acButtonHbox = new HBox(0);
