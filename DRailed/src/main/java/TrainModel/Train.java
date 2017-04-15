@@ -10,7 +10,7 @@ import TrackModel.Track;
  */
 public class Train {
     private TrainController trainController;
-    private TrainModel trainModel;
+    private TrainModel ui;
     private Track track;
     private int startingBlock;
     private Double commandSpeed;
@@ -51,7 +51,8 @@ public class Train {
         track = new Track();
         people = 0;
         trainController = new TrainController(this, this.track);
-        //trainModel = new TrainModel();
+        ui = new TrainModel();
+
     }
 
     // @ANDREW created for track model testing DON'T UNCOMMENT THE TRAIN MODEL AND TRAIN CONTROLLER THIS
@@ -76,6 +77,7 @@ public class Train {
         track = new Track();
         people = 0;
         trainController = new TrainController(this, this.track);
+        ui = new TrainModel();
 
     }
 
@@ -93,10 +95,9 @@ public class Train {
         id = newID;
         track = new Track();
         trainController = new TrainController(this, this.track);
-        //trainModel = new TrainModel();
-      //  trainModel = new TrainModel();
-
+        ui = new TrainModel(newID);
     }
+
     public Train(int startingBlock, int numberOfCarts, int newID) throws IOException, Exception {
         Engine = new engine();
         ac = new AC();
@@ -111,7 +112,7 @@ public class Train {
         track = new Track();
         trainController = new TrainController(this, track);
         this.numberOfCarts = numberOfCarts;
-       // trainModel = new TrainModel();
+        ui = new TrainModel(newID, numberOfCarts);
         //trainModel = new TrainModel();
         //trainController = new TrainController();
     }
@@ -127,8 +128,7 @@ public class Train {
         startingBlock = startingBlock;
         id = newID;
         trainController = new TrainController(this, track);
-        trainModel = new TrainModel();
-        //trainModel = new TrainModel();
+        ui = new TrainModel();
         this.numberOfCarts = numberOfCarts;
     }
 

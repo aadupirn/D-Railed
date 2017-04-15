@@ -29,8 +29,122 @@ public class TrainModel {
     private int inset = 25;
     private int colWidth = 75;
 
-    public TrainModel() throws Exception
-    {
+    private double Temperature;
+    private boolean AC;
+    private boolean Heat;
+    private boolean lights;
+    private boolean leftDoors;
+    private boolean rightDoors;
+    private double power;
+    private boolean unlimitedPowuh;
+    private double currentSpeed;
+    private double mass;
+    private int numberOfCarts;
+    private int people;
+    private int id;
+    private boolean ebrake;
+    private boolean sbrake;
+    private int block;
+
+
+    public TrainModel() {
+        leftDoors = false;
+        rightDoors = false;
+
+        lights = false;
+
+        ebrake = false;
+        sbrake = false;
+
+        currentSpeed = 0;
+
+        people = 0;
+        mass = 20000;
+    }
+
+    public TrainModel(int Id) {
+        leftDoors = false;
+        rightDoors = false;
+
+        lights = false;
+
+        ebrake = false;
+        sbrake = false;
+
+        currentSpeed = 0;
+
+        people = 0;
+        mass = 20000;
+
+        this.id = Id;
+    }
+
+    public TrainModel(int Id, int numbCarts) {
+        leftDoors = false;
+        rightDoors = false;
+
+        lights = false;
+
+        ebrake = false;
+        sbrake = false;
+
+        currentSpeed = 0;
+
+        people = 0;
+        mass = 20000 + numbCarts*10000;
+
+        this.id = Id;
+        numberOfCarts = numbCarts;
+    }
+
+    private void updateUI(){
+
+    }
+
+    protected void updateSpeed(double newSpeed){
+        currentSpeed = newSpeed;
+    }
+
+    protected void updatePower(double newPower){
+        power = newPower;
+    }
+
+    protected void updateMass(double newMass){
+        mass = newMass;
+    }
+
+    protected void updatePeople(double newPeople){
+        mass = newPeople;
+    }
+
+    protected void updateLeftDoors(boolean bool){
+        leftDoors = bool;
+    }
+
+    protected void updateRightDoors(boolean bool){
+        leftDoors = bool;
+    }
+
+    protected void updateLights(boolean bool){
+        lights = bool;
+    }
+
+    protected void updateHeat(boolean bool){
+        Heat = bool;
+    }
+
+    protected void updateAC(boolean bool){
+        AC = bool;
+    }
+
+    protected void updateTemp(double bool){
+        Temperature = bool;
+    }
+}
+
+
+
+ /*
         primaryStage.setTitle(applicationTitle);
 
         GridPane grid = new GridPane();
@@ -262,26 +376,4 @@ public class TrainModel {
 
         Scene scene = new Scene(grid, windowWidth, windowHight);
         primaryStage.setScene(scene);
-        primaryStage.show();
-
-    }
-}
-
-/*
-//Unused code
-//        Train train = new Train();
-
-// while(i > 0){
-//          train.calculateSpeed(1000.0);
-//while(i > 0){
-//train.calculateSpeed(1000.0);
-            Double velocity = train.TimeCalc();
-            grid.getChildren().remove(speedLabelText);
-            speedLabelText = new Text();
-            speedLabelText.setWrappingWidth(colWidth*2);
-            speedLabelText.setText(" " + velocity );
-            speedLabelText.setTextAlignment(TextAlignment.CENTER);
-            i--;
-            grid.add(speedLabelText, 0, 1);
-
-Unused code */
+        primaryStage.show();*/
