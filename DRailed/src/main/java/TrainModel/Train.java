@@ -29,6 +29,9 @@ public class Train {
     private static boolean sbrake;
     private static int people;
     private int numberOfCarts = 1;
+    private boolean acBool;
+    private boolean heatBool;
+    private double temperature = 70.0;
 
 
     public Train() throws IOException, Exception {
@@ -140,11 +143,19 @@ public class Train {
         ac.changeTemp();
         calculateSpeed(commandSpeed);
         updateUI();
-        //System.out.println("TEmperature is " + ac.getTemp());
-        //System.out.println("Speed is " + );
     }
     public void updateUI(){
         //TrainModel == UI
+        ui.updateSpeed(currentSpeed);
+        ui.updatePower(commandSpeed);
+        ui.updateMass(mass);
+        ui.updatePeople(people);
+        ui.updateLeftDoors(leftDoors);
+        ui.updateRightDoors(rightDoors);
+        ui.updateLights(lights);
+        ui.updateHeat(heatBool);
+        ui.updateAC(acBool);
+        ui.updateTemp(temperature);
     }
 
     public TrainController GetTrainController(){
@@ -177,19 +188,24 @@ public class Train {
             This block has setters and getters Heat, AC, and Temperature
      */
     public void SetAcOn(){
+        acBool = true;
         ac.acOn();
     }
     public void SetAcOFF(){
+        acBool = false;
         ac.acOff();
     }
     public void SetHeatOn(){
+        heatBool = true;
         ac.heatOn();
     }
     public void SetHeatOFF(){
+        heatBool = false;
         ac.heatOff();
     }
     public double getTemperature(){
-        return ac.getTemp();
+        temperature = ac.getTemp();
+        return temperature;
     }
 
 

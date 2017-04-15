@@ -60,6 +60,7 @@ public class TrainModel {
 
         people = 0;
         mass = 20000;
+        instantiateUI();
     }
 
     public TrainModel(int Id) {
@@ -77,6 +78,7 @@ public class TrainModel {
         mass = 20000;
 
         this.id = Id;
+        instantiateUI();
     }
 
     public TrainModel(int Id, int numbCarts) {
@@ -95,6 +97,7 @@ public class TrainModel {
 
         this.id = Id;
         numberOfCarts = numbCarts;
+        instantiateUI();
     }
 
     private void updateUI(){
@@ -140,11 +143,9 @@ public class TrainModel {
     protected void updateTemp(double bool){
         Temperature = bool;
     }
-}
 
+    public void instantiateUI(){
 
-
- /*
         primaryStage.setTitle(applicationTitle);
 
         GridPane grid = new GridPane();
@@ -376,4 +377,8 @@ public class TrainModel {
 
         Scene scene = new Scene(grid, windowWidth, windowHight);
         primaryStage.setScene(scene);
-        primaryStage.show();*/
+        primaryStage.show();
+    }
+
+}
+
