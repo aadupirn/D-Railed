@@ -130,11 +130,9 @@ public class TrainModel {
         this.id = Id;
         numberOfCarts = numbCarts;
         instantiateUI();
+       // updateUI();
     }
 
-    private void updateUI(){
-        speedLabelText.setText(70 +  " mph");
-    }
 
     protected void updateSpeed(double newSpeed){
         currentSpeed = newSpeed;
@@ -242,7 +240,7 @@ public class TrainModel {
 
         speedLabelText = new Text();
         speedLabelText.setWrappingWidth(colWidth*2);
-        speedLabelText.setText(" 0 mph");
+        speedLabelText.setText( currentSpeed + " mph");
         speedLabelText.setTextAlignment(TextAlignment.CENTER);
         grid.add(speedLabelText, 0, 1);
 
@@ -258,17 +256,17 @@ public class TrainModel {
         blockNumberText.setTextAlignment(TextAlignment.LEFT);
         grid.add(blockNumberText, 4, 1);
 
-        blockPower = new Label("Block Power : ");
+        blockPower = new Label("Block Power : " + power);
         blockPower.setMinWidth(colWidth*1);
         blockPower.setTextAlignment(TextAlignment.RIGHT);
         blockPower.setAlignment(Pos.CENTER_RIGHT);
         grid.add(blockPower, 6, 1);
 
-        blockPowerText = new Text();
-        blockPowerText.setText(" 9000 Watts");
+     /*   blockPowerText = new Text();
+        blockPowerText.setText("  Watts");
         blockPowerText.setWrappingWidth(colWidth*1.22);
         blockPowerText.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(blockPowerText, 7, 1);
+        grid.add(blockPowerText, 7, 1);*/
 
         //Row 2
         distanceLabel = new Label("Distance to Authority : ");
@@ -290,7 +288,7 @@ public class TrainModel {
         grid.add(temperuateLabel, 3, 2);
 
         temperuateLabelText = new Text();
-        temperuateLabelText.setText(" 28 C");
+        temperuateLabelText.setText(Temperature + "  F");
         temperuateLabelText.setWrappingWidth(colWidth*1.5);
         temperuateLabelText.setTextAlignment(TextAlignment.LEFT);
         grid.add(temperuateLabelText, 4, 2);
@@ -313,7 +311,7 @@ public class TrainModel {
         grid.add(acButton, 5, 2, 3, 1);
 
         //Row Index 3
-        doorLabel = new Label("Door Status : ");
+        doorLabel = new Label("Left Door Status : " + leftDoors);
         doorLabel.setTextAlignment(TextAlignment.LEFT);
         doorLabel.setMinWidth(colWidth * 1.5);
         doorLabel.setAlignment(Pos.CENTER_LEFT);
@@ -325,17 +323,17 @@ public class TrainModel {
         doorLabelText.setTextAlignment(TextAlignment.CENTER);
         grid.add(doorLabelText, 1, 3);
 
-        lightsLabel = new Label("Lights : ");
+        lightsLabel = new Label("Lights : " + lights);
         lightsLabel.setMinWidth(colWidth*1.5);
         lightsLabel.setTextAlignment(TextAlignment.CENTER);
         lightsLabel.setAlignment(Pos.CENTER);
         grid.add(lightsLabel, 3, 3);
 
-        lightsLabelText = new Text();
+       /* lightsLabelText = new Text();
         lightsLabelText.setText(" On");
         lightsLabelText.setWrappingWidth(colWidth*1.5);
         lightsLabelText.setTextAlignment(TextAlignment.LEFT);
-        grid.add(lightsLabelText, 4, 3);
+        grid.add(lightsLabelText, 4, 3); */
 
         beaconLabel = new Label("Beacon Status : ");
         beaconLabel.setMinWidth(colWidth*1);
@@ -362,29 +360,29 @@ public class TrainModel {
         cartsLabelText.setTextAlignment(TextAlignment.CENTER);
         grid.add(cartsLabelText, 1, 4);
 
-        passengersLabel = new Label("Numb. of Passengers : ");
+        passengersLabel = new Label("Numb. of Passengers : " + people);
         passengersLabel.setMinWidth(colWidth*1.5);
         passengersLabel.setTextAlignment(TextAlignment.CENTER);
         passengersLabel.setAlignment(Pos.CENTER);
         grid.add(passengersLabel, 3, 4);
 
-        passengersLabelText = new Text();
+       /* passengersLabelText = new Text();
         passengersLabelText.setText(" 250");
         passengersLabelText.setWrappingWidth(colWidth*1.5);
         passengersLabelText.setTextAlignment(TextAlignment.LEFT);
-        grid.add(passengersLabelText, 4, 4);
+        grid.add(passengersLabelText, 4, 4); */
 
-        weightLabel = new Label("Current Weight : ");
+        weightLabel = new Label("Current Weight : " + mass + "lb");
         weightLabel.setMinWidth(colWidth*1);
         weightLabel.setTextAlignment(TextAlignment.RIGHT);
         weightLabel.setAlignment(Pos.CENTER_RIGHT);
         grid.add(weightLabel, 6, 4);
 
-        weightLabelText = new Text();
+        /*weightLabelText = new Text();
         weightLabelText.setText("400000 kg");
         weightLabelText.setWrappingWidth(colWidth*1.22);
         weightLabelText.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(weightLabelText, 7, 4);
+        grid.add(weightLabelText, 7, 4); */
 
         //Row 5
         emergencyButton = new Button("Emergency Brake On");
