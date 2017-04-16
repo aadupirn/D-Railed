@@ -10,7 +10,7 @@ import TrackModel.Track;
  */
 public class Train {
     private TrainController trainController;
-    private TrainModel ui;
+    private TrainUI ui;
     private Track track;
     private int startingBlock;
     private Double commandSpeed;
@@ -48,13 +48,17 @@ public class Train {
         sbrake = false;
 
         currentSpeed = 0;
+        commandSpeed = 0.0;
+        grade = 0.0;
+
+
         mass = 10000;
 
         startingBlock = 152;
         track = new Track();
         people = 0;
-        trainController = new TrainController(this, this.track);
-        ui = new TrainModel();
+        //trainController = new TrainController(this, this.track);
+        ui = new TrainUI();
         Update();
 
     }
@@ -81,7 +85,7 @@ public class Train {
         track = new Track();
         people = 0;
         trainController = new TrainController(this, this.track);
-        ui = new TrainModel();
+        ui = new TrainUI();
         Update();
     }
 
@@ -99,7 +103,7 @@ public class Train {
         id = newID;
         track = new Track();
         trainController = new TrainController(this, this.track);
-        ui = new TrainModel(newID);
+       // ui = new TrainModel(newID);
         Update();
     }
 
@@ -117,7 +121,7 @@ public class Train {
         track = new Track();
         trainController = new TrainController(this, track);
         this.numberOfCarts = numberOfCarts;
-        ui = new TrainModel(newID, numberOfCarts);
+        //ui = new TrainModel(newID, numberOfCarts);
         Update();
         //trainModel = new TrainModel();
         //trainController = new TrainController();
@@ -129,12 +133,14 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         mass = 10000;
+        grade = 0;
         people = new Random().nextInt(222);
+        commandSpeed = 0.0;
 
         startingBlock = startingBlock;
         id = newID;
         trainController = new TrainController(this, track);
-        ui = new TrainModel();
+        ui = new TrainUI();
         this.numberOfCarts = numberOfCarts;
         Update();
     }
@@ -150,17 +156,12 @@ public class Train {
     }
     public void updateUI(){
         //TrainModel == UI
+        ui.updateId(id);
         ui.updateSpeed(currentSpeed);
         ui.updatePower(commandSpeed);
-        ui.updateMass(mass);
-        ui.updatePeople(people);
-        ui.updateLeftDoors(leftDoors);
-        ui.updateRightDoors(rightDoors);
-        ui.updateLights(lights);
-        ui.updateHeat(heatBool);
-        ui.updateAC(acBool);
-        ui.updateTemp(temperature);
-        ui.instantiateUI();
+        ui.updateGrade(grade);
+        ui.updateTemperature(temperature);
+
     }
 
     public TrainController GetTrainController(){

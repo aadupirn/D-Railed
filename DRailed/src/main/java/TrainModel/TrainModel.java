@@ -402,6 +402,7 @@ public class TrainModel {
         emergencyButtonHbox.getChildren().add(emergencyButton);
         grid.add(emergencyButton, 0, 5, 7, 1);
 
+
         Scene scene = new Scene(grid, windowWidth, windowHight);
         primaryStage.setScene(scene);
         primaryStage.show();
