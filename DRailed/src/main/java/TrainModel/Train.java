@@ -161,7 +161,12 @@ public class Train {
         ui.updatePower(commandSpeed);
         ui.updateGrade(grade);
         ui.updateTemperature(temperature);
-
+        ui.updateAC(acBool);
+        ui.updateHeat(heatBool);
+        ui.updateLeftDoors(leftDoors);
+        ui.updateRightDoors(leftDoors);
+        ui.updateEBrake(ebrake);
+        ui.updateSBrake(sbrake);
     }
 
     public TrainController GetTrainController(){

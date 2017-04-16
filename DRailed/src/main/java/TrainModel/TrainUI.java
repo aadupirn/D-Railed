@@ -61,6 +61,13 @@ public class TrainUI {
     private Text tempText;
     private Text trainIDText;
     private Text gradeText;
+    private Text acText;
+    private Text heatText;
+    private Text leftDoorsText;
+    private Text rightDoorsText;
+    private Text eBrakeText;
+    private Text sBrakeText;
+
 
     engine Engine = new engine();
 
@@ -150,6 +157,78 @@ public class TrainUI {
         tempText.setTextAlignment(TextAlignment.LEFT);
         grid.add(tempText, 4, 3);
 
+        Label acLevel = new Label("AC: ");
+        acLevel.setMinWidth(colWidth * 1.5);
+        acLevel.setTextAlignment(TextAlignment.RIGHT);
+        acLevel.setAlignment(Pos.CENTER_RIGHT);
+        grid.add(acLevel, 3, 4);
+
+        acText = new Text();
+        acText.setText("off");
+        acText.setWrappingWidth(colWidth * 1.5);
+        acText.setTextAlignment(TextAlignment.LEFT);
+        grid.add(acText, 4, 4);
+
+        Label heatLevel = new Label("Heat: ");
+        heatLevel.setMinWidth(colWidth * 1.5);
+        heatLevel.setTextAlignment(TextAlignment.RIGHT);
+        heatLevel.setAlignment(Pos.CENTER_RIGHT);
+        grid.add(heatLevel, 3, 5);
+
+        heatText = new Text();
+        heatText.setText("off");
+        heatText.setWrappingWidth(colWidth * 1.5);
+        heatText.setTextAlignment(TextAlignment.LEFT);
+        grid.add(heatText, 4, 5);
+
+        Label leftDoors = new Label("LeftDoors Status: ");
+        leftDoors.setMinWidth(colWidth * 1.5);
+        leftDoors.setTextAlignment(TextAlignment.RIGHT);
+        leftDoors.setAlignment(Pos.CENTER_RIGHT);
+        grid.add(leftDoors, 3, 6);
+
+        leftDoorsText = new Text();
+        leftDoorsText.setText("closed");
+        leftDoorsText.setWrappingWidth(colWidth * 1.5);
+        leftDoorsText.setTextAlignment(TextAlignment.LEFT);
+        grid.add(leftDoorsText, 4, 6);
+
+        Label rightDoors = new Label("rightDoors Status: ");
+        rightDoors.setMinWidth(colWidth * 1.5);
+        rightDoors.setTextAlignment(TextAlignment.RIGHT);
+        rightDoors.setAlignment(Pos.CENTER_RIGHT);
+        grid.add(rightDoors, 3, 7);
+
+        rightDoorsText = new Text();
+        rightDoorsText.setText("closed");
+        rightDoorsText.setWrappingWidth(colWidth * 1.5);
+        rightDoorsText.setTextAlignment(TextAlignment.LEFT);
+        grid.add(rightDoorsText, 4, 7);
+
+        Label ebrake = new Label("Ebrake Status: ");
+        ebrake.setMinWidth(colWidth * 1.5);
+        ebrake.setTextAlignment(TextAlignment.RIGHT);
+        ebrake.setAlignment(Pos.CENTER_RIGHT);
+        grid.add(ebrake, 3, 8);
+
+        eBrakeText = new Text();
+        eBrakeText.setText("off");
+        eBrakeText.setWrappingWidth(colWidth * 1.5);
+        eBrakeText.setTextAlignment(TextAlignment.LEFT);
+        grid.add(eBrakeText, 4, 8);
+
+        Label sbrake = new Label("sbrake Status: ");
+        sbrake.setMinWidth(colWidth * 1.5);
+        sbrake.setTextAlignment(TextAlignment.RIGHT);
+        sbrake.setAlignment(Pos.CENTER_RIGHT);
+        grid.add(sbrake, 3, 9);
+
+        sBrakeText = new Text();
+        sBrakeText.setText("off");
+        sBrakeText.setWrappingWidth(colWidth * 1.5);
+        sBrakeText.setTextAlignment(TextAlignment.LEFT);
+        grid.add(sBrakeText, 4, 9);
+
 
 //////////////////////////////////////////////////////////////Manual and Automatic
         Scene scene = new Scene(grid, windowWidth, windowHight);
@@ -182,4 +261,53 @@ public class TrainUI {
         temperature = newTemp;
         tempText.setText(String.format( "%4.3f", temperature ) + " F" );
     }
+
+    protected void updateAC(boolean newAC){
+        ac = newAC;
+        if(ac)
+            acText.setText( " on" );
+        else
+            acText.setText( " off" );
+    }
+
+    protected void updateHeat(boolean newHeat){
+        heat = newHeat;
+        if(heat)
+            heatText.setText( " on" );
+        else
+            heatText.setText( " off" );
+    }
+
+    protected void updateLeftDoors(boolean newLeftDoors){
+        leftDoors = newLeftDoors;
+        if(leftDoors)
+            leftDoorsText.setText( " open" );
+        else
+            leftDoorsText.setText( " closed" );
+    }
+
+    protected void updateRightDoors(boolean newRightDoors){
+        rightDoors = newRightDoors;
+        if(rightDoors)
+            rightDoorsText.setText( " open" );
+        else
+            rightDoorsText.setText( " closed" );
+    }
+
+    protected void updateEBrake(boolean newEbrake){
+        eBrake = newEbrake;
+        if(eBrake)
+            eBrakeText.setText( " on" );
+        else
+            eBrakeText.setText( " off" );
+    }
+
+    protected void updateSBrake(boolean newSbrake){
+        sBrake = newSbrake;
+        if(sBrake)
+            sBrakeText.setText( " on" );
+        else
+            sBrakeText.setText( " off" );
+    }
+
 }
