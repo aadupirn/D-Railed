@@ -66,7 +66,10 @@ public class TrainUI {
     private Text leftDoorsText;
     private Text rightDoorsText;
     private Text eBrakeText;
+    private Text lightsText;
     private Text sBrakeText;
+    private Text massText;
+
 
 
     engine Engine = new engine();
@@ -229,6 +232,29 @@ public class TrainUI {
         sBrakeText.setTextAlignment(TextAlignment.LEFT);
         grid.add(sBrakeText, 4, 9);
 
+        Label massLabel = new Label("Weight: ");
+        massLabel.setMinWidth(colWidth * 1.5);
+        massLabel.setTextAlignment(TextAlignment.RIGHT);
+        massLabel.setAlignment(Pos.CENTER_RIGHT);
+        grid.add(massLabel, 3, 10);
+
+        massText = new Text();
+        massText.setText(" 0 lbs");
+        massText.setWrappingWidth(colWidth * 1.5);
+        massText.setTextAlignment(TextAlignment.LEFT);
+        grid.add(massText, 4, 10);
+
+        Label lightsLabel = new Label("Lights Status: ");
+        lightsLabel.setMinWidth(colWidth * 1.5);
+        lightsLabel.setTextAlignment(TextAlignment.RIGHT);
+        lightsLabel.setAlignment(Pos.CENTER_RIGHT);
+        grid.add(lightsLabel, 3, 11);
+
+        lightsText = new Text();
+        lightsText.setText(" off");
+        lightsText.setWrappingWidth(colWidth * 1.5);
+        lightsText.setTextAlignment(TextAlignment.LEFT);
+        grid.add(lightsText, 4, 11);
 
 //////////////////////////////////////////////////////////////Manual and Automatic
         Scene scene = new Scene(grid, windowWidth, windowHight);
@@ -308,6 +334,20 @@ public class TrainUI {
             sBrakeText.setText( " on" );
         else
             sBrakeText.setText( " off" );
+    }
+
+    protected void updateMass(double newMass){
+        mass = newMass;
+        massText.setText(String.format( "%4.3f", mass ) + " lbs" );
+
+    }
+
+    protected void updateLights(boolean newLights){
+        lights = newLights;
+        if(lights)
+            lightsText.setText( " on" );
+        else
+            lightsText.setText( " off" );
     }
 
 }

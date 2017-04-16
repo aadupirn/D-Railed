@@ -167,6 +167,8 @@ public class Train {
         ui.updateRightDoors(leftDoors);
         ui.updateEBrake(ebrake);
         ui.updateSBrake(sbrake);
+        ui.updateMass(mass);
+        ui.updateLights(lights);
     }
 
     public TrainController GetTrainController(){
