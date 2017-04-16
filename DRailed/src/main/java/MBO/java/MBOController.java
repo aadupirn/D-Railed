@@ -100,21 +100,18 @@ public class MBOController extends Application {
 
         // Conductor Schedule Button
 
-        // Button Actions
-        mboToggle.setOnAction((ActionEvent a) -> {
 
-        });
+        // Button Actions
+        mboToggle.setOnAction((ActionEvent a) -> { mbo.toggleMBO(); });
 
         trainInfoTestBtn.setOnAction((ActionEvent a) -> {
 
         });
 
-        murphyBtn.setOnAction((ActionEvent a) -> {
-
-        });
+        murphyBtn.setOnAction((ActionEvent a) -> { mbo.toggleMurphy(); });
 
         scheduleTestBtn.setOnAction((ActionEvent a) -> {
-
+            scheduler.updateSchedule(Integer.parseInt(idScheduleTestInput.getText()), );
         });
 
         generateScheduleBtn.setOnAction((ActionEvent a) -> {

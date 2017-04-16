@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
  */
 public class MBO {
     private boolean active;
+    private boolean murphy;
     private ObservableList<TrainInfo> trainInfos = FXCollections.observableArrayList();
 
 
@@ -16,6 +17,7 @@ public class MBO {
             trainInfos.add(i, new TrainInfo(i + 1, 0, 0, null, 0, 0));
 
         active = false;
+        murphy = false;
     }
 
     private boolean trainExists(int id){
@@ -53,6 +55,8 @@ public class MBO {
     }
 
     public void toggleMBO(){ active = !active; }
+
+    public void toggleMurphy(){ murphy = !murphy; }
 
     private void addTrain(int id){
         trainInfos.add(id - 1, new TrainInfo(id, 0, 0, null, 0, 0));
