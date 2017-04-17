@@ -12,7 +12,7 @@ public class Train {
     private TrainController trainController;
     private TrainUI ui;
     private Track track;
-    private int startingBlock;
+    private int block;
     private Double commandSpeed;
     private int id;
     private double currentSpeed;
@@ -54,7 +54,7 @@ public class Train {
 
         mass = 10000;
 
-        startingBlock = 152;
+        block = 152;
         track = new Track();
         people = 0;
         //trainController = new TrainController(this, this.track);
@@ -81,7 +81,7 @@ public class Train {
         currentSpeed = 0;
         mass = 10000;
 
-        startingBlock = 152;
+        block = 152;
         track = new Track();
         people = 0;
         trainController = new TrainController(this, this.track);
@@ -121,10 +121,7 @@ public class Train {
         track = new Track();
         trainController = new TrainController(this, track);
         this.numberOfCarts = numberOfCarts;
-        //ui = new TrainModel(newID, numberOfCarts);
         Update();
-        //trainModel = new TrainModel();
-        //trainController = new TrainController();
     }
     public Train(int startingBlock, int numberOfCarts, int newAuthority, Double newSpeed, int newID, Track track) throws IOException, Exception {
         Engine = new engine();
@@ -137,7 +134,7 @@ public class Train {
         people = new Random().nextInt(222);
         commandSpeed = 0.0;
 
-        startingBlock = startingBlock;
+        block = startingBlock;
         id = newID;
         trainController = new TrainController(this, track);
         ui = new TrainUI();
@@ -152,7 +149,7 @@ public class Train {
     public void Update(){
         ac.changeTemp();
         calculateSpeed(commandSpeed);
-        updateUI();
+        updateUI(); // comment out
     }
     public void updateUI(){
         //TrainModel == UI
@@ -259,7 +256,10 @@ public class Train {
     }
 
     public int GetStartingBlock(){
-        return startingBlock;
+        return block;
+    }
+    private void setBLock(int newBlock){
+        block = newBlock;
     }
     public void SetPowerCommand(Double pwrCMD){
         commandSpeed = pwrCMD;

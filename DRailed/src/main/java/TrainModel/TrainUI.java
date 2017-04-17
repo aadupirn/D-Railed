@@ -52,10 +52,14 @@ public class TrainUI {
     private boolean eBrake;
     private boolean sBrake;
 
+    //auto vs manual
+    private boolean AutoVsManual = true;
+
     //doors
     private boolean leftDoors;
     private boolean rightDoors;
 
+    //text
     private Text speedText;
     private Text speedRight;
     private Text powerText;
@@ -72,6 +76,10 @@ public class TrainUI {
     private Text massText;
     private Text authorityText;
 
+    //buttons
+    Button autoOrManualButton;
+    Button sButton;
+    Button eButton;
 
 
     engine Engine = new engine();
@@ -273,6 +281,79 @@ public class TrainUI {
         authorityText.setWrappingWidth(colWidth * 1.5);
         speedText.setTextAlignment(TextAlignment.RIGHT);
         grid.add(authorityText, 4, 6);
+////////////////Buttons
+
+        autoOrManualButton = new Button("Automatic");
+        HBox autoOrManualButtonHbox = new HBox(0);
+        autoOrManualButton.setOnAction(value ->  {
+            if(autoOrManualButton.getText().equals("Manual")) {//label.getText().equals("Not clicked"))
+                autoOrManualButton.setText("Automatic");
+                System.out.println("Automatic");
+                AutoVsManual = true;
+
+            }
+            //label.setText("Clicked!");
+            else {
+                autoOrManualButton.setText("Manual");
+                System.out.println("Manual");
+                AutoVsManual = false;
+            }
+            //label.setText("Not clicked!");
+        });
+        autoOrManualButton.setMinWidth(colWidth*3);
+        autoOrManualButton.setMinWidth(colWidth*2);
+        autoOrManualButton.setAlignment(Pos.CENTER);
+        autoOrManualButtonHbox.setAlignment(Pos.CENTER_RIGHT);
+        autoOrManualButtonHbox.getChildren().add(autoOrManualButton);
+        grid.add(autoOrManualButton, 0, 7, 2, 1);
+
+        sButton = new Button("Sbrake off");
+        HBox sBrakeHbox = new HBox(0);
+        sButton.setOnAction(value ->  {
+            if(sButton.getText().equals("SBrake off")) {//label.getText().equals("Not clicked"))
+                sButton.setText("Sbrake on");
+                System.out.println("SBrake onn");
+                sBrake = true;
+
+            }
+            //label.setText("Clicked!");
+            else {
+                sButton.setText("SBrake off");
+                System.out.println("SBrake off");
+                sBrake = false;
+            }
+            //label.setText("Not clicked!");
+        });
+        sButton.setMinWidth(colWidth*3);
+        sButton.setMinWidth(colWidth*2);
+        sButton.setAlignment(Pos.CENTER);
+        sBrakeHbox.setAlignment(Pos.CENTER_RIGHT);
+        sBrakeHbox.getChildren().add(sButton);
+        grid.add(sButton, 2, 7, 2, 1);
+
+        eButton = new Button("ebrake off");
+        HBox eBrakeHbox = new HBox(0);
+        eButton.setOnAction(value ->  {
+            if(eButton.getText().equals("eBrake off")) {//label.getText().equals("Not clicked"))
+                eButton.setText("ebrake on");
+                System.out.println("eBrake onn");
+                eBrake = true;
+
+            }
+            //label.setText("Clicked!");
+            else {
+                eButton.setText("eBrake off");
+                System.out.println("eBrake off");
+                eBrake = false;
+            }
+            //label.setText("Not clicked!");
+        });
+        eButton.setMinWidth(colWidth*3);
+        eButton.setMinWidth(colWidth*2);
+        eButton.setAlignment(Pos.CENTER);
+        eBrakeHbox.setAlignment(Pos.CENTER_RIGHT);
+        eBrakeHbox.getChildren().add(eButton);
+        grid.add(eButton, 5, 7, 2, 1);
 //////////////////////////////////////////////////////////////Manual and Automatic
         Scene scene = new Scene(grid, windowWidth, windowHight);
         stage.setScene(scene);
