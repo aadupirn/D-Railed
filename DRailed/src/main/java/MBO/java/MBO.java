@@ -84,7 +84,7 @@ public class MBO {
 
     public int getAuthority(int id, String line){
         if(!trainExists(id, line)) addTrain(id, line);
-       return findTrain(id, line).getAuthority();
+        return findTrain(id, line).getAuthority();
     }
 
 

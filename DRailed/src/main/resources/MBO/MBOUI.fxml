@@ -144,169 +144,40 @@
                                        <children>
                                           <TableView id="red_stations_tableview" prefHeight="575.0" prefWidth="595.0" style="-fx-background-color: #ffc9c9;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <columns>
-                                              <TableColumn prefWidth="75.0" text="Herron Ave">
-                                                   <columns>
-                                                      <TableColumn prefWidth="75.0" text="Arrival" />
-                                                      <TableColumn prefWidth="75.0" text="Departure" />
-                                                   </columns>
-                                                </TableColumn>
-                                                <TableColumn prefWidth="75.0" text="Swissville">
-                                                    <columns>
-                                                        <TableColumn prefWidth="75.0" text="Arrival" />
-                                                        <TableColumn prefWidth="75.0" text="Departure" />
-                                                    </columns>
-                                                </TableColumn>
-                                                <TableColumn prefWidth="75.0" text="Penn Station">
-                                                    <columns>
-                                                        <TableColumn prefWidth="75.0" text="Arrival" />
-                                                        <TableColumn prefWidth="75.0" text="Departure" />
-                                                    </columns>
-                                                </TableColumn>
-                                                <TableColumn prefWidth="75.0" text="Steel Plaza">
-                                                    <columns>
-                                                        <TableColumn prefWidth="75.0" text="Arrival" />
-                                                        <TableColumn prefWidth="75.0" text="Departure" />
-                                                    </columns>
-                                                </TableColumn>
-                                                <TableColumn prefWidth="75.0" text="First Ave">
-                                                    <columns>
-                                                        <TableColumn prefWidth="75.0" text="Arrival" />
-                                                        <TableColumn prefWidth="75.0" text="Departure" />
-                                                    </columns>
-                                                </TableColumn>
-                                                <TableColumn prefWidth="75.0" text="Station Square">
-                                                    <columns>
-                                                        <TableColumn prefWidth="75.0" text="Arrival" />
-                                                        <TableColumn prefWidth="75.0" text="Departure" />
-                                                    </columns>
-                                                </TableColumn>
-                                                <TableColumn prefWidth="75.0" text="South Hills">
-                                                    <columns>
-                                                        <TableColumn prefWidth="75.0" text="Arrival" />
-                                                        <TableColumn prefWidth="75.0" text="Departure" />
-                                                    </columns>
-                                                </TableColumn>
-                                                <TableColumn prefWidth="75.0" text="Shadyside">
-                                                    <columns>
-                                                        <TableColumn prefWidth="75.0" text="Arrival" />
-                                                        <TableColumn prefWidth="75.0" text="Departure" />
-                                                    </columns>
-                                                </TableColumn>
+                                              <!--<TableColumn prefWidth="75.0" text="Herron Ave"></TableColumn>-->
+                                                <!--<TableColumn prefWidth="75.0" text="Swissville"></TableColumn>-->
+                                                <!--<TableColumn prefWidth="75.0" text="Penn Station"></TableColumn>-->
+                                                <!--<TableColumn prefWidth="75.0" text="Steel Plaza"></TableColumn>-->
+                                                <!--<TableColumn prefWidth="75.0" text="First Ave"></TableColumn>-->
+                                                <!--<TableColumn prefWidth="75.0" text="Station Square"></TableColumn>-->
+                                                <!--<TableColumn prefWidth="75.0" text="South Hills"></TableColumn>-->
+                                                <!--<TableColumn prefWidth="75.0" text="Shadyside"></TableColumn>-->
                                             </columns>
                                           </TableView>
-                                       </children></AnchorPane>
+                                       </children>
+                                    </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
                                           <TableView id="green_stations_tableview" prefHeight="575.0" prefWidth="595.0" style="-fx-background-color: #9ad1a5;">
                                              <columns>
-                                                 <TableColumn prefWidth="75.0" text="Glenbury">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="Dormont">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="Mt. Lebanon">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="Poplar">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="Castle Shannon">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="Dormont">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="Glenbury">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="Overbrook">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="Inglewood">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="Central">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="Pioneer">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="Edgebrook">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="Univ. Pitt.">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="Whited">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="South Bank">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="Central">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="Inglewood">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
-                                                 <TableColumn prefWidth="75.0" text="Overbrook">
-                                                     <columns>
-                                                         <TableColumn prefWidth="75.0" text="Arrival" />
-                                                         <TableColumn prefWidth="75.0" text="Departure" />
-                                                     </columns>
-                                                 </TableColumn>
+                                                 <!--<TableColumn prefWidth="75.0" text="Glenbury"></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="Dormont"></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="Mt. Lebanon"></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="Poplar"></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="Castle Shannon"></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="Dormont"></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="Glenbury"></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="Overbrook"></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="Inglewood"></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="Central"></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="Pioneer"></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="Edgebrook"></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="Univ. Pitt."></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="Whited"></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="South Bank"></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="Central"></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="Inglewood"></TableColumn>-->
+                                                 <!--<TableColumn prefWidth="75.0" text="Overbrook"></TableColumn>-->
                                              </columns>
                                           </TableView>
                                        </children></AnchorPane>

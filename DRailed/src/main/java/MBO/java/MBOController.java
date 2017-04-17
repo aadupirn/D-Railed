@@ -180,6 +180,46 @@ public class MBOController extends Application {
         greenInfoTable.getColumns().addAll(greenId, greenSpeed, greenSafeSpeed, greenVariance, greenAuthority, greenLocation);
     }
 
+    private void setScheudleColumns() {
+        // Columns for Red Line
+        TableColumn herronStation = new TableColumn("Herron Ave");
+        TableColumn swissvilleStaion = new TableColumn("Swissville");
+        TableColumn pennStation = new TableColumn("Penn Station");
+        TableColumn steelPlazaStation = new TableColumn("Steel Plaza");
+        TableColumn firstAveStation = new TableColumn("First Ave");
+        TableColumn southHillsStation = new TableColumn("South Hills");
+        TableColumn shadysideStation = new TableColumn("Shadyside");
+
+        // Columns for Green Line
+        TableColumn glenBuryStationA = new TableColumn("Glenbury");
+        TableColumn dormontStationA = new TableColumn("Dormont");
+        TableColumn mtLebanonStation = new TableColumn("Mt. Lebanon");
+        TableColumn poplarStation= new TableColumn("Poplar");
+        TableColumn castleShannon = new TableColumn("Castle");
+        TableColumn dormonStationB = new TableColumn("Dormont");
+        TableColumn glenburyStationB = new TableColumn("Glenbury");
+        TableColumn overbrookStationA = new TableColumn("Overbrook");
+        TableColumn inglewoodStationA = new TableColumn("Inglewood");
+        TableColumn centralStationA = new TableColumn("Central");
+        TableColumn pioneerStation = new TableColumn("Pioneer");
+        TableColumn edgebrookStation = new TableColumn("Edgebrook");
+        TableColumn universityStation = new TableColumn("Univ. Pitt");
+        TableColumn whitedStation = new TableColumn("Whited");
+        TableColumn southBankStation = new TableColumn("South Bank");
+        TableColumn centralStationB = new TableColumn("Central");
+        TableColumn inglewoodStationB = new TableColumn("Inglewood");
+        TableColumn overbrookStationB = new TableColumn("Overbrook");
+
+        redStationsTable.getColumns().addAll(herronStation, swissvilleStaion, pennStation, steelPlazaStation,
+                                                firstAveStation, southHillsStation, shadysideStation);
+
+        greenStationsTable.getColumns().addAll(glenBuryStationA, dormontStationA, mtLebanonStation, poplarStation,
+                                                castleShannon, dormonStationB, glenburyStationB, overbrookStationA,
+                                                inglewoodStationA, centralStationA, pioneerStation, edgebrookStation,
+                                                universityStation, whitedStation, southBankStation, centralStationB,
+                                                inglewoodStationB, overbrookStationB);
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/MBO/MBOUI.fxml"));
@@ -191,6 +231,7 @@ public class MBOController extends Application {
         mbo = new MBO(1);
         this.getUIElements();
         this.setMboColumns();
+        this.setScheudleColumns();
     }
 
     public static void main(String[] args) {
