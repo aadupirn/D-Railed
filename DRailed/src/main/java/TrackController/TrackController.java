@@ -182,7 +182,7 @@ public class TrackController {
         return false;
     }
 
-    private Switch getSwitch(int id)
+    public Switch getSwitch(int id)
     {
         Switch sw;
         for (int i:blocks)
@@ -274,12 +274,27 @@ public class TrackController {
 
     public boolean dispatchTrain(int start, int numberOfCarts, int newAuthority, Double newSpeed, int newID) throws Exception
     {
+        boolean go = false;
         if (isLineMain)
         {
-            Train train = new Train(start,numberOfCarts,newAuthority, newSpeed, newID, this.track);
-            track.dispatchTrainOnTrack(this.line,train);
-            dTime.addTC(train.GetTrainController());
-            return true;
+            if (this.line.equals("GREEN"))
+            {
+                if(!track.getBlock(this.line,152).isOccupied())
+                {
+                    go = true;
+                }
+            }
+            else if(!track.getBlock(this.line,77).isOccupied())
+            {
+                go = true;
+            }
+
+            if (go) {
+                Train train = new Train(start, numberOfCarts, newAuthority, newSpeed, newID, this.track);
+                track.dispatchTrainOnTrack(this.line, train);
+                dTime.addTC(train.GetTrainController());
+                return true;
+            }
         }
         return false;
     }
