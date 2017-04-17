@@ -169,6 +169,7 @@ public class Train {
         ui.updateSBrake(sbrake);
         ui.updateMass(mass);
         ui.updateLights(lights);
+        ui.updateAuthority(authority);
     }
 
     public TrainController GetTrainController(){
@@ -253,6 +254,10 @@ public class Train {
     public int GetAuthority(){
         return authority;
     }
+    public void SetAuthority(int newAuthority){
+         authority = newAuthority;
+    }
+
     public int GetStartingBlock(){
         return startingBlock;
     }

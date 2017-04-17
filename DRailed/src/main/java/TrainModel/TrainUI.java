@@ -40,6 +40,7 @@ public class TrainUI {
     private double power;
     private double mass = 10000.0;
     private double grade = 0;
+    private int authority;
 
     //train utilities;
     private boolean heat;
@@ -69,6 +70,7 @@ public class TrainUI {
     private Text lightsText;
     private Text sBrakeText;
     private Text massText;
+    private Text authorityText;
 
 
 
@@ -92,6 +94,7 @@ public class TrainUI {
 
         leftDoors = false;
         rightDoors = false;
+        authority = 0;
 
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -112,150 +115,164 @@ public class TrainUI {
 //////////////////////////////////////////////////////////////SPEED AND POWER
         Label speedLabel = new Label("Speed: ");
         speedLabel.setMinWidth(colWidth * 1.5);
-        speedLabel.setTextAlignment(TextAlignment.RIGHT);
-        speedLabel.setAlignment(Pos.CENTER_RIGHT);
+        speedLabel.setTextAlignment(TextAlignment.LEFT);
+        speedLabel.setAlignment(Pos.CENTER_LEFT);
         grid.add(speedLabel, 3, 0);
 
         speedText = new Text();
         speedText.setText("0 mph");
         speedText.setWrappingWidth(colWidth * 1.5);
-        speedText.setTextAlignment(TextAlignment.LEFT);
+        speedText.setTextAlignment(TextAlignment.RIGHT);
         grid.add(speedText, 4, 0);
 
         Label powerLabel = new Label("Power: ");
         powerLabel.setMinWidth(colWidth * 1.5);
-        powerLabel.setTextAlignment(TextAlignment.RIGHT);
-        powerLabel.setAlignment(Pos.CENTER_RIGHT);
-        grid.add(powerLabel, 3, 1);
+        speedLabel.setTextAlignment(TextAlignment.LEFT);
+        speedLabel.setAlignment(Pos.CENTER_LEFT);
+        grid.add(powerLabel, 0, 1);
 
         powerText = new Text();
         powerText.setText("0 watt");
         powerText.setWrappingWidth(colWidth * 1.5);
-        powerText.setTextAlignment(TextAlignment.LEFT);
-        grid.add(powerText, 4, 1);
+        speedText.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(powerText, 1, 1);
 
 ////////////////////////////////////////////////////////////// grade
         Label gradeLevel = new Label("Grade: ");
         gradeLevel.setMinWidth(colWidth * 1.5);
-        gradeLevel.setTextAlignment(TextAlignment.RIGHT);
-        gradeLevel.setAlignment(Pos.CENTER_RIGHT);
-        grid.add(gradeLevel, 3, 2);
+        speedLabel.setTextAlignment(TextAlignment.LEFT);
+        speedLabel.setAlignment(Pos.CENTER_LEFT);
+        grid.add(gradeLevel, 3, 1);
 
         gradeText = new Text();
         gradeText.setText("0 degrees");
         gradeText.setWrappingWidth(colWidth * 1.5);
-        gradeText.setTextAlignment(TextAlignment.LEFT);
-        grid.add(gradeText, 4, 2);
+        speedText.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(gradeText, 4, 1);
 
 ////////////////////////////////////////////////////////////// Temperature
         Label tempLevel = new Label("Temp: ");
         tempLevel.setMinWidth(colWidth * 1.5);
-        tempLevel.setTextAlignment(TextAlignment.RIGHT);
-        tempLevel.setAlignment(Pos.CENTER_RIGHT);
-        grid.add(tempLevel, 3, 3);
+        speedLabel.setTextAlignment(TextAlignment.LEFT);
+        speedLabel.setAlignment(Pos.CENTER_LEFT);
+        grid.add(tempLevel, 0, 2);
 
         tempText = new Text();
         tempText.setText("0 degrees");
         tempText.setWrappingWidth(colWidth * 1.5);
-        tempText.setTextAlignment(TextAlignment.LEFT);
-        grid.add(tempText, 4, 3);
+        speedText.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(tempText, 1, 2);
 
         Label acLevel = new Label("AC: ");
         acLevel.setMinWidth(colWidth * 1.5);
-        acLevel.setTextAlignment(TextAlignment.RIGHT);
-        acLevel.setAlignment(Pos.CENTER_RIGHT);
-        grid.add(acLevel, 3, 4);
+        speedLabel.setTextAlignment(TextAlignment.LEFT);
+        speedLabel.setAlignment(Pos.CENTER_LEFT);
+        grid.add(acLevel, 3, 2);
 
         acText = new Text();
         acText.setText("off");
         acText.setWrappingWidth(colWidth * 1.5);
-        acText.setTextAlignment(TextAlignment.LEFT);
-        grid.add(acText, 4, 4);
-
+        speedText.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(acText, 4, 2);
+////////////////////////////////////////////
         Label heatLevel = new Label("Heat: ");
         heatLevel.setMinWidth(colWidth * 1.5);
-        heatLevel.setTextAlignment(TextAlignment.RIGHT);
-        heatLevel.setAlignment(Pos.CENTER_RIGHT);
-        grid.add(heatLevel, 3, 5);
+        speedLabel.setTextAlignment(TextAlignment.LEFT);
+        speedLabel.setAlignment(Pos.CENTER_LEFT);
+        grid.add(heatLevel, 0, 3);
 
         heatText = new Text();
         heatText.setText("off");
         heatText.setWrappingWidth(colWidth * 1.5);
-        heatText.setTextAlignment(TextAlignment.LEFT);
-        grid.add(heatText, 4, 5);
+        speedText.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(heatText, 1, 3);
 
         Label leftDoors = new Label("LeftDoors Status: ");
         leftDoors.setMinWidth(colWidth * 1.5);
-        leftDoors.setTextAlignment(TextAlignment.RIGHT);
-        leftDoors.setAlignment(Pos.CENTER_RIGHT);
-        grid.add(leftDoors, 3, 6);
+        speedLabel.setTextAlignment(TextAlignment.LEFT);
+        speedLabel.setAlignment(Pos.CENTER_LEFT);
+        grid.add(leftDoors, 3, 3);
 
         leftDoorsText = new Text();
         leftDoorsText.setText("closed");
         leftDoorsText.setWrappingWidth(colWidth * 1.5);
-        leftDoorsText.setTextAlignment(TextAlignment.LEFT);
-        grid.add(leftDoorsText, 4, 6);
+        speedText.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(leftDoorsText, 4, 3);
+////////////////////////////////////////////
 
         Label rightDoors = new Label("rightDoors Status: ");
         rightDoors.setMinWidth(colWidth * 1.5);
-        rightDoors.setTextAlignment(TextAlignment.RIGHT);
-        rightDoors.setAlignment(Pos.CENTER_RIGHT);
-        grid.add(rightDoors, 3, 7);
+        speedLabel.setTextAlignment(TextAlignment.LEFT);
+        speedLabel.setAlignment(Pos.CENTER_LEFT);
+        grid.add(rightDoors, 0, 4);
 
         rightDoorsText = new Text();
         rightDoorsText.setText("closed");
         rightDoorsText.setWrappingWidth(colWidth * 1.5);
-        rightDoorsText.setTextAlignment(TextAlignment.LEFT);
-        grid.add(rightDoorsText, 4, 7);
+        speedText.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(rightDoorsText, 1, 4);
 
         Label ebrake = new Label("Ebrake Status: ");
         ebrake.setMinWidth(colWidth * 1.5);
-        ebrake.setTextAlignment(TextAlignment.RIGHT);
-        ebrake.setAlignment(Pos.CENTER_RIGHT);
-        grid.add(ebrake, 3, 8);
+        speedLabel.setTextAlignment(TextAlignment.LEFT);
+        speedLabel.setAlignment(Pos.CENTER_LEFT);
+        grid.add(ebrake, 3, 4);
 
         eBrakeText = new Text();
         eBrakeText.setText("off");
         eBrakeText.setWrappingWidth(colWidth * 1.5);
-        eBrakeText.setTextAlignment(TextAlignment.LEFT);
-        grid.add(eBrakeText, 4, 8);
+        speedText.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(eBrakeText, 4, 4);
+////////////////////////////////////////////
 
         Label sbrake = new Label("sbrake Status: ");
         sbrake.setMinWidth(colWidth * 1.5);
-        sbrake.setTextAlignment(TextAlignment.RIGHT);
-        sbrake.setAlignment(Pos.CENTER_RIGHT);
-        grid.add(sbrake, 3, 9);
+        speedLabel.setTextAlignment(TextAlignment.LEFT);
+        speedLabel.setAlignment(Pos.CENTER_LEFT);
+        grid.add(sbrake, 0, 5);
 
         sBrakeText = new Text();
         sBrakeText.setText("off");
         sBrakeText.setWrappingWidth(colWidth * 1.5);
-        sBrakeText.setTextAlignment(TextAlignment.LEFT);
-        grid.add(sBrakeText, 4, 9);
+        speedText.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(sBrakeText, 1, 5);
 
         Label massLabel = new Label("Weight: ");
         massLabel.setMinWidth(colWidth * 1.5);
-        massLabel.setTextAlignment(TextAlignment.RIGHT);
-        massLabel.setAlignment(Pos.CENTER_RIGHT);
-        grid.add(massLabel, 3, 10);
+        speedLabel.setTextAlignment(TextAlignment.LEFT);
+        speedLabel.setAlignment(Pos.CENTER_LEFT);
+        grid.add(massLabel, 3, 5);
 
         massText = new Text();
         massText.setText(" 0 lbs");
         massText.setWrappingWidth(colWidth * 1.5);
-        massText.setTextAlignment(TextAlignment.LEFT);
-        grid.add(massText, 4, 10);
+        speedText.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(massText, 4, 5);
+////////////////////////////////////////////
 
         Label lightsLabel = new Label("Lights Status: ");
         lightsLabel.setMinWidth(colWidth * 1.5);
-        lightsLabel.setTextAlignment(TextAlignment.RIGHT);
-        lightsLabel.setAlignment(Pos.CENTER_RIGHT);
-        grid.add(lightsLabel, 3, 11);
+        speedLabel.setTextAlignment(TextAlignment.LEFT);
+        speedLabel.setAlignment(Pos.CENTER_LEFT);
+        grid.add(lightsLabel, 0, 6);
 
         lightsText = new Text();
         lightsText.setText(" off");
         lightsText.setWrappingWidth(colWidth * 1.5);
-        lightsText.setTextAlignment(TextAlignment.LEFT);
-        grid.add(lightsText, 4, 11);
+        speedText.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(lightsText, 1, 6);
 
+        Label authorityLabel = new Label("Authority: ");
+        authorityLabel.setMinWidth(colWidth * 1.5);
+        speedLabel.setTextAlignment(TextAlignment.LEFT);
+        speedLabel.setAlignment(Pos.CENTER_LEFT);
+        grid.add(authorityLabel, 3, 6);
+
+        authorityText = new Text();
+        authorityText.setText(" 0");
+        authorityText.setWrappingWidth(colWidth * 1.5);
+        speedText.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(authorityText, 4, 6);
 //////////////////////////////////////////////////////////////Manual and Automatic
         Scene scene = new Scene(grid, windowWidth, windowHight);
         stage.setScene(scene);
@@ -348,6 +365,11 @@ public class TrainUI {
             lightsText.setText( " on" );
         else
             lightsText.setText( " off" );
+    }
+
+    protected void updateAuthority(int newAuthority){
+        authority = newAuthority;
+        authorityText.setText(String.format( "%d", authority ) + " m" );
     }
 
 }
