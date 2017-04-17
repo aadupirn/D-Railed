@@ -2,9 +2,7 @@ package MBO.java;
 
 import com.sun.javafx.scene.control.TableColumnComparatorBase;
 import javafx.application.Application;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -18,6 +16,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import java.sql.Time;
 
 public class MBOController extends Application {
     private Scheduler scheduler;
@@ -100,23 +100,84 @@ public class MBOController extends Application {
 
         // Conductor Schedule Button
 
-
         // Button Actions
         mboToggle.setOnAction((ActionEvent a) -> { mbo.toggleMBO(); });
 
         trainInfoTestBtn.setOnAction((ActionEvent a) -> {
+            String line = ((RadioButton)redRadio.getToggleGroup().getSelectedToggle()).getText();
+            int id = Integer.parseInt(idTestInput.getText());
+            double speed = Double.parseDouble(speedTestInput.getText());
+            double safeSpeed = Double.parseDouble(safeSpeedTestInput.getText());
+            double variance = Double.parseDouble(varianceTestInput.getText());
+            int authority = Integer.parseInt(authorityTestInput.getText());
+            String location = locationTestInput.getText();
 
+            System.out.println(line);
+
+            mbo.addTrain(id, line, speed, safeSpeed, variance, authority, location);
+
+            ((RadioButton)redRadio.getToggleGroup().getSelectedToggle()).setSelected(false);
+            idTestInput.clear();
+            speedTestInput.clear();
+            safeSpeedTestInput.clear();
+            varianceTestInput.clear();
+            authorityTestInput.clear();
+            locationTestInput.clear();
         });
 
         murphyBtn.setOnAction((ActionEvent a) -> { mbo.toggleMurphy(); });
 
         scheduleTestBtn.setOnAction((ActionEvent a) -> {
-            scheduler.updateSchedule(Integer.parseInt(idScheduleTestInput.getText()), );
+            if(idScheduleTestInput.getText() == null) return; //@TODO ERROR LOG
+
+            //scheduler.updateSchedule(Integer.parseInt(idScheduleTestInput.getText()));
         });
 
         generateScheduleBtn.setOnAction((ActionEvent a) -> {
+            if(thruputInput.getText() == null || startInput.getText() == null || endInput.getText() == null) return; // @TODO ERROR LOG
 
+            //scheduler.generateSchedule(Integer.parseInt(thruputInput.getText()), Time.valueOf(startInput.getText()), Time.valueOf(endInput.getText()));
         });
+    }
+
+    private void setMboColumns() {
+        // Columns for Red Line
+        TableColumn redId = new TableColumn("ID");
+        TableColumn redSpeed = new TableColumn("Speed");
+        TableColumn redSafeSpeed = new TableColumn("Safe Speed");
+        TableColumn redVariance = new TableColumn("Variance");
+        TableColumn redAuthority = new TableColumn("Authority");
+        TableColumn redLocation = new TableColumn("Location");
+
+
+        // Columns for Green Line
+        TableColumn greenId = new TableColumn("ID");
+        TableColumn greenSpeed = new TableColumn("Speed");
+        TableColumn greenSafeSpeed = new TableColumn("Safe Speed");
+        TableColumn greenVariance = new TableColumn("Variance");
+        TableColumn greenAuthority = new TableColumn("Authority");
+        TableColumn greenLocation = new TableColumn("Location");
+
+        // Mappings for the appropriate column updates tot he specific values in the TrainInfo class
+        redId.setCellValueFactory(new PropertyValueFactory<TrainInfo, Integer>("id"));
+        redSpeed.setCellValueFactory(new PropertyValueFactory<TrainInfo, Double>("speed"));
+        redSafeSpeed.setCellValueFactory(new PropertyValueFactory<TrainInfo, Double>("safeSpeed"));
+        redVariance.setCellValueFactory(new PropertyValueFactory<TrainInfo, Double>("variance"));
+        redAuthority.setCellValueFactory(new PropertyValueFactory<TrainInfo, Integer>("authority"));
+        redLocation.setCellValueFactory(new PropertyValueFactory<TrainInfo, String>("location"));
+
+        greenId.setCellValueFactory(new PropertyValueFactory<TrainInfo, Integer>("id"));
+        greenSpeed.setCellValueFactory(new PropertyValueFactory<TrainInfo, Double>("speed"));
+        greenSafeSpeed.setCellValueFactory(new PropertyValueFactory<TrainInfo, Double>("safeSpeed"));
+        greenVariance.setCellValueFactory(new PropertyValueFactory<TrainInfo, Double>("variance"));
+        greenAuthority.setCellValueFactory(new PropertyValueFactory<TrainInfo, Integer>("authority"));
+        greenLocation.setCellValueFactory(new PropertyValueFactory<TrainInfo, String>("location"));
+
+        redInfoTable.setItems(mbo.getRedRows());
+        redInfoTable.getColumns().addAll(redId, redSpeed, redSafeSpeed, redVariance, redAuthority, redLocation);
+
+        greenInfoTable.setItems(mbo.getGreenRows());
+        greenInfoTable.getColumns().addAll(greenId, greenSpeed, greenSafeSpeed, greenVariance, greenAuthority, greenLocation);
     }
 
     @Override
@@ -126,9 +187,10 @@ public class MBOController extends Application {
         primary.setTitle("MBO Interface");
         primary.setScene(new Scene(root));
         primary.show();
-        this.getUIElements();
         scheduler = new Scheduler(1);
         mbo = new MBO(1);
+        this.getUIElements();
+        this.setMboColumns();
     }
 
     public static void main(String[] args) {
