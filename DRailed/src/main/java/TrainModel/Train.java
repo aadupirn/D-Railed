@@ -10,15 +10,16 @@ import TrackModel.Track;
  */
 public class Train {
     private TrainController trainController;
-    private TrainModel trainModel;
+    private TrainUI trainUI;
     private Track track;
-    private int startingBlock;
+    private int block;
     private Double commandSpeed;
     private int id;
     private double currentSpeed;
     private double mass;
     private double grade;
     private int authority;
+    private double temp;
 
     private engine Engine;
     private AC ac;
@@ -45,12 +46,13 @@ public class Train {
         sbrake = false;
 
         currentSpeed = 0;
-        mass = 10000;
+        mass = 81400;
 
-        startingBlock = 152;
+        block = 152;
         track = new Track();
         people = 0;
         trainController = new TrainController(this, this.track);
+        trainUI = new TrainUI();
         //trainModel = new TrainModel();
     }
 
@@ -70,12 +72,13 @@ public class Train {
         sbrake = false;
 
         currentSpeed = 0;
-        mass = 10000;
+        mass = 81400;
 
-        startingBlock = 152;
+        block = 152;
         track = new Track();
         people = 0;
         trainController = new TrainController(this, this.track);
+        trainUI = new TrainUI();
 
     }
 
@@ -85,7 +88,7 @@ public class Train {
         ebrake = false;
         sbrake = false;
         currentSpeed = 0;
-        mass = 10000;
+        mass = 81400;
         people = 0;
 
 
@@ -103,7 +106,7 @@ public class Train {
         ebrake = false;
         sbrake = false;
         currentSpeed = 0;
-        mass = 10000;
+        mass = 81400;
         people = 0;
 
         block = startingBlock;
@@ -113,7 +116,8 @@ public class Train {
         this.numberOfCarts = numberOfCarts;
        // trainModel = new TrainModel();
         //trainModel = new TrainModel();
-        //trainController = new TrainController();
+        trainController = new TrainController(this, this.track);
+        trainUI = new TrainUI();
     }
     public Train(int startingBlock, int numberOfCarts, int newAuthority, Double newSpeed, int newID, Track track) throws IOException, Exception {
         Engine = new engine();
@@ -121,14 +125,13 @@ public class Train {
         ebrake = false;
         sbrake = false;
         currentSpeed = 0;
-        mass = 10000;
+        mass = 81400;
         people = new Random().nextInt(222);
 
         startingBlock = startingBlock;
         id = newID;
         trainController = new TrainController(this, track);
-        trainModel = new TrainModel();
-        //trainModel = new TrainModel();
+        trainUI = new TrainUI();        //trainModel = new TrainModel();
         this.numberOfCarts = numberOfCarts;
     }
 
@@ -139,12 +142,53 @@ public class Train {
     public void Update(){
         ac.changeTemp();
         calculateSpeed(commandSpeed);
-        updateUI();
+        if(trainUI.getAutoVsManual()){
+            get();
+        }
+        else {
+            updateUI();
+        }
         //System.out.println("TEmperature is " + ac.getTemp());
         //System.out.println("Speed is " + );
     }
+    public void get(){
+        sbrake = trainUI.getSBrake();
+        ebrake = trainUI.getEBrake();
+        mass = trainUI.getMass();
+        lights = trainUI.getLights();
+        commandSpeed = trainUI.getAuthority();
+        //block = get
+        rightDoors = trainUI.getRightRDoors();
+        leftDoors = trainUI.getLeftDoors();
+        if(trainUI.getAc())
+            ac.acOn();
+        else
+            ac.acOff();
+        if(trainUI.getHeat())
+            ac.heatOn();
+        else
+            ac.heatOff();
+        temp = trainUI.getTemperature();
+        grade = trainUI.getGrade();
+        currentSpeed = trainUI.getSpeed();
+    }
     public void updateUI(){
         //TrainModel == UI
+        trainUI.updateSpeed(currentSpeed);
+        trainUI.updateId(id);
+        trainUI.updatePower(commandSpeed);
+        trainUI.updateGrade(grade);
+        trainUI.updateTemperature(temp);
+        trainUI.updateAC(ac.ac);
+        trainUI.updateHeat(ac.heat);
+        trainUI.updateLeftDoors(leftDoors);
+        trainUI.updateRightDoors(rightDoors);
+        trainUI.updateEBrake(ebrake);
+        trainUI.updateSBrake(sbrake);
+        trainUI.updateMass(mass);
+        trainUI.updateLights(lights);
+        trainUI.updateAuthority(authority);
+        trainUI.updateBlock(block);
     }
 
     public TrainController GetTrainController(){
@@ -189,7 +233,8 @@ public class Train {
         ac.heatOff();
     }
     public double getTemperature(){
-        return ac.getTemp();
+        double temp =  ac.getTemp();
+        return temp;
     }
 
 
@@ -198,7 +243,7 @@ public class Train {
             This block has setters and getters for people and updates weight of system
     */
     public void weightUpdate(){
-        mass = (10000*(numberOfCarts + 2) + (people * 150));
+        mass = (81400*(numberOfCarts) + (people * 165.347));
     }
     public void setPeople(int people){
         this.people = people;
@@ -225,7 +270,6 @@ public class Train {
     public int GetAuthority(){
         return authority;
     }
-<<<<<<< HEAD
     public void SetAuthority(int newAuthority){
          authority = newAuthority;
     }
@@ -236,12 +280,8 @@ public class Train {
     public int GetStartingBlock(){
         return block;
     }
-    private void setBLock(int newBlock){
+    private void setBLock(int newBlock) {
         block = newBlock;
-=======
-    public int GetStartingBlock(){
-        return startingBlock;
->>>>>>> master
     }
     public void SetPowerCommand(Double pwrCMD){
         commandSpeed = pwrCMD;
