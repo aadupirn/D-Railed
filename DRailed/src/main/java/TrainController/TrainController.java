@@ -799,10 +799,16 @@ public class TrainController
 				controlCalculator2.setDesiredSpeed(speedLimit);
 				setDesiredSpeedText(speedLimit);
 			}
+		}
 
+		if(speedLimit == 0)
+		{
+			sBrake();
 		}
 		double powerCommand1 = controlCalculator1.computeNextCommand(speed);
 		double powerCommand2 = controlCalculator2.computeNextCommand(speed);
+
+
 		if(powerCommand1 != powerCommand2) //power command calculation failute brake!!!
 		{
 			emergencyBrake();
