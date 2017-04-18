@@ -17,6 +17,9 @@ public class Timer extends Thread {
 	}
 
 	Time getTime() { return Time.valueOf(hour + ":" + min + ":" + sec); }
+	int getHour() { return this.hour; }
+	int getMin() {	return this.min; }
+	int getSec() { return this.sec; }
 
 	@Override
 	public void run() {
