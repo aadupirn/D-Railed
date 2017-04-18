@@ -13,7 +13,7 @@ public class AC {
     protected static double temperature;
     private boolean ac;
     private boolean heat;
-    private double k;
+    private static double k;
 
     public AC(){
         ac = false;
@@ -25,9 +25,6 @@ public class AC {
         ac = false;
         heat = false;
         temperature = 70.0;
-        k = kValue;
-    }
-    protected void setK(int kValue){
         k = kValue;
     }
     protected void acOn(){
@@ -70,6 +67,9 @@ public class AC {
     protected static Double getTemp(){
 
         return temperature;
+    }
+    protected static void setK(double newK){
+        k = newK;
     }
 
     private Double fahrToCel(Double fah){
