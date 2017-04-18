@@ -16,7 +16,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import TrackController.events.DispatchDealOfTrackController;
 import ctc.beanpnl.OptTrainBean;
 
 public class DispatchCtrl implements Initializable  {
@@ -75,7 +74,7 @@ public class DispatchCtrl implements Initializable  {
 				trainlist.add(opTrain);
 
 			// To TrackController
-			DispatchDealOfTrackController.dealDispatchEvent(opTrain);
+			//DispatchDealOfTrackController.dealDispatchEvent(opTrain);
 			
 			// 然后清空
 			departureText.setText("");

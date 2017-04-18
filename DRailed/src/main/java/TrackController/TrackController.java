@@ -232,16 +232,17 @@ public class TrackController {
 
     private void sendSpeedAndAuthority(ThreeBaudMessage message)
     {
-        Block block;
-        double speed = (double)message.getSpeed();
-        for (int i:blocks)
-        {
-            block = track.getBlock(this.line,i);
-            if (speed > block.getSpeedLimit()) {
-                speed = block.getSpeedLimit();
-                message.setSpeed((char)speed);
+        if (ctcComms) {
+            Block block;
+            double speed = (double) message.getSpeed();
+            for (int i : blocks) {
+                block = track.getBlock(this.line, i);
+                if (speed > block.getSpeedLimit()) {
+                    speed = block.getSpeedLimit();
+                    message.setSpeed((char) speed);
+                }
+                block.setMessage(message);
             }
-            block.setMessage(message);
         }
     }
 
@@ -305,7 +306,7 @@ public class TrackController {
     public boolean dispatchTrain(int start, int numberOfCarts, int newAuthority, Double newSpeed, int newID) throws Exception
     {
         boolean go = false;
-        if (isLineMain)
+        if (isLineMain && ctcComms)
         {
             if (this.line.equals("GREEN"))
             {
