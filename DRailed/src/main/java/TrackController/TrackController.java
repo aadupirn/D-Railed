@@ -3,6 +3,7 @@ package TrackController;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.concurrent.LinkedBlockingDeque;
 import TrackController.Classes.*;
 import TrackController.UI.*;
@@ -22,7 +23,7 @@ public class TrackController {
     private int ID;
     private String line;
     private boolean trackComms, ctcComms, isLineMain;
-    private LinkedBlockingDeque<ThreeBaudMessage> messageQueue;
+    private LinkedList<ThreeBaudMessage> messageQueue;
     private TrackControllerUI ui;
     private DTime dTime;
     private ArrayList<Integer> blocks, plcBlocks;
@@ -56,7 +57,7 @@ public class TrackController {
         this.line = line;
         ID = id;
         blocks = b;
-        messageQueue = new LinkedBlockingDeque<>();
+        messageQueue = new LinkedList<>();
 
         if (line.equals("GREEN"))
         {
@@ -116,8 +117,8 @@ public class TrackController {
         return ID;
     }
 
-    public void setTrackComms(boolean trackComms) {
-        this.trackComms = trackComms;
+    public void toggleTrackComms() {
+        this.trackComms = !this.trackComms;
     }
 
     public boolean hasTrackComms() {
@@ -159,7 +160,7 @@ public class TrackController {
         return false;
     }
 
-    public boolean setSwitch(String line, int id, int blockID)
+    public boolean setSwitch(String line, int id, int blockID) //TODO maybe switch to boolean state, not blockID?
     {
         Switch sw;
         if (line.equals(this.line))
@@ -199,11 +200,11 @@ public class TrackController {
 
     public void setSpeedAndAuthority(int trainID, double speed, int authority) //TODO make sure to do this before any PLC outputs, so PLC can make it zero again
     {
-            ThreeBaudMessage message = new ThreeBaudMessage();
-            message.setTrainID((char)trainID);
-            message.setSpeed((char)speed);
-            message.setAuthority((char)authority);
-            messageQueue.add(message);
+        ThreeBaudMessage message = new ThreeBaudMessage();
+        message.setTrainID((char)trainID);
+        message.setSpeed((char)speed);
+        message.setAuthority((char)authority);
+        messageQueue.add(message);
     }
 
     private void sendSpeedAndAuthority(ThreeBaudMessage message)
@@ -213,14 +214,11 @@ public class TrackController {
         for (int i:blocks)
         {
             block = track.getBlock(this.line,i);
-            if (block.isOccupied())
-            {
-                if (speed > block.getSpeedLimit()) {
-                    speed = block.getSpeedLimit();
-                    message.setSpeed((char)speed);
-                }
-                block.setMessage(message);
+            if (speed > block.getSpeedLimit()) {
+                speed = block.getSpeedLimit();
+                message.setSpeed((char)speed);
             }
+            block.setMessage(message);
         }
     }
 
@@ -257,18 +255,27 @@ public class TrackController {
     public void Update()
     {
         Block b;
-        for (int i:blocks)
-        {
-            b = track.getBlock(this.line, i);
-            b.clearMessage();
-        }
+        if (trackComms) {
+            for (int i : blocks) {
+                b = track.getBlock(this.line, i);
+                b.clearMessage();
+            }
 
-        if (!messageQueue.isEmpty())
-        {
-            sendSpeedAndAuthority(messageQueue.remove());
+            if (!messageQueue.isEmpty()) {
+                sendSpeedAndAuthority(messageQueue.removeFirst());
+            }
+            if (plcLoaded())
+                plcStopTrains();
         }
-        if (plcLoaded())
-            plcStopTrains();
+        else
+        {
+            ThreeBaudMessage t = new ThreeBaudMessage();
+            for (int i : blocks)
+            {
+                b = track.getBlock(this.line, i);
+                b.setMessage(t);
+            }
+        }
         ui.Update();
     }
 
@@ -290,10 +297,14 @@ public class TrackController {
             }
 
             if (go) {
-                Train train = new Train(start, numberOfCarts, newAuthority, newSpeed, newID, this.track);
-                track.dispatchTrainOnTrack(this.line, train);
-                dTime.addTC(train.GetTrainController());
-                return true;
+                try {
+                    Train train = new Train(start, numberOfCarts, newAuthority, newSpeed, newID, this.track);
+                    track.dispatchTrainOnTrack(this.line, train);
+                    dTime.addTC(train.GetTrainController());
+                    return true;
+                } catch (Exception e) {
+                    return false;
+                }
             }
         }
         return false;

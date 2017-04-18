@@ -98,7 +98,7 @@ public class TrackControllerUI {
         controllerLine = new Text("Line - " + tc.getLine());
         controllerSection = new Text("Controller Number - " + tc.getID());
         blockLabel = new Label("Block Info");
-        controlLabel = new Label("Controls/Track Info");
+        controlLabel = new Label("PLC Loaded: " + tc.plcLoaded());
         switchLabel = new Label("Switch Info");
         blockLabel.setMinWidth(windowWidth / 3 - 20);
         controlLabel.setMinWidth(windowWidth / 3 - 20);
@@ -170,9 +170,9 @@ public class TrackControllerUI {
 
         //Set up ButtonPane -----------------------------------------------------------------------
         murphyButton = new Button("Murphy Controls");
-        userInputsButton = new Button("CTC Inputs");
+        userInputsButton = new Button("Dispatch Train");
         engInputsButton = new Button("Engineer Inputs");
-        toTrackModelButton = new Button("Inputs To Track Model");
+        toTrackModelButton = new Button("Speed and Authority");
         murphyButton.setOnAction(e -> MainButtonClicked(e));
         userInputsButton.setOnAction(e -> MainButtonClicked(e));
         engInputsButton.setOnAction(e -> MainButtonClicked(e));
@@ -263,6 +263,9 @@ public class TrackControllerUI {
         murphyBreakTrackButton = new Button("Break Track");
         murphyBreakCTCComms = new Button("CTC");
         murphyBreakTMComms = new Button("Track Model");
+        murphyBreakTrackButton.setOnAction(e -> MurphyButtonClicked(e));
+        murphyBreakCTCComms.setOnAction(e -> MurphyButtonClicked(e));
+        murphyBreakTMComms.setOnAction(e -> MurphyButtonClicked(e));
         TextField breakBlockID = new TextField("Put Block ID to break");
         Label breakCommsLabel = new Label("Break Comms with: ");
         GridPane breakComms = new GridPane();
@@ -273,7 +276,6 @@ public class TrackControllerUI {
         murphy.add(breakBlockID, 0, 0);
 
         //break track button
-        murphyBreakTrackButton.setOnAction(e -> MurphyButtonClicked(e));
         murphy.add(murphyBreakTrackButton, 1, 0);
 
         //Break comms label
@@ -363,7 +365,7 @@ public class TrackControllerUI {
         sendTrainIDText = new TextField("");
         sendSpeedText = new TextField("");
         sendAuthText = new TextField("");
-        sendData = new Button("Send to Track Model");
+        sendData = new Button("Send Message");
         sendData.setOnAction(e->setSpeedAndAuthorityClicked(e));
 
 
@@ -455,14 +457,16 @@ public class TrackControllerUI {
             {
                tc.setPLC(file2);
             }
+            controlLabel.setText(("PLC Loaded: " + tc.plcLoaded()));
         }
     }
 
     public void MurphyButtonClicked(ActionEvent e)
     {
         Object source = e.getSource();
-        if(source == murphyBreakTrackButton)
+        if(source == murphyBreakTMComms)
         {
+            tc.toggleTrackComms();
             //TODO something, maybe display in same pane?
         }
     }
@@ -542,7 +546,7 @@ public class TrackControllerUI {
         else if(source == userInputsButton)
         {
             sideStage.setScene(userInScene);
-            newTitle = "CTC Inputs";
+            newTitle = "Dispatch";
         }
         else if(source == engInputsButton)
         {
@@ -552,7 +556,7 @@ public class TrackControllerUI {
         else if(source == toTrackModelButton)
         {
             sideStage.setScene(toTMScene);
-            newTitle = "Output To Track Model";
+            newTitle = "Speed and Authority";
         }
         sideStage.setTitle(newTitle);
         sideStage.show();
