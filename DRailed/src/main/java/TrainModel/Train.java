@@ -99,7 +99,7 @@ public class Train {
         people = 0;
 
 
-        startingBlock = startingBlock;
+        block = startingBlock;
         id = newID;
         track = new Track();
         trainController = new TrainController(this, this.track);
@@ -116,7 +116,7 @@ public class Train {
         mass = 10000;
         people = 0;
 
-        startingBlock = startingBlock;
+        block = startingBlock;
         id = newID;
         track = new Track();
         trainController = new TrainController(this, track);
@@ -257,6 +257,9 @@ public class Train {
     }
 
     public int GetBlock(){
+        return block;
+    }
+    public int GetStartingBlock(){
         return block;
     }
     private void setBLock(int newBlock){
