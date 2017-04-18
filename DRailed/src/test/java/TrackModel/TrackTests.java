@@ -8,6 +8,8 @@ import TrainModel.Train;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.TestCase.assertNotSame;
 import static junit.framework.TestCase.assertEquals;
@@ -258,21 +260,26 @@ public class TrackTests {
         Block startBlock = track.getFromYardBlock("GREEN");
         Block nextBlock = null;
 
-        System.out.println(startBlock.getBlockNumber());
+        boolean dir = startBlock.canMoveToBlock(true);
 
-        // check if can move up
-        if(startBlock.canMoveToBlock(true)){
-            nextBlock = startBlock.getNextUpBlock();
-        }
-
-        // check if can move down
-        if(startBlock.canMoveToBlock(false)){
-            nextBlock = startBlock.getNextDownBlock();
-        }
-
-        System.out.println(nextBlock.getBlockNumber());
+        nextBlock = startBlock.getNextBlock(dir);
 
         assertEquals(63, nextBlock.getBlockNumber().intValue());
+
+    }
+
+    @Test
+    public void testBlockLookAhead(){
+
+        Track track = new Track("greenLine.csv");
+        Block startBlock = track.getFromYardBlock("GREEN");
+
+        List<Block> blist = track.tm.lookAhead(startBlock, false, 5);
+
+        Block lastBlock = blist.get(4);
+        System.out.println(lastBlock.getBlockNumber());
+
+        assertEquals(67, lastBlock.getBlockNumber().intValue());
 
     }
 

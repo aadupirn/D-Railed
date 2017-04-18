@@ -1,6 +1,5 @@
 package TrackModel;
 
-//import MBO.java.Train;
 import TrackController.TrackController;
 import TrackModel.Model.*;
 import TrainModel.Train;
@@ -18,6 +17,7 @@ public class Track {
     public Track(){
         tm = new TrackModel();
         tm.importTrack("greenLine.csv");
+        tm.importTrack("redLine.csv");
     }
 
     public Track(String trackLayout){
@@ -31,38 +31,6 @@ public class Track {
     public TrackController getTrackController(){
         return tc;
     }
-
-   /* // @Track Controller: Sets safe speed and authority for a train on a rail
-    public boolean setSpeedAndAuthority(String line, int blockId, double speed, int authority){
-        for(Line l : tm.getLines()){
-            if(l.getLine().equals(line)) {
-                l.getBlock(blockId).setSpeedAndAuthority(speed, authority);
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public double readSpeed(Line line, int blockId){
-        for(Line l : tm.getLines()){
-            if(l.getLine().equals(line)){
-                l.getBlock(blockId).readSpeed();
-            }
-        }
-
-        return -1;
-    }
-
-    public int readAuthority(Line line, int blockId){
-        for(Line l : tm.getLines()){
-            if(l.getLine().equals(line)){
-                return l.getBlock(blockId).readAuthority();
-            }
-        }
-
-        return -1;
-    }*/
 
     // @CTC: Places the train on the appropriate block coming from the Yard
     public int dispatchTrainOnTrack(String line, TrainModel.Train train) {

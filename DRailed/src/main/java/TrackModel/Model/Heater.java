@@ -1,5 +1,7 @@
 package TrackModel.Model;
 
+import javafx.concurrent.Task;
+
 import java.util.Random;
 
 /**
@@ -22,6 +24,8 @@ public class Heater {
         this.active = false;
         this.railTemp = generateRailTemp();
         this.enviromentTemp = this.railTemp;
+        this.desiredTemp = this.enviromentTemp;
+        startUpdateThread();
     }
 
     public Heater(String heaterNumber, double railTemp){
@@ -29,6 +33,8 @@ public class Heater {
         this.active = false;
         this.railTemp = railTemp;
         this.enviromentTemp = this.railTemp;
+        this.desiredTemp = this.enviromentTemp;
+        startUpdateThread();
     }
 
     public String getHeaterNumber() {
@@ -102,6 +108,21 @@ public class Heater {
         if(this.railTemp > this.enviromentTemp){
             this.railTemp -= this.heatRate;
         }
+    }
+
+    private void startUpdateThread() {
+        Task task = new Task<Void>() {
+            @Override
+            public Void call() throws Exception {
+                while (true) {
+                    updateTemp();
+                    Thread.sleep(10);
+                }
+            }
+        };
+        Thread th = new Thread(task);
+        th.setDaemon(true);
+        th.start();
     }
 
 }

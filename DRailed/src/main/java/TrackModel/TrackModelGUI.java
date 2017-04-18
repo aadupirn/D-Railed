@@ -287,7 +287,7 @@ public class TrackModelGUI {
         beaconLabels.setAlignment(Pos.CENTER_LEFT);
 
         Label beaconIdLabel = new Label("Beacon Id: ");
-        Label beaconIdValue = new Label("" + beacon.getBeaconNumber() + "(" + selectedBlock.getStation().getStationName() + ")");
+        Label beaconIdValue = new Label("" + beacon.getBeaconNumber());
         beaconIdLabel.setFont(Font.font(beaconIdLabel.getFont().getFamily(), FontWeight.BOLD, beaconIdLabel.getFont().getSize()));
 
         Label msgLabel = new Label("Message: ");
@@ -332,6 +332,16 @@ public class TrackModelGUI {
         Label rateValue = new Label("" + heater.getHeatRate());
         rateLabel.setFont(Font.font(rateLabel.getFont().getFamily(), FontWeight.BOLD, rateLabel.getFont().getSize()));
 
+        Label stateLabel = new Label("State: ");
+        Label stateValue = null;
+        if(heater.isActive()) {
+            stateValue = new Label("ON");
+        }else{
+            stateValue = new Label("OFF");
+        }
+        stateLabel.setFont(Font.font(rateLabel.getFont().getFamily(), FontWeight.BOLD, rateLabel.getFont().getSize()));
+
+
         heaterLabels.add(heaterLabel, 0, 0);
         heaterLabels.add(heaterValue, 1, 0);
         heaterLabels.add(railTempLabel, 0, 1);
@@ -340,6 +350,8 @@ public class TrackModelGUI {
         heaterLabels.add(desTempValue, 1, 2);
         heaterLabels.add(rateLabel, 2, 0);
         heaterLabels.add(rateValue, 3, 0);
+        heaterLabels.add(stateLabel, 2, 1);
+        heaterLabels.add(stateValue, 3,1);
         heaterLabels.setPadding(new Insets(0,0,0,10));
 
         heaterIcon.setFitHeight(heaterInfra.getMaxHeight());
@@ -615,6 +627,8 @@ public class TrackModelGUI {
                 CheckBox crossingToggle = new CheckBox("Toggle Crossing State");
                 CheckBox stationToggle = new CheckBox("Generate New Station Departure Amount");
                 CheckBox lightToggle = new CheckBox("Toggle Light State");
+                CheckBox heaterSwToggle = new CheckBox("Toggle Switch Heater State");
+                CheckBox heaterStToggle = new CheckBox("Toggle Station Heater State");
 
                 Button okButton = new Button("OK");
                 okButton.setOnAction(new EventHandler<ActionEvent>(){
@@ -630,6 +644,12 @@ public class TrackModelGUI {
 
                         if(lightToggle.isSelected())
                             selectedBlock.getLight().toggleActive();
+
+                        if(heaterSwToggle.isSelected())
+                            selectedBlock.getSwitch().getHeater().toggleActive();
+
+                        if(heaterStToggle.isSelected())
+                            selectedBlock.getStation().getHeater().toggleActive();
 
                         updateBlockMonitor();
                         settings.close();
@@ -654,6 +674,13 @@ public class TrackModelGUI {
 
                 if(selectedBlock.getLight() != null)
                     changeSettings.getChildren().add(lightToggle);
+
+                if(selectedBlock.getSwitch() != null && selectedBlock.getSwitch().getHeater() != null)
+                    changeSettings.getChildren().add(heaterSwToggle);
+
+                if(selectedBlock.getStation() != null && selectedBlock.getStation().getHeater() != null)
+                    changeSettings.getChildren().add(heaterStToggle);
+
 
                 changeSettings.setPadding(new Insets(10));
 

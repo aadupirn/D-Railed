@@ -561,6 +561,55 @@ public class TrackModel
         }
     }
 
+    public List<Block> lookAhead(Block currentBlock, boolean dir, int numBlocks){
+
+        List<Block> blocksAhead = new ArrayList<Block>();
+
+        for(int i = 0; i <= numBlocks; i++) {
+            boolean newDir = currentBlock.canMoveToBlock(dir);
+
+            if (newDir == dir) {
+                // UP
+                if (newDir == true) {
+                    if (currentBlock.getNextUpBlockNumber() == -1) {
+                        blocksAhead.add(currentBlock.getNextSwitchBlock());
+                    } else {
+                        blocksAhead.add(currentBlock.getNextUpBlock());
+                    }
+                    //DOWN
+                } else {
+                    if (currentBlock.getNextDownBlockNumber() == -1) {
+                        blocksAhead.add(currentBlock.getNextSwitchBlock());
+                    } else {
+                        blocksAhead.add(currentBlock.getNextDownBlock());
+                    }
+                }
+            } else {
+                // UP
+                if (newDir == true) {
+                    if (currentBlock.getNextUpBlockNumber() == -1) {
+                        blocksAhead.add(currentBlock.getNextSwitchBlock());
+                    } else {
+                        blocksAhead.add(currentBlock.getNextUpBlock());
+                    }
+                    //DOWN
+                } else {
+                    if (currentBlock.getNextDownBlockNumber() == -1) {
+                        blocksAhead.add(currentBlock.getNextSwitchBlock());
+                    } else {
+                        blocksAhead.add(currentBlock.getNextDownBlock());
+                    }
+                }
+            }
+
+            currentBlock = blocksAhead.get(i);
+
+        }
+
+        return blocksAhead;
+
+    }
+
     public void looseCoupling(String inLine){
 
         Line line = getLine(inLine);
