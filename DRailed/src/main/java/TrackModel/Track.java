@@ -18,6 +18,8 @@ public class Track {
         tm = new TrackModel();
         tm.importTrack("greenLine.csv");
         tm.importTrack("redLine.csv");
+        couple("GREEN", "TIGHT");
+        couple("RED", "TIGHT");
     }
 
     public Track(String trackLayout){
@@ -215,84 +217,98 @@ public class Track {
 
     }
 
-    public void setStationTime(int stationId, String trainTime){
+    public void setStationTime(String line, int stationId, String trainTime){
         for(Line l : tm.getLines()){
-            for(Section s : l.getSections()){
-                for(Block b : s.getBlocks()){
-                    if(b.getStation() != null && b.getStation().getStationNumber() == stationId){
-                        b.getStation().setTrainTimes(trainTime);
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getStation() != null && b.getStation().getStationNumber() == stationId) {
+                            b.getStation().setTrainTimes(trainTime);
+                        }
                     }
                 }
             }
         }
     }
 
-    public void breakRail(int blockId){
+    public void breakRail(String line, int blockId){
         for(Line l : tm.getLines()){
-            for(Section s : l.getSections()){
-                for(Block b : s.getBlocks()){
-                    if(b.getBlockNumber() == blockId){
-                        b.setRailState(false);
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getBlockNumber() == blockId) {
+                            b.setRailState(false);
+                        }
                     }
                 }
             }
         }
     }
 
-    public void breakPower(int blockId){
+    public void breakPower(String line, int blockId){
         for(Line l : tm.getLines()){
-            for(Section s : l.getSections()){
-                for(Block b : s.getBlocks()){
-                    if(b.getBlockNumber() == blockId){
-                        b.setPowerState(false);
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getBlockNumber() == blockId) {
+                            b.setPowerState(false);
+                        }
                     }
                 }
             }
         }
     }
 
-    public void breakCircuit(int blockId){
+    public void breakCircuit(String line, int blockId){
         for(Line l : tm.getLines()){
-            for(Section s : l.getSections()){
-                for(Block b : s.getBlocks()){
-                    if(b.getBlockNumber() == blockId){
-                        b.setCircuitState(false);
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getBlockNumber() == blockId) {
+                            b.setCircuitState(false);
+                        }
                     }
                 }
             }
         }
     }
 
-    public void fixRail(int blockId){
+    public void fixRail(String line, int blockId){
         for(Line l : tm.getLines()){
-            for(Section s : l.getSections()){
-                for(Block b : s.getBlocks()){
-                    if(b.getBlockNumber() == blockId){
-                        b.setRailState(true);
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getBlockNumber() == blockId) {
+                            b.setRailState(true);
+                        }
                     }
                 }
             }
         }
     }
 
-    public void fixPower(int blockId){
+    public void fixPower(String line, int blockId){
         for(Line l : tm.getLines()){
-            for(Section s : l.getSections()){
-                for(Block b : s.getBlocks()){
-                    if(b.getBlockNumber() == blockId){
-                        b.setPowerState(true);
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getBlockNumber() == blockId) {
+                            b.setPowerState(true);
+                        }
                     }
                 }
             }
         }
     }
 
-    public void fixCircuit(int blockId){
+    public void fixCircuit(String line, int blockId){
         for(Line l : tm.getLines()){
-            for(Section s : l.getSections()){
-                for(Block b : s.getBlocks()){
-                    if(b.getBlockNumber() == blockId){
-                        b.setCircuitState(true);
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getBlockNumber() == blockId) {
+                            b.setCircuitState(true);
+                        }
                     }
                 }
             }

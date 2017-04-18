@@ -515,12 +515,6 @@ public class TrackModel
         return light;
     }
 
-    private void getTestTrains() throws IOException
-    {
-        //testTrainList.add(new Train(0));
-        //testTrainList.add(new Train(1));
-    }
-
     public void tightCoupling(String lineName) {
 
         Line line = getLine(lineName);
@@ -565,7 +559,7 @@ public class TrackModel
 
         List<Block> blocksAhead = new ArrayList<Block>();
 
-        for(int i = 0; i <= numBlocks; i++) {
+        for(int i = 0; i < numBlocks; i++) {
             boolean newDir = currentBlock.canMoveToBlock(dir);
 
             if (newDir == dir) {
@@ -603,6 +597,7 @@ public class TrackModel
             }
 
             currentBlock = blocksAhead.get(i);
+            System.out.println(currentBlock);
 
         }
 

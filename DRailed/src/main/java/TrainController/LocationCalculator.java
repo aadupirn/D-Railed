@@ -41,6 +41,7 @@ public class LocationCalculator
 	//region methods
 	public Block ComputeNextLocation(double iSpeed)
 	{
+
 		//blockLocation += iSpeed;
 		// TODO: Remove for non-testing
 		blockLocation += iSpeed*20;
