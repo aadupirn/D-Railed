@@ -61,7 +61,6 @@ public class TrackController {
 
         if (line.equals("GREEN"))
         {
-            track = new Track("greenLine.csv");
             if (b.contains(152))
                 this.isLineMain=true;
             else
@@ -69,7 +68,6 @@ public class TrackController {
         }
         else
         {
-            track = new Track("redLine.csv");
             if (b.contains(77))
                 this.isLineMain=true;
             else
@@ -107,6 +105,11 @@ public class TrackController {
 
     public void setTrack(Track t) {
         this.track = t;
+
+        for(int i : blocks)
+        {
+            track.getBlock(this.line,i).setTrackController(this);
+        }
     }
 
     public void setID(int ID) {
@@ -175,12 +178,32 @@ public class TrackController {
                             sw.setSwitchState(SwitchState.BOTTOM);
                         else
                             sw.setSwitchState(SwitchState.TOP);
+                        sw.setManualSet(true);
                         return true;
                     }
                 }
             }
         }
         return false;
+    }
+
+    public void unsetManualSwitch(String line, int id)
+    {
+        Switch sw;
+        if (line.equals(this.line))
+        {
+            for (int i:blocks)
+            {
+                sw = track.getBlock(line,i).getSwitch();
+                if(sw != null)
+                {
+                    if (sw.getSwitchNumber() == id) {
+                        sw.setManualSet(false);
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     public Switch getSwitch(int id)

@@ -133,9 +133,10 @@ public class PLC
                 getLights(i);
             }
 
-            for(int i = 0; i < 6; i++) //TODO change this!
+            for(int i = 0; i < 6; i++) //TODO change this bounds!
             {
-                System.out.println("Switch: "+ i + " has PLC: " + switches[i] +"\n");
+                //System.out.println("Switch: "+ i + " has PLC: " + switches[i] +"\n");
+                getSwitchState(i);
             }
         }
 
