@@ -41,8 +41,8 @@ public class MBOController extends Application {
     private Button murphyBtn;
 
     // Schedule Information Taab
-    private TableView<TrainSchedule> redStationsTable;
-    private TableView<TrainSchedule> greenStationsTable;
+    //private TableView<TrainSchedule> redStationsTable;
+    //private TableView<TrainSchedule> greenStationsTable;
     private TextField idScheduleTestInput;
     private TextField locattionScheduleTestInput;
     private Button scheduleTestBtn;
@@ -59,7 +59,7 @@ public class MBOController extends Application {
     // ACCESSORS
     public MBO getMBO() { return mbo; }
     public Scheduler getScheduler() { return scheduler; };
-    public TrainSchedule getSchedule() { return scheduler.getSchedule(); }
+    //public TrainSchedule getSchedule() { return scheduler.getSchedule(); }
 
     /*
     * Method in charge of setting up gettting the elements associated with the portions
@@ -86,8 +86,8 @@ public class MBOController extends Application {
         murphyBtn = (Button) primary.getScene().lookup("#murphy_btn");
 
         // Schedule Information Tab
-        redStationsTable = (TableView<TrainSchedule>)  primary.getScene().lookup("#red_stations_tableview");
-        greenStationsTable = (TableView<TrainSchedule>)  primary.getScene().lookup("#green_stations_tableview");
+        //redStationsTable = (TableView<TrainSchedule>)  primary.getScene().lookup("#red_stations_tableview");
+        //greenStationsTable = (TableView<TrainSchedule>)  primary.getScene().lookup("#green_stations_tableview");
         idScheduleTestInput = (TextField) primary.getScene().lookup("#id_schedule_test");
         locattionScheduleTestInput = (TextField) primary.getScene().lookup("#location_schedule_test");
         scheduleTestBtn = (Button) primary.getScene().lookup("#schedule_test_btn");
@@ -101,7 +101,7 @@ public class MBOController extends Application {
         // Conductor Schedule Button
 
         // Button Actions
-        mboToggle.setOnAction((ActionEvent a) -> { mbo.toggleMBO(); });
+//        mboToggle.setOnAction((ActionEvent a) -> { mbo.toggleMBO(); });
 
         trainInfoTestBtn.setOnAction((ActionEvent a) -> {
             String line = ((RadioButton)redRadio.getToggleGroup().getSelectedToggle()).getText();
@@ -210,14 +210,14 @@ public class MBOController extends Application {
         TableColumn inglewoodStationB = new TableColumn("Inglewood");
         TableColumn overbrookStationB = new TableColumn("Overbrook");
 
-        redStationsTable.getColumns().addAll(herronStation, swissvilleStaion, pennStation, steelPlazaStation,
-                                                firstAveStation, southHillsStation, shadysideStation);
-
-        greenStationsTable.getColumns().addAll(glenBuryStationA, dormontStationA, mtLebanonStation, poplarStation,
-                                                castleShannon, dormonStationB, glenburyStationB, overbrookStationA,
-                                                inglewoodStationA, centralStationA, pioneerStation, edgebrookStation,
-                                                universityStation, whitedStation, southBankStation, centralStationB,
-                                                inglewoodStationB, overbrookStationB);
+//        redStationsTable.getColumns().addAll(herronStation, swissvilleStaion, pennStation, steelPlazaStation,
+//                                                firstAveStation, southHillsStation, shadysideStation);
+//
+//        greenStationsTable.getColumns().addAll(glenBuryStationA, dormontStationA, mtLebanonStation, poplarStation,
+//                                                castleShannon, dormonStationB, glenburyStationB, overbrookStationA,
+//                                                inglewoodStationA, centralStationA, pioneerStation, edgebrookStation,
+//                                                universityStation, whitedStation, southBankStation, centralStationB,
+//                                                inglewoodStationB, overbrookStationB);
     }
 
     @Override
@@ -227,7 +227,7 @@ public class MBOController extends Application {
         primary.setTitle("MBO Interface");
         primary.setScene(new Scene(root));
         primary.show();
-        scheduler = new Scheduler(1);
+        //scheduler = new Scheduler();
         mbo = new MBO(1);
         this.getUIElements();
         this.setMboColumns();
