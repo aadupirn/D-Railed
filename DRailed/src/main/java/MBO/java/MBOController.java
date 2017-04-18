@@ -20,6 +20,7 @@ public class MBOController extends Application {
     private Scheduler scheduler;
     private MBO mbo;
     private Timer timer;
+
     private Stage primary;
 
     // Train Information Tab
@@ -57,7 +58,6 @@ public class MBOController extends Application {
     // ACCESSORS
     public MBO getMBO() { return mbo; }
     public Scheduler getScheduler() { return scheduler; };
-//    public TrainSchedule getSchedule() { return scheduler.getSchedule(); }
 
     /*
     * Method in charge of setting up gettting the elements associated with the portions
