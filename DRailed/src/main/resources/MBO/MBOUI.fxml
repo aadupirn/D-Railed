@@ -52,7 +52,7 @@
                                  <children>
                                     <VBox alignment="CENTER_LEFT">
                                        <children>
-                                          <RadioButton id="MBO_radio" mnemonicParsing="false" text="MBO">
+                                          <RadioButton id="mbo_radio" mnemonicParsing="false" text="MBO">
                                              <VBox.margin>
                                                 <Insets bottom="3.0" />
                                              </VBox.margin>

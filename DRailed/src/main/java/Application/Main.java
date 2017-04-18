@@ -35,7 +35,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception{
-
+		dTime = new DTime();
 		//Module initialization
 
 
@@ -164,7 +164,7 @@ public class Main extends Application {
 		});
 
 		mboBtn.setOnAction((ActionEvent a) -> {
-			MBOController mboCtrl = new MBOController();
+			MBOController mboCtrl = new MBOController(dTime.getTimer());
 
 			try 				{ mboCtrl.start(new Stage());  }
 			catch (Exception e) { e.printStackTrace(); }
@@ -172,7 +172,7 @@ public class Main extends Application {
 
 		sysBtn.setOnAction((ActionEvent e) ->
 		{
-			MBOController MBOCtrl = new MBOController();
+			MBOController MBOCtrl = new MBOController(dTime.getTimer());
 			try {
 				MBOCtrl.start(new Stage());
 				dTime = new DTime();

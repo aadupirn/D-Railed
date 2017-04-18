@@ -41,6 +41,7 @@ public class Scheduler {
         }
     }
 
-    //public ObservableList<TrainSchedule> getTrainRows() { return trainSchedules; }
+    public ObservableList<GreenTrainSchedule> getGreenTrainRows() { return greenTrainSchedules; }
+    public ObservableList<RedTrainSchedule> getRedTrainRows() { return redTrainSchedules; }
     public ObservableList<WorkerSchedule> getWorkerRows() { return workSchedules; }
 }
