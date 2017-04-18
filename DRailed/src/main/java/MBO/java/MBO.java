@@ -97,8 +97,12 @@ public class MBO {
         return active;
     }
 
+<<<<<<< HEAD
     public void activateMBO(){ active = true; }
     public void deactivateMBO(){ active = false; }
+=======
+    public void toggleMBO(){ active = !active; }
+>>>>>>> master
 
     public void toggleMurphy(){ murphy = !murphy; }
 

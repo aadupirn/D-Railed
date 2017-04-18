@@ -3,12 +3,22 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.RadioButton?>
+<<<<<<< HEAD
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+=======
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+>>>>>>> master
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -50,6 +60,7 @@
                            <children>
                               <HBox alignment="CENTER" prefHeight="61.0" prefWidth="1198.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
+<<<<<<< HEAD
                                     <VBox alignment="CENTER_LEFT">
                                        <children>
                                           <RadioButton id="mbo_radio" mnemonicParsing="false" text="MBO">
@@ -68,6 +79,15 @@
                                        </children>
                                     </VBox>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
+=======
+                                    <ToggleButton id="mbo_btn" mnemonicParsing="false" text="MBO" textAlignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin></ToggleButton>
+>>>>>>> master
                                     <HBox alignment="CENTER_LEFT">
                                        <children>
                                           <VBox alignment="CENTER_LEFT">
@@ -78,6 +98,7 @@
                                                    </VBox.margin>
                                                    <toggleGroup>
                                                       <ToggleGroup fx:id="LineSelect" />
+<<<<<<< HEAD
                                                    </toggleGroup>
                                                    <padding>
                                                       <Insets left="15.0" />
@@ -89,6 +110,13 @@
                                                    <padding>
                                                       <Insets left="15.0" />
                                                    </padding></RadioButton>
+=======
+                                                   </toggleGroup></RadioButton>
+                                                <RadioButton id="green_radio" mnemonicParsing="false" text="Green" toggleGroup="$LineSelect">
+                                                   <VBox.margin>
+                                                      <Insets right="5.0" />
+                                                   </VBox.margin></RadioButton>
+>>>>>>> master
                                              </children>
                                           </VBox>
                                           <HBox alignment="CENTER_LEFT">

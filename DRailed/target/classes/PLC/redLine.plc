@@ -1,10 +1,17 @@
 this.lights = this.occupied
 this.crossing = this.occupied
 this.stop = this.occupied
+<<<<<<< HEAD
 1.stop = 2.occupied || 3.occupied || 4.occupied || 5.occupied || 6.occupied || 16.occupied || 17.occupied || 18.occupied || 19.occupied || 20.occupied
 2.stop = 3.occupied || 4.occupied || 5.occupied || 6.occupied || 7.occupied || 16.occupied || 17.occupied || 18.occupied || 19.occupied || 1.occupied
 3.stop = 4.occupied || 5.occupied || 6.occupied || 7.occupied || 8.occupied || 1.occupied || 2.occupied || 16.occupied || 17.occupied || 18.occupied
 4.stop = 
+=======
+1.stop = 
+2.stop =
+3.stop =
+4.stop =
+>>>>>>> master
 5.stop =
 6.stop =
 7.stop =
@@ -24,6 +31,7 @@ this.stop = this.occupied
 21.stop =
 22.stop =
 23.stop =
+<<<<<<< HEAD
 24.stop =
 25.stop =
 26.stop =
@@ -78,3 +86,5 @@ this.stop = this.occupied
 75.stop =
 76.stop =
 77.stop =
+=======
+>>>>>>> master

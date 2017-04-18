@@ -1,14 +1,24 @@
 package MBO.java;
 
+<<<<<<< HEAD
 import java.sql.Time;
 import java.util.Timer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+=======
+import com.sun.javafx.scene.control.TableColumnComparatorBase;
+import javafx.application.Application;
+import javafx.beans.property.*;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
+>>>>>>> master
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+<<<<<<< HEAD
 import javafx.stage.Stage;
 
 public class MBOController extends Application {
@@ -20,14 +30,32 @@ public class MBOController extends Application {
     private Scheduler scheduler;
     private MBO mbo;
     private Timer timer;
+=======
+import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+
+import java.sql.Time;
+
+public class MBOController extends Application {
+    private Scheduler scheduler;
+    private MBO mbo;
+>>>>>>> master
 
     private Stage primary;
 
     // Train Information Tab
     private TableView<TrainInfo> redInfoTable;
     private TableView<TrainInfo> greenInfoTable;
+<<<<<<< HEAD
     private RadioButton mboRadio;
     private RadioButton fbRadio;
+=======
+    private ToggleButton mboToggle;
+>>>>>>> master
     private RadioButton redRadio;
     private RadioButton greenRadio;
     private TextField idTestInput;
@@ -39,9 +67,15 @@ public class MBOController extends Application {
     private Button trainInfoTestBtn;
     private Button murphyBtn;
 
+<<<<<<< HEAD
     // Schedule Information Tab
     private TableView<RedTrainSchedule> redStationsTable;
     private TableView<GreenTrainSchedule> greenStationsTable;
+=======
+    // Schedule Information Taab
+    private TableView<TrainSchedule> redStationsTable;
+    private TableView<TrainSchedule> greenStationsTable;
+>>>>>>> master
     private TextField idScheduleTestInput;
     private TextField locattionScheduleTestInput;
     private Button scheduleTestBtn;
@@ -58,7 +92,11 @@ public class MBOController extends Application {
     // ACCESSORS
     public MBO getMBO() { return mbo; }
     public Scheduler getScheduler() { return scheduler; };
+<<<<<<< HEAD
     //public TrainSchedule getSchedule() { return scheduler.getSchedule(); }
+=======
+    public TrainSchedule getSchedule() { return scheduler.getSchedule(); }
+>>>>>>> master
 
     /*
     * Method in charge of setting up gettting the elements associated with the portions
@@ -72,8 +110,12 @@ public class MBOController extends Application {
         // Train Information Tab
         redInfoTable = (TableView<TrainInfo>)  primary.getScene().lookup("#red_traininfo_tableview");
         greenInfoTable = (TableView<TrainInfo>)  primary.getScene().lookup("#green_traininfo_tableview");
+<<<<<<< HEAD
         mboRadio = (RadioButton) primary.getScene().lookup("#mbo_radio");
         fbRadio = (RadioButton) primary.getScene().lookup("#fb_radio");
+=======
+        mboToggle = (ToggleButton) primary.getScene().lookup("#mbo_btn");
+>>>>>>> master
         redRadio = (RadioButton) primary.getScene().lookup("#red_radio");
         greenRadio = (RadioButton) primary.getScene().lookup("#green_radio");
         idTestInput = (TextField) primary.getScene().lookup("#id_traininfo_test");
@@ -86,8 +128,13 @@ public class MBOController extends Application {
         murphyBtn = (Button) primary.getScene().lookup("#murphy_btn");
 
         // Schedule Information Tab
+<<<<<<< HEAD
         redStationsTable = (TableView<RedTrainSchedule>)  primary.getScene().lookup("#red_stations_tableview");
         greenStationsTable = (TableView<GreenTrainSchedule>)  primary.getScene().lookup("#green_stations_tableview");
+=======
+        redStationsTable = (TableView<TrainSchedule>)  primary.getScene().lookup("#red_stations_tableview");
+        greenStationsTable = (TableView<TrainSchedule>)  primary.getScene().lookup("#green_stations_tableview");
+>>>>>>> master
         idScheduleTestInput = (TextField) primary.getScene().lookup("#id_schedule_test");
         locattionScheduleTestInput = (TextField) primary.getScene().lookup("#location_schedule_test");
         scheduleTestBtn = (Button) primary.getScene().lookup("#schedule_test_btn");
@@ -101,8 +148,12 @@ public class MBOController extends Application {
         // Conductor Schedule Button
 
         // Button Actions
+<<<<<<< HEAD
         mboRadio.setOnAction((ActionEvent a) -> { mbo.activateMBO(); });
         fbRadio.setOnAction((ActionEvent a) -> { mbo.deactivateMBO(); });
+=======
+        mboToggle.setOnAction((ActionEvent a) -> { mbo.toggleMBO(); });
+>>>>>>> master
 
         trainInfoTestBtn.setOnAction((ActionEvent a) -> {
             String line = ((RadioButton)redRadio.getToggleGroup().getSelectedToggle()).getText();
@@ -113,6 +164,11 @@ public class MBOController extends Application {
             int authority = Integer.parseInt(authorityTestInput.getText());
             String location = locationTestInput.getText();
 
+<<<<<<< HEAD
+=======
+            System.out.println(line);
+
+>>>>>>> master
             mbo.addTrain(id, line, speed, safeSpeed, variance, authority, location);
 
             ((RadioButton)redRadio.getToggleGroup().getSelectedToggle()).setSelected(false);
@@ -135,7 +191,11 @@ public class MBOController extends Application {
         generateScheduleBtn.setOnAction((ActionEvent a) -> {
             if(thruputInput.getText() == null || startInput.getText() == null || endInput.getText() == null) return; // @TODO ERROR LOG
 
+<<<<<<< HEAD
             scheduler.generateSchedule(Integer.parseInt(thruputInput.getText()), Time.valueOf(startInput.getText()), Time.valueOf(endInput.getText()));
+=======
+            //scheduler.generateSchedule(Integer.parseInt(thruputInput.getText()), Time.valueOf(startInput.getText()), Time.valueOf(endInput.getText()));
+>>>>>>> master
         });
     }
 
@@ -209,11 +269,17 @@ public class MBOController extends Application {
         TableColumn inglewoodStationB = new TableColumn("Inglewood");
         TableColumn overbrookStationB = new TableColumn("Overbrook");
 
+<<<<<<< HEAD
         redStationsTable.setItems(scheduler.getRedTrainRows());
         redStationsTable.getColumns().addAll(herronStation, swissvilleStaion, pennStation, steelPlazaStation,
                                                 firstAveStation, southHillsStation, shadysideStation);
 
         greenStationsTable.setItems(scheduler.getGreenTrainRows());
+=======
+        redStationsTable.getColumns().addAll(herronStation, swissvilleStaion, pennStation, steelPlazaStation,
+                                                firstAveStation, southHillsStation, shadysideStation);
+
+>>>>>>> master
         greenStationsTable.getColumns().addAll(glenBuryStationA, dormontStationA, mtLebanonStation, poplarStation,
                                                 castleShannon, dormonStationB, glenburyStationB, overbrookStationA,
                                                 inglewoodStationA, centralStationA, pioneerStation, edgebrookStation,
@@ -228,7 +294,11 @@ public class MBOController extends Application {
         primary.setTitle("MBO Interface");
         primary.setScene(new Scene(root));
         primary.show();
+<<<<<<< HEAD
         scheduler = new Scheduler(timer);
+=======
+        scheduler = new Scheduler(1);
+>>>>>>> master
         mbo = new MBO(1);
         this.getUIElements();
         this.setMboColumns();

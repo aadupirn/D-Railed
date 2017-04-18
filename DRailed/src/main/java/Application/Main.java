@@ -1,5 +1,6 @@
 package Application;
 
+<<<<<<< HEAD
 import DTime.DTime;
 import MBO.java.MBOController;
 import TrackController.TrackController;
@@ -7,6 +8,12 @@ import TrackModel.Track;
 import TrackModel.TrackModelGUI;
 import TrainModel.Train;
 import ctc.CTCMain;
+=======
+import TrackModel.Track;
+import TrackModel.TrackModelGUI;
+import TrainController.TrainController;
+import TrackModel.TrackModelGUI;
+>>>>>>> master
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -16,6 +23,15 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+<<<<<<< HEAD
+=======
+import TrackController.TrackController;
+import TrackModel.Track;
+import DTime.DTime;
+import TrainModel.Train;
+import MBO.java.MBOController;
+import ctc.CTCMain;
+>>>>>>> master
 
 import java.io.IOException;
 
@@ -32,7 +48,11 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception{
+<<<<<<< HEAD
 		dTime = new DTime();
+=======
+
+>>>>>>> master
 		//Module initialization
 
 
@@ -161,7 +181,11 @@ public class Main extends Application {
 		});
 
 		mboBtn.setOnAction((ActionEvent a) -> {
+<<<<<<< HEAD
 			MBOController mboCtrl = new MBOController(dTime.getTimer());
+=======
+			MBOController mboCtrl = new MBOController();
+>>>>>>> master
 
 			try 				{ mboCtrl.start(new Stage());  }
 			catch (Exception e) { e.printStackTrace(); }
@@ -169,7 +193,11 @@ public class Main extends Application {
 
 		sysBtn.setOnAction((ActionEvent e) ->
 		{
+<<<<<<< HEAD
 			MBOController MBOCtrl = new MBOController(dTime.getTimer());
+=======
+			MBOController MBOCtrl = new MBOController();
+>>>>>>> master
 			try {
 				MBOCtrl.start(new Stage());
 				dTime = new DTime();
