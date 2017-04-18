@@ -95,7 +95,7 @@ public class TrackController {
     }
     public void setPLC(File file) {
         Block[] b = new Block[153];
-        for (int i:blocks)
+        for (int i:plcBlocks)
         {
             b[i] = track.getBlock(this.line,i);
         }
