@@ -75,4 +75,6 @@ public class DTime
 			tc.setMBO(mbo);
 		}
 	}
+
+	public Timer getTimer() { return timer; }
 }
