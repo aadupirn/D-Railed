@@ -19,7 +19,7 @@ public class Heater {
     /***
      *
      */
-    public Heater(String heaterId){
+    public Heater(String heaterId) {
         this.heaterId = heaterId;
         this.active = false;
         this.railTemp = generateRailTemp();

@@ -11,6 +11,7 @@ public class Switch {
     private Integer bottomBlock;
     private SwitchState state;
     private Heater heater;
+    private boolean manualSet;
 
     /***
      * Create a switch object with a switch number and an empty connection layout.
@@ -25,6 +26,7 @@ public class Switch {
         this.topBlock = null;
         this.bottomBlock = null;
         this.heater = new Heater(""+switchNumber);
+        this.manualSet = false;
     }
 
     /***
@@ -41,6 +43,15 @@ public class Switch {
         this.topBlock = null;
         this.bottomBlock = null;
         this.heater = new Heater(""+switchNumber);
+        this.manualSet = false;
+    }
+
+    public boolean isManualSet() {
+        return manualSet;
+    }
+
+    public void setManualSet(boolean manualSet) {
+        this.manualSet = manualSet;
     }
 
     /***

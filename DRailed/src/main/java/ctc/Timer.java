@@ -1,6 +1,7 @@
 package ctc;
 
 import javax.swing.JLabel;
+import java.sql.Time;
 
 public class Timer extends Thread {
 
@@ -14,6 +15,11 @@ public class Timer extends Thread {
 		super();
 		this.label = label;
 	}
+
+	Time getTime() { return Time.valueOf(hour + ":" + min + ":" + sec); }
+	int getHour() { return this.hour; }
+	int getMin() {	return this.min; }
+	int getSec() { return this.sec; }
 
 	@Override
 	public void run() {

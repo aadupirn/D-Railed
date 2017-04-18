@@ -1,5 +1,6 @@
 package TrackModel;
 
+import TrackController.TrackController;
 import TrackModel.Model.Block;
 import TrackModel.Model.Heater;
 import TrackModel.Model.Station;
@@ -230,6 +231,7 @@ public class TrackTests {
     public void testFixRail() {
 
         Track track = new Track();
+
         track.breakRail("GREEN", 2);
         track.fixRail("GREEN", 2);
         track.breakRail("RED", 2);

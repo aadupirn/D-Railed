@@ -21,7 +21,7 @@ public class PLC
         {
             isGood = true;
             plcInputs = new String[153][3]; // 0 is lights, 1 is crossings, 2 is stop
-            switches = new String[13];
+            switches = new String[15];
             this.blocks = blocks;
             int outputID = 0;
 
@@ -102,14 +102,21 @@ public class PLC
                             }
                             else if(out.equals("switch"))
                             {
-                                try
+                                if (!id.equals("this")) {
+                                    try {
+                                        outputID = Integer.parseInt(id);
+                                        switches[outputID] = input;
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("ID not valid");
+                                        isGood = false;
+                                    }
+                                }
+                                else
                                 {
-                                    outputID = Integer.parseInt(id);
-                                    switches[outputID] = input;
-                                } catch (NumberFormatException e)
-                                {
-                                    System.out.println("ID not valid");
-                                    isGood = false;
+                                    for (int i = 0; i < switches.length; i++)
+                                    {
+                                        switches[i] = input;
+                                    }
                                 }
                             }
                             else
@@ -124,15 +131,19 @@ public class PLC
                 System.out.println("There is an exception: " + e.toString());
             }
 
-            // print out all of the PLC
-            for (int i = 1; i < 153; i++)
+            // check all of the PLC
+            for (int i = 1; i < plcInputs.length; i++)
             {
-                System.out.println("Block " + i + " has PLC:\nLights: " + plcInputs[i][0] + "\nCrossings: " + plcInputs[i][1] + "\nStop: "+plcInputs[i][2] +"\n");
+                //System.out.println("Block " + i + " has PLC:\nLights: " + plcInputs[i][0] + "\nCrossings: " + plcInputs[i][1] + "\nStop: "+plcInputs[i][2] +"\n");
+                getCrossingState(i);
+                getStopTrain(i);
+                getLights(i);
             }
 
-            for(int i = 0; i < 6; i++)
+            for(int i = 0; i < switches.length; i++)
             {
-                System.out.println("Switch: "+ i + " has PLC: " + switches[i] +"\n");
+                //System.out.println("Switch: "+ i + " has PLC: " + switches[i] +"\n");
+                getSwitchState(i);
             }
         }
 
@@ -167,7 +178,6 @@ public class PLC
             String boolIn = replaceAllInputs(inString, id, isBlock);
             boolean result;
             try {
-
                 ScriptEngineManager sem = new ScriptEngineManager();
                 ScriptEngine se = sem.getEngineByName("JavaScript");
                 result = (boolean)se.eval(boolIn);
@@ -176,7 +186,7 @@ public class PLC
             } catch (ScriptException e) {
 
                 System.out.println("Invalid Expression");
-                e.printStackTrace();
+                isGood=false;
                 return(false);
 
             }
@@ -190,7 +200,6 @@ public class PLC
                 result = in;
             for (int i = 152; i > 0; i--) {
                 result = result.replaceAll(blocks[i].getBlockNumber() + ".occupied", Boolean.toString(blocks[i].isOccupied()));
-                result = result.replaceAll(blocks[i].getBlockNumber() + ".nextoccupied", Boolean.toString(false)); //TODO replace with next block!!
             }
             if (result.contains(".occupied")) //The other track controller has this block
             {
