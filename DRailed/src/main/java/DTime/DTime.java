@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import ctc.CTCMain;
 import MBO.java.MBO;
 
 /**
@@ -21,6 +22,7 @@ public class DTime
 	private TrackModelGUI trackModelGUI;
 	private ArrayList<TrackController> trackControllers;
 	private MBO mbo;
+	private CTCMain ctcmain_dt;
 
 	Timer timer;
 
@@ -38,6 +40,10 @@ public class DTime
 			}
 			//if(trackModelGUI!= null)
 				//trackModelGUI.update();
+			if(ctcmain_dt != null)
+			{
+				ctcmain_dt.updateMap();
+			}
 		}
 	}
 
@@ -76,5 +82,7 @@ public class DTime
 		}
 	}
 
-	public Timer getTimer() { return timer; }
+	public void setCTCMain(CTCMain ctcmain) {
+		ctcmain_dt = ctcmain;
+	}
 }

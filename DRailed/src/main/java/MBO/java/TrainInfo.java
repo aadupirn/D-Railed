@@ -19,16 +19,14 @@ import java.io.IOException;
  */
 public class TrainInfo {
     private final SimpleIntegerProperty id;
-    private String line;
     private final SimpleDoubleProperty speed;
     private final SimpleDoubleProperty safeSpeed;
     private final SimpleStringProperty location;
     private final SimpleIntegerProperty authority;
     private final SimpleDoubleProperty variance;
 
-    public TrainInfo(int id, String line, double speed, double safeSpeed, String location, int authority, double variance){
+    public TrainInfo(int id, double speed, double safeSpeed, String location, int authority, double variance){
         this.id  = new SimpleIntegerProperty(id);
-        this.line = line;
         this.speed = new SimpleDoubleProperty(speed);
         this.safeSpeed = new SimpleDoubleProperty(safeSpeed);
         this.location = new SimpleStringProperty(location);
@@ -39,10 +37,6 @@ public class TrainInfo {
     public int getId(){ return id.get(); }
 
     public void setId(int id){ this.id.set(id); }
-
-    public String getLine() { return line;}
-
-    public void setLine(String line) { this.line = line;}
 
     public double getSpeed(){
         return speed.get();
