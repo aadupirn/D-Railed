@@ -1,9 +1,12 @@
 package Application;
 
+import DTime.DTime;
+import MBO.java.MBOController;
+import TrackController.TrackController;
 import TrackModel.Track;
 import TrackModel.TrackModelGUI;
-import TrainController.TrainController;
-import TrackModel.TrackModelGUI;
+import TrainModel.Train;
+import ctc.CTCMain;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -35,7 +38,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception{
-
+		dTime = new DTime();
 		//Module initialization
 
 
@@ -164,15 +167,14 @@ public class Main extends Application {
 		});
 
 		mboBtn.setOnAction((ActionEvent a) -> {
-			MBOController mboCtrl = new MBOController();
-
+			MBOController mboCtrl = new MBOController(dTime.getTimer());
 			try 				{ mboCtrl.start(new Stage());  }
 			catch (Exception e) { e.printStackTrace(); }
 		});
 
 		sysBtn.setOnAction((ActionEvent e) ->
 		{
-			MBOController MBOCtrl = new MBOController();
+			MBOController MBOCtrl = new MBOController(dTime.getTimer());
 			try {
 				MBOCtrl.start(new Stage());
 				dTime = new DTime();
