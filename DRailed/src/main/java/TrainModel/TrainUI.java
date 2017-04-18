@@ -474,4 +474,23 @@ public class TrainUI {
         authorityText.setText(String.format( "%d", block )  );
     }
 
+    /*
+    Getters block
+        used for updated train in Manual mode
+     */
+    protected boolean getAutoVsManual(){ return AutoVsManual;}
+    protected boolean getSBrake(){ return sBrake;}
+    protected boolean getEBrake(){ return eBrake;}
+    protected double getMass(){ return mass;}
+    protected boolean getLights(){ return lights;}
+    protected double getAuthority() { return authority;}
+    protected double getBlock() { return block;}
+    protected boolean getRightRDoors() { return rightDoors;}
+    protected boolean getLeftDoors() { return leftDoors;}
+    protected boolean getAc() { return ac;}
+    protected boolean getHeat() { return heat;}
+    protected double getTemperature() { return temperature;}
+    protected double getGrade() { return grade;}
+    protected double getSpeed() { return speed;}
+
 }
