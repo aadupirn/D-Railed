@@ -7,6 +7,7 @@ package TrackModel.Model;
 
 import TrainModel.Train;
 import TrackController.Classes.ThreeBaudMessage;
+import TrackController.TrackController;
 
 import static java.lang.Math.abs;
 
@@ -63,6 +64,7 @@ public class Block {
 
     // three baud message
     private ThreeBaudMessage message;
+    private TrackController tc;
 
     // Connected Blocks
     private String direction;
@@ -99,6 +101,7 @@ public class Block {
         // train
         this.occupied = false;
         this.message = new ThreeBaudMessage();
+        tc = null;
 
         // status
         this.powerState = false;
@@ -134,6 +137,7 @@ public class Block {
         // train
         this.occupied = false;
         this.message = new ThreeBaudMessage();
+        tc = null;
 
         // status
         this.powerState = true;
@@ -180,8 +184,12 @@ public class Block {
     }
 
     public void setTrain(Train train){
-        this.occupied = true;
+        this.setOccupied();
         this.train = train;
+    }
+
+    public void setTrackController(TrackController tc) {
+        this.tc = tc;
     }
 
     public boolean isOccupied(){
@@ -283,10 +291,10 @@ public class Block {
     public void toggleTrackState(){
         if(trackState.equals("OPEN")){
             trackState = "CLOSED";
-            this.occupied = true;
+            this.setOccupied();
         }else{
             trackState = "OPEN";
-            this.occupied = false;
+            this.setUnoccupied();
         }
     }
 
@@ -297,10 +305,10 @@ public class Block {
     public void setRailState(boolean railState) {
         this.railState = railState;
         if(railState == false){
-            this.occupied = true;
+            this.setOccupied();
             this.trackState = "CLOSED";
         }else{
-            this.occupied = false;
+            this.setUnoccupied();
             this.trackState = "OPEN";
         }
     }
@@ -308,10 +316,10 @@ public class Block {
     public void toggleRailState(){
         this.railState = (!this.railState);
         if(this.railState == false){
-            this.occupied = true;
+            this.setOccupied();
             this.trackState = "CLOSED";
         }else{
-            this.occupied = false;
+            this.setUnoccupied();
             this.trackState = "OPEN";
         }
     }
@@ -323,10 +331,10 @@ public class Block {
     public void setCircuitState(boolean circuitState) {
         this.circuitState = circuitState;
         if(this.circuitState == false){
-            this.occupied = true;
+            this.setOccupied();
             this.trackState = "CLOSED";
         }else{
-            this.occupied = false;
+            this.setUnoccupied();
             this.trackState = "OPEN";
         }
     }
@@ -334,10 +342,10 @@ public class Block {
     public void toggleCircuitState(){
         this.circuitState = (!this.circuitState);
         if(this.circuitState == false){
-            this.occupied = true;
+            this.setOccupied();
             this.trackState = "CLOSED";
         }else{
-            this.occupied = false;
+            this.setUnoccupied();
             this.trackState = "OPEN";
         }
     }
@@ -349,10 +357,10 @@ public class Block {
     public void setPowerState(boolean powerState) {
         this.powerState = powerState;
         if(this.powerState == false){
-            this.occupied = true;
+            this.setOccupied();
             this.trackState = "CLOSED";
         }else{
-            this.occupied = false;
+            this.setUnoccupied();
             this.trackState = "OPEN";
         }
     }
@@ -360,10 +368,10 @@ public class Block {
     public void togglePowerState(){
         this.powerState = (!this.powerState);
         if(this.powerState == false){
-            this.occupied = true;
+            this.setOccupied();
             this.trackState = "CLOSED";
         }else{
-            this.occupied = false;
+            this.setUnoccupied();
             this.trackState = "OPEN";
         }
     }
@@ -423,7 +431,7 @@ public class Block {
     public Block moveToNextBlock(Train train, boolean direction) {
 
         // remove train from current block
-        this.occupied = false;
+        this.setUnoccupied();
         this.train = null;
 
         // calculation based
@@ -566,10 +574,12 @@ public class Block {
 
     public void setOccupied(){
         this.occupied = true;
+        updatePLC();
     }
 
     public void setUnoccupied(){
         this.occupied = false;
+        updatePLC();
     }
 
     public int getNextUpBlockNumber() {
@@ -617,5 +627,25 @@ public class Block {
 
     public boolean isToYard(){
         return this.toYard;
+    }
+
+    private void updatePLC()
+    {
+        boolean state;
+        if(this.aSwitch != null) {
+            if (!this.aSwitch.isManualSet()) {
+                state = tc.getPLCSwitch(aSwitch.getSwitchNumber());
+                if (state)
+                    this.aSwitch.setSwitchState(SwitchState.TOP);
+                else
+                    this.aSwitch.setSwitchState(SwitchState.BOTTOM);
+            }
+        }
+
+        if(this.crossing != null)
+            crossing.setActive(tc.getPLCCrossing(this.blockNumber));
+
+        if(this.light != null)
+            light.setActive(tc.getPLCLight(this.blockNumber));
     }
 }

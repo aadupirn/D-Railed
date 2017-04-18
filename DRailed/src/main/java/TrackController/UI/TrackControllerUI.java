@@ -25,10 +25,10 @@ public class TrackControllerUI {
     private Stage mainStage, sideStage;
     private Scene mainScene, murphyScene, userInScene, engScene, toTMScene;
     private Label controllerLabel,blockLabel, controlLabel, switchLabel, occupiedLabel, lightsLabel, crossLabel, switchAdjLabel, mainBlockLabel, subBlock1Label,subBlock2Label,connectedLabel, getTrainID, getSpeed,getAuth,getCarts;
-    private TextField blockID, occupiedStatus, lightsStatus,crossStatus, switchAdj, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText, getTrainIDText, getSpeedText, getAuthText, getCartsText, sendTrainIDText, sendSpeedText, sendAuthText;
+    private TextField blockID, occupiedStatus, lightsStatus,crossStatus, switchAdj, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText, getTrainIDText, getSpeedText, getAuthText, getCartsText, sendTrainIDText, sendSpeedText, sendAuthText, selectSwitchText, setSwitchText;
     private TextArea notifications;
     private Text controllerLine, controllerSection;
-    private Button murphyButton, userInputsButton, engInputsButton, toTrackModelButton, murphyBreakTrackButton, murphyBreakCTCComms, murphyBreakTMComms, sendEngineer, loadPLC, blockIdButton, switchIdButton, dispatchButton, sendData;
+    private Button murphyButton, userInputsButton, engInputsButton, toTrackModelButton, murphyBreakTrackButton, murphyBreakCTCComms, murphyBreakTMComms, sendEngineer,unsetSwitch, loadPLC, blockIdButton, switchIdButton, dispatchButton, sendData;
     private RadioButton blockRB, switchRB;
     private TrackController tc;
     private PLC myPLC;
@@ -98,7 +98,7 @@ public class TrackControllerUI {
         controllerLine = new Text("Line - " + tc.getLine());
         controllerSection = new Text("Controller Number - " + tc.getID());
         blockLabel = new Label("Block Info");
-        controlLabel = new Label("Controls/Track Info");
+        controlLabel = new Label("PLC Loaded: " + tc.plcLoaded());
         switchLabel = new Label("Switch Info");
         blockLabel.setMinWidth(windowWidth / 3 - 20);
         controlLabel.setMinWidth(windowWidth / 3 - 20);
@@ -170,9 +170,9 @@ public class TrackControllerUI {
 
         //Set up ButtonPane -----------------------------------------------------------------------
         murphyButton = new Button("Murphy Controls");
-        userInputsButton = new Button("CTC Inputs");
+        userInputsButton = new Button("Dispatch Train");
         engInputsButton = new Button("Engineer Inputs");
-        toTrackModelButton = new Button("Inputs To Track Model");
+        toTrackModelButton = new Button("Speed and Authority");
         murphyButton.setOnAction(e -> MainButtonClicked(e));
         userInputsButton.setOnAction(e -> MainButtonClicked(e));
         engInputsButton.setOnAction(e -> MainButtonClicked(e));
@@ -263,6 +263,9 @@ public class TrackControllerUI {
         murphyBreakTrackButton = new Button("Break Track");
         murphyBreakCTCComms = new Button("CTC");
         murphyBreakTMComms = new Button("Track Model");
+        murphyBreakTrackButton.setOnAction(e -> MurphyButtonClicked(e));
+        murphyBreakCTCComms.setOnAction(e -> MurphyButtonClicked(e));
+        murphyBreakTMComms.setOnAction(e -> MurphyButtonClicked(e));
         TextField breakBlockID = new TextField("Put Block ID to break");
         Label breakCommsLabel = new Label("Break Comms with: ");
         GridPane breakComms = new GridPane();
@@ -273,7 +276,6 @@ public class TrackControllerUI {
         murphy.add(breakBlockID, 0, 0);
 
         //break track button
-        murphyBreakTrackButton.setOnAction(e -> MurphyButtonClicked(e));
         murphy.add(murphyBreakTrackButton, 1, 0);
 
         //Break comms label
@@ -288,71 +290,39 @@ public class TrackControllerUI {
         //End murphy --------------------------------------------------------------------
 
         //Engineer Inputs
-        Label setBlocklabel = new Label("Select Block ID: ");
-        Label setLightsLabel = new Label("Set Lights: ");
-        Label setCrossroadsLabel = new Label("Set Crossing Signal: ");
         Label setSwitchLabel = new Label("Select Switch: ");
-        Label setOpenLabel = new Label("Set Open Status: ");
-        Label setSwitchToggleLabel = new Label("Toggle Switch: ");
-        TextField setBlockID = new TextField("");
-        TextField setLightsText = new TextField("");
-        TextField setCrossroadsText = new TextField("");
-        TextField selectSwitchText = new TextField("");
-        TextField setOpenText = new TextField("");
-        TextField setSwitchText = new TextField("");
-        sendEngineer = new Button("Send Changes");
+        Label setSwitchToggleLabel = new Label("Set Connecting Block: ");
+        selectSwitchText = new TextField("");
+        setSwitchText = new TextField("");
+        sendEngineer = new Button("Set Switch");
+        unsetSwitch = new Button("Unset Switch");
         loadPLC = new Button("Upload PLC File");
         sendEngineer.setOnAction(e -> EngineerButtonClicked(e));
         loadPLC.setOnAction(e -> EngineerButtonClicked(e));
-
-
-        //setBlocklabel
-        setBlocklabel.setFont(new Font("Garamond", 16));
-        engInputs.add(setBlocklabel, 0, 0);
-
-        //setBlockID
-        engInputs.add(setBlockID, 1, 0);
-
-        //setLightsLabel
-        setLightsLabel.setFont(new Font("Garamond", 16));
-        engInputs.add(setLightsLabel, 0, 1);
-
-        //setLightsText
-        engInputs.add(setLightsText, 1, 1);
-
-        //setCrossroadsLabel
-        setCrossroadsLabel.setFont(new Font("Garamond", 16));
-        engInputs.add(setCrossroadsLabel, 0, 2);
-
-        //setCrossroadsText
-        engInputs.add(setCrossroadsText, 1, 2);
-
-        //setOpenLabel
-        setOpenLabel.setFont(new Font("Garamond", 16));
-        engInputs.add(setOpenLabel, 0, 3);
-
-        //setOpenText
-        engInputs.add(setOpenText, 1, 3);
+        unsetSwitch.setOnAction(e -> EngineerButtonClicked(e));
 
         //setSwitchLabel
         setSwitchLabel.setFont(new Font("Garamond", 16));
-        engInputs.add(setSwitchLabel, 0, 4);
+        engInputs.add(setSwitchLabel, 0, 0);
 
         //selectSwitchText
-        engInputs.add(selectSwitchText, 1, 4);
+        engInputs.add(selectSwitchText, 1, 0);
 
         //setSwitchToggleLabel
         setSwitchToggleLabel.setFont(new Font("Garamond", 16));
-        engInputs.add(setSwitchToggleLabel, 0, 5);
+        engInputs.add(setSwitchToggleLabel, 0, 2);
 
         //setSwitchText
-        engInputs.add(setSwitchText, 1, 5);
+        engInputs.add(setSwitchText, 1, 2);
 
         //Send Button
-        engInputs.add(sendEngineer, 0, 6, 2, 1);
+        engInputs.add(sendEngineer, 0, 3);
+
+        //Unset Button
+        engInputs.add(unsetSwitch,1,3);
 
         //PLC button
-        engInputs.add(loadPLC, 0, 7, 2, 1);
+        engInputs.add(loadPLC, 0, 4, 2, 1);
 
         //End Eng Inputs---------------------------------------------------------------------
 
@@ -363,7 +333,7 @@ public class TrackControllerUI {
         sendTrainIDText = new TextField("");
         sendSpeedText = new TextField("");
         sendAuthText = new TextField("");
-        sendData = new Button("Send to Track Model");
+        sendData = new Button("Send Message");
         sendData.setOnAction(e->setSpeedAndAuthorityClicked(e));
 
 
@@ -455,14 +425,24 @@ public class TrackControllerUI {
             {
                tc.setPLC(file2);
             }
+            controlLabel.setText(("PLC Loaded: " + tc.plcLoaded()));
+        }
+        else if (source == sendEngineer)
+        {
+            tc.setSwitch(tc.getLine(),Integer.parseInt(selectSwitchText.getText()),Integer.parseInt(setSwitchText.getText()));
+        }
+        else if (source == unsetSwitch)
+        {
+            tc.unsetManualSwitch(tc.getLine(),Integer.parseInt(selectSwitchText.getText()));
         }
     }
 
     public void MurphyButtonClicked(ActionEvent e)
     {
         Object source = e.getSource();
-        if(source == murphyBreakTrackButton)
+        if(source == murphyBreakTMComms)
         {
+            tc.toggleTrackComms();
             //TODO something, maybe display in same pane?
         }
     }
@@ -542,7 +522,7 @@ public class TrackControllerUI {
         else if(source == userInputsButton)
         {
             sideStage.setScene(userInScene);
-            newTitle = "CTC Inputs";
+            newTitle = "Dispatch";
         }
         else if(source == engInputsButton)
         {
@@ -552,7 +532,7 @@ public class TrackControllerUI {
         else if(source == toTrackModelButton)
         {
             sideStage.setScene(toTMScene);
-            newTitle = "Output To Track Model";
+            newTitle = "Speed and Authority";
         }
         sideStage.setTitle(newTitle);
         sideStage.show();
