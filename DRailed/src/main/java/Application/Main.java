@@ -1,9 +1,12 @@
 package Application;
 
+import DTime.DTime;
+import MBO.java.MBOController;
+import TrackController.TrackController;
 import TrackModel.Track;
 import TrackModel.TrackModelGUI;
-import TrainController.TrainController;
-import TrackModel.TrackModelGUI;
+import TrainModel.Train;
+import ctc.CTCMain;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -13,12 +16,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import TrackController.TrackController;
-import TrackModel.Track;
-import DTime.DTime;
-import TrainModel.Train;
-import MBO.java.MBOController;
-import ctc.CTCMain;
 
 import java.io.IOException;
 
