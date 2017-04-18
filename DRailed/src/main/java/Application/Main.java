@@ -119,17 +119,18 @@ public class Main extends Application {
 			}
 		});
 
-//        trackModelBtn.setOnAction((ActionEvent e) ->
-//        {
-//            try {
-//
-//            } catch (IOException e1) {
-//                e1.printStackTrace();
-//            }
-//            catch (Exception e2) {
-//            	//lol
-//			}
-//        });
+        trackModelBtn.setOnAction((ActionEvent e) ->
+        {
+            try {
+				Track track = new Track();
+				TrackModelGUI tgui = new TrackModelGUI(track);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            catch (Exception e2) {
+            	//lol
+			}
+        });
 
 		trainModelBtn.setOnAction((ActionEvent e) ->
 		{

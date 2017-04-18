@@ -443,7 +443,7 @@ public class Block {
                 //System.out.println(cndiff);
                 //System.out.println(csdiff);
 
-                if(cndiff < csdiff){
+                if(cndiff > csdiff){
                     nextBlock = nextUpBlock;
                 }else {
                     nextBlock = nextSwitchBlock;
@@ -463,7 +463,7 @@ public class Block {
                 //System.out.println(cndiff);
                 //System.out.println(csdiff);
 
-                if(cndiff > csdiff) {
+                if(cndiff < csdiff) {
                     nextBlock = nextDownBlock;
                 }else{
                     nextBlock = nextSwitchBlock;
@@ -514,13 +514,21 @@ public class Block {
             if (nextUpBlockNumber != -1){
                 return true;
             }else{
-                return false;
+                if(nextSwitchBlockDir == true) {
+                    return true;
+                }else{
+                    return false;
+                }
             }
         }else if(direction == false){
             if (nextDownBlockNumber != -1){
                 return false;
-            }else{
-                return true;
+            }else {
+                if (nextSwitchBlockDir == false) {
+                    return false;
+                } else {
+                    return true;
+                }
             }
         }else{
             return direction;

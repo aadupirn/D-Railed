@@ -53,7 +53,6 @@ public class LocationCalculator
 		{
 			blockLocation = blockLocation - block.getLength();
 
-
 			System.out.println("Direction Before:" + dir);
 			if(redirect == 0) {
 				dir = block.canMoveToBlock(dir);
