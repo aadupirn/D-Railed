@@ -28,13 +28,13 @@ public class DTime
 	{
 		public void run()
 		{
-			for(TrainController tc: trainControllers)
-			{
-				tc.update();
-			}
 			for(TrackController tc: trackControllers)
 			{
 				tc.Update();
+			}
+			for(TrainController tc: trainControllers)
+			{
+				tc.update();
 			}
 			//if(trackModelGUI!= null)
 				//trackModelGUI.update();
@@ -75,4 +75,6 @@ public class DTime
 			tc.setMBO(mbo);
 		}
 	}
+
+	public Timer getTimer() { return timer; }
 }

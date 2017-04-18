@@ -7,6 +7,7 @@ package TrackModel.Model;
 
 import TrainModel.Train;
 import TrackController.Classes.ThreeBaudMessage;
+import TrackController.TrackController;
 
 import static java.lang.Math.abs;
 
@@ -63,6 +64,7 @@ public class Block {
 
     // three baud message
     private ThreeBaudMessage message;
+    private TrackController tc;
 
     // Connected Blocks
     private String direction;
@@ -99,6 +101,7 @@ public class Block {
         // train
         this.occupied = false;
         this.message = new ThreeBaudMessage();
+        tc = null;
 
         // status
         this.powerState = false;
@@ -134,6 +137,7 @@ public class Block {
         // train
         this.occupied = false;
         this.message = new ThreeBaudMessage();
+        tc = null;
 
         // status
         this.powerState = true;
@@ -180,8 +184,12 @@ public class Block {
     }
 
     public void setTrain(Train train){
-        this.occupied = true;
+        this.setOccupied();
         this.train = train;
+    }
+
+    public void setTrackController(TrackController tc) {
+        this.tc = tc;
     }
 
     public boolean isOccupied(){
@@ -283,10 +291,10 @@ public class Block {
     public void toggleTrackState(){
         if(trackState.equals("OPEN")){
             trackState = "CLOSED";
-            this.occupied = true;
+            this.setOccupied();
         }else{
             trackState = "OPEN";
-            this.occupied = false;
+            this.setUnoccupied();
         }
     }
 
@@ -297,10 +305,10 @@ public class Block {
     public void setRailState(boolean railState) {
         this.railState = railState;
         if(railState == false){
-            this.occupied = true;
+            this.setOccupied();
             this.trackState = "CLOSED";
         }else{
-            this.occupied = false;
+            this.setUnoccupied();
             this.trackState = "OPEN";
         }
     }
@@ -308,10 +316,10 @@ public class Block {
     public void toggleRailState(){
         this.railState = (!this.railState);
         if(this.railState == false){
-            this.occupied = true;
+            this.setOccupied();
             this.trackState = "CLOSED";
         }else{
-            this.occupied = false;
+            this.setUnoccupied();
             this.trackState = "OPEN";
         }
     }
@@ -323,10 +331,10 @@ public class Block {
     public void setCircuitState(boolean circuitState) {
         this.circuitState = circuitState;
         if(this.circuitState == false){
-            this.occupied = true;
+            this.setOccupied();
             this.trackState = "CLOSED";
         }else{
-            this.occupied = false;
+            this.setUnoccupied();
             this.trackState = "OPEN";
         }
     }
@@ -334,10 +342,10 @@ public class Block {
     public void toggleCircuitState(){
         this.circuitState = (!this.circuitState);
         if(this.circuitState == false){
-            this.occupied = true;
+            this.setOccupied();
             this.trackState = "CLOSED";
         }else{
-            this.occupied = false;
+            this.setUnoccupied();
             this.trackState = "OPEN";
         }
     }
@@ -349,10 +357,10 @@ public class Block {
     public void setPowerState(boolean powerState) {
         this.powerState = powerState;
         if(this.powerState == false){
-            this.occupied = true;
+            this.setOccupied();
             this.trackState = "CLOSED";
         }else{
-            this.occupied = false;
+            this.setUnoccupied();
             this.trackState = "OPEN";
         }
     }
@@ -360,10 +368,10 @@ public class Block {
     public void togglePowerState(){
         this.powerState = (!this.powerState);
         if(this.powerState == false){
-            this.occupied = true;
+            this.setOccupied();
             this.trackState = "CLOSED";
         }else{
-            this.occupied = false;
+            this.setUnoccupied();
             this.trackState = "OPEN";
         }
     }
@@ -423,7 +431,7 @@ public class Block {
     public Block moveToNextBlock(Train train, boolean direction) {
 
         // remove train from current block
-        this.occupied = false;
+        this.setUnoccupied();
         this.train = null;
 
         // calculation based
@@ -434,35 +442,24 @@ public class Block {
 
         Block nextBlock = null;
 
-        // if the direction of travel is UP and the track runs the same direction
-        if (direction == true && nextUpBlock == null && nextSwitchBlock != null){
-            System.out.println("Up And Switch");
-            nextBlock = nextSwitchBlock;
-
-        } else if (direction == false && nextDownBlock == null && nextSwitchBlock != null){
-            System.out.println("Down And Switch");
-            nextBlock = nextSwitchBlock;
-
-        }if (direction == true && nextUpBlock != null) {
+        if (direction == true && nextUpBlock != null) {
 
             if(nextSwitchBlock != null){
                 int cndiff = Math.abs(authority - next);
                 int csdiff = Math.abs(authority - nswitch);
 
+                //System.out.println(cndiff);
+                //System.out.println(csdiff);
+
                 if(cndiff < csdiff){
                     nextBlock = nextUpBlock;
-                    System.out.println("Switch And Up");
                 }else {
                     nextBlock = nextSwitchBlock;
-                    System.out.println("Switch And Switch [Up]");
                 }
             }else{
                 // move train to next block
-                System.out.println("Up");
                 nextBlock = nextUpBlock;
             }
-
-
 
             // if the direction of travel is DOWN and the track runs the same direction
         } else if (direction == false && nextDownBlock != null) {
@@ -471,21 +468,26 @@ public class Block {
                 int cndiff = Math.abs(authority - next);
                 int csdiff = Math.abs(authority - nswitch);
 
-                if(cndiff < csdiff) {
+                //System.out.println(cndiff);
+                //System.out.println(csdiff);
+
+                if(cndiff > csdiff) {
                     nextBlock = nextDownBlock;
-                    System.out.println("Switch And Down");
                 }else{
                     nextBlock = nextSwitchBlock;
-                    System.out.println("Switch And Switch [Down]");
                 }
 
             }else{
                 // move train to next block
-                System.out.println("Down");
                 nextBlock = nextDownBlock;
             }
 
+         // if the direction of travel is UP and the track runs the same direction
+        } else if (direction == true && nextUpBlock == null && nextSwitchBlock != null){
+            nextBlock = nextSwitchBlock;
 
+        } else if (direction == false && nextDownBlock == null && nextSwitchBlock != null) {
+            nextBlock = nextSwitchBlock;
         }
 
         nextBlock.setOccupied();
@@ -516,22 +518,16 @@ public class Block {
 
     public boolean canMoveToBlock(boolean direction){
 
-        System.out.println("DIRECTION:" + direction);
-
         if(direction == true){
             if (nextUpBlockNumber != -1){
-                System.out.println("GO UP");
                 return true;
             }else{
-                System.out.println("GO DOWN");
                 return false;
             }
         }else if(direction == false){
             if (nextDownBlockNumber != -1){
-                System.out.println("GO DOWN");
                 return false;
             }else{
-                System.out.println("GO UP");
                 return true;
             }
         }else{
@@ -562,11 +558,6 @@ public class Block {
         this.nextDownBlock = nextDownBlock;
     }
 
-    public void setMessageInfo(char id,char speed, char authority) {
-        this.message.setTrainID(id);
-        this.message.setAuthority(authority);
-        this.message.setSpeed(speed);
-    }
     public void setNextSwitchBlock(Block nextSwitchBlock){
         this.nextSwitchBlock = nextSwitchBlock;
     }
@@ -577,14 +568,18 @@ public class Block {
 
     public void setMessage(ThreeBaudMessage message) {this.message = message;}
 
+    public void clearMessage() {this.message = null;}
+
     public ThreeBaudMessage getMessage() {return message;}
 
     public void setOccupied(){
         this.occupied = true;
+        updatePLC();
     }
 
     public void setUnoccupied(){
         this.occupied = false;
+        updatePLC();
     }
 
     public int getNextUpBlockNumber() {
@@ -605,6 +600,10 @@ public class Block {
 
     public int getNextSwitchBlockNumber() {
         return this.nextSwitchBlockNumber;
+    }
+
+    public void setNextSwitchRedirect(boolean dir){
+        this.nextSwitchBlockDir = dir;
     }
 
     public boolean getNextSwitchRedirect(){return this.nextSwitchBlockDir; }
@@ -628,5 +627,25 @@ public class Block {
 
     public boolean isToYard(){
         return this.toYard;
+    }
+
+    private void updatePLC()
+    {
+        boolean state;
+        if(this.aSwitch != null) {
+            if (!this.aSwitch.isManualSet()) {
+                state = tc.getPLCSwitch(aSwitch.getSwitchNumber());
+                if (state)
+                    this.aSwitch.setSwitchState(SwitchState.TOP);
+                else
+                    this.aSwitch.setSwitchState(SwitchState.BOTTOM);
+            }
+        }
+
+        if(this.crossing != null)
+            crossing.setActive(tc.getPLCCrossing(this.blockNumber));
+
+        if(this.light != null)
+            light.setActive(tc.getPLCLight(this.blockNumber));
     }
 }

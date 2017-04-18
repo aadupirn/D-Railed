@@ -81,28 +81,6 @@ public class Track {
 
         Block nextBlock = tm.getBlock(line, currentBlock.getBlockNumber().intValue()).moveToNextBlock(train, direction);
 
-        // PLC update old block
-        if(currentBlock.getSwitch() != null){
-            setSwitchState(line, currentBlock.getSwitch().getSwitchNumber(), getTrackController().getPLCSwitch(currentBlock.getSwitch().getSwitchNumber()));
-        }
-        if(currentBlock.getCrossing() != null){
-            setCrossingState(line, currentBlock.getBlockNumber(), getTrackController().getPLCCrossing(currentBlock.getBlockNumber()));
-        }
-        if(currentBlock.getLight() != null){
-            setLightState(line, currentBlock.getBlockNumber(), getTrackController().getPLCLight(currentBlock.getBlockNumber()));
-        }
-
-        // PLC update new block
-        if(nextBlock.getSwitch() != null){
-            setSwitchState(nextBlock.getLine(), nextBlock.getSwitch().getSwitchNumber(), getTrackController().getPLCSwitch(nextBlock.getSwitch().getSwitchNumber()));
-        }
-        if(nextBlock.getCrossing() != null){
-            setCrossingState(nextBlock.getLine(), nextBlock.getBlockNumber(), getTrackController().getPLCCrossing(nextBlock.getBlockNumber()));
-        }
-        if(nextBlock.getLight() != null){
-            setLightState(nextBlock.getLine(), nextBlock.getBlockNumber(), getTrackController().getPLCLight(nextBlock.getBlockNumber()));
-        }
-
         tm.getBlock(currentBlock.getLine(), currentBlock.getBlockNumber()).setUnoccupied();
         tm.getBlock(nextBlock.getLine(), nextBlock.getBlockNumber()).setOccupied();
 

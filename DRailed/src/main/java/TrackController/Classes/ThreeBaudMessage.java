@@ -8,14 +8,14 @@ public class ThreeBaudMessage {
     private char trainID, speed, authority;
     public ThreeBaudMessage()
     {
-        trainID = 255;
+        trainID = 0;
         speed = 0;
         authority = 0;
     }
 
     public ThreeBaudMessage(char id, char speed, char authority)
     {
-        trainID=id;
+        this.trainID=id;
         this.speed=speed;
         this.authority=authority;
     }
