@@ -3,6 +3,7 @@ package TrackController;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.concurrent.LinkedBlockingDeque;
 import TrackController.Classes.*;
 import TrackController.UI.*;
@@ -22,7 +23,7 @@ public class TrackController {
     private int ID;
     private String line;
     private boolean trackComms, ctcComms, isLineMain;
-    private LinkedBlockingDeque<ThreeBaudMessage> messageQueue;
+    private LinkedList<ThreeBaudMessage> messageQueue;
     private TrackControllerUI ui;
     private DTime dTime;
     private ArrayList<Integer> blocks, plcBlocks;
@@ -56,11 +57,10 @@ public class TrackController {
         this.line = line;
         ID = id;
         blocks = b;
-        messageQueue = new LinkedBlockingDeque<>();
+        messageQueue = new LinkedList<>();
 
         if (line.equals("GREEN"))
         {
-            track = new Track("greenLine.csv");
             if (b.contains(152))
                 this.isLineMain=true;
             else
@@ -68,7 +68,6 @@ public class TrackController {
         }
         else
         {
-            track = new Track("redLine.csv");
             if (b.contains(77))
                 this.isLineMain=true;
             else
@@ -92,9 +91,7 @@ public class TrackController {
     {
         if (myPLC==null)
             return false;
-        if(!myPLC.isValid())
-            return false;
-        return true;
+        return myPLC.isValid();
     }
     public void setPLC(File file) {
         Block[] b = new Block[153];
@@ -108,6 +105,11 @@ public class TrackController {
 
     public void setTrack(Track t) {
         this.track = t;
+
+        for(int i : blocks)
+        {
+            track.getBlock(this.line,i).setTrackController(this);
+        }
     }
 
     public void setID(int ID) {
@@ -118,8 +120,8 @@ public class TrackController {
         return ID;
     }
 
-    public void setTrackComms(boolean trackComms) {
-        this.trackComms = trackComms;
+    public void toggleTrackComms() {
+        this.trackComms = !this.trackComms;
     }
 
     public boolean hasTrackComms() {
@@ -154,17 +156,14 @@ public class TrackController {
     {
         if (line.equals(this.line))
         {
-            for (int i:blocks)
-            {
-                if (i==id)
-                    return true;
-            }
+            if (blocks.contains(id))
+                return true;
         }
 
         return false;
     }
 
-    public boolean hasSwitch(String line, int id)
+    public boolean setSwitch(String line, int id, int blockID) //TODO maybe switch to boolean state, not blockID?
     {
         Switch sw;
         if (line.equals(this.line))
@@ -174,15 +173,40 @@ public class TrackController {
                 sw = track.getBlock(line,i).getSwitch();
                 if(sw != null)
                 {
-                    if (sw.getSwitchNumber() == id)
+                    if (sw.getSwitchNumber() == id) {
+                        if (sw.getBottom() == blockID)
+                            sw.setSwitchState(SwitchState.BOTTOM);
+                        else
+                            sw.setSwitchState(SwitchState.TOP);
+                        sw.setManualSet(true);
                         return true;
+                    }
                 }
             }
         }
         return false;
     }
 
-    private Switch getSwitch(int id)
+    public void unsetManualSwitch(String line, int id)
+    {
+        Switch sw;
+        if (line.equals(this.line))
+        {
+            for (int i:blocks)
+            {
+                sw = track.getBlock(line,i).getSwitch();
+                if(sw != null)
+                {
+                    if (sw.getSwitchNumber() == id) {
+                        sw.setManualSet(false);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    public Switch getSwitch(int id)
     {
         Switch sw;
         for (int i:blocks)
@@ -199,11 +223,11 @@ public class TrackController {
 
     public void setSpeedAndAuthority(int trainID, double speed, int authority) //TODO make sure to do this before any PLC outputs, so PLC can make it zero again
     {
-            ThreeBaudMessage message = new ThreeBaudMessage();
-            message.setTrainID((char)trainID);
-            message.setSpeed((char)speed);
-            message.setAuthority((char)authority);
-            messageQueue.add(message);
+        ThreeBaudMessage message = new ThreeBaudMessage();
+        message.setTrainID((char)trainID);
+        message.setSpeed((char)speed);
+        message.setAuthority((char)authority);
+        messageQueue.add(message);
     }
 
     private void sendSpeedAndAuthority(ThreeBaudMessage message)
@@ -213,14 +237,11 @@ public class TrackController {
         for (int i:blocks)
         {
             block = track.getBlock(this.line,i);
-            if (block.isOccupied())
-            {
-                if (speed > block.getSpeedLimit()) {
-                    speed = block.getSpeedLimit();
-                    message.setSpeed((char)speed);
-                }
-                block.setMessage(message);
+            if (speed > block.getSpeedLimit()) {
+                speed = block.getSpeedLimit();
+                message.setSpeed((char)speed);
             }
+            block.setMessage(message);
         }
     }
 
@@ -257,29 +278,57 @@ public class TrackController {
     public void Update()
     {
         Block b;
-        for (int i:blocks)
-        {
-            b = track.getBlock(this.line, i);
-            b.clearMessage();
-        }
+        if (trackComms) {
+            for (int i : blocks) {
+                b = track.getBlock(this.line, i);
+                b.clearMessage();
+            }
 
-        if (!messageQueue.isEmpty())
-        {
-            sendSpeedAndAuthority(messageQueue.remove());
+            if (!messageQueue.isEmpty()) {
+                sendSpeedAndAuthority(messageQueue.removeFirst());
+            }
+            if (plcLoaded())
+                plcStopTrains();
         }
-        if (plcLoaded())
-            plcStopTrains();
+        else
+        {
+            ThreeBaudMessage t = new ThreeBaudMessage();
+            for (int i : blocks)
+            {
+                b = track.getBlock(this.line, i);
+                b.setMessage(t);
+            }
+        }
         ui.Update();
     }
 
     public boolean dispatchTrain(int start, int numberOfCarts, int newAuthority, Double newSpeed, int newID) throws Exception
     {
+        boolean go = false;
         if (isLineMain)
         {
-            Train train = new Train(start,numberOfCarts,newAuthority, newSpeed, newID, this.track);
-            track.dispatchTrainOnTrack(this.line,train);
-            dTime.addTC(train.GetTrainController());
-            return true;
+            if (this.line.equals("GREEN"))
+            {
+                if(!track.getBlock(this.line,152).isOccupied())
+                {
+                    go = true;
+                }
+            }
+            else if(!track.getBlock(this.line,77).isOccupied())
+            {
+                go = true;
+            }
+
+            if (go) {
+                try {
+                    Train train = new Train(start, numberOfCarts, newAuthority, newSpeed, newID, this.track);
+                    track.dispatchTrainOnTrack(this.line, train);
+                    dTime.addTC(train.GetTrainController());
+                    return true;
+                } catch (Exception e) {
+                    return false;
+                }
+            }
         }
         return false;
     }
