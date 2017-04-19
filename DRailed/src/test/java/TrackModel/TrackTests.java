@@ -1,5 +1,7 @@
 package TrackModel;
 
+import DTime.DTime;
+import TrackController.TrackController;
 import TrackModel.Model.Block;
 import TrackModel.Model.Heater;
 import TrackModel.Model.Station;
@@ -7,7 +9,10 @@ import TrackModel.Model.SwitchState;
 import TrainModel.Train;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.TestCase.assertNotSame;
 import static junit.framework.TestCase.assertEquals;
@@ -18,56 +23,40 @@ import static junit.framework.TestCase.assertEquals;
 public class TrackTests {
 
     /*@Test
-    public void testSetSpeedAndAuthority() {
-
-        Track track = new Track("greenLine.csv");
-        boolean signal = track.setSpeedAndAuthority("GREEN", 57, 50, 5);
-
-        double speed = track.getBlock("GREEN", 57).readSpeed();
-        int authority = track.getBlock("GREEN", 57).readAuthority();
-
-        assertEquals(true, (speed == 50 && authority == 5));
+    public void testSetSpeedAndAuth(){
 
     }*/
 
     @Test
-    public void testSetSpeedAndAuth_ExpectTrainMove(){
-
-    }
-
-    @Test
     public void testBlockOccupied(){
-        Track track = new Track("greenLine.csv");
-
-        Train train = null;
-
-        try {
-            train = new Train(1);
-        }catch(Exception ioe){
-            System.out.println("Encountered IO Exception");
-        }
+        Track track = new Track();
 
         Block start = track.getFromYardBlock("GREEN");
+        //Block start = track.getFromYardBlock("RED");
 
-        start.setTrain(train);
+        start.setOccupied(true);
 
         Block b = track.getBlock("GREEN", start.getBlockNumber());
+        //Block b = track.getBlock("RED", start.getBlockNumber());
 
         assertEquals(true, b.isOccupied());
     }
 
     @Test
     public void testBlockUnoccupied(){
-        Track track = new Track("greenLine.csv");
+        Track track = new Track();
         Block b = track.getBlock("GREEN", 3);
+        //Block b = track.getBlock("RED", 3);
+
         assertEquals(false, b.isOccupied());
     }
 
     @Test
     public void testToggleSwitch() {
 
-        Track track = new Track("greenLine.csv");
+        Track track = new Track();
         String state = track.toggleSwitch("GREEN", 1);
+        //String state = track.toggleSwitch("RED", 12);
 
         assertEquals(SwitchState.BOTTOM.toString(), state);
 
@@ -76,8 +65,9 @@ public class TrackTests {
     @Test
     public void testToggleCrossing() {
 
-        Track track = new Track("greenLine.csv");
+        Track track = new Track();
         boolean state = track.toggleCrossing("GREEN", 1);
+        //boolean state = track.toggleCrossing("RED", 47);
 
         assertEquals(true, state);
 
@@ -86,8 +76,9 @@ public class TrackTests {
     @Test
     public void testToggleLight() {
 
-        Track track = new Track("greenLine.csv");
+        Track track = new Track();
         boolean state = track.toggleLight("GREEN", 1);
+        //boolean state = track.toggleLight("RED", 1);
 
         assertEquals(false, state);
 
@@ -96,8 +87,9 @@ public class TrackTests {
     @Test
     public void testSetSwitch(){
 
-        Track track = new Track("greenLine.csv");
+        Track track = new Track();
         String state = track.setSwitchState("GREEN", 1, true);
+        //String state = track.setSwitchState("RED", 12, true);
 
         assertEquals(SwitchState.TOP.toString(), state);
 
@@ -106,8 +98,9 @@ public class TrackTests {
     @Test
     public void testSetCrossing(){
 
-        Track track = new Track("greenLine.csv");
+        Track track = new Track();
         boolean state = track.setCrossingState("GREEN", 19, true);
+        //boolean state = track.setCrossingState("RED", 47, true);
 
         assertEquals(true, state);
 
@@ -116,8 +109,9 @@ public class TrackTests {
     @Test
     public void testSetLights(){
 
-        Track track = new Track("greenLine.csv");
+        Track track = new Track();
         boolean state = track.setLightState("GREEN", 1, true);
+        //boolean state = track.setLightState("RED", 9, true);
 
         assertEquals(true, state);
 
@@ -146,7 +140,7 @@ public class TrackTests {
     @Test
     public void testCorrectFile(){
 
-        Track track = new Track("greenLine.csv");
+        Track track = new Track();
         assertEquals(true, track != null);
 
     }
@@ -154,7 +148,7 @@ public class TrackTests {
     @Test
     public void testImportTrack(){
 
-        Track track = new Track("greenLine.csv");
+        Track track = new Track();
         assertEquals(true, track != null);
 
     }
@@ -181,98 +175,123 @@ public class TrackTests {
     @Test
     public void testCloseBlock(){
 
-        Track track = new Track("greenLine.csv");
+        Track track = new Track();
 
         track.getBlock("GREEN", 3).setTrackState("CLOSED");
+        track.getBlock("RED", 3).setTrackState("CLOSED");
 
         assertEquals("CLOSED", track.getBlock("GREEN", 3).getTrackState());
+        //assertEquals("CLOSED", track.getBlock("RED", 3).getTrackState());
 
     }
 
     @Test
     public void testBreakRail() {
 
-        Track track = new Track("greenLine.csv");
-        track.breakRail(2);
+        Track track = new Track();
+        track.breakRailTest("GREEN",2);
+        track.breakRailTest("RED",2);
 
         assertEquals(false, track.getBlock("GREEN", 2).isRailState());
-
+        //assertEquals(false, track.getBlock("RED", 2).isRailState());
     }
 
     @Test
     public void testBreakCircuit() {
 
-        Track track = new Track("greenLine.csv");
-        track.breakCircuit(2);
+        Track track = new Track();
+        track.breakCircuitTest("GREEN", 2);
+        track.breakCircuitTest("RED", 2);
 
         assertEquals(false, track.getBlock("GREEN", 2).isCircuitState());
+        //assertEquals(false, track.getBlock("RED", 2).isCircuitState());
 
     }
 
     @Test
     public void testBreakPower() {
 
-        Track track = new Track("greenLine.csv");
-        track.breakPower(2);
+        Track track = new Track();
+        track.breakPowerTest("GREEN",2);
+        track.breakPowerTest("RED",2);
 
         assertEquals(false, track.getBlock("GREEN", 2).isPowerState());
+        //assertEquals(false, track.getBlock("RED", 2).isPowerState());
 
     }
 
     @Test
     public void testFixRail() {
 
-        Track track = new Track("greenLine.csv");
-        track.breakRail(2);
-        track.fixRail(2);
+        Track track = new Track();
+
+        track.breakRailTest("GREEN", 2);
+        track.fixRailTest("GREEN", 2);
+        track.breakRailTest("RED", 2);
+        track.fixRailTest("RED", 2);
 
         assertEquals(true, track.getBlock("GREEN", 2).isRailState());
+        //assertEquals(true, track.getBlock("RED", 2).isRailState());
 
     }
     @Test
     public void testFixCircuit() {
 
-        Track track = new Track("greenLine.csv");
-        track.breakCircuit(2);
-        track.fixCircuit(2);
+        Track track = new Track();
+        track.breakCircuitTest("GREEN", 2);
+        track.fixCircuitTest("GREEN", 2);
+        track.breakCircuitTest("RED", 2);
+        track.fixCircuitTest("RED", 2);
 
         assertEquals(true, track.getBlock("GREEN", 2).isCircuitState());
+        //assertEquals(true, track.getBlock("RED", 2).isCircuitState());
 
     }
 
     @Test
     public void testFixPower(){
 
-        Track track = new Track("greenLine.csv");
-        track.breakPower(2);
-        track.fixPower(2);
+        Track track = new Track();
+        track.breakPowerTest("GREEN", 2);
+        track.fixPowerTest("GREEN", 2);
+        track.breakPowerTest("RED", 2);
+        track.fixPowerTest("RED", 2);
 
         assertEquals(true, track.getBlock("GREEN", 2).isPowerState());
+        //assertEquals(true, track.getBlock("RED", 2).isPowerState());
 
     }
 
     @Test
     public void testLinkedTrackModel(){
 
-        Track track = new Track("greenLine.csv");
+        Track track = new Track();
         Block startBlock = track.getFromYardBlock("GREEN");
+        // Block startBlock = track.getFromYardBlock("RED");
         Block nextBlock = null;
 
-        System.out.println(startBlock.getBlockNumber());
+        boolean dir = startBlock.canMoveToBlock(true);
 
-        // check if can move up
-        if(startBlock.canMoveToBlock(true)){
-            nextBlock = startBlock.getNextUpBlock();
-        }
-
-        // check if can move down
-        if(startBlock.canMoveToBlock(false)){
-            nextBlock = startBlock.getNextDownBlock();
-        }
-
-        System.out.println(nextBlock.getBlockNumber());
+        nextBlock = startBlock.getNextBlock(dir);
 
         assertEquals(63, nextBlock.getBlockNumber().intValue());
+        //assertEquals(9, nextBlock.getBlockNumber().intValue());
+
+    }
+
+    @Test
+    public void testBlockLookAhead(){
+
+        Track track = new Track();
+        Block startBlock = track.getFromYardBlock("GREEN");
+        // Block startBlock = track.getFromYardBlock("RED");
+
+        List<Block> blist = track.tm.lookAhead(startBlock, true, 5);
+
+        Block lastBlock = blist.get(4);
+
+        assertEquals(67, lastBlock.getBlockNumber().intValue());
+        //assertEquals(5, lastBlock.getBlockNumber().intValue());
 
     }
 
