@@ -831,8 +831,8 @@ public class TrainController
 		temperature = train.getTemperature();
 		setTempText(train.getTemperature());
 
-		mbo.setSpeed(trainID, "red", speed);
-		mbo.setAuthority(trainID, "red", 100);
+		//mbo.setSpeed(trainID, "red", speed);
+		//mbo.setAuthority(trainID, "red", 100);
 	}
 
 	//endregion
