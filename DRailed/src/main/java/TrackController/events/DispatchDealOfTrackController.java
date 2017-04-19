@@ -1,6 +1,7 @@
 package TrackController.events;
 
-import ctc.beanpnl.OptTrainBean;
+import ctc.bean.pnl.OptTrainBean;
+
 
 public class DispatchDealOfTrackController {
 

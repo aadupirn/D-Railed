@@ -13,7 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import ctc.beanpnl.ScheduleBean;
+import ctc.bean.pnl.ScheduleBean;
 import ctc.controller.ScheduleCtrl;
 
 public class ScheduleMgr {
@@ -61,7 +61,8 @@ public class ScheduleMgr {
         Button btnquery = new Button("Query");
         btnquery.setPrefSize(60, 20);
       
-        center_hb.getChildren().addAll(label1,tf1,label2,tf2,label3,tf3,btnquery);
+       // center_hb.getChildren().addAll(label1,tf1,label2,tf2,label3,tf3,btnquery);
+        center_hb.getChildren().addAll(btnquery);
         centervb.getChildren().addAll(labelct,center_hb);
         
         //下面表格       
@@ -106,7 +107,8 @@ public class ScheduleMgr {
         clo8.setMinWidth(100);
 //        tableview.getColumns().add(clo8);
      
-        tableview.setItems(list);
+     // tableview.setItems(list);
+        tableview.getColumns().addAll(clo1,clo2,clo3,clo4,clo5,clo6,clo7,clo8);
         tableview.getColumns().addAll(clo1,clo2,clo3,clo4,clo5,clo6,clo7,clo8);
 //        tableview.setEditable(true);
         
