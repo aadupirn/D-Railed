@@ -65,6 +65,7 @@ public class TrackController {
         this.line = line;
         ID = id;
         blocks = b;
+        plcBlocks = plc;
         messageQueue = new LinkedList<>();
 
         if (line.equals("GREEN"))

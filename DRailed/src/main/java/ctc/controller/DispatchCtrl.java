@@ -18,7 +18,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import TrackController.events.DispatchDealOfTrackController;
 import ctc.CTCMain;
 import ctc.bean.pnl.OptTrainBean;
 
