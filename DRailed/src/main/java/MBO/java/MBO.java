@@ -9,8 +9,8 @@ import javafx.collections.ObservableList;
 public class MBO {
     private boolean active;
     private boolean murphy;
-    private String redLine = "Red";
-    private String greenLine = "Green";
+    private String redLine = "RED";
+    private String greenLine = "GREEN";
     private ObservableList<TrainInfo> redTrainInfos = FXCollections.observableArrayList();
     private ObservableList<TrainInfo> greenTrainInfos = FXCollections.observableArrayList();
 
@@ -21,23 +21,27 @@ public class MBO {
     }
 
     private boolean trainExists(int id, String line){
-        if(line.equals(redLine)) {
+        System.out.println("Checking for train...");
+        if(line.toUpperCase().equals(redLine)) {
             for (TrainInfo tf : redTrainInfos)
-                if (tf.getId() == id) return true;
-        } else if (line.equals(greenLine)) {
+                if (tf.getId() == id)
+                    return true;
+        } else if (line.toUpperCase().equals(greenLine)) {
             for (TrainInfo tf : greenTrainInfos)
-                if (tf.getId() == id) return true;
+                if (tf.getId() == id)
+                    return true;
         }
 
         return false;
     }
 
     private TrainInfo findTrain(int id, String line) {
-        if(line.equals(redLine)) {
+        System.out.println("Finding Train...");
+        if(line.toUpperCase().equals(redLine)) {
             for (TrainInfo tf : redTrainInfos)
                 if (tf.getId() == id)
                     return tf;
-        } else if(line.equals(greenLine)) {
+        } else if(line.toUpperCase().equals(greenLine)) {
             for (TrainInfo tf : greenTrainInfos)
                 if (tf.getId() == id)
                     return tf;
@@ -51,9 +55,17 @@ public class MBO {
     }
 
     public void addTrain(int id, String line, double speed, double safeSpeed, double variance, int authority, String location) {
-        if(line.equals(redLine))
+        System.out.println("Adding Train...");
+        if(trainExists(id, line)) {
+            TrainInfo tf = findTrain(id, line);
+
+            tf.setSpeed(speed);
+            tf.setSafeSpeed(safeSpeed);
+            tf.setAuthorithy(authority);
+            tf.setLocation(location);
+        } else if(line.toUpperCase().equals(redLine))
             redTrainInfos.add(new TrainInfo(id, line, speed, safeSpeed, location, authority, variance));
-        else if(line.equals(greenLine))
+        else if(line.toUpperCase().equals(greenLine))
             greenTrainInfos.add(new TrainInfo(id, line, speed, safeSpeed, location, authority, variance));
     }
 

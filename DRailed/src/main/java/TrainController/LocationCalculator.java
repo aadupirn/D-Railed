@@ -78,7 +78,7 @@ public class LocationCalculator
 		
 //		mbo.setClearLocalInfo(trainID,block.getLine(),block.getBlockNumber());
 		
-//		mbo.setLocation(trainID, "Block: " + block);
+		mbo.setLocation(trainID, line, "Block: " + block);
 		System.out.println("We are on block " + block.getBlockNumber()+"\n" +
 				"Meters we have traveled along block: " + blockLocation);
 		return block;
