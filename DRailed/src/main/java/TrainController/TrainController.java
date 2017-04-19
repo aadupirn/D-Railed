@@ -19,6 +19,7 @@ import MBO.java.MBO;
 import TrackController.Classes.ThreeBaudMessage;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by aadu on 2/3/17.
@@ -805,6 +806,23 @@ public class TrainController
 		{
 			sBrake();
 		}
+		List<Block> blockAheadList = track.lookAhead(currentBlock, locationCalculator.getDir(), 1);
+		authority = 151; //debug
+		for(Block b : blockAheadList)
+		{
+			if(b.getBlockNumber().intValue() == authority)
+			{
+				sBrake();
+			}
+			if(b.getBeacon() != null && speed > 5) //station coming up!
+			{
+				if(!b.getBeacon().readMessage().contains("US"))
+				{
+					sBrake();
+				}
+			}
+		}
+
 		double powerCommand1 = controlCalculator1.computeNextCommand(speed);
 		double powerCommand2 = controlCalculator2.computeNextCommand(speed);
 

@@ -5,6 +5,7 @@ import TrackModel.Model.*;
 import TrainModel.Train;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by adzun_000 on 2/14/2017.
@@ -427,6 +428,11 @@ public class Track {
         }
 
         return null;
+    }
+
+    public List<Block> lookAhead(Block currentBlock, boolean dir, int numBlocks)
+    {
+        return tm.lookAhead(currentBlock, dir, numBlocks);
     }
 
     public Block getFromYardBlock(String line){
