@@ -223,6 +223,20 @@ public class Track {
         }
     }
 
+    public void breakRailTest(String line, int blockId){
+        for(Line l : tm.getLines()){
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getBlockNumber() == blockId) {
+                            b.setRailStateTest(false);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public void breakPower(String line, int blockId){
         for(Line l : tm.getLines()){
             if(l.getLine().equals(line)) {
@@ -230,6 +244,20 @@ public class Track {
                     for (Block b : s.getBlocks()) {
                         if (b.getBlockNumber() == blockId) {
                             b.setPowerState(false);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void breakPowerTest(String line, int blockId){
+        for(Line l : tm.getLines()){
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getBlockNumber() == blockId) {
+                            b.setPowerStateTest(false);
                         }
                     }
                 }
@@ -251,6 +279,20 @@ public class Track {
         }
     }
 
+    public void breakCircuitTest(String line, int blockId){
+        for(Line l : tm.getLines()){
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getBlockNumber() == blockId) {
+                            b.setCircuitStateTest(false);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public void fixRail(String line, int blockId){
         for(Line l : tm.getLines()){
             if(l.getLine().equals(line)) {
@@ -258,6 +300,20 @@ public class Track {
                     for (Block b : s.getBlocks()) {
                         if (b.getBlockNumber() == blockId) {
                             b.setRailState(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void fixRailTest(String line, int blockId){
+        for(Line l : tm.getLines()){
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getBlockNumber() == blockId) {
+                            b.setRailStateTest(true);
                         }
                     }
                 }
@@ -279,6 +335,20 @@ public class Track {
         }
     }
 
+    public void fixPowerTest(String line, int blockId){
+        for(Line l : tm.getLines()){
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getBlockNumber() == blockId) {
+                            b.setPowerStateTest(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public void fixCircuit(String line, int blockId){
         for(Line l : tm.getLines()){
             if(l.getLine().equals(line)) {
@@ -286,6 +356,20 @@ public class Track {
                     for (Block b : s.getBlocks()) {
                         if (b.getBlockNumber() == blockId) {
                             b.setCircuitState(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void fixCircuitTest(String line, int blockId){
+        for(Line l : tm.getLines()){
+            if(l.getLine().equals(line)) {
+                for (Section s : l.getSections()) {
+                    for (Block b : s.getBlocks()) {
+                        if (b.getBlockNumber() == blockId) {
+                            b.setCircuitStateTest(true);
                         }
                     }
                 }

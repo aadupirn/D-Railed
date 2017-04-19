@@ -1,5 +1,6 @@
 package TrackModel;
 
+import DTime.DTime;
 import TrackController.TrackController;
 import TrackModel.Model.Block;
 import TrackModel.Model.Heater;
@@ -8,6 +9,7 @@ import TrackModel.Model.SwitchState;
 import TrainModel.Train;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,18 +31,10 @@ public class TrackTests {
     public void testBlockOccupied(){
         Track track = new Track();
 
-        Train train = null;
-
-        try {
-            train = new Train(1);
-        }catch(Exception ioe){
-            System.out.println("Encountered IO Exception");
-        }
-
         Block start = track.getFromYardBlock("GREEN");
         //Block start = track.getFromYardBlock("RED");
 
-        start.setTrain(train);
+        start.setOccupied(true);
 
         Block b = track.getBlock("GREEN", start.getBlockNumber());
         //Block b = track.getBlock("RED", start.getBlockNumber());
@@ -195,8 +189,8 @@ public class TrackTests {
     public void testBreakRail() {
 
         Track track = new Track();
-        track.breakRail("GREEN",2);
-        track.breakRail("RED",2);
+        track.breakRailTest("GREEN",2);
+        track.breakRailTest("RED",2);
 
         assertEquals(false, track.getBlock("GREEN", 2).isRailState());
         //assertEquals(false, track.getBlock("RED", 2).isRailState());
@@ -206,8 +200,8 @@ public class TrackTests {
     public void testBreakCircuit() {
 
         Track track = new Track();
-        track.breakCircuit("GREEN", 2);
-        track.breakCircuit("RED", 2);
+        track.breakCircuitTest("GREEN", 2);
+        track.breakCircuitTest("RED", 2);
 
         assertEquals(false, track.getBlock("GREEN", 2).isCircuitState());
         //assertEquals(false, track.getBlock("RED", 2).isCircuitState());
@@ -218,9 +212,8 @@ public class TrackTests {
     public void testBreakPower() {
 
         Track track = new Track();
-        track.breakPower("GREEN",2);
-        track.breakPower("RED",2);
-
+        track.breakPowerTest("GREEN",2);
+        track.breakPowerTest("RED",2);
 
         assertEquals(false, track.getBlock("GREEN", 2).isPowerState());
         //assertEquals(false, track.getBlock("RED", 2).isPowerState());
@@ -232,10 +225,10 @@ public class TrackTests {
 
         Track track = new Track();
 
-        track.breakRail("GREEN", 2);
-        track.fixRail("GREEN", 2);
-        track.breakRail("RED", 2);
-        track.fixRail("RED", 2);
+        track.breakRailTest("GREEN", 2);
+        track.fixRailTest("GREEN", 2);
+        track.breakRailTest("RED", 2);
+        track.fixRailTest("RED", 2);
 
         assertEquals(true, track.getBlock("GREEN", 2).isRailState());
         //assertEquals(true, track.getBlock("RED", 2).isRailState());
@@ -245,10 +238,10 @@ public class TrackTests {
     public void testFixCircuit() {
 
         Track track = new Track();
-        track.breakCircuit("GREEN", 2);
-        track.fixCircuit("GREEN", 2);
-        track.breakCircuit("RED", 2);
-        track.fixCircuit("RED", 2);
+        track.breakCircuitTest("GREEN", 2);
+        track.fixCircuitTest("GREEN", 2);
+        track.breakCircuitTest("RED", 2);
+        track.fixCircuitTest("RED", 2);
 
         assertEquals(true, track.getBlock("GREEN", 2).isCircuitState());
         //assertEquals(true, track.getBlock("RED", 2).isCircuitState());
@@ -259,11 +252,10 @@ public class TrackTests {
     public void testFixPower(){
 
         Track track = new Track();
-        track.breakPower("GREEN", 2);
-        track.fixPower("GREEN", 2);
-        track.breakPower("RED", 2);
-        track.fixPower("RED", 2);
-
+        track.breakPowerTest("GREEN", 2);
+        track.fixPowerTest("GREEN", 2);
+        track.breakPowerTest("RED", 2);
+        track.fixPowerTest("RED", 2);
 
         assertEquals(true, track.getBlock("GREEN", 2).isPowerState());
         //assertEquals(true, track.getBlock("RED", 2).isPowerState());
