@@ -11,17 +11,16 @@ public class MBO {
     private boolean murphy;
     private String redLine = "RED";
     private String greenLine = "GREEN";
+
     private ObservableList<TrainInfo> redTrainInfos = FXCollections.observableArrayList();
     private ObservableList<TrainInfo> greenTrainInfos = FXCollections.observableArrayList();
 
-
-    public MBO(int trainCount){
+    public MBO(){
         active = false;
         murphy = false;
     }
 
     private boolean trainExists(int id, String line){
-        System.out.println("Checking for train...");
         if(line.toUpperCase().equals(redLine)) {
             for (TrainInfo tf : redTrainInfos)
                 if (tf.getId() == id)
@@ -36,7 +35,6 @@ public class MBO {
     }
 
     private TrainInfo findTrain(int id, String line) {
-        System.out.println("Finding Train...");
         if(line.toUpperCase().equals(redLine)) {
             for (TrainInfo tf : redTrainInfos)
                 if (tf.getId() == id)
@@ -55,7 +53,6 @@ public class MBO {
     }
 
     public void addTrain(int id, String line, double speed, double safeSpeed, double variance, int authority, String location) {
-        System.out.println("Adding Train...");
         if(trainExists(id, line)) {
             TrainInfo tf = findTrain(id, line);
 
@@ -69,41 +66,39 @@ public class MBO {
             greenTrainInfos.add(new TrainInfo(id, line, speed, safeSpeed, location, authority, variance));
     }
 
-    public void setLocation(int id, String line, String location){
+    private TrainInfo getTrain(int id, String line) {
         if(!trainExists(id, line)) addTrain(id, line);
-        findTrain(id, line).setLocation(location);
+        return findTrain(id, line);
+    }
+
+    public void setLocation(int id, String line, String location){
+        getTrain(id, line).setLocation(location);
     }
 
     public void setSpeed(int id, String line, double speed){
-        if(!trainExists(id, line)) addTrain(id, line);
-        findTrain(id, line).setSpeed(speed);
+        getTrain(id, line).setSpeed(speed);
     }
 
 
     public void setSafeSpeed(int id, String line, double safeSpeed){
-        if(!trainExists(id, line)) addTrain(id, line);
-        findTrain(id, line).setSafeSpeed(safeSpeed);
+        getTrain(id, line).setSafeSpeed(safeSpeed);
     }
 
     public void setAuthority(int id, String line, int authority){
-        if(!trainExists(id, line)) addTrain(id, line);
-        findTrain(id, line).setAuthorithy(authority);
+        getTrain(id, line).setAuthorithy(authority);
     }
 
     public void setVariance(int id, String line, double variance) {
-        if(!trainExists(id, line)) addTrain(id, line);
-        findTrain(id, line).setVariance(variance);
+        getTrain(id, line).setVariance(variance);
     }
 
     public int getAuthority(int id, String line){
-        if(!trainExists(id, line)) addTrain(id, line);
-        return findTrain(id, line).getAuthority();
+        return getTrain(id, line).getAuthority();
     }
 
 
     public double getSafeSpeed(int id, String line){
-        if(!trainExists(id, line)) addTrain(id, line);
-        return findTrain(id, line).getSafeSpeed();
+        return getTrain(id, line).getSafeSpeed();
     }
 
     public boolean isMBOActive(){
