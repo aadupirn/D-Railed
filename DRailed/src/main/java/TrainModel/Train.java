@@ -286,7 +286,8 @@ public class Train {
         return authority;
     }
     public void SetAuthority(int newAuthority){
-         authority = newAuthority;
+
+        authority = newAuthority;
     }
 
     public int GetBlock(){
