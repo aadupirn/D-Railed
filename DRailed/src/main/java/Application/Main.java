@@ -188,6 +188,9 @@ public class Main extends Application {
 				track.setTrackController(trackController);
 				TrackModelGUI trackModel = new TrackModelGUI(track);
 				trackController.showUI();
+				CTCMain ctc = new CTCMain();
+				ctc.setTrackConrtoller(trackController);
+				ctc.start(new Stage());
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}

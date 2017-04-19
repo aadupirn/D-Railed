@@ -2,7 +2,6 @@ package TrainModel;
 
 /**
  * Created by swaroopakkineni on 4/3/17.
- * Im yoour daddy now ;)
  */
 public class AC {
 
@@ -12,15 +11,15 @@ public class AC {
     private final double minTempCel = 15.556;
     private final double normalTemp = 21.1111;
     protected static double temperature;
-    private boolean ac;
-    private boolean heat;
+    protected boolean ac;
+    protected boolean heat;
     private double k;
 
     public AC(){
         ac = false;
         heat = false;
         temperature = 70.0;
-        k = 15;
+        k = 0.00150;
     }
     public AC(double kValue){
         ac = false;

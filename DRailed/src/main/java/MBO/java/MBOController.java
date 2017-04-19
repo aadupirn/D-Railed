@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 public class MBOController extends Application {
 
     public MBOController(Timer timer){
-            this.timer = timer;
+        this.timer = timer;
     }
 
     private Scheduler scheduler;
@@ -210,14 +210,14 @@ public class MBOController extends Application {
 
         redStationsTable.setItems(scheduler.getRedTrainRows());
         redStationsTable.getColumns().addAll(herronStation, swissvilleStaion, pennStation, steelPlazaStation,
-                                                firstAveStation, southHillsStation, shadysideStation);
+                firstAveStation, southHillsStation, shadysideStation);
 
         greenStationsTable.setItems(scheduler.getGreenTrainRows());
         greenStationsTable.getColumns().addAll(glenBuryStationA, dormontStationA, mtLebanonStation, poplarStation,
-                                                castleShannon, dormonStationB, glenburyStationB, overbrookStationA,
-                                                inglewoodStationA, centralStationA, pioneerStation, edgebrookStation,
-                                                universityStation, whitedStation, southBankStation, centralStationB,
-                                                inglewoodStationB, overbrookStationB);
+                castleShannon, dormonStationB, glenburyStationB, overbrookStationA,
+                inglewoodStationA, centralStationA, pioneerStation, edgebrookStation,
+                universityStation, whitedStation, southBankStation, centralStationB,
+                inglewoodStationB, overbrookStationB);
     }
 
     @Override
