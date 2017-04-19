@@ -24,6 +24,7 @@ import MBO.java.MBOController;
 import ctc.CTCMain;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main extends Application {
 	//Class strings
@@ -183,18 +184,20 @@ public class Main extends Application {
 				track.couple("GREEN", "TIGHT");
 				TrackController trackController1 = new TrackController(dTime, "GREEN");
 				TrackController trackController2 = new TrackController(dTime, "RED");
-				dTime.addTrackC(trackController1);
-				dTime.addTrackC(trackController2);
+				ArrayList<TrackController> controllers = new ArrayList<TrackController>();
+				controllers.add(trackController1);
+				controllers.add(trackController2);
+				for (TrackController tc : controllers)
+				{
+					dTime.addTrackC(tc);
+					tc.setTrack(track);
+					tc.showUI(); //TODO fix so only 1 shows, but can switch
+					tc.setControllers(controllers);
+				}
 				dTime.setMBO(MBOCtrl.getMBO());
-				trackController1.setTrack(track);
-				trackController2.setTrack(track);
-				track.setTrackController(trackController1);
-				track.setTrackController(trackController2);
 				TrackModelGUI trackModel = new TrackModelGUI(track);
-				trackController1.showUI();
-				trackController2.showUI();
 				CTCMain ctc = new CTCMain();
-				ctc.setTrackConrtoller(trackController1);
+				ctc.setTrackController(controllers);
 				ctc.start(new Stage());
 			} catch (Exception e1) {
 				e1.printStackTrace();

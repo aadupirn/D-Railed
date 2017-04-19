@@ -27,6 +27,7 @@ public class TrackController {
     private TrackControllerUI ui;
     private DTime dTime;
     private ArrayList<Integer> blocks, plcBlocks;
+    private ArrayList<TrackController> controllers;
 
 
     public TrackController(DTime iDTime, String line) throws IOException
@@ -95,6 +96,9 @@ public class TrackController {
         ui.hideUI();
     }
 
+    public void setControllers(ArrayList<TrackController> controllers) {
+        this.controllers = controllers;
+    }
 
     public boolean plcLoaded()
     {
@@ -333,7 +337,7 @@ public class TrackController {
 
             if (go) {
                 try {
-                    Train train = new Train(startBlock, numberOfCarts, newAuthority, newSpeed, newID, this.track);
+                    Train train = new Train(startBlock, numberOfCarts, newAuthority, newSpeed, newID, this.track, this.line);
                     track.dispatchTrainOnTrack(this.line, train);
                     dTime.addTC(train.GetTrainController());
                     return true;
