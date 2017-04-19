@@ -2,7 +2,6 @@ package TrainModel;
 
 /**
  * Created by swaroopakkineni on 4/3/17.
- * Im yoour daddy now ;)
  */
 public class AC {
 
