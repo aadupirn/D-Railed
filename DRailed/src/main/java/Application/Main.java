@@ -182,6 +182,7 @@ public class Main extends Application {
 				dTime = new DTime();
 				Track track = new Track();
 				track.couple("GREEN", "TIGHT");
+				// Initialize Track Controllers
 				TrackController trackController1 = new TrackController(dTime, "GREEN");
 				TrackController trackController2 = new TrackController(dTime, "RED");
 				ArrayList<TrackController> controllers = new ArrayList<TrackController>();
@@ -191,9 +192,10 @@ public class Main extends Application {
 				{
 					dTime.addTrackC(tc);
 					tc.setTrack(track);
-					tc.showUI(); //TODO fix so only 1 shows, but can switch
 					tc.setControllers(controllers);
 				}
+				trackController1.showUI();
+				// End Track Controller Init
 				dTime.setMBO(MBOCtrl.getMBO());
 				TrackModelGUI trackModel = new TrackModelGUI(track);
 				CTCMain ctc = new CTCMain();

@@ -95,6 +95,17 @@ public class TrackController {
     {
         ui.hideUI();
     }
+    public void switchUI(String line, int id)
+    {
+        for (TrackController tc : controllers)
+        {
+            if (tc.getLine().equals(line) && tc.getID() == id)
+            {
+                hideUI();
+                tc.showUI();
+            }
+        }
+    }
 
     public void setControllers(ArrayList<TrackController> controllers) {
         this.controllers = controllers;
