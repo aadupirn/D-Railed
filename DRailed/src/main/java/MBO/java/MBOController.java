@@ -1,6 +1,7 @@
 package MBO.java;
 
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Timer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -45,6 +46,8 @@ public class MBOController extends Application {
     private TextField idScheduleTestInput;
     private TextField locattionScheduleTestInput;
     private Button scheduleTestBtn;
+    private RadioButton redScheduleRadio;
+    private RadioButton greenScheduleRadio;
     private TextField workersInput;
     private TextField thruputInput;
     private TextField startInput;
@@ -90,6 +93,8 @@ public class MBOController extends Application {
         idScheduleTestInput = (TextField) primary.getScene().lookup("#id_schedule_test");
         locattionScheduleTestInput = (TextField) primary.getScene().lookup("#location_schedule_test");
         scheduleTestBtn = (Button) primary.getScene().lookup("#schedule_test_btn");
+        redScheduleRadio = (RadioButton) primary.getScene().lookup("#red_sch_radio");
+        greenScheduleRadio = (RadioButton) primary.getScene().lookup("#green_sch_radio");
         workersInput = (TextField) primary.getScene().lookup("#worker_count_txt");
         thruputInput = (TextField) primary.getScene().lookup("#thruput_txt");
         startInput = (TextField) primary.getScene().lookup("#starttime_txt");
@@ -100,42 +105,7 @@ public class MBOController extends Application {
         // Conductor Schedule Button
 
         // Button Actions
-        mboRadio.setOnAction((ActionEvent a) -> { mbo.activateMBO(); });
-        fbRadio.setOnAction((ActionEvent a) -> { mbo.deactivateMBO(); });
 
-        trainInfoTestBtn.setOnAction((ActionEvent a) -> {
-            String line = ((RadioButton)redRadio.getToggleGroup().getSelectedToggle()).getText();
-            int id = Integer.parseInt(idTestInput.getText());
-            double speed = Double.parseDouble(speedTestInput.getText());
-            double safeSpeed = Double.parseDouble(safeSpeedTestInput.getText());
-            double variance = Double.parseDouble(varianceTestInput.getText());
-            int authority = Integer.parseInt(authorityTestInput.getText());
-            String location = locationTestInput.getText();
-
-            mbo.addTrain(id, line, speed, safeSpeed, variance, authority, location);
-
-            ((RadioButton)redRadio.getToggleGroup().getSelectedToggle()).setSelected(false);
-            idTestInput.clear();
-            speedTestInput.clear();
-            safeSpeedTestInput.clear();
-            varianceTestInput.clear();
-            authorityTestInput.clear();
-            locationTestInput.clear();
-        });
-
-        murphyBtn.setOnAction((ActionEvent a) -> { mbo.toggleMurphy(); });
-
-        scheduleTestBtn.setOnAction((ActionEvent a) -> {
-            if(idScheduleTestInput.getText() == null) return; //@TODO ERROR LOG
-
-            //scheduler.updateSchedule(Integer.parseInt(idScheduleTestInput.getText()));
-        });
-
-        generateScheduleBtn.setOnAction((ActionEvent a) -> {
-            if(thruputInput.getText() == null || startInput.getText() == null || endInput.getText() == null) return; // @TODO ERROR LOG
-
-            scheduler.generateSchedule(Integer.parseInt(thruputInput.getText()), Time.valueOf(startInput.getText()), Time.valueOf(endInput.getText()));
-        });
     }
 
     private void setMboColumns() {
@@ -176,6 +146,49 @@ public class MBOController extends Application {
 
         greenInfoTable.setItems(mbo.getGreenRows());
         greenInfoTable.getColumns().addAll(greenId, greenSpeed, greenSafeSpeed, greenVariance, greenAuthority, greenLocation);
+    }
+
+    private void setButtonActions() {
+        mboRadio.setOnAction((ActionEvent a) -> { mbo.activateMBO(); });
+        fbRadio.setOnAction((ActionEvent a) -> { mbo.deactivateMBO(); });
+
+        trainInfoTestBtn.setOnAction((ActionEvent a) -> {
+            String line = ((RadioButton)redRadio.getToggleGroup().getSelectedToggle()).getText();
+            int id = Integer.parseInt(idTestInput.getText());
+            double speed = Double.parseDouble(speedTestInput.getText());
+            double safeSpeed = Double.parseDouble(safeSpeedTestInput.getText());
+            double variance = Double.parseDouble(varianceTestInput.getText());
+            int authority = Integer.parseInt(authorityTestInput.getText());
+            String location = locationTestInput.getText();
+
+            mbo.addTrain(id, line, speed, safeSpeed, variance, authority, location);
+
+            ((RadioButton)redRadio.getToggleGroup().getSelectedToggle()).setSelected(false);
+            idTestInput.clear();
+            speedTestInput.clear();
+            safeSpeedTestInput.clear();
+            varianceTestInput.clear();
+            authorityTestInput.clear();
+            locationTestInput.clear();
+        });
+
+        murphyBtn.setOnAction((ActionEvent a) -> { mbo.toggleMurphy(); });
+
+        scheduleTestBtn.setOnAction((ActionEvent a) -> {
+            if(idScheduleTestInput.getText() == null) return; //@TODO ERROR LOG
+
+            //scheduler.updateSchedule(Integer.parseInt(idScheduleTestInput.getText()));
+        });
+
+        generateScheduleBtn.setOnAction((ActionEvent a) -> {
+            if(thruputInput.getText() == null || startInput.getText() == null || endInput.getText() == null) return; // @TODO ERROR LOG
+            int thruput = Integer.parseInt(thruputInput.getText());
+            LocalTime start = LocalTime.of(Time.valueOf(startInput.getText()).getHours(), Time.valueOf(startInput.getText()).getMinutes(), Time.valueOf(startInput.getText()).getSeconds());
+            LocalTime end = LocalTime.of(Time.valueOf(startInput.getText()).getHours(), Time.valueOf(startInput.getText()).getMinutes(), Time.valueOf(startInput.getText()).getSeconds());
+            String line = ((RadioButton)redScheduleRadio.getToggleGroup().getSelectedToggle()).getText();
+
+            scheduler.generateSchedule(line, thruput, start, end);
+        });
     }
 
     private void setScheudleColumns() {
@@ -230,6 +243,7 @@ public class MBOController extends Application {
         scheduler = new Scheduler(timer);
         mbo = new MBO(1);
         this.getUIElements();
+        this.setButtonActions();
         this.setMboColumns();
         this.setScheudleColumns();
     }

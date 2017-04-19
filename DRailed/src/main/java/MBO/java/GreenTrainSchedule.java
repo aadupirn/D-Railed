@@ -40,7 +40,8 @@ public class GreenTrainSchedule {
     private ArrayList<Station> displaySchedule;
     private LinkedList<Station> stationsSchedule;
     private long delay = 0;
-    private long[] stationDelays = {};
+    private long[] stationDelays = {132, 150, 132, 264, 132, 138, 142, 126, 120, 120, 138, 138, 142, 162, 156, 114, 120, 120};
+    private int trackTime = 2546;
 
     private void prepUIProperties() {
         glenburyA = new SimpleStringProperty(displaySchedule.get(0).toString());
@@ -99,17 +100,13 @@ public class GreenTrainSchedule {
         return displaySchedule.get(station - 1).departure.toString();
     }
 
-    public GreenTrainSchedule(int id, LocalTime start, LocalTime end) {
-        int i = 0;
+    public GreenTrainSchedule(int id, LocalTime start) {
         stationsSchedule = new LinkedList<>();
 
-        while (start.compareTo(end) == -1) {
-            stationsSchedule.add(new Station(i + 1, start, LocalTime.of(start.getHour(), start.getMinute() + 1, start.getSecond())));
-            start.plusSeconds(stationDelays[i]);
-            i = (i + 1) % 18;
-        }
+        for(int i = 0; i < stationDelays.length ; i++)
+            stationsSchedule.add(new Station(i + 1, start.plusSeconds(stationDelays[i]), LocalTime.of(start.getHour(), start.getMinute() + 1, start.getSecond())));
 
-        displaySchedule = new ArrayList<>(18);
+        displaySchedule = new ArrayList<>(7);
         updateUI();
     }
 

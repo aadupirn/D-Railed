@@ -25,7 +25,8 @@ public class RedTrainSchedule {
     private ArrayList<Station> displaySchedule;
     private LinkedList<Station> stationsSchedule;
     private long delay = 0;
-    private long[] stationDelays = {};
+    private long[] stationDelays = {138, 90, 108, 126, 126, 102, 138, 222};
+    private int trackTime = 1050;
 
     private void prepUIProperties() {
         herron = new SimpleStringProperty(displaySchedule.get(0).toString());
@@ -37,10 +38,12 @@ public class RedTrainSchedule {
         shadyside = new SimpleStringProperty(displaySchedule.get(6).toString());
     }
 
-    private void updateUI() {
+    private void updateUI(int id) {
+        System.out.println("DEV: Updating UI...");
         for (Station s : displaySchedule)
             s.updateTimes(delay);
 
+        this.id.set(id);
         herron.set(displaySchedule.get(0).toString());
         swissville.set(displaySchedule.get(1).toString());
         pennStation.set(displaySchedule.get(2).toString());
@@ -50,26 +53,23 @@ public class RedTrainSchedule {
         shadyside.set(displaySchedule.get(6).toString());
     }
 
-    public void updateSchedule() {
+    public void updateSchedule(int id) {
         for (Station s : stationsSchedule)
             s.updateTimes(delay);
 
-        updateUI();
+        updateUI(id);
         delay = 0;
     }
 
-    public RedTrainSchedule(int id, LocalTime start, LocalTime end) {
-        int i = 0;
+    public RedTrainSchedule(int id, LocalTime start) {
+        System.out.println("DEV: Creating red line schedule...");
         stationsSchedule = new LinkedList<>();
 
-        while (start.compareTo(end) == -1) {
-            stationsSchedule.add(new Station(i + 1, start, LocalTime.of(start.getHour(), start.getMinute() + 1, start.getSecond())));
-            start.plusSeconds(stationDelays[i]);
-            i = (i + 1) % 7;
-        }
+        for(int i = 0; i < stationDelays.length ; i++)
+            stationsSchedule.add(new Station(i + 1, start.plusSeconds(stationDelays[i]), LocalTime.of(start.getHour(), start.getMinute() + 1, start.getSecond())));
 
         displaySchedule = new ArrayList<>(7);
-        updateUI();
+        updateUI(id);
     }
 
     public String getDeparture(int station) {
