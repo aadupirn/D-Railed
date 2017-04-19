@@ -54,7 +54,7 @@ public class TrainUI {
     private boolean sBrake;
 
     //auto vs manual
-    private boolean AutoVsManual = true;
+    private boolean AutoVsManual = false;
 
     //doors
     private boolean leftDoors;

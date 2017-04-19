@@ -36,8 +36,6 @@ public class DTime
 			{
 				tc.update();
 			}
-			//if(trackModelGUI!= null)
-				//trackModelGUI.update();
 		}
 	}
 
@@ -55,7 +53,7 @@ public class DTime
 	{
 		trainControllers.add(itc);
 		setMBO(mbo);
-	}
+}
 
 	public void addTrackC(TrackController itc)
 	{
