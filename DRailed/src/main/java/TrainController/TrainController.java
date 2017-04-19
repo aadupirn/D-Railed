@@ -805,6 +805,8 @@ public class TrainController
 		{
 			sBrake();
 		}
+
+
 		double powerCommand1 = controlCalculator1.computeNextCommand(speed);
 		double powerCommand2 = controlCalculator2.computeNextCommand(speed);
 
