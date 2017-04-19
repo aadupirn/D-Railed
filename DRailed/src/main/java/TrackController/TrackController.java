@@ -314,23 +314,26 @@ public class TrackController {
     public boolean dispatchTrain(int start, int numberOfCarts, int newAuthority, Double newSpeed, int newID) throws Exception
     {
         boolean go = false;
+        int startBlock = start;
         if (isLineMain && ctcComms)
         {
             if (this.line.equals("GREEN"))
             {
                 if(!track.getBlock(this.line,152).isOccupied())
                 {
+                    startBlock = 152;
                     go = true;
                 }
             }
             else if(!track.getBlock(this.line,77).isOccupied())
             {
+                startBlock = 77;
                 go = true;
             }
 
             if (go) {
                 try {
-                    Train train = new Train(start, numberOfCarts, newAuthority, newSpeed, newID, this.track);
+                    Train train = new Train(startBlock, numberOfCarts, newAuthority, newSpeed, newID, this.track);
                     track.dispatchTrainOnTrack(this.line, train);
                     dTime.addTC(train.GetTrainController());
                     return true;
