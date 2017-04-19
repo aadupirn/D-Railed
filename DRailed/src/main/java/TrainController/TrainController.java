@@ -593,11 +593,11 @@ public class TrainController
 			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
 			{
 				RadioButton toggled = (RadioButton)lDoorToggleGroup.getSelectedToggle();
-				if(toggled.getText().equals("On"))
+				if(toggled.getText().equals("Open"))
 				{
 					lDoorStatus = true;
 				}
-				else if(toggled.getText().equals("Off"))
+				else if(toggled.getText().equals("Closed"))
 				{
 					lDoorStatus = false;
 				}
@@ -611,11 +611,11 @@ public class TrainController
 			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
 			{
 				RadioButton toggled = (RadioButton)rDoorToggleGroup.getSelectedToggle();
-				if(toggled.getText().equals("On"))
+				if(toggled.getText().equals("Open"))
 				{
 					rDoorStatus = true;
 				}
-				else if(toggled.getText().equals("Off"))
+				else if(toggled.getText().equals("Closed"))
 				{
 					rDoorStatus = false;
 				}
@@ -799,10 +799,16 @@ public class TrainController
 				controlCalculator2.setDesiredSpeed(speedLimit);
 				setDesiredSpeedText(speedLimit);
 			}
+		}
 
+		if(speedLimit == 0)
+		{
+			sBrake();
 		}
 		double powerCommand1 = controlCalculator1.computeNextCommand(speed);
 		double powerCommand2 = controlCalculator2.computeNextCommand(speed);
+
+
 		if(powerCommand1 != powerCommand2) //power command calculation failute brake!!!
 		{
 			emergencyBrake();
@@ -817,7 +823,8 @@ public class TrainController
 			train.SetPowerCommand(new Double(0));
 			setPowerText(0);
 		}
-
+		train.SetAuthority((int)authority);
+		train.setBlock(currentBlock.getBlockNumber());
 		train.Update();
 
 		speed = train.GetCurrentSpeed();
