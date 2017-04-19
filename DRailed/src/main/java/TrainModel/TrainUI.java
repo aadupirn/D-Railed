@@ -466,12 +466,12 @@ public class TrainUI {
 
     protected void updateAuthority(int newAuthority){
         authority = newAuthority;
-        authorityText.setText(String.format( "%d", authority ) + " m" );
+        authorityText.setText(String.format( "%d", authority )  );
     }
 
     protected void updateBlock(int newBlock){
         block = newBlock;
-        authorityText.setText(String.format( "%d", block )  );
+        blockText.setText(String.format( "%d", block )  );
     }
 
     /*

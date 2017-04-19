@@ -823,7 +823,6 @@ public class TrainController
 			train.SetPowerCommand(new Double(0));
 			setPowerText(0);
 		}
-
 		train.SetAuthority((int)authority);
 		train.setBlock(currentBlock.getBlockNumber());
 		train.Update();

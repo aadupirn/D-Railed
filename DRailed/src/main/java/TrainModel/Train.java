@@ -183,7 +183,8 @@ public class Train {
     }
     public void updateUI(){
         //TrainModel == UI
-        System.out.println("updateUI");
+        //System.out.println("updateUI");
+        trainUI.updateSpeed(currentSpeed);
         trainUI.updateId(id);
         trainUI.updatePower(commandSpeed);
         trainUI.updateGrade(grade);
@@ -221,7 +222,6 @@ public class Train {
   //      System.out.println(mass + " " + commandSpeed + " " + currentSpeed + " " + grade);
         currentSpeed =  Engine.calculateSpeed(mass, commandSpeed, currentSpeed, grade);
         //System.out.println("Current Speed: "+currentSpeed);
-        trainUI.updateSpeed(currentSpeed);
         return true;
     }
     public double GetCurrentSpeed(){
@@ -286,7 +286,8 @@ public class Train {
         return authority;
     }
     public void SetAuthority(int newAuthority){
-         authority = newAuthority;
+
+        authority = newAuthority;
     }
 
     public int GetBlock(){
