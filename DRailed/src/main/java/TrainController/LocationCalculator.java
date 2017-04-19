@@ -41,6 +41,7 @@ public class LocationCalculator
 	//region methods
 	public Block ComputeNextLocation(double iSpeed)
 	{
+
 		//blockLocation += iSpeed;
 		// TODO: Remove for non-testing
 		blockLocation += iSpeed*20;
@@ -52,7 +53,6 @@ public class LocationCalculator
 		while(block.getLength() < blockLocation)
 		{
 			blockLocation = blockLocation - block.getLength();
-
 
 			System.out.println("Direction Before:" + dir);
 			if(redirect == 0) {
@@ -75,7 +75,9 @@ public class LocationCalculator
 
 
 		}
-		mbo.setLocation(trainID, "Block: " + block);
+
+		mbo.setLocation(trainID, line, "Block: " + block);
+
 		System.out.println("We are on block " + block.getBlockNumber()+"\n" +
 				"Meters we have traveled along block: " + blockLocation);
 		return block;

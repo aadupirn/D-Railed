@@ -10,15 +10,16 @@ import TrackModel.Track;
  */
 public class Train {
     private TrainController trainController;
-    private TrainModel trainModel;
+    private TrainUI trainUI;
     private Track track;
-    private int startingBlock;
+    private int block;
     private Double commandSpeed;
     private int id;
     private double currentSpeed;
     private double mass;
     private double grade;
     private int authority;
+    private double temp;
 
     private engine Engine;
     private AC ac;
@@ -32,7 +33,7 @@ public class Train {
 
 
     public Train() throws IOException, Exception {
-        System.out.println("train created");
+        //System.out.println("train created");
        // trainModel = new TrainModel();
         Engine = new engine();
         ac = new AC();
@@ -45,12 +46,13 @@ public class Train {
         sbrake = false;
 
         currentSpeed = 0;
-        mass = 10000;
+        mass = 81400;
 
-        startingBlock = 152;
+        block = 152;
         track = new Track();
         people = 0;
         trainController = new TrainController(this, this.track);
+        trainUI = new TrainUI();
         //trainModel = new TrainModel();
     }
 
@@ -70,12 +72,13 @@ public class Train {
         sbrake = false;
 
         currentSpeed = 0;
-        mass = 10000;
+        mass = 81400;
 
-        startingBlock = 152;
+        block = 152;
         track = new Track();
         people = 0;
         trainController = new TrainController(this, this.track);
+        trainUI = new TrainUI();
 
     }
 
@@ -85,11 +88,11 @@ public class Train {
         ebrake = false;
         sbrake = false;
         currentSpeed = 0;
-        mass = 10000;
+        mass = 81400;
         people = 0;
 
 
-        startingBlock = startingBlock;
+        block = startingBlock;
         id = newID;
         track = new Track();
         trainController = new TrainController(this, this.track);
@@ -103,48 +106,99 @@ public class Train {
         ebrake = false;
         sbrake = false;
         currentSpeed = 0;
-        mass = 10000;
+        mass = 81400;
         people = 0;
 
-        startingBlock = startingBlock;
+        block = startingBlock;
         id = newID;
         track = new Track();
         trainController = new TrainController(this, track);
         this.numberOfCarts = numberOfCarts;
-       // trainModel = new TrainModel();
-        //trainModel = new TrainModel();
-        //trainController = new TrainController();
+        trainController = new TrainController(this, this.track);
+        trainUI = new TrainUI();
     }
     public Train(int startingBlock, int numberOfCarts, int newAuthority, Double newSpeed, int newID, Track track) throws IOException, Exception {
+       //this is the constructor used
+        System.out.println("Train Created! From Train.java");
         Engine = new engine();
         ac = new AC();
         ebrake = false;
         sbrake = false;
         currentSpeed = 0;
-        mass = 10000;
-        people = new Random().nextInt(222);
+        commandSpeed = 0.0;
+        mass = 81400;
+        people = 10;//new Random().nextInt(222);
 
-        startingBlock = startingBlock;
+        block = startingBlock;
         id = newID;
         trainController = new TrainController(this, track);
-        trainModel = new TrainModel();
-        //trainModel = new TrainModel();
+        weightUpdate();
+        trainUI = new TrainUI();        //trainModel = new TrainModel();
         this.numberOfCarts = numberOfCarts;
+        Update();
     }
-
     /*
       Update Block
           This block updates the Train Model and the UI.
     */
     public void Update(){
+       // System.out.print("update() called");
         ac.changeTemp();
+        //System.out.print(" ------ a");
         calculateSpeed(commandSpeed);
-        updateUI();
-        //System.out.println("TEmperature is " + ac.getTemp());
-        //System.out.println("Speed is " + );
+       // System.out.print(" ------ b\n");
+        if(trainUI.getAutoVsManual())
+            updateUI();
+        else{
+            System.out.println(" --------------------------------------------------------------- ");
+            get();
+        }
+
+    }
+    public void get(){
+        System.out.println("get ------------------------------------------------------------------- ");
+        sbrake = trainUI.getSBrake();
+        engine.setSbrake(sbrake);
+        if(sbrake)
+            System.out.println("Service Brake ------------------------------------------------------------------- ");
+        ebrake = trainUI.getEBrake();
+        engine.setEbrake(ebrake);
+        mass = trainUI.getMass();
+        lights = trainUI.getLights();
+        commandSpeed = trainUI.getAuthority();
+        //block = get
+        rightDoors = trainUI.getRightRDoors();
+        leftDoors = trainUI.getLeftDoors();
+        if(trainUI.getAc())
+            ac.acOn();
+        else
+            ac.acOff();
+        if(trainUI.getHeat())
+            ac.heatOn();
+        else
+            ac.heatOff();
+        temp = trainUI.getTemperature();
+        grade = trainUI.getGrade();
+        currentSpeed = trainUI.getSpeed();
     }
     public void updateUI(){
         //TrainModel == UI
+        //System.out.println("updateUI");
+        trainUI.updateSpeed(currentSpeed);
+        trainUI.updateId(id);
+        trainUI.updatePower(commandSpeed);
+        trainUI.updateGrade(grade);
+        trainUI.updateTemperature(temp);
+        trainUI.updateAC(ac.ac);
+        trainUI.updateHeat(ac.heat);
+        trainUI.updateLeftDoors(leftDoors);
+        trainUI.updateRightDoors(rightDoors);
+        trainUI.updateEBrake(ebrake);
+        trainUI.updateSBrake(sbrake);
+        trainUI.updateMass(mass);
+        trainUI.updateLights(lights);
+        trainUI.updateAuthority(authority);
+        trainUI.updateBlock(block);
     }
 
     public TrainController GetTrainController(){
@@ -164,6 +218,8 @@ public class Train {
     */
     protected boolean calculateSpeed(Double power){
         //do some calculations
+  //      System.out.println("\n calculateSpeed()");
+  //      System.out.println(mass + " " + commandSpeed + " " + currentSpeed + " " + grade);
         currentSpeed =  Engine.calculateSpeed(mass, commandSpeed, currentSpeed, grade);
         //System.out.println("Current Speed: "+currentSpeed);
         return true;
@@ -189,7 +245,8 @@ public class Train {
         ac.heatOff();
     }
     public double getTemperature(){
-        return ac.getTemp();
+        double temp =  ac.getTemp();
+        return temp;
     }
 
 
@@ -198,7 +255,7 @@ public class Train {
             This block has setters and getters for people and updates weight of system
     */
     public void weightUpdate(){
-        mass = (10000*(numberOfCarts + 2) + (people * 150));
+        mass = (81400*(numberOfCarts) + (people * 165.347));
     }
     public void setPeople(int people){
         this.people = people;
@@ -215,6 +272,9 @@ public class Train {
     public void load(double load) {
         weightUpdate();
         people += load;
+        if(people > 150){
+            people = 150;
+        }
     }
 
 
@@ -225,9 +285,21 @@ public class Train {
     public int GetAuthority(){
         return authority;
     }
-    public int GetStartingBlock(){
-        return startingBlock;
+    public void SetAuthority(int newAuthority){
+
+        authority = newAuthority;
     }
+
+    public int GetBlock(){
+        return block;
+    }
+    public int GetStartingBlock(){
+        return block;
+    }
+    public void setBlock(int newBlock) {
+        block = newBlock;
+    }
+
     public void SetPowerCommand(Double pwrCMD){
         commandSpeed = pwrCMD;
     }
@@ -261,14 +333,16 @@ public class Train {
     */
     public boolean SetLeftDoors(boolean bool){
         leftDoors = bool;
-        return leftDoors;
+        System.out.println(leftDoors + " " + bool + " " + "leftDoors ----------------------------------------------------------------------- ");
+        return true;
     }
     public boolean GetLeftDoorsStatus(){
         return leftDoors;
     }
     public boolean SetRightDoors(boolean bool){
         rightDoors = bool;
-        return rightDoors;
+        System.out.println(rightDoors + " " + bool + " " + "rightDoors ----------------------------------------------------------------------- ");
+        return true;
     }
     public boolean GetRightDoorsStatus(){
         return rightDoors;

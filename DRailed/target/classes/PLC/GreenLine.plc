@@ -1,6 +1,7 @@
-this.lights = this.occupied
+this.lights = !this.occupied
 this.crossing = this.occupied
 this.stop = this.occupied
+this.switch = true
 1.stop = 13.occupied || 14.occupied || 15.occupied || 16.occupied || 17.occupied || 18.occupied || 19.occupied || 20.occupied || 21.occupied || 22.occupied ||23.occupied || 24.occupied || 25.occupied || 26.occupied || 27.occupied || 28.occupied
 2.stop = 1.occupied || 13.occupied || 14.occupied || 15.occupied || 16.occupied || 17.occupied || 18.occupied || 19.occupied || 20.occupied || 21.occupied || 22.occupied ||23.occupied || 24.occupied || 25.occupied || 26.occupied || 27.occupied || 28.occupied
 3.stop = 1.occupied || 2.occupied || 13.occupied || 14.occupied || 15.occupied || 16.occupied || 17.occupied || 18.occupied || 19.occupied || 20.occupied || 21.occupied || 22.occupied ||23.occupied || 24.occupied || 25.occupied || 26.occupied || 27.occupied || 28.occupied
@@ -157,5 +158,5 @@ this.stop = this.occupied
 1.switch = 13.occupied || !1.occupied
 2.switch = 12.occupied || !150.occupied
 0.switch = !(58.occupied || 59.occupied || 60.occupied || 61.occupied || 62.occupied || 63.occupied || 64.occupied || 65.occupied || 66.occupied)
-4.switch = 77.occupied || !86.occupied
+4.switch = 77.occupied || !76.occupied
 5.switch = 85.occupied || !100.occupied

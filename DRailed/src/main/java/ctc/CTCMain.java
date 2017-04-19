@@ -1,5 +1,6 @@
 package ctc;
 
+import TrackController.TrackController;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,6 +18,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import ctc.controller.MonitorCtrl;
+import ctc.controller.help.paint.cache.RailwayCache;
 import ctc.panels.DispatchMgr;
 import ctc.panels.InstructionsMgr;
 import ctc.panels.Monitormgr;
@@ -33,6 +36,14 @@ public class CTCMain extends Application {
     public TitledPane node4;
     public TitledPane node5;
     public Accordion accordion;
+    public static Stage mainStage;
+    public static TrackController ctc_tc;
+   
+    
+    public CTCMain()
+    {
+    	mainStage = new Stage();
+    }
     
     /**
      * 设置根节点布局
@@ -175,5 +186,28 @@ public class CTCMain extends Application {
 
     public static void main(String[] args) {
         launch(args);
+       
     }
+	public void setTrackConrtoller(TrackController trackController) {
+		// 
+		ctc_tc = trackController;
+	}
+	
+	public void showUI(){
+		start(mainStage);
+		mainStage.show();
+	}
+
+
+	// after update trains location,then update map.
+	public void updateMap() {
+		
+	}
+
+	public static void updateTrainLocal(int trainID, String line,
+			Integer blockNumber) {
+		RailwayCache.green_line_occup.put("" + trainID, "" + blockNumber);
+		System.out.println("draw occupy for Monitor Map trainId =" + trainID + ", block = " + line + ", block = " + blockNumber);
+		MonitorCtrl.update(line);
+	}
 }

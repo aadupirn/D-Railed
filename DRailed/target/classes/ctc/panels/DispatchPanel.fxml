@@ -42,14 +42,14 @@
                   </Label>
                   <Label layoutX="110.0" layoutY="36.0" prefHeight="13.0" prefWidth="68.0" text="Train NO.:" />
                   <Label alignment="CENTER_RIGHT" layoutX="109.0" layoutY="57.0" prefHeight="27.0" prefWidth="54.0" text="Line:" />
-                  <Label alignment="CENTER_RIGHT" layoutX="54.0" layoutY="90.0" prefHeight="27.0" prefWidth="109.0" text="Depature Block:" />
+                  <Label alignment="CENTER_RIGHT" layoutX="54.0" layoutY="90.0" prefHeight="27.0" prefWidth="109.0" text="Number of carts:" />
                   <Label alignment="CENTER_RIGHT" layoutX="529.0" layoutY="37.0" prefHeight="15.0" prefWidth="82.0" text="Authority:" />
                   <Label fx:id="trainNumLabel" layoutX="178.0" layoutY="36.0" prefHeight="15.0" prefWidth="152.0" text="--" />
                   <Label fx:id="lineLabel" layoutX="178.0" layoutY="62.0" prefHeight="15.0" prefWidth="285.0" text="--" />
-				  <Label fx:id="departureLabel" layoutX="178.0" layoutY="97.0" prefHeight="15.0" prefWidth="279.0" text="--" />
+				  <Label fx:id="numOfCartsLabel" layoutX="178.0" layoutY="97.0" prefHeight="15.0" prefWidth="279.0" text="--" />
 				  <Label fx:id="authorityLabel" layoutX="627.0" layoutY="37.0" prefHeight="15.0" prefWidth="167.0" text="--" />
-                  <Label alignment="CENTER_RIGHT" layoutX="50.0" layoutY="124.0" prefHeight="15.0" prefWidth="118.0" text="Destination Block:" />
-                  <Label fx:id="destinationLabel" layoutX="178.0" layoutY="124.0" prefHeight="15.0" prefWidth="264.0" text="--" />
+                  <Label alignment="CENTER_RIGHT" layoutX="50.0" layoutY="124.0" prefHeight="15.0" prefWidth="118.0" text="Speed:" />
+                  <Label fx:id="speedLabel" layoutX="178.0" layoutY="124.0" prefHeight="15.0" prefWidth="264.0" text="--" />
                   <Label alignment="CENTER_RIGHT" layoutX="16.0" layoutY="157.0" prefHeight="15.0" prefWidth="147.0" text="Depature Time:" />
                   <Label fx:id="depatureTimeLabel" layoutX="178.0" layoutY="157.0" prefHeight="15.0" prefWidth="210.0" text="--" />
                </children>
@@ -59,23 +59,23 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
                </padding>
                <children>
-                  <Label layoutX="31.0" layoutY="58.0" prefHeight="19.0" prefWidth="139.0" text="Departure Block:">
+                  <Label alignment="CENTER_RIGHT" layoutX="21.0" layoutY="63.0" prefHeight="19.0" prefWidth="139.0" text="Number of carts:">
                      <font>
                         <Font size="15.0" />
                      </font>
 				  </Label>
-				  <TextField fx:id="departureText" layoutX="170.0" layoutY="56.0" prefHeight="29.0" prefWidth="226.0">
+				  <TextField fx:id="numOfCartsText" layoutX="170.0" layoutY="56.0" prefHeight="29.0" prefWidth="226.0">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </TextField>
 				  
-				  <Label alignment="CENTER_RIGHT" layoutX="480.0" layoutY="61.0" prefHeight="19.0" prefWidth="150.0" text="Destination Block:">
+				  <Label alignment="CENTER_RIGHT" layoutX="480.0" layoutY="61.0" prefHeight="19.0" prefWidth="150.0" text="Speed:">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-				  <TextField fx:id="destinationText" layoutX="638.0" layoutY="58.0" prefHeight="29.0" prefWidth="218.0">
+				  <TextField fx:id="speedText" layoutX="638.0" layoutY="58.0" prefHeight="29.0" prefWidth="218.0">
 				     <font>
                         <Font size="15.0" />
                      </font>
@@ -106,12 +106,12 @@
                   </TextField>
 				  
 				  
-                  <Button fx:id="submitBtn" layoutX="688.0" layoutY="346.0" mnemonicParsing="false" onAction="#submitButtonAction" style="-fx-background-color: orange;" text="Submit">
+                  <Button fx:id="submitBtn" layoutX="676.0" layoutY="269.0" mnemonicParsing="false" onAction="#submitButtonAction" style="-fx-background-color: orange;" text="Submit">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Button fx:id="cancelBtn" layoutX="778.0" layoutY="345.0" mnemonicParsing="false" onAction="#cancelButtonAction" style="-fx-background-color: orange;" text="Cancel">
+                  <Button fx:id="cancelBtn" layoutX="767.0" layoutY="269.0" mnemonicParsing="false" onAction="#cancelButtonAction" style="-fx-background-color: orange;" text="Cancel">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -132,6 +132,16 @@
                      </font>
                   </Label>
                   <ComboBox fx:id="lineCombox" layoutX="638.0" layoutY="109.0" prefHeight="23.0" prefWidth="216.0" promptText="Green" />
+                  <Button layoutX="31.0" layoutY="310.0" mnemonicParsing="false" style="-fx-background-color: orange;" text="Open Track" />
+                  <TextField layoutX="131.0" layoutY="310.0" />
+                  <Button layoutX="31.0" layoutY="356.0" mnemonicParsing="false" style="-fx-background-color: orange;" text="Close Track" />
+                  <TextField layoutX="131.0" layoutY="356.0" />
+                  <Label layoutX="13.0" layoutY="14.0" text="Number of dispatched train:" textFill="#16c93d">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="dispatchedTrainsNum" layoutX="200.0" layoutY="15.0" prefHeight="15.0" prefWidth="75.0" text="0" textFill="#23bf37" />
                </children>
             </AnchorPane>
         </items>

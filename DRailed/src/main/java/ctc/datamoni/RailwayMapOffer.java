@@ -3,8 +3,8 @@ package ctc.datamoni;
 import java.util.ArrayList;
 import java.util.List;
 
-import ctc.beanpnl.Dot;
-import ctc.beanpnl.Line;
+import ctc.bean.pnl.Dot;
+import ctc.bean.pnl.Line;
 
 public class RailwayMapOffer {
 	
