@@ -295,7 +295,7 @@ public class Train {
     public int GetStartingBlock(){
         return block;
     }
-    private void setBLock(int newBlock) {
+    public void setBlock(int newBlock) {
         block = newBlock;
     }
 
