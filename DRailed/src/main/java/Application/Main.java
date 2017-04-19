@@ -163,13 +163,17 @@ public class Main extends Application {
 				dTime = new DTime();
 				Track track = new Track();
 				track.couple("GREEN", "TIGHT");
-				TrackController trackController = new TrackController(dTime);
-				dTime.addTrackC(trackController);
+				TrackController trackController1 = new TrackController(dTime, "GREEN");
+				TrackController trackController2 = new TrackController(dTime, "RED");
+				dTime.addTrackC(trackController1);
+				dTime.addTrackC(trackController2);
 				dTime.setMBO(MBO.getMBO());
-				trackController.setTrack(track);
-				track.setTrackController(trackController);
+				trackController1.setTrack(track);
+				trackController2.setTrack(track);
+				track.setTrackController(trackController1);
+				track.setTrackController(trackController2);
 				TrackModelGUI trackModel = new TrackModelGUI(track);
-				trackController.showUI();
+				trackController1.showUI();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}

@@ -29,17 +29,25 @@ public class TrackController {
     private ArrayList<Integer> blocks, plcBlocks;
 
 
-    public TrackController(DTime iDTime) throws IOException
+    public TrackController(DTime iDTime, String line) throws IOException
     {
         ArrayList<Integer> b = new ArrayList<>();
         ArrayList<Integer> plc = new ArrayList<>();
-        for(int i = 1; i <= 152; i++)
+        if (line.equals("GREEN")) {
+            for (int i = 1; i <= 152; i++) {
+                b.add(i);
+                plc.add(i);
+            }
+        }
+        else
         {
-            b.add(i);
-            plc.add(i);
+            for (int i = 1; i <= 77; i++) {
+                b.add(i);
+                plc.add(i);
+            }
         }
 
-        Init("GREEN",b,plc,iDTime, 1);
+        Init(line,b,plc,iDTime, 1);
     }
 
 
