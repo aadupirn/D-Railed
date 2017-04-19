@@ -54,7 +54,7 @@ public class TrainUI {
     private boolean sBrake;
 
     //auto vs manual
-    private boolean AutoVsManual = false;
+    private boolean AutoVsManual = true;
 
     //doors
     private boolean leftDoors;
@@ -380,7 +380,7 @@ public class TrainUI {
      */
     protected void updateSpeed(double newSpeed){
         speed = newSpeed;
-        speedText.setText(String.format( "%4.2f", speed )  + " mph");
+        speedText.setText(String.format( "%.2f", 2.23694 * speed )  + " mph");
     }
 
     protected void updateId(int newId){
@@ -388,8 +388,8 @@ public class TrainUI {
         trainIDText.setText(String.format( "%d", trainID ) );
     }
     protected void updatePower(double newPower){
-        power = newPower;
-        powerText.setText(String.format( "%4.3f", power ) + " watt" );
+        power = newPower/1000;
+        powerText.setText(String.format( "%.2f", power ) + "k watt" );
     }
 
     protected void updateGrade(double newGrade){
@@ -492,5 +492,4 @@ public class TrainUI {
     protected double getTemperature() { return temperature;}
     protected double getGrade() { return grade;}
     protected double getSpeed() { return speed;}
-
 }

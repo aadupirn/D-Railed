@@ -147,11 +147,22 @@ public class Train {
         //System.out.print(" ------ a");
         calculateSpeed(commandSpeed);
        // System.out.print(" ------ b\n");
-        updateUI();
+        if(trainUI.getAutoVsManual())
+            updateUI();
+        else{
+            System.out.println(" --------------------------------------------------------------- ");
+            get();
+        }
+
     }
     public void get(){
+        System.out.println("get ------------------------------------------------------------------- ");
         sbrake = trainUI.getSBrake();
+        engine.setSbrake(sbrake);
+        if(sbrake)
+            System.out.println("Service Brake ------------------------------------------------------------------- ");
         ebrake = trainUI.getEBrake();
+        engine.setEbrake(ebrake);
         mass = trainUI.getMass();
         lights = trainUI.getLights();
         commandSpeed = trainUI.getAuthority();
@@ -173,7 +184,6 @@ public class Train {
     public void updateUI(){
         //TrainModel == UI
         System.out.println("updateUI");
-        trainUI.updateSpeed(currentSpeed);
         trainUI.updateId(id);
         trainUI.updatePower(commandSpeed);
         trainUI.updateGrade(grade);
@@ -211,6 +221,7 @@ public class Train {
   //      System.out.println(mass + " " + commandSpeed + " " + currentSpeed + " " + grade);
         currentSpeed =  Engine.calculateSpeed(mass, commandSpeed, currentSpeed, grade);
         //System.out.println("Current Speed: "+currentSpeed);
+        trainUI.updateSpeed(currentSpeed);
         return true;
     }
     public double GetCurrentSpeed(){
@@ -261,6 +272,9 @@ public class Train {
     public void load(double load) {
         weightUpdate();
         people += load;
+        if(people > 150){
+            people = 150;
+        }
     }
 
 
@@ -284,6 +298,7 @@ public class Train {
     private void setBLock(int newBlock) {
         block = newBlock;
     }
+
     public void SetPowerCommand(Double pwrCMD){
         commandSpeed = pwrCMD;
     }
@@ -317,15 +332,16 @@ public class Train {
     */
     public boolean SetLeftDoors(boolean bool){
         leftDoors = bool;
-        //System.out.println("leftDoors ----------------------------------------------------------------------- ");
-        return leftDoors;
+        System.out.println(leftDoors + " " + bool + " " + "leftDoors ----------------------------------------------------------------------- ");
+        return true;
     }
     public boolean GetLeftDoorsStatus(){
         return leftDoors;
     }
     public boolean SetRightDoors(boolean bool){
         rightDoors = bool;
-        return rightDoors;
+        System.out.println(rightDoors + " " + bool + " " + "rightDoors ----------------------------------------------------------------------- ");
+        return true;
     }
     public boolean GetRightDoorsStatus(){
         return rightDoors;

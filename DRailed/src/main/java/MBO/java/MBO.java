@@ -67,6 +67,7 @@ public class MBO {
         findTrain(id, line).setSpeed(speed);
     }
 
+
     public void setSafeSpeed(int id, String line, double safeSpeed){
         if(!trainExists(id, line)) addTrain(id, line);
         findTrain(id, line).setSafeSpeed(safeSpeed);
