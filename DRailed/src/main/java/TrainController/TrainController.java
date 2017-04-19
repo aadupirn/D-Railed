@@ -593,11 +593,11 @@ public class TrainController
 			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
 			{
 				RadioButton toggled = (RadioButton)lDoorToggleGroup.getSelectedToggle();
-				if(toggled.getText().equals("On"))
+				if(toggled.getText().equals("Open"))
 				{
 					lDoorStatus = true;
 				}
-				else if(toggled.getText().equals("Off"))
+				else if(toggled.getText().equals("Closed"))
 				{
 					lDoorStatus = false;
 				}
@@ -611,11 +611,11 @@ public class TrainController
 			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
 			{
 				RadioButton toggled = (RadioButton)rDoorToggleGroup.getSelectedToggle();
-				if(toggled.getText().equals("On"))
+				if(toggled.getText().equals("Open"))
 				{
 					rDoorStatus = true;
 				}
-				else if(toggled.getText().equals("Off"))
+				else if(toggled.getText().equals("Closed"))
 				{
 					rDoorStatus = false;
 				}
@@ -824,14 +824,17 @@ public class TrainController
 			setPowerText(0);
 		}
 
+		train.SetAuthority((int)authority);
+		train.setBlock(currentBlock.getBlockNumber());
 		train.Update();
 
 		speed = train.GetCurrentSpeed();
 		setSpeedText(train.GetCurrentSpeed());
 		temperature = train.getTemperature();
 		setTempText(train.getTemperature());
-		//mbo.setSpeed(trainID, "red", speed);
-		//mbo.setAuthority(trainID, "red", 100);
+		//mbo.setSpeed(trainID, route, speed);
+		//mbo.setAuthority(trainID, route, 100);
+
 	}
 
 	//endregion
