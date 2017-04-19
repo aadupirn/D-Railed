@@ -806,7 +806,7 @@ public class TrainController
 		{
 			sBrake();
 		}
-		List<Block> blockAheadList = track.lookAhead(currentBlock, locationCalculator.getDir(), 4);
+		List<Block> blockAheadList = track.lookAhead(currentBlock, locationCalculator.getDir(), 1);
 		authority = 151; //debug
 		for(Block b : blockAheadList)
 		{
@@ -814,7 +814,7 @@ public class TrainController
 			{
 				sBrake();
 			}
-			if(b.getBeacon() != null) //station coming up!
+			if(b.getBeacon() != null && speed > 5) //station coming up!
 			{
 				if(!b.getBeacon().readMessage().contains("US"))
 				{
