@@ -87,6 +87,11 @@ public class LocationCalculator
 	{
 		mbo = imbo;
 	}
+
+	public boolean getDir()
+	{
+		return dir;
+	}
 	//endregion
 
 }
