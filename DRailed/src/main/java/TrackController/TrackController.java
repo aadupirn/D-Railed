@@ -269,7 +269,6 @@ public class TrackController {
             b = track.getBlock(line,i);
             if (b != null) {
                 if (myPLC.getStopTrain(i) && b.isOccupied()) {
-                    b = track.getBlock(line, i);
                     b.setMessage(new ThreeBaudMessage((char) 255, (char) 0, (char) 0));
                 }
             }
