@@ -1,4 +1,4 @@
-this.lights = this.occupied
+this.lights = !this.occupied
 this.crossing = this.occupied
 this.stop = this.occupied
 this.switch = true
