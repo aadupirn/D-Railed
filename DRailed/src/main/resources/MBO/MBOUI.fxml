@@ -16,237 +16,237 @@
 <?import javafx.scene.text.Font?>
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1200.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
-  <tabs>
-    <Tab text="Train Information">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <SplitPane dividerPositions="0.9" orientation="VERTICAL" prefHeight="646.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                           <children>
-                              <SplitPane dividerPositions="0.5" prefHeight="512.0" prefWidth="1198.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                <items>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #ffc9c9;">
-                                       <children>
-                                          <TableView id="red_traininfo_tableview" prefHeight="542.0" prefWidth="595.0" style="-fx-background-color: #ffc9c9;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                             </columnResizePolicy>
-                                          </TableView>
-                                       </children></AnchorPane>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                       <children>
-                                          <TableView id="green_traininfo_tableview" prefHeight="542.0" prefWidth="595.0" style="-fx-background-color: #9ad1a5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                             </columnResizePolicy>
-                                          </TableView>
-                                       </children></AnchorPane>
-                                </items>
-                              </SplitPane>
-                           </children></AnchorPane>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                           <children>
-                              <HBox alignment="CENTER" prefHeight="61.0" prefWidth="1198.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <VBox alignment="CENTER_LEFT">
-                                       <children>
-                                          <RadioButton id="mbo_radio" mnemonicParsing="false" text="MBO">
-                                             <VBox.margin>
-                                                <Insets bottom="3.0" />
-                                             </VBox.margin>
-                                             <toggleGroup>
-                                                <ToggleGroup fx:id="ModeSelect" />
-                                             </toggleGroup>
-                                          </RadioButton>
-                                          <RadioButton id="fb_radio" mnemonicParsing="false" text="Fixed Block" toggleGroup="$ModeSelect">
-                                             <VBox.margin>
-                                                <Insets right="15.0" />
-                                             </VBox.margin>
-                                          </RadioButton>
-                                       </children>
-                                    </VBox>
-                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <HBox alignment="CENTER_LEFT">
-                                       <children>
-                                          <VBox alignment="CENTER_LEFT">
-                                             <children>
-                                                <RadioButton id="red_radio" mnemonicParsing="false" text="Red">
-                                                   <VBox.margin>
-                                                      <Insets bottom="3.0" />
-                                                   </VBox.margin>
-                                                   <toggleGroup>
-                                                      <ToggleGroup fx:id="LineSelect" />
-                                                   </toggleGroup>
-                                                   <padding>
-                                                      <Insets left="15.0" />
-                                                   </padding></RadioButton>
-                                                <RadioButton id="green_radio" mnemonicParsing="false" text="Green" toggleGroup="$LineSelect">
-                                                   <VBox.margin>
-                                                      <Insets right="5.0" />
-                                                   </VBox.margin>
-                                                   <padding>
-                                                      <Insets left="15.0" />
-                                                   </padding></RadioButton>
-                                             </children>
-                                          </VBox>
-                                          <HBox alignment="CENTER_LEFT">
-                                             <children>
-                                                <TextField id="id_traininfo_test" prefWidth="75.0" promptText="ID">
-                                                   <HBox.margin>
-                                                      <Insets right="5.0" />
-                                                   </HBox.margin>
+    <tabs>
+        <Tab text="Train Information">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                        <SplitPane dividerPositions="0.9" orientation="VERTICAL" prefHeight="646.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <items>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                    <children>
+                                        <SplitPane dividerPositions="0.5" prefHeight="512.0" prefWidth="1198.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: #ffc9c9;">
+                                                    <children>
+                                                        <TableView id="red_traininfo_tableview" prefHeight="542.0" prefWidth="595.0" style="-fx-background-color: #ffc9c9;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                            <columnResizePolicy>
+                                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                            </columnResizePolicy>
+                                                        </TableView>
+                                                    </children></AnchorPane>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                    <children>
+                                                        <TableView id="green_traininfo_tableview" prefHeight="542.0" prefWidth="595.0" style="-fx-background-color: #9ad1a5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                            <columnResizePolicy>
+                                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                            </columnResizePolicy>
+                                                        </TableView>
+                                                    </children></AnchorPane>
+                                            </items>
+                                        </SplitPane>
+                                    </children></AnchorPane>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                    <children>
+                                        <HBox alignment="CENTER" prefHeight="61.0" prefWidth="1198.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <children>
+                                                <VBox alignment="CENTER_LEFT">
+                                                    <children>
+                                                        <RadioButton id="mbo_radio" mnemonicParsing="false" text="MBO">
+                                                            <VBox.margin>
+                                                                <Insets bottom="3.0" />
+                                                            </VBox.margin>
+                                                            <toggleGroup>
+                                                                <ToggleGroup fx:id="ModeSelect" />
+                                                            </toggleGroup>
+                                                        </RadioButton>
+                                                        <RadioButton id="fb_radio" mnemonicParsing="false" text="Fixed Block" toggleGroup="$ModeSelect">
+                                                            <VBox.margin>
+                                                                <Insets right="15.0" />
+                                                            </VBox.margin>
+                                                        </RadioButton>
+                                                    </children>
+                                                </VBox>
+                                                <Separator orientation="VERTICAL" prefHeight="200.0" />
+                                                <HBox alignment="CENTER_LEFT">
+                                                    <children>
+                                                        <VBox alignment="CENTER_LEFT">
+                                                            <children>
+                                                                <RadioButton id="red_radio" mnemonicParsing="false" text="Red">
+                                                                    <VBox.margin>
+                                                                        <Insets bottom="3.0" />
+                                                                    </VBox.margin>
+                                                                    <toggleGroup>
+                                                                        <ToggleGroup fx:id="LineSelect" />
+                                                                    </toggleGroup>
+                                                                    <padding>
+                                                                        <Insets left="15.0" />
+                                                                    </padding></RadioButton>
+                                                                <RadioButton id="green_radio" mnemonicParsing="false" text="Green" toggleGroup="$LineSelect">
+                                                                    <VBox.margin>
+                                                                        <Insets right="5.0" />
+                                                                    </VBox.margin>
+                                                                    <padding>
+                                                                        <Insets left="15.0" />
+                                                                    </padding></RadioButton>
+                                                            </children>
+                                                        </VBox>
+                                                        <HBox alignment="CENTER_LEFT">
+                                                            <children>
+                                                                <TextField id="id_traininfo_test" prefWidth="75.0" promptText="ID">
+                                                                    <HBox.margin>
+                                                                        <Insets right="5.0" />
+                                                                    </HBox.margin>
+                                                                </TextField>
+                                                                <TextField id="speed_traininfo_test" prefWidth="75.0" promptText="Speed">
+                                                                    <HBox.margin>
+                                                                        <Insets right="5.0" />
+                                                                    </HBox.margin></TextField>
+                                                                <TextField id="safespeed_traininfo_test" prefWidth="75.0" promptText="Safe Speed">
+                                                                    <HBox.margin>
+                                                                        <Insets right="5.0" />
+                                                                    </HBox.margin></TextField>
+                                                                <TextField id="variance_traininfo_test" prefWidth="75.0" promptText="Variance">
+                                                                    <HBox.margin>
+                                                                        <Insets right="5.0" />
+                                                                    </HBox.margin></TextField>
+                                                                <TextField id="authority_traininfo_test" prefWidth="75.0" promptText="Authority">
+                                                                    <HBox.margin>
+                                                                        <Insets right="5.0" />
+                                                                    </HBox.margin></TextField>
+                                                                <TextField id="location_traininfo_test" prefWidth="75.0" promptText="Location">
+                                                                    <HBox.margin>
+                                                                        <Insets right="10.0" />
+                                                                    </HBox.margin></TextField>
+                                                                <Button id="submit_traininfo_btn" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" text="Test">
+                                                                    <font>
+                                                                        <Font name="System Bold" size="16.0" />
+                                                                    </font>
+                                                                    <HBox.margin>
+                                                                        <Insets right="5.0" />
+                                                                    </HBox.margin>
+                                                                </Button>
+                                                                <Button id="murphy_btn" mnemonicParsing="false" text="MURPHY" textFill="RED">
+                                                                    <font>
+                                                                        <Font name="Comic Sans MS Bold" size="14.0" />
+                                                                    </font>
+                                                                </Button>
+                                                            </children>
+                                                            <HBox.margin>
+                                                                <Insets right="15.0" />
+                                                            </HBox.margin>
+                                                        </HBox>
+                                                    </children>
+                                                </HBox>
+                                            </children></HBox>
+                                    </children></AnchorPane>
+                            </items>
+                        </SplitPane>
+                    </children>
+                </AnchorPane>
+            </content>
+        </Tab>
+        <Tab text="Schedule Information">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                        <SplitPane dividerPositions="0.9" orientation="VERTICAL" prefHeight="646.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <items>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                    <children>
+                                        <SplitPane dividerPositions="0.5" prefHeight="577.0" prefWidth="1198.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                    <children>
+                                                        <TableView id="red_stations_tableview" prefHeight="575.0" prefWidth="595.0" style="-fx-background-color: #ffc9c9;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                            <columns>
+                                                                <!--<TableColumn prefWidth="75.0" text="Herron Ave"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Swissville"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Penn Station"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Steel Plaza"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="First Ave"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Station Square"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="South Hills"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Shadyside"></TableColumn>-->
+                                                            </columns>
+                                                        </TableView>
+                                                    </children>
+                                                </AnchorPane>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                                    <children>
+                                                        <TableView id="green_stations_tableview" prefHeight="575.0" prefWidth="595.0" style="-fx-background-color: #9ad1a5;">
+                                                            <columns>
+                                                                <!--<TableColumn prefWidth="75.0" text="Glenbury"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Dormont"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Mt. Lebanon"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Poplar"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Castle Shannon"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Dormont"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Glenbury"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Overbrook"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Inglewood"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Central"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Pioneer"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Edgebrook"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Univ. Pitt."></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Whited"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="South Bank"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Central"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Inglewood"></TableColumn>-->
+                                                                <!--<TableColumn prefWidth="75.0" text="Overbrook"></TableColumn>-->
+                                                            </columns>
+                                                        </TableView>
+                                                    </children></AnchorPane>
+                                            </items>
+                                        </SplitPane>
+                                    </children></AnchorPane>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                    <children>
+                                        <HBox alignment="CENTER" prefHeight="61.0" prefWidth="1198.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <children>
+                                                <TextField id="id_schedule_test" prefWidth="75.0" promptText="ID">
+                                                    <HBox.margin>
+                                                        <Insets right="5.0" />
+                                                    </HBox.margin></TextField>
+                                                <TextField id="location_schedule_test" prefWidth="75.0" promptText="Location">
+                                                    <HBox.margin>
+                                                        <Insets right="5.0" />
+                                                    </HBox.margin></TextField>
+                                                <Button id="schedule_test_btn" mnemonicParsing="false" text="Update">
+                                                    <HBox.margin>
+                                                        <Insets right="50.0" />
+                                                    </HBox.margin></Button>
+                                                <TextField id="worker_count_txt" prefWidth="75.0" promptText="# Workers">
+                                                    <HBox.margin>
+                                                        <Insets right="5.0" />
+                                                    </HBox.margin></TextField>
+                                                <TextField id="thruput_txt" prefWidth="75.0" promptText="Thru-put">
+                                                    <HBox.margin>
+                                                        <Insets right="5.0" />
+                                                    </HBox.margin></TextField>
+                                                <TextField id="starttime_txt" layoutX="629.0" layoutY="28.0" prefWidth="75.0" promptText="Start Time">
+                                                    <HBox.margin>
+                                                        <Insets right="5.0" />
+                                                    </HBox.margin>
                                                 </TextField>
-                                                <TextField id="speed_traininfo_test" prefWidth="75.0" promptText="Speed">
-                                                   <HBox.margin>
-                                                      <Insets right="5.0" />
-                                                   </HBox.margin></TextField>
-                                                <TextField id="safespeed_traininfo_test" prefWidth="75.0" promptText="Safe Speed">
-                                                   <HBox.margin>
-                                                      <Insets right="5.0" />
-                                                   </HBox.margin></TextField>
-                                                <TextField id="variance_traininfo_test" prefWidth="75.0" promptText="Variance">
-                                                   <HBox.margin>
-                                                      <Insets right="5.0" />
-                                                   </HBox.margin></TextField>
-                                                <TextField id="authority_traininfo_test" prefWidth="75.0" promptText="Authority">
-                                                   <HBox.margin>
-                                                      <Insets right="5.0" />
-                                                   </HBox.margin></TextField>
-                                                <TextField id="location_traininfo_test" prefWidth="75.0" promptText="Location">
-                                                   <HBox.margin>
-                                                      <Insets right="10.0" />
-                                                   </HBox.margin></TextField>
-                                                <Button id="submit_traininfo_btn" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" text="Test">
-                                                   <font>
-                                                      <Font name="System Bold" size="16.0" />
-                                                   </font>
-                                                   <HBox.margin>
-                                                      <Insets right="5.0" />
-                                                   </HBox.margin>
-                                                </Button>
-                                                <Button id="murphy_btn" mnemonicParsing="false" text="MURPHY" textFill="RED">
-                                                   <font>
-                                                      <Font name="Comic Sans MS Bold" size="14.0" />
-                                                   </font>
-                                                </Button>
-                                             </children>
-                                             <HBox.margin>
-                                                <Insets right="15.0" />
-                                             </HBox.margin>
-                                          </HBox>
-                                       </children>
-                                    </HBox>
-                                 </children></HBox>
-                           </children></AnchorPane>
-                    </items>
-                  </SplitPane>
-               </children>
-        </AnchorPane>
-      </content>
-    </Tab>
-    <Tab text="Schedule Information">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <SplitPane dividerPositions="0.9" orientation="VERTICAL" prefHeight="646.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                           <children>
-                              <SplitPane dividerPositions="0.5" prefHeight="577.0" prefWidth="1198.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                <items>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                       <children>
-                                          <TableView id="red_stations_tableview" prefHeight="575.0" prefWidth="595.0" style="-fx-background-color: #ffc9c9;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                            <columns>
-                                              <!--<TableColumn prefWidth="75.0" text="Herron Ave"></TableColumn>-->
-                                                <!--<TableColumn prefWidth="75.0" text="Swissville"></TableColumn>-->
-                                                <!--<TableColumn prefWidth="75.0" text="Penn Station"></TableColumn>-->
-                                                <!--<TableColumn prefWidth="75.0" text="Steel Plaza"></TableColumn>-->
-                                                <!--<TableColumn prefWidth="75.0" text="First Ave"></TableColumn>-->
-                                                <!--<TableColumn prefWidth="75.0" text="Station Square"></TableColumn>-->
-                                                <!--<TableColumn prefWidth="75.0" text="South Hills"></TableColumn>-->
-                                                <!--<TableColumn prefWidth="75.0" text="Shadyside"></TableColumn>-->
-                                            </columns>
-                                          </TableView>
-                                       </children>
-                                    </AnchorPane>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                       <children>
-                                          <TableView id="green_stations_tableview" prefHeight="575.0" prefWidth="595.0" style="-fx-background-color: #9ad1a5;">
-                                             <columns>
-                                                 <!--<TableColumn prefWidth="75.0" text="Glenbury"></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="Dormont"></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="Mt. Lebanon"></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="Poplar"></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="Castle Shannon"></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="Dormont"></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="Glenbury"></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="Overbrook"></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="Inglewood"></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="Central"></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="Pioneer"></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="Edgebrook"></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="Univ. Pitt."></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="Whited"></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="South Bank"></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="Central"></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="Inglewood"></TableColumn>-->
-                                                 <!--<TableColumn prefWidth="75.0" text="Overbrook"></TableColumn>-->
-                                             </columns>
-                                          </TableView>
-                                       </children></AnchorPane>
-                                </items>
-                              </SplitPane>
-                           </children></AnchorPane>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                           <children>
-                              <HBox alignment="CENTER" prefHeight="61.0" prefWidth="1198.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <TextField id="id_schedule_test" prefWidth="75.0" promptText="ID">
-                                       <HBox.margin>
-                                          <Insets right="5.0" />
-                                       </HBox.margin></TextField>
-                                    <TextField id="location_schedule_test" prefWidth="75.0" promptText="Location">
-                                       <HBox.margin>
-                                          <Insets right="5.0" />
-                                       </HBox.margin></TextField>
-                                    <Button id="schedule_test_btn" mnemonicParsing="false" text="Update">
-                                       <HBox.margin>
-                                          <Insets right="50.0" />
-                                       </HBox.margin></Button>
-                                    <TextField id="worker_count_txt" prefWidth="75.0" promptText="# Workers">
-                                       <HBox.margin>
-                                          <Insets right="5.0" />
-                                       </HBox.margin></TextField>
-                                    <TextField id="thruput_txt" prefWidth="75.0" promptText="Thru-put">
-                                       <HBox.margin>
-                                          <Insets right="5.0" />
-                                       </HBox.margin></TextField>
-                                    <TextField id="starttime_txt" layoutX="629.0" layoutY="28.0" prefWidth="75.0" promptText="Start Time">
-                                       <HBox.margin>
-                                          <Insets right="5.0" />
-                                       </HBox.margin>
-                                    </TextField>
-                                    <TextField id="endtime_txt" layoutX="709.0" layoutY="28.0" prefWidth="75.0" promptText="End Tiime">
-                                       <HBox.margin>
-                                          <Insets right="5.0" />
-                                       </HBox.margin>
-                                    </TextField>
-                                    <Button id="generate_btn" mnemonicParsing="false" text="Generate" />
-                                 </children>
-                              </HBox>
-                           </children></AnchorPane>
-                    </items>
-                  </SplitPane>
-               </children></AnchorPane>
-      </content>
-    </Tab>
-    <Tab text="Conductor Schedules">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-      </content>
-    </Tab>
-  </tabs>
+                                                <TextField id="endtime_txt" layoutX="709.0" layoutY="28.0" prefWidth="75.0" promptText="End Tiime">
+                                                    <HBox.margin>
+                                                        <Insets right="5.0" />
+                                                    </HBox.margin>
+                                                </TextField>
+                                                <Button id="generate_btn" mnemonicParsing="false" text="Generate" />
+                                            </children>
+                                        </HBox>
+                                    </children></AnchorPane>
+                            </items>
+                        </SplitPane>
+                    </children></AnchorPane>
+            </content>
+        </Tab>
+        <Tab text="Conductor Schedules">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+        </Tab>
+    </tabs>
 </TabPane>

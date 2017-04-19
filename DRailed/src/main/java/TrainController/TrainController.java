@@ -830,7 +830,6 @@ public class TrainController
 		setSpeedText(train.GetCurrentSpeed());
 		temperature = train.getTemperature();
 		setTempText(train.getTemperature());
-
 		//mbo.setSpeed(trainID, "red", speed);
 		//mbo.setAuthority(trainID, "red", 100);
 	}

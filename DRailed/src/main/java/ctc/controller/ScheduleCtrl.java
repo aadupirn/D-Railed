@@ -3,7 +3,7 @@ package ctc.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import ctc.beanpnl.ScheduleBean;
+import ctc.bean.pnl.ScheduleBean;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
