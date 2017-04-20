@@ -19,7 +19,7 @@ public class AC {
         ac = false;
         heat = false;
         temperature = 70.0;
-        k = 0.00150;
+        k = 40;
     }
     public AC(double kValue){
         ac = false;

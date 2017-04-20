@@ -20,6 +20,7 @@ public class Train {
     private double grade;
     private int authority;
     private double temp;
+    private String line;
 
     private engine Engine;
     private AC ac;
@@ -46,7 +47,7 @@ public class Train {
         sbrake = false;
 
         currentSpeed = 0;
-        mass = 81400;
+        mass = 37103.856;
 
         block = 152;
         track = new Track();
@@ -72,7 +73,7 @@ public class Train {
         sbrake = false;
 
         currentSpeed = 0;
-        mass = 81400;
+        mass = 37103.856;
 
         block = 152;
         track = new Track();
@@ -88,7 +89,7 @@ public class Train {
         ebrake = false;
         sbrake = false;
         currentSpeed = 0;
-        mass = 81400;
+        mass = 37103.856;
         people = 0;
 
 
@@ -106,7 +107,7 @@ public class Train {
         ebrake = false;
         sbrake = false;
         currentSpeed = 0;
-        mass = 81400;
+        mass = 37103.856;
         people = 0;
 
         block = startingBlock;
@@ -126,8 +127,9 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         commandSpeed = 0.0;
-        mass = 81400;
-        people = 10;//new Random().nextInt(222);
+        mass = 37103.856;
+        people = 0;//new Random().nextInt(222);
+        this.line = line;
 
         block = startingBlock;
         id = newID;
@@ -208,6 +210,13 @@ public class Train {
       ID Block
           This block gets ID, ID is set during constructor
     */
+
+    public String getLine(){
+        return line;
+    }
+    public void setLine(String line){
+        this.line = line;
+    }
     public int getId(){
         return id;
     }
@@ -255,7 +264,7 @@ public class Train {
             This block has setters and getters for people and updates weight of system
     */
     public void weightUpdate(){
-        mass = (81400*(numberOfCarts) + (people * 165.347));
+        mass = (37103.856*(numberOfCarts) + (people * 66));
     }
     public void setPeople(int people){
         this.people = people;
