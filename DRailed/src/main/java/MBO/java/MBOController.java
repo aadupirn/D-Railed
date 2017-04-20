@@ -310,7 +310,8 @@ public class MBOController extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/MBO/MBOUI.fxml"));
+        ClassLoader classLoader = getClass().getClassLoader();
+        Parent root = FXMLLoader.load(classLoader.getResource("MBOUI.fxml"));
         primary = primaryStage;
         primary.setTitle("MBO Interface");
         primary.setScene(new Scene(root));
