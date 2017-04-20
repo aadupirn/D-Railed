@@ -76,14 +76,42 @@ public class TrackControllerUI {
         MenuBar menuBar = new MenuBar();
         Menu menuController = new Menu("Choose Controller");
         MenuItem[] trackControllers = new MenuItem[4];
-        trackControllers[0] = new MenuItem("Red - 1 to 40");
-        trackControllers[1] = new MenuItem("Red - 41 to 77");
-        trackControllers[2] = new MenuItem("Green - 1 to 80");
-        trackControllers[3] = new MenuItem("Green - 81 to 152");
+        trackControllers[0] = new MenuItem("Red - 1");
+        trackControllers[1] = new MenuItem("Red - 2");
+        trackControllers[2] = new MenuItem("Green - 1");
+        trackControllers[3] = new MenuItem("Green - 2");
         for (int i = 0; i < 4; i++)
             menuController.getItems().add(trackControllers[i]);
         menuBar.getMenus().addAll(menuController);
         mainPane.setTop(menuBar);
+        trackControllers[0].setOnAction((ActionEvent a) -> {
+            try {
+                tc.switchUI("RED",1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        trackControllers[1].setOnAction((ActionEvent a) -> {
+            try {
+                tc.switchUI("RED",1); //TODO make a second one!
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        trackControllers[2].setOnAction((ActionEvent a) -> {
+            try {
+                tc.switchUI("GREEN",1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        trackControllers[3].setOnAction((ActionEvent a) -> {
+            try {
+                tc.switchUI("GREEN",1); //TODO make a second one!
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
 
         //Initialize Main Pane

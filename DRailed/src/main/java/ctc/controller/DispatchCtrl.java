@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import TrackController.TrackController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -18,7 +19,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import TrackController.events.DispatchDealOfTrackController;
 import ctc.CTCMain;
 import ctc.bean.pnl.OptTrainBean;
 
@@ -139,11 +139,15 @@ public class DispatchCtrl implements Initializable  {
 				
 				dispatchedTrainsNum.setText("" + trainlist.size());
 
-			CTCMain.ctc_tc.dispatchTrain(152, 
-					Integer.parseInt(numOfCartsText.getText()), 
-					new Integer(authorityText.getText()).intValue(),
-					new Double(speedText.getText()),
-					new Integer(trainNumText.getText()));	
+				for (TrackController tc : CTCMain.ctc_tc)
+				{
+					if (tc.isMainController()) //TODO something about line needs to be here
+						tc.dispatchTrain(152,
+								Integer.parseInt(numOfCartsText.getText()),
+								new Integer(authorityText.getText()).intValue(),
+								new Double(speedText.getText()),
+								new Integer(trainNumText.getText()));
+				}
 			
           
 			// To TrackController

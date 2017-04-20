@@ -97,7 +97,7 @@ public class TrainController
 		train = iTrain;
 		trainID = train.getId();
 		speedLimit = MpH2MpS(100);
-		mbo = new MBO(1);
+		mbo = null;
 		route = "GREEN";
 		acStatus = false;
 		heatStatus = false;

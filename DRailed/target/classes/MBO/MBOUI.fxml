@@ -216,6 +216,16 @@
                                                     <HBox.margin>
                                                         <Insets right="50.0" />
                                                     </HBox.margin></Button>
+                                    <VBox prefHeight="70.0" prefWidth="114.0">
+                                       <children>
+                                          <RadioButton id="red_sch_radio" mnemonicParsing="false" text="Red">
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="ScheduleLine" />
+                                             </toggleGroup>
+                                          </RadioButton>
+                                          <RadioButton id="green_sch_radio" mnemonicParsing="false" prefHeight="36.0" prefWidth="137.0" text="Green" toggleGroup="$ScheduleLine" />
+                                       </children>
+                                    </VBox>
                                                 <TextField id="worker_count_txt" prefWidth="75.0" promptText="# Workers">
                                                     <HBox.margin>
                                                         <Insets right="5.0" />

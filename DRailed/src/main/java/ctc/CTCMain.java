@@ -25,6 +25,8 @@ import ctc.panels.InstructionsMgr;
 import ctc.panels.Monitormgr;
 import ctc.panels.ScheduleMgr;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author 
@@ -37,7 +39,7 @@ public class CTCMain extends Application {
     public TitledPane node5;
     public Accordion accordion;
     public static Stage mainStage;
-    public static TrackController ctc_tc;
+    public static ArrayList<TrackController> ctc_tc;
    
     
     public CTCMain()
@@ -188,7 +190,7 @@ public class CTCMain extends Application {
         launch(args);
        
     }
-	public void setTrackConrtoller(TrackController trackController) {
+	public void setTrackController(ArrayList<TrackController> trackController) {
 		// 
 		ctc_tc = trackController;
 	}
