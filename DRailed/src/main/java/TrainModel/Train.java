@@ -127,7 +127,7 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         commandSpeed = 0.0;
-        mass = 10000;
+        mass = 37103.856;
         people = 0;//new Random().nextInt(222);
         this.line = line;
 
