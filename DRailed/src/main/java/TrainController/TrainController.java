@@ -98,7 +98,7 @@ public class TrainController
 		trainID = train.getId();
 		speedLimit = MpH2MpS(100);
 		mbo = null;
-		route = "GREEN";
+		route = train.getLine();
 		acStatus = false;
 		heatStatus = false;
 		lDoorStatus = false;
@@ -660,6 +660,7 @@ public class TrainController
 		train.SetSbrake(false);
 		eBrakeStatus = false;
 		sBrakeStatus = false;
+		makeAnnouncement("Released Brakes");
 	}
 
 	public void sBrake()
@@ -670,6 +671,7 @@ public class TrainController
 		setDesiredSpeedText(desiredSpeed);
 		controlCalculator1.setDesiredSpeed(desiredSpeed);
 		controlCalculator2.setDesiredSpeed(desiredSpeed);
+		makeAnnouncement("sBrake");
 	}
 
 	public void emergencyBrake()
@@ -682,6 +684,7 @@ public class TrainController
 		setDesiredSpeedText(desiredSpeed);
 		controlCalculator2.setDesiredSpeed(0);
 		controlCalculator1.setDesiredSpeed(0);
+		makeAnnouncement("emergencyBrake");
 	}
 	public double MpS2MpH(double mps)
 	{
