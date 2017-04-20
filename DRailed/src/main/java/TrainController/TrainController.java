@@ -832,12 +832,13 @@ public class TrainController
 				if(currentBlock.getBlockNumber().intValue() == authority)
 				{
 					//we have reached authority
+					makeAnnouncement("WE HAVE REACHED THE END OF AUTHORITY");
 				}
 				else if(currentBlock.getBeacon() != null)
 				{
 					if(currentBlock.getBeacon().readMessage().contains("US"))
 					{
-						//we are at station
+						makeAnnouncement("We have arrived at a station.");
 					}
 				}
 				else
