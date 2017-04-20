@@ -77,7 +77,7 @@ public class TrainInfo {
 
         if(mbo){
             if((gps + distInBlk + stoppingDistance) >= authority.get())
-                this.safeSpeed.set(0);
+                this.safeSpeed.set((gps + distInBlk)/authority.get() * speed.get());
             else
                 this.safeSpeed.set(speed.get());
         } else
