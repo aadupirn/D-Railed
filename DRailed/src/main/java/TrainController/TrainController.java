@@ -104,7 +104,7 @@ public class TrainController
 	{
 		train = iTrain;
 		trainID = train.getId();
-		speedLimit = MpH2MpS(100);
+		speedLimit = MpH2MpS(50);
 		mbo = null;
 		route = train.getLine();
 		acStatus = false;
