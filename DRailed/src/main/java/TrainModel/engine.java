@@ -30,13 +30,27 @@ public class engine {
         else if(serviceBrake)
             return serviceBrakeSpeedCalculation(mass, power, speed, grade);
         else {
-            if(power == 0){
+            if (power == 0) {
                 return 0;
-            }
-            else if(power == 0 && speed == 0)
+            } else if (power == 0 && speed == 0)
                 accelerationTotal = .1;
             else {
-                accelerationTotal = power /(mass * speed);
+                accelerationTotal = power / (mass * speed);
+
+                double forceFriction = mass * gravity * friction;
+                double accelFriction = forceFriction / mass;
+
+                accelerationTotal -= accelFriction;
+            }
+            if (accelerationTotal > .5)
+                accelerationTotal = .5;
+            if(accelerationTotal < 0)
+                accelerationTotal = 0;
+            speed = speed + (accelerationTotal * 1);
+            if (speed < 0)
+                speed = 0;
+            return speed;
+        }
 
                 /*double angle = (Math.atan(grade / 100));
                 double theta = Math.sin(angle);
@@ -60,14 +74,8 @@ public class engine {
                 speed = speed;
 //                System.out.println("Power " + power + " " + grade + " " + accelerationTotal + " " + forceFriction / mass + " " + forceTrain / mass + " " + speed);
                 */
-            }
-            if(accelerationTotal > .5)
-                accelerationTotal = .5;
-            speed = speed + (accelerationTotal * 1);
-            if(speed < 0 )
-                speed = 0;
-            return speed;
-        }
+
+
 
         /*if(powerCommand == 0)
             return 0;
