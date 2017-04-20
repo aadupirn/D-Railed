@@ -124,7 +124,6 @@ public class TrackController {
             b[i] = track.getBlock(this.line,i);
         }
         this.myPLC = new PLC(file, b);
-        System.out.println("\n\nPLC Valid: " + myPLC.isValid());
     }
 
     public void toggleBlock(int id)

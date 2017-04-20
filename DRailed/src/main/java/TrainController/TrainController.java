@@ -87,6 +87,11 @@ public class TrainController
 	private ControlCalculator controlCalculator1;
 	private ControlCalculator controlCalculator2;
 
+	RadioButton lDoorOpen;
+	RadioButton lDoorClosed;
+	RadioButton rDoorOpen;
+	RadioButton rDoorClosed;
+
 	private MBO mbo;
 
 
@@ -360,14 +365,14 @@ public class TrainController
 
 		final ToggleGroup lDoorToggleGroup = new ToggleGroup();
 
-		RadioButton lDoorOpen = new RadioButton("Open");
+		lDoorOpen = new RadioButton("Open");
 		lDoorOpen.setToggleGroup(lDoorToggleGroup);
 		lDoorOpen.setSelected(false);
 		lDoorOpen.setMaxWidth(colWidth);
 		lDoorOpen.setMinWidth(colWidth);
 		lDoorGrid.add(lDoorOpen, 0, 0);
 
-		RadioButton lDoorClosed = new RadioButton("Closed");
+		lDoorClosed = new RadioButton("Closed");
 		lDoorClosed.setToggleGroup(lDoorToggleGroup);
 		lDoorClosed.setSelected(true);
 		lDoorClosed.setAlignment(Pos.CENTER_LEFT);
@@ -412,14 +417,14 @@ public class TrainController
 
 		final ToggleGroup rDoorToggleGroup = new ToggleGroup();
 
-		RadioButton rDoorOpen = new RadioButton("Open");
+		rDoorOpen = new RadioButton("Open");
 		rDoorOpen.setToggleGroup(rDoorToggleGroup);
 		rDoorOpen.setSelected(false);
 		rDoorOpen.setMaxWidth(colWidth);
 		rDoorOpen.setMinWidth(colWidth);
 		rDoorGrid.add(rDoorOpen, 0, 0);
 
-		RadioButton rDoorClosed = new RadioButton("Closed");
+		rDoorClosed = new RadioButton("Closed");
 		rDoorClosed.setToggleGroup(rDoorToggleGroup);
 		rDoorClosed.setSelected(true);
 		rDoorClosed.setAlignment(Pos.CENTER_LEFT);
@@ -667,7 +672,6 @@ public class TrainController
 		train.SetSbrake(false);
 		eBrakeStatus = false;
 		sBrakeStatus = false;
-		makeAnnouncement("Released Brakes");
 	}
 
 	public void sBrake()
@@ -680,7 +684,6 @@ public class TrainController
 			setDesiredSpeedText(desiredSpeed);
 			controlCalculator1.setDesiredSpeed(desiredSpeed);
 			controlCalculator2.setDesiredSpeed(desiredSpeed);
-			makeAnnouncement("Service Brake Activated");
 		}
 	}
 
@@ -790,8 +793,11 @@ public class TrainController
 			int messageTrainID = (int)message.getTrainID();
 			if (messageTrainID == trainID)
 			{
-				speedLimit = (double)message.getSpeed();
-				authority = (double)message.getAuthority();
+				if(mbo.isMBOActive()) speedLimit = mbo.getSafeSpeed(trainID, route);
+				else speedLimit = (double)message.getSpeed();
+
+				if(mbo.isMBOActive()) authority = mbo.getAuthority(trainID, route);
+				else authority = (double)message.getAuthority();
 			}
 			else if (messageTrainID == 0)
 			{
@@ -831,11 +837,14 @@ public class TrainController
 				stationCounter = 0;
 				atStation = false;
 				releaseBrakes();
+				lDoorClosed.setSelected(true);
+				rDoorClosed.setSelected(true);
 			}
 		}
 		else
 		{
-			List<Block> blockAheadList = track.lookAhead(currentBlock, locationCalculator.getDir(), 4);
+			List<Block> blockAheadList = track.lookAhead(currentBlock, locationCalculator.getDir(), 3);
+			blockAheadList.add(currentBlock);
 			authority = 151; //debug
 			boolean shouldBrake = false;
 			for(Block b : blockAheadList)
@@ -847,7 +856,7 @@ public class TrainController
 						shouldBrake = true;
 					} else if (b.getBeacon() != null) //station coming up!
 					{
-						if (!b.getBeacon().readMessage().contains("US")) {
+						if (!b.getBeacon().readMessage().contains("US") && b.getBlockNumber().intValue() != recentStop) {
 							shouldBrake = true;
 						}
 					}
@@ -864,10 +873,12 @@ public class TrainController
 					}
 					else if(currentBlock.getBeacon() != null)
 					{
-						if(!currentBlock.getBeacon().readMessage().contains("US") && !atStation)
-						{
-							makeAnnouncement("We have arrived at a station.");
+						if(!currentBlock.getBeacon().readMessage().contains("US") && !atStation) {
+							makeAnnouncement("We have arrived at " + currentBlock.getBeacon().readMessage() + ".");
 							atStation = true;
+							recentStop = currentBlock.getBlockNumber().intValue();
+							lDoorOpen.setSelected(true);
+							rDoorOpen.setSelected(true);
 						}
 					}
 					else

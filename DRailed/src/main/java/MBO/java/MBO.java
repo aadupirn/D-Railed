@@ -100,10 +100,6 @@ public class MBO {
         getTrain(id, line).setAuthorithy(authority);
     }
 
-    public void setVariance(int id, String line, double variance) {
-        getTrain(id, line).setVariance(variance);
-    }
-
     public int getAuthority(int id, String line){
         return getTrain(id, line).getAuthority();
     }
