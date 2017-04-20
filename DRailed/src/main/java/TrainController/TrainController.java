@@ -226,7 +226,7 @@ public class TrainController
 		tempText.setTextAlignment(TextAlignment.RIGHT);
 		grid.add(tempText, 0, 2);
 
-		Label maStatusLabel = new Label("Control Status: ");
+		Label maStatusLabel = new Label(" ");
 		maStatusLabel.setTextAlignment(TextAlignment.RIGHT);
 		maStatusLabel.setMinWidth(colWidth * 1.5);
 		maStatusLabel.setAlignment(Pos.CENTER_RIGHT);
@@ -234,7 +234,7 @@ public class TrainController
 
 		Text controlStatus = new Text();
 		controlStatus.setWrappingWidth(colWidth * 1.5);
-		controlStatus.setText("TEMPSTATUS");
+		controlStatus.setText(" ");
 		controlStatus.setTextAlignment(TextAlignment.LEFT);
 		grid.add(controlStatus, 4, 2);
 
@@ -437,7 +437,7 @@ public class TrainController
 
 		Text movementStatus = new Text();
 		movementStatus.setWrappingWidth(colWidth*3);
-		movementStatus.setText("MOVEMENTSTATUS");
+		movementStatus.setText("");
 		movementStatus.setTextAlignment(TextAlignment.CENTER);
 		grid.add(movementStatus, 3, 7, 2, 1);
 
