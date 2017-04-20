@@ -1,19 +1,10 @@
 package MBO.java;
 
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.text.DecimalFormat;
 
 /**
  * Created by joero on 2/6/2017.
@@ -30,6 +21,8 @@ public class TrainInfo {
     private final SimpleDoubleProperty variance;
     private double stoppingDistance;
     private int gps;
+
+    DecimalFormat df = new DecimalFormat("#0.00");
 
     public TrainInfo(int id, String line, double speed, double safeSpeed, String location, double authority, double variance){
         this.id  = new SimpleIntegerProperty(id);
@@ -68,6 +61,11 @@ public class TrainInfo {
         return safeSpeed.doubleValue();
     }
 
+    private boolean verifyDistance() {
+        double test = 1.5 * Math.pow(speed.get(), 2) * .5 /(9.8 * Math.sin(-5));
+        if test ==
+    }
+
     public void setStoppingDistance() {
         double v = this.getSpeed(), g = 9.8, theta = -5;
         this.stoppingDistance = 1.5 * (v * v)/(2 * g * Math.sin(theta));
@@ -76,10 +74,11 @@ public class TrainInfo {
     public void setSafeSpeed(boolean mbo) {
 
         if(mbo){
-            if((gps + distInBlk + stoppingDistance) >= authority.get())
-                this.safeSpeed.set((gps + distInBlk)/authority.get() * speed.get());
-            else
+            if((gps + distInBlk + stoppingDistance) >= authority.get()) {
+                this.safeSpeed.set((double)(gps + distInBlk) / (double)authority.get() * speed.get());
+            } else {
                 this.safeSpeed.set(speed.get());
+            }
         } else
             this.safeSpeed.set(-1);
     }
@@ -91,6 +90,7 @@ public class TrainInfo {
     public void setLocation(String location, boolean mbo) {
         this.location.set(formatGPS(location));
         setSafeSpeed(mbo);
+        this.variance.set(Math.abs(speed.get() - safeSpeed.get()));
     }
 
     public int getAuthority(){
@@ -98,14 +98,6 @@ public class TrainInfo {
     }
 
     public void setAuthorithy(double authority){ this.authority.set((int) authority); }
-
-    public double getVariance(){
-        return variance.get();
-    }
-
-    public void setVariance(double variance){
-        this.variance.set(variance);
-    }
 
     // NEEDED FOR AUTO-UPDATING OF UI
     public SimpleIntegerProperty idProperty() {
