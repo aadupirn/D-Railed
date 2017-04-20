@@ -13,6 +13,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -51,129 +53,43 @@ public class Main extends Application {
 		//grid.setHgap(10);
 		grid.setVgap(10);
 
-		final Button ctcBtn = new Button("CTC");
-		ctcBtn.setMinWidth(150);
-		HBox hCtcBtn = new HBox(10);
-		hCtcBtn.setAlignment(Pos.CENTER);
-		hCtcBtn.getChildren().add(ctcBtn);
-		hCtcBtn.setMinWidth(150);
-		grid.add(hCtcBtn, 0, 0);
+		final Button time1 = new Button("Speed 1x");
+		time1.setMinWidth(75);
+		HBox htime1 = new HBox(10);
+		htime1.setAlignment(Pos.CENTER);
+		htime1.getChildren().add(time1);
+		htime1.setMinWidth(75);
+		grid.add(htime1, 0, 0,2,1);
 
-		final Button trackControllerBtn = new Button("Track Controller");
-		trackControllerBtn.setMinWidth(150);
-		HBox hTrackControllerBtn = new HBox(10);
-		hTrackControllerBtn.setAlignment(Pos.CENTER);
-		hTrackControllerBtn.getChildren().add(trackControllerBtn);
-		hTrackControllerBtn.setMinWidth(150);
-		grid.add(hTrackControllerBtn, 0, 1);
 
-		final Button trackModelBtn = new Button("Track Model");
-		trackModelBtn.setMinWidth(150);
-		HBox hTrackModelBtn = new HBox(10);
-		hTrackModelBtn.setAlignment(Pos.CENTER);
-		hTrackModelBtn.getChildren().add(trackModelBtn);
-		hTrackModelBtn.setMinWidth(150);
-		grid.add(hTrackModelBtn, 0, 2);
+		final Button time10 = new Button("Speed 10x");
+		time10.setMinWidth(75);
+		HBox htime10 = new HBox(10);
+		htime10.setAlignment(Pos.CENTER);
+		htime10.getChildren().add(time10);
+		htime10.setMinWidth(75);
+		grid.add(htime10, 0, 1,2,1);
 
-		final Button trainModelBtn = new Button("Train Model");
-		trainModelBtn.setMinWidth(150);
-		HBox hTrainModelBtn = new HBox(10);
-		hTrainModelBtn.setAlignment(Pos.CENTER);
-		hTrainModelBtn.getChildren().add(trainModelBtn);
-		hTrainModelBtn.setMinWidth(150);
-		grid.add(hTrainModelBtn, 0, 3);
-
-		final Button trainControllerBtn = new Button("Train Controller");
-		trainControllerBtn.setMinWidth(150);
-		HBox hTrainControllerBtn = new HBox(10);
-		hTrainControllerBtn.setAlignment(Pos.CENTER);
-		hTrainControllerBtn.getChildren().add(trainControllerBtn);
-		hTrainControllerBtn.setMinWidth(150);
-		grid.add(hTrainControllerBtn, 0, 4);
-
-		final Button mboBtn = new Button("MBO");
-		mboBtn.setMinWidth(150);
-		HBox hMboBtn = new HBox(10);
-		hMboBtn.setAlignment(Pos.CENTER);
-		hMboBtn.getChildren().add(mboBtn);
-		hMboBtn.setMinWidth(150);
-		grid.add(hMboBtn, 0, 5);
-
-		final Button sysBtn = new Button("System Prototype");
+		final Button sysBtn = new Button("Run System");
+		sysBtn.setAlignment(Pos.CENTER);
 		sysBtn.setMinWidth(150);
 		HBox hSysBtn = new HBox(10);
 		hSysBtn.setAlignment(Pos.CENTER);
 		hSysBtn.getChildren().add(sysBtn);
 		hSysBtn.setMinWidth(150);
-		grid.add(hSysBtn, 0, 6);
+		grid.add(hSysBtn, 0, 2,1,2);
 
 		Scene scene = new Scene(grid, windowWidth, windowHight);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
 		//handle button press
-		ctcBtn.setOnAction((ActionEvent e) ->
-		{
-			try{
-				CTCMain ctc = new CTCMain();
-				ctc.start(new Stage());
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
+		time1.setOnAction((ActionEvent e) -> {
+			dTime.setMultiplier(1);
 		});
-
-		trackControllerBtn.setOnAction((ActionEvent e) ->
-		{
-			try {
-
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
+		time10.setOnAction((ActionEvent e) -> {
+			dTime.setMultiplier(10);
 		});
-
-        trackModelBtn.setOnAction((ActionEvent e) ->
-        {
-            try {
-				Track track = new Track();
-				TrackModelGUI tgui = new TrackModelGUI(track);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            catch (Exception e2) {
-            	//lol
-			}
-        });
-
-		trainModelBtn.setOnAction((ActionEvent e) ->
-		{
-			try {
-				Train train = new Train();
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-
-		});
-
-		trainControllerBtn.setOnAction((ActionEvent e) ->
-		{
-			try {
-				Train t = new Train();
-				DTime dt = new DTime();
-				dt.addTC(t.GetTrainController());
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			} catch (Exception e1)
-			{
-				e1.printStackTrace();
-			}
-		});
-
-		mboBtn.setOnAction((ActionEvent a) -> {
-			MBOController mboCtrl = new MBOController(dTime.getTimer());
-			try 				{ mboCtrl.start(new Stage());  }
-			catch (Exception e) { e.printStackTrace(); }
-		});
-
 		sysBtn.setOnAction((ActionEvent e) ->
 		{
 			MBOController MBOCtrl = new MBOController(dTime.getTimer());
