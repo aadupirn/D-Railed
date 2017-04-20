@@ -78,6 +78,9 @@ public class Block {
     private boolean fromYard;
     private boolean toYard;
 
+    private Block lastBlock;
+    private boolean lastDir;
+
     public Block(){
         // basic info
         this.line = null;
@@ -461,70 +464,124 @@ public class Block {
         return section + blockNumber;
     }
 
-    public Block moveToNextBlock(Train train, boolean direction) {
-
-        // remove train from current block
-        this.setUnoccupied();
-        this.train = null;
+    public Block moveToNextBlock(Train train, boolean direction, boolean lastDirection, Block currentBlock) {
 
         // calculation based
         int authority = train.GetAuthority();
         int cur = this.getBlockNumber();
         int next = this.getNextUpBlockNumber();
         int nswitch = this.getNextSwitchBlockNumber();
-
         Block nextBlock = null;
+        Integer sBlock = null;
 
-        if (direction == true && nextUpBlock != null) {
+        //System.out.println("CUR  " + currentBlock);
+        //System.out.println("LAST " + lastBlock);
 
-            if(nextSwitchBlock != null){
-                int cndiff = Math.abs(authority - next);
-                int csdiff = Math.abs(authority - nswitch);
+        if(lastBlock != null) {
+            System.out.println(lastBlock.getSwitch() == null);
+        }
 
-                //System.out.println(cndiff);
-                //System.out.println(csdiff);
+        if(currentBlock.getSwitch() != null && lastBlock != null && lastBlock.getSwitch() == null){
 
-                if(cndiff < csdiff){
-                    nextBlock = nextUpBlock;
-                }else {
-                    nextBlock = nextSwitchBlock;
-                }
-            }else{
-                // move train to next block
-                nextBlock = nextUpBlock;
+            SwitchState state = currentBlock.getSwitch().getState();
+            if(state.equals(SwitchState.TOP)){
+                sBlock = currentBlock.getSwitch().getTop();
+            }else if(state.equals(SwitchState.BOTTOM)){
+                sBlock = currentBlock.getSwitch().getBottom();
             }
 
-            // if the direction of travel is DOWN and the track runs the same direction
-        } else if (direction == false && nextDownBlock != null) {
+            // top or bottom
+            if(currentBlock.getBlockNumber().equals(sBlock)){
 
-            if(nextSwitchBlock != null){
-                int cndiff = Math.abs(authority - next);
-                int csdiff = Math.abs(authority - nswitch);
+                Integer master = currentBlock.getSwitch().getMain();
 
-                //System.out.println(cndiff);
-                //System.out.println(csdiff);
+                if(currentBlock.getNextUpBlockNumber() == master.intValue()){
+                    nextBlock = currentBlock.getNextUpBlock();
+                }else if(currentBlock.getNextDownBlockNumber() == master.intValue()){
+                    nextBlock = currentBlock.getNextDownBlock();
+                }else if(currentBlock.getNextSwitchBlockNumber() == master.intValue()){
+                    nextBlock = currentBlock.getNextSwitchBlock();
+                }
 
-                if(cndiff > csdiff) {
-                    nextBlock = nextDownBlock;
+            // main
+            }else{
+
+                if(state.equals(SwitchState.BOTTOM)){
+                    Integer bottom = currentBlock.getSwitch().getBottom();
+                    if(currentBlock.getNextUpBlockNumber() == bottom.intValue()){
+                        nextBlock = currentBlock.getNextUpBlock();
+                    }else if(currentBlock.getNextDownBlockNumber() == bottom.intValue()){
+                        nextBlock = currentBlock.getNextDownBlock();
+                    }else if(currentBlock.getNextSwitchBlockNumber() == bottom.intValue()){
+                        nextBlock = currentBlock.getNextSwitchBlock();
+                    }
                 }else{
-                    nextBlock = nextSwitchBlock;
+                    Integer top = currentBlock.getSwitch().getTop();
+                    if(currentBlock.getNextUpBlockNumber() == top.intValue()){
+                        nextBlock = currentBlock.getNextUpBlock();
+                    }else if(currentBlock.getNextDownBlockNumber() == top.intValue()){
+                        nextBlock = currentBlock.getNextDownBlock();
+                    }else if(currentBlock.getNextSwitchBlockNumber() == top.intValue()){
+                        nextBlock = currentBlock.getNextSwitchBlock();
+                    }
                 }
 
-            }else{
-                // move train to next block
-                nextBlock = nextDownBlock;
             }
 
-         // if the direction of travel is UP and the track runs the same direction
-        } else if (direction == true && nextUpBlock == null && nextSwitchBlock != null){
-            nextBlock = nextSwitchBlock;
+        }else{
 
-        } else if (direction == false && nextDownBlock == null && nextSwitchBlock != null) {
-            nextBlock = nextSwitchBlock;
+            if (direction == true && nextUpBlock != null) {
+
+                if (nextSwitchBlock != null) {
+                    int cndiff = Math.abs(authority - next);
+                    int csdiff = Math.abs(authority - nswitch);
+
+                    if (cndiff > csdiff) {
+                        nextBlock = nextUpBlock;
+                    } else {
+                        nextBlock = nextSwitchBlock;
+                    }
+                } else {
+                    // move train to next block
+                    nextBlock = nextUpBlock;
+                }
+
+                // if the direction of travel is DOWN and the track runs the same direction
+            } else if (direction == false && nextDownBlock != null) {
+
+                if (nextSwitchBlock != null) {
+                    int cndiff = Math.abs(authority - next);
+                    int csdiff = Math.abs(authority - nswitch);
+
+                    if (cndiff > csdiff) {
+                        nextBlock = nextDownBlock;
+                    } else {
+                        nextBlock = nextSwitchBlock;
+                    }
+
+                } else {
+                    // move train to next block
+                    nextBlock = nextDownBlock;
+                }
+
+                // if the direction of travel is UP and the track runs the same direction
+            } else if (direction == true && nextUpBlock == null && nextSwitchBlock != null) {
+                nextBlock = nextSwitchBlock;
+
+            } else if (direction == false && nextDownBlock == null && nextSwitchBlock != null) {
+                nextBlock = nextSwitchBlock;
+            }
+
         }
 
         nextBlock.setOccupied();
         nextBlock.setTrain(train);
+        nextBlock.lastBlock = currentBlock;
+        nextBlock.lastDir = lastDirection;
+
+        // remove train from current block
+        this.setUnoccupied();
+        this.train = null;
 
         return nextBlock;
     }
