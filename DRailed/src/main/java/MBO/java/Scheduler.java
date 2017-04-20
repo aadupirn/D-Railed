@@ -30,6 +30,7 @@ public class Scheduler {
             buildGreenSchedule(thruput, start, end);
 
         loadHashMap();
+        generateCSV();
     }
 
     public void updateSchedule(String line, int id, String location, LocalTime now) {
@@ -68,4 +69,7 @@ public class Scheduler {
             greenBlockToId.put(greenBlockNums[i], i);
     }
 
+    private void generateCSV() {
+
+    }
 }
