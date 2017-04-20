@@ -42,6 +42,7 @@ public class TrainUI {
     private double mass = 10000.0;
     private double grade = 0;
     private int authority;
+    private int crew;
 
     //train utilities;
     private boolean heat;
@@ -60,6 +61,11 @@ public class TrainUI {
     private boolean leftDoors;
     private boolean rightDoors;
 
+    //dimensions
+    private double height;
+    private double tLength;
+    private double width;
+
     //text
     private Text speedText;
     private Text speedRight;
@@ -77,6 +83,10 @@ public class TrainUI {
     private Text massText;
     private Text authorityText;
     private Text blockText;
+    private Text crewText;
+    private Text heightText;
+    private Text tLengthText;
+    private Text widthText;
 
 
     //buttons
@@ -296,6 +306,56 @@ public class TrainUI {
         blockText.setWrappingWidth(colWidth * 1.5);
         blockText.setTextAlignment(TextAlignment.RIGHT);
         grid.add(blockText, 1, 7);
+////////////////////////////////////
+        Label crewLabel = new Label("Crew : ");
+        crewLabel.setMinWidth(colWidth * 1.5);
+        crewLabel.setTextAlignment(TextAlignment.LEFT);
+        crewLabel.setAlignment(Pos.CENTER_LEFT);
+        grid.add(crewLabel, 4, 7);
+
+        crewText = new Text();
+        crewText.setText(" 0");
+        crewText.setWrappingWidth(colWidth * 1.5);
+        crewText.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(crewText, 5, 7);
+///////////////////////////////////////////////////////////
+        Label widthlabel = new Label("Width : ");
+        widthlabel.setMinWidth(colWidth * 1.5);
+        widthlabel.setTextAlignment(TextAlignment.LEFT);
+        widthlabel.setAlignment(Pos.CENTER_LEFT);
+        grid.add(widthlabel, 0, 8);
+
+        widthText = new Text();
+        widthText.setText(" 0");
+        widthText.setWrappingWidth(colWidth * 1.5);
+        widthText.setTextAlignment(TextAlignment.CENTER);
+        grid.add(widthText, 1, 8);
+
+        Label lengthLabel = new Label("Length : ");
+        lengthLabel.setMinWidth(colWidth * 1.5);
+        lengthLabel.setTextAlignment(TextAlignment.LEFT);
+        lengthLabel.setAlignment(Pos.CENTER_LEFT);
+        grid.add(lengthLabel, 2, 8);
+
+        tLengthText = new Text();
+        tLengthText.setText(" 0");
+        tLengthText.setWrappingWidth(colWidth * 1.5);
+        tLengthText.setTextAlignment(TextAlignment.CENTER);
+        grid.add(tLengthText, 3, 8);
+
+        Label heightLabel = new Label("Height : ");
+        heightLabel.setMinWidth(colWidth * 1.5);
+        heightLabel.setTextAlignment(TextAlignment.LEFT);
+        heightLabel.setAlignment(Pos.CENTER_LEFT);
+        grid.add(heightLabel, 4, 8);
+
+        heightText = new Text();
+        heightText.setText(" 0");
+        heightText.setWrappingWidth(colWidth * 1.5);
+        heightText.setTextAlignment(TextAlignment.CENTER);
+        grid.add(heightText, 5, 8);
+
+
 
 ////////////////Buttons
 
@@ -321,21 +381,24 @@ public class TrainUI {
         autoOrManualButton.setAlignment(Pos.CENTER);
         autoOrManualButtonHbox.setAlignment(Pos.CENTER_RIGHT);
         autoOrManualButtonHbox.getChildren().add(autoOrManualButton);
-        grid.add(autoOrManualButton, 0, 8, 2, 1);
+        grid.add(autoOrManualButton, 0, 9, 2, 1);
 
         sButton = new Button("Sbrake off");
         HBox sBrakeHbox = new HBox(0);
         sButton.setOnAction(value ->  {
             if(sButton.getText().equals("SBrake off")) {//label.getText().equals("Not clicked"))
                 sButton.setText("Sbrake on");
-                System.out.println("SBrake onn");
+                sBrakeText.setText("on");
+                //System.out.println("SBrake onn");
                 sBrake = true;
 
             }
             //label.setText("Clicked!");
             else {
                 sButton.setText("SBrake off");
-                System.out.println("SBrake off");
+                sBrakeText.setText("off");
+
+                //System.out.println("SBrake off");
                 sBrake = false;
             }
             //label.setText("Not clicked!");
@@ -345,21 +408,25 @@ public class TrainUI {
         sButton.setAlignment(Pos.CENTER);
         sBrakeHbox.setAlignment(Pos.CENTER_RIGHT);
         sBrakeHbox.getChildren().add(sButton);
-        grid.add(sButton, 2, 8, 2, 1);
+        grid.add(sButton, 2, 9, 2, 1);
 
         eButton = new Button("ebrake off");
         HBox eBrakeHbox = new HBox(0);
         eButton.setOnAction(value ->  {
             if(eButton.getText().equals("eBrake off")) {//label.getText().equals("Not clicked"))
                 eButton.setText("ebrake on");
-                System.out.println("eBrake onn");
+                sBrakeText.setText("on");
+
+                // System.out.println("eBrake onn");
                 eBrake = true;
 
             }
             //label.setText("Clicked!");
             else {
                 eButton.setText("eBrake off");
-                System.out.println("eBrake off");
+                sBrakeText.setText("off");
+
+                // System.out.println("eBrake off");
                 eBrake = false;
             }
             //label.setText("Not clicked!");
@@ -369,7 +436,7 @@ public class TrainUI {
         eButton.setAlignment(Pos.CENTER);
         eBrakeHbox.setAlignment(Pos.CENTER_RIGHT);
         eBrakeHbox.getChildren().add(eButton);
-        grid.add(eButton, 5, 8, 2, 1);
+        grid.add(eButton, 5, 9, 2, 1);
 //////////////////////////////////////////////////////////////Manual and Automatic
         Scene scene = new Scene(grid, windowWidth, windowHight);
         stage.setScene(scene);
@@ -472,6 +539,23 @@ public class TrainUI {
     protected void updateBlock(int newBlock){
         block = newBlock;
         blockText.setText(String.format( "%d", block )  );
+    }
+
+    protected void updateCrew(int newCrew){
+        crew = newCrew;
+        crewText.setText(String.format( "%d", newCrew )  );
+    }
+
+    protected void updateDimensions(double height, double width, double length){
+        this.height = height;
+        this.width = width;
+        this.tLength = length;
+
+        heightText.setText(String.format( "%d", height )  );
+        widthText.setText(String.format( "%d", width )  );
+        tLengthText.setText(String.format( "%d", tLength )  );
+
+
     }
 
     /*
