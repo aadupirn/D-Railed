@@ -98,7 +98,7 @@ public class TrainController
 		trainID = train.getId();
 		speedLimit = MpH2MpS(100);
 		mbo = null;
-		route = "GREEN";
+		route = train.getLine();
 		acStatus = false;
 		heatStatus = false;
 		lDoorStatus = false;
@@ -660,6 +660,7 @@ public class TrainController
 		train.SetSbrake(false);
 		eBrakeStatus = false;
 		sBrakeStatus = false;
+		makeAnnouncement("Released Brakes");
 	}
 
 	public void sBrake()
@@ -670,6 +671,7 @@ public class TrainController
 		setDesiredSpeedText(desiredSpeed);
 		controlCalculator1.setDesiredSpeed(desiredSpeed);
 		controlCalculator2.setDesiredSpeed(desiredSpeed);
+		makeAnnouncement("sBrake");
 	}
 
 	public void emergencyBrake()
@@ -682,6 +684,7 @@ public class TrainController
 		setDesiredSpeedText(desiredSpeed);
 		controlCalculator2.setDesiredSpeed(0);
 		controlCalculator1.setDesiredSpeed(0);
+		makeAnnouncement("emergencyBrake");
 	}
 	public double MpS2MpH(double mps)
 	{
@@ -808,15 +811,51 @@ public class TrainController
 		}
 		List<Block> blockAheadList = track.lookAhead(currentBlock, locationCalculator.getDir(), 1);
 		authority = 151; //debug
+		boolean shouldBrake = false;
 		for(Block b : blockAheadList)
 		{
-			if(b.getBlockNumber().intValue() == authority)
+			if(b != null)
 			{
-				sBrake();
+				if (b.getBlockNumber().intValue() == authority) {
+					shouldBrake = true;
+				} else if (b.getBeacon() != null && speed > 5) //station coming up!
+				{
+					if (!b.getBeacon().readMessage().contains("US")) {
+						shouldBrake = true;
+					}
+				}
 			}
-			if(b.getBeacon() != null && speed > 5) //station coming up!
+		}
+
+		int goBlock = -10;
+		if(shouldBrake)
+		{
+			if(speed == 0)
 			{
-				if(!b.getBeacon().readMessage().contains("US"))
+				if(currentBlock.getBlockNumber().intValue() == authority)
+				{
+					//we have reached authority
+					makeAnnouncement("WE HAVE REACHED THE END OF AUTHORITY");
+				}
+				else if(currentBlock.getBeacon() != null)
+				{
+					if(currentBlock.getBeacon().readMessage().contains("US"))
+					{
+						makeAnnouncement("We have arrived at a station.");
+					}
+				}
+				else
+				{
+					goBlock = currentBlock.getBlockNumber().intValue();
+					releaseBrakes();
+					controlCalculator1.setDesiredSpeed(speedLimit);
+					controlCalculator2.setDesiredSpeed(speedLimit);
+					setDesiredSpeedText(speedLimit);
+				}
+			}
+			else
+			{
+				if(currentBlock.getBlockNumber().intValue() != goBlock)
 				{
 					sBrake();
 				}
