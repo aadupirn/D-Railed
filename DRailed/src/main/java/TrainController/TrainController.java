@@ -48,7 +48,9 @@ public class TrainController
 	private int colWidth = 75;
 	private int trainID;
 	private int currentBlockID;
-
+	private int goBlock;
+	private int stationCounter;
+	private int recentStop;
 
 	private double speed;
 	private double speedLimit;
@@ -70,6 +72,7 @@ public class TrainController
 	private boolean locationStatus;
 	private boolean announcementMade;
 	private boolean controlMode;
+	private boolean atStation;
 
 	private Text speedText;
 	private Text powerText;
@@ -83,6 +86,11 @@ public class TrainController
 	private LocationCalculator locationCalculator;
 	private ControlCalculator controlCalculator1;
 	private ControlCalculator controlCalculator2;
+
+	RadioButton lDoorOpen;
+	RadioButton lDoorClosed;
+	RadioButton rDoorOpen;
+	RadioButton rDoorClosed;
 
 	private MBO mbo;
 
@@ -98,13 +106,14 @@ public class TrainController
 		trainID = train.getId();
 		speedLimit = MpH2MpS(100);
 		mbo = null;
-		route = "GREEN";
+		route = train.getLine();
 		acStatus = false;
 		heatStatus = false;
 		lDoorStatus = false;
 		rDoorStatus = false;
 		lightStatus = false;
 		controlMode = false;
+		goBlock = -1;
 		kp = 100;
 		ki = 100;
 		speed = train.GetCurrentSpeed();
@@ -115,6 +124,9 @@ public class TrainController
 		desiredSpeed = 0;
 		temperature = train.getTemperature();
 		announcementMade = false;
+		atStation = true;
+		stationCounter = 0;
+		recentStop = -1;
 
 		track = iTrack;
 
@@ -353,14 +365,14 @@ public class TrainController
 
 		final ToggleGroup lDoorToggleGroup = new ToggleGroup();
 
-		RadioButton lDoorOpen = new RadioButton("Open");
+		lDoorOpen = new RadioButton("Open");
 		lDoorOpen.setToggleGroup(lDoorToggleGroup);
 		lDoorOpen.setSelected(false);
 		lDoorOpen.setMaxWidth(colWidth);
 		lDoorOpen.setMinWidth(colWidth);
 		lDoorGrid.add(lDoorOpen, 0, 0);
 
-		RadioButton lDoorClosed = new RadioButton("Closed");
+		lDoorClosed = new RadioButton("Closed");
 		lDoorClosed.setToggleGroup(lDoorToggleGroup);
 		lDoorClosed.setSelected(true);
 		lDoorClosed.setAlignment(Pos.CENTER_LEFT);
@@ -405,14 +417,14 @@ public class TrainController
 
 		final ToggleGroup rDoorToggleGroup = new ToggleGroup();
 
-		RadioButton rDoorOpen = new RadioButton("Open");
+		rDoorOpen = new RadioButton("Open");
 		rDoorOpen.setToggleGroup(rDoorToggleGroup);
 		rDoorOpen.setSelected(false);
 		rDoorOpen.setMaxWidth(colWidth);
 		rDoorOpen.setMinWidth(colWidth);
 		rDoorGrid.add(rDoorOpen, 0, 0);
 
-		RadioButton rDoorClosed = new RadioButton("Closed");
+		rDoorClosed = new RadioButton("Closed");
 		rDoorClosed.setToggleGroup(rDoorToggleGroup);
 		rDoorClosed.setSelected(true);
 		rDoorClosed.setAlignment(Pos.CENTER_LEFT);
@@ -664,24 +676,31 @@ public class TrainController
 
 	public void sBrake()
 	{
-		train.SetSbrake(true);
-		sBrakeStatus = true;
-		desiredSpeed = 0;
-		setDesiredSpeedText(desiredSpeed);
-		controlCalculator1.setDesiredSpeed(desiredSpeed);
-		controlCalculator2.setDesiredSpeed(desiredSpeed);
+		if(!sBrakeStatus)
+		{
+			train.SetSbrake(true);
+			sBrakeStatus = true;
+			desiredSpeed = 0;
+			setDesiredSpeedText(desiredSpeed);
+			controlCalculator1.setDesiredSpeed(desiredSpeed);
+			controlCalculator2.setDesiredSpeed(desiredSpeed);
+		}
 	}
 
 	public void emergencyBrake()
 	{
-		train.SetPowerCommand(new Double(0));
-		setPowerText(0);
-		train.setEbrake(true);
-		desiredSpeed = 0;
-		eBrakeStatus = true;
-		setDesiredSpeedText(desiredSpeed);
-		controlCalculator2.setDesiredSpeed(0);
-		controlCalculator1.setDesiredSpeed(0);
+		if(!eBrakeStatus)
+		{
+			train.SetPowerCommand(new Double(0));
+			setPowerText(0);
+			train.setEbrake(true);
+			desiredSpeed = 0;
+			eBrakeStatus = true;
+			setDesiredSpeedText(desiredSpeed);
+			controlCalculator2.setDesiredSpeed(0);
+			controlCalculator1.setDesiredSpeed(0);
+			makeAnnouncement("Emergency Brake Activated");
+		}
 	}
 	public double MpS2MpH(double mps)
 	{
@@ -806,22 +825,80 @@ public class TrainController
 		{
 			sBrake();
 		}
-		List<Block> blockAheadList = track.lookAhead(currentBlock, locationCalculator.getDir(), 1);
-		authority = 151; //debug
-		for(Block b : blockAheadList)
+
+		if(atStation)
 		{
-			if(b.getBlockNumber().intValue() == authority)
+			stationCounter++;
+			if(stationCounter == 20)
 			{
-				sBrake();
-			}
-			if(b.getBeacon() != null && speed > 5) //station coming up!
-			{
-				if(!b.getBeacon().readMessage().contains("US"))
-				{
-					sBrake();
-				}
+				stationCounter = 0;
+				atStation = false;
+				releaseBrakes();
+				lDoorClosed.setSelected(true);
+				rDoorClosed.setSelected(true);
 			}
 		}
+		else
+		{
+			List<Block> blockAheadList = track.lookAhead(currentBlock, locationCalculator.getDir(), 3);
+			blockAheadList.add(currentBlock);
+			authority = 151; //debug
+			boolean shouldBrake = false;
+			for(Block b : blockAheadList)
+			{
+				if(b != null)
+				{
+					if (b.getBlockNumber().intValue() == authority)
+					{
+						shouldBrake = true;
+					} else if (b.getBeacon() != null) //station coming up!
+					{
+						if (!b.getBeacon().readMessage().contains("US") && b.getBlockNumber().intValue() != recentStop) {
+							shouldBrake = true;
+						}
+					}
+				}
+			}
+			if(shouldBrake)
+			{
+				if(speed == 0)
+				{
+					if(currentBlock.getBlockNumber().intValue() == authority)
+					{
+						//we have reached authority
+						makeAnnouncement("WE HAVE REACHED THE END OF AUTHORITY");
+					}
+					else if(currentBlock.getBeacon() != null)
+					{
+						if(!currentBlock.getBeacon().readMessage().contains("US") && !atStation) {
+							makeAnnouncement("We have arrived at " + currentBlock.getBeacon().readMessage() + ".");
+							atStation = true;
+							recentStop = currentBlock.getBlockNumber().intValue();
+							lDoorOpen.setSelected(true);
+							rDoorOpen.setSelected(true);
+						}
+					}
+					else
+					{
+						goBlock = currentBlock.getBlockNumber().intValue();
+						releaseBrakes();
+						controlCalculator1.setDesiredSpeed(speedLimit);
+						controlCalculator2.setDesiredSpeed(speedLimit);
+						setDesiredSpeedText(speedLimit);
+					}
+				}
+				else
+				{
+					if(currentBlock.getBlockNumber().intValue() != goBlock)
+					{
+						goBlock = -1;
+						sBrake();
+					}
+				}
+			}
+
+		}
+
 
 		double powerCommand1 = controlCalculator1.computeNextCommand(speed);
 		double powerCommand2 = controlCalculator2.computeNextCommand(speed);

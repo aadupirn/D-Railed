@@ -41,7 +41,7 @@ public class DTime
 
 	public DTime()
 	{
-		multiplier = 10;
+		multiplier = 5;
 		int intervalMS = 1000/multiplier;
 		trainControllers = new ArrayList<TrainController>();
 		trackControllers = new ArrayList<TrackController>();

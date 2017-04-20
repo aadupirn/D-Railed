@@ -183,18 +183,37 @@ public class Main extends Application {
 				Track track = new Track();
 				track.couple("GREEN", "TIGHT");
 				// Initialize Track Controllers
-				TrackController trackController1 = new TrackController(dTime, "GREEN");
-				TrackController trackController2 = new TrackController(dTime, "RED");
+				ArrayList<Integer> blocks1, plc1, blocks2, plc2;
+				blocks1 = new ArrayList<>();
+				plc1 = new ArrayList<>();
+				blocks2 = new ArrayList<>();
+				plc2 = new ArrayList<>();
+				for (int i = 1; i <= 152; i++)
+				{
+					if (i <= 62 || i >= 117)
+						blocks1.add(i);
+					if (i <= 67 || i >= 118)
+						plc1.add(i);
+					if (i >= 63 && i <= 116)
+						blocks2.add(i);
+					if (i >= 58 && i <= 121)
+						plc2.add(i);
+				}
+
+				TrackController tc1 = new TrackController("GREEN", blocks1, plc1, dTime, 1);
+				TrackController tc2 = new TrackController("GREEN", blocks2, plc2, dTime, 2);
+				TrackController tc3 = new TrackController(dTime, "RED");
 				ArrayList<TrackController> controllers = new ArrayList<TrackController>();
-				controllers.add(trackController1);
-				controllers.add(trackController2);
+				controllers.add(tc1);
+				controllers.add(tc2);
+				controllers.add(tc3);
 				for (TrackController tc : controllers)
 				{
 					dTime.addTrackC(tc);
 					tc.setTrack(track);
 					tc.setControllers(controllers);
 				}
-				trackController1.showUI();
+				tc1.showUI();
 				// End Track Controller Init
 				dTime.setMBO(MBOCtrl.getMBO());
 				TrackModelGUI trackModel = new TrackModelGUI(track);
