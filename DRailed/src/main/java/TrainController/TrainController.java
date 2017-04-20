@@ -793,11 +793,9 @@ public class TrainController
 			int messageTrainID = (int)message.getTrainID();
 			if (messageTrainID == trainID)
 			{
-				if(mbo.isMBOActive()) speedLimit = mbo.getSafeSpeed(trainID, route);
-				else speedLimit = (double)message.getSpeed();
+				speedLimit = (double)message.getSpeed();
 
-				if(mbo.isMBOActive()) authority = mbo.getAuthority(trainID, route);
-				else authority = (double)message.getAuthority();
+				authority = (double)message.getAuthority();
 			}
 			else if (messageTrainID == 0)
 			{
@@ -808,7 +806,14 @@ public class TrainController
 				speedLimit = (double)message.getSpeed();
 			}
 		}
-		if(controlMode)//Automatic mode
+		if(mbo.isMBOActive())
+		{
+			double safeSpeed = mbo.getSafeSpeed(trainID, route);
+			setDesiredSpeedText(safeSpeed);
+			controlCalculator1.setDesiredSpeed(safeSpeed);
+			controlCalculator2.setDesiredSpeed(safeSpeed);
+		}
+		else if(controlMode)//Automatic mode
 		{
 			setDesiredSpeedText(speedLimit);
 			controlCalculator1.setDesiredSpeed(speedLimit);
