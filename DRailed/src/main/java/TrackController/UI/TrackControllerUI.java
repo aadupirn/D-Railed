@@ -25,7 +25,7 @@ public class TrackControllerUI {
     private Stage mainStage, sideStage;
     private Scene mainScene, murphyScene, userInScene, engScene, toTMScene;
     private Label controllerLabel,blockLabel, controlLabel, switchLabel, occupiedLabel, lightsLabel, crossLabel, switchAdjLabel, mainBlockLabel, subBlock1Label,subBlock2Label,connectedLabel, getTrainID, getSpeed,getAuth,getCarts;
-    private TextField blockID, occupiedStatus, lightsStatus,crossStatus, switchAdj, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText, getTrainIDText, getSpeedText, getAuthText, getCartsText, sendTrainIDText, sendSpeedText, sendAuthText, selectSwitchText, setSwitchText;
+    private TextField blockID, occupiedStatus, lightsStatus,crossStatus, switchAdj, switchIDText, mainBlockText, subBlock1Text, subBlock2Text, connectedText, getTrainIDText, getSpeedText, getAuthText, getCartsText, sendTrainIDText, sendSpeedText, sendAuthText, selectSwitchText, setSwitchText,breakBlockID;
     private TextArea notifications;
     private Text controllerLine, controllerSection;
     private Button murphyButton, userInputsButton, engInputsButton, toTrackModelButton, murphyBreakTrackButton, murphyBreakCTCComms, murphyBreakTMComms, sendEngineer,unsetSwitch, loadPLC, blockIdButton, switchIdButton, dispatchButton, sendData;
@@ -86,14 +86,14 @@ public class TrackControllerUI {
         mainPane.setTop(menuBar);
         trackControllers[0].setOnAction((ActionEvent a) -> {
             try {
-                tc.switchUI("RED",1);
+                tc.switchUI("RED",3);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
         trackControllers[1].setOnAction((ActionEvent a) -> {
             try {
-                tc.switchUI("RED",1); //TODO make a second one!
+                tc.switchUI("RED",3); //TODO make a second one!
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -107,7 +107,7 @@ public class TrackControllerUI {
         });
         trackControllers[3].setOnAction((ActionEvent a) -> {
             try {
-                tc.switchUI("GREEN",1); //TODO make a second one!
+                tc.switchUI("GREEN",2);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -288,13 +288,13 @@ public class TrackControllerUI {
 
 
         //Initialize Murphy stuff
-        murphyBreakTrackButton = new Button("Break Track");
+        murphyBreakTrackButton = new Button("Toggle Track");
         murphyBreakCTCComms = new Button("CTC");
         murphyBreakTMComms = new Button("Track Model");
         murphyBreakTrackButton.setOnAction(e -> MurphyButtonClicked(e));
         murphyBreakCTCComms.setOnAction(e -> MurphyButtonClicked(e));
         murphyBreakTMComms.setOnAction(e -> MurphyButtonClicked(e));
-        TextField breakBlockID = new TextField("Put Block ID to break");
+        breakBlockID = new TextField("");
         Label breakCommsLabel = new Label("Toggle Comms with: ");
         GridPane breakComms = new GridPane();
         murphy.setVgap(20);
@@ -476,6 +476,10 @@ public class TrackControllerUI {
         {
             tc.toggleCTCComms();
         }
+        else if (source == murphyBreakTrackButton)
+        {
+            tc.toggleBlock(Integer.parseInt(breakBlockID.getText()));
+        }
     }
 
     public void MainUpdateButtonClicked(ActionEvent e)
@@ -523,7 +527,6 @@ public class TrackControllerUI {
     {
         try {
             tc.dispatchTrain(152, Integer.parseInt(getCartsText.getText()), Integer.parseInt(getAuthText.getText()), Double.parseDouble(getSpeedText.getText()), Integer.parseInt(getTrainIDText.getText()));
-            System.out.println("Train created!");
         } catch (Exception e1) {
             System.out.println("We got an exception: " + e1.toString() + "\n");
             e1.printStackTrace();
