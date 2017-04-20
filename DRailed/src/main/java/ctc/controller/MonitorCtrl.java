@@ -172,8 +172,7 @@ public class MonitorCtrl implements Initializable {
     		{
     			if(line.getName().equals(block))
     			{
-    				System.out.println("draw occupy for Monitor Map");
-    				gc.setFill(Color.DARKVIOLET);  
+    				gc.setFill(Color.DARKVIOLET);
     		        gc.setStroke(Color.DARKVIOLET);  
     		        gc.setLineWidth(6);
             		gc.strokeLine(line.getStartDot().getX()+5, line.getStartDot().getY()+5, line.getEndDot().getX()+5, line.getEndDot().getY()+5);
@@ -192,8 +191,7 @@ public class MonitorCtrl implements Initializable {
     	if((time_count % 7) == 0)
     	{
     		draw(gc); 
-    		System.out.println("update Monitor Map");
-    		
+
     		if(line.equals("GREEN"))
     		{
     			// draw green Line train local

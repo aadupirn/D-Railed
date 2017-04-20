@@ -24,13 +24,13 @@ public class Scheduler {
     }
 
     public void generateSchedule(String line, int thruput, LocalTime start, LocalTime end) {
-        System.out.println("DEV: Generating schedule for " + line + " line.");
         if(line.toUpperCase().equals(redLine))
             buildRedSchedule(thruput, start, end);
         else if(line.toUpperCase().equals(greenLine))
             buildGreenSchedule(thruput, start, end);
 
         loadHashMap();
+        generateCSV();
     }
 
     public void updateSchedule(String line, int id, String location, LocalTime now) {
@@ -69,4 +69,7 @@ public class Scheduler {
             greenBlockToId.put(greenBlockNums[i], i);
     }
 
+    private void generateCSV() {
+
+    }
 }

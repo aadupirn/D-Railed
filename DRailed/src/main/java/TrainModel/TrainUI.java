@@ -35,6 +35,7 @@ public class TrainUI {
 
     //train id
     private int trainID;
+    private int crew = 0;
     private int block;
     private double speed;
     private final double maxSpeed = 70.0;
@@ -42,7 +43,6 @@ public class TrainUI {
     private double mass = 10000.0;
     private double grade = 0;
     private int authority;
-    private int crew;
 
     //train utilities;
     private boolean heat;
@@ -61,10 +61,9 @@ public class TrainUI {
     private boolean leftDoors;
     private boolean rightDoors;
 
-    //dimensions
     private double height;
-    private double tLength;
     private double width;
+    private double length;
 
     //text
     private Text speedText;
@@ -85,8 +84,8 @@ public class TrainUI {
     private Text blockText;
     private Text crewText;
     private Text heightText;
-    private Text tLengthText;
     private Text widthText;
+    private Text tLengthText;
 
 
     //buttons
@@ -306,6 +305,7 @@ public class TrainUI {
         blockText.setWrappingWidth(colWidth * 1.5);
         blockText.setTextAlignment(TextAlignment.RIGHT);
         grid.add(blockText, 1, 7);
+
 ////////////////////////////////////
         Label crewLabel = new Label("Crew : ");
         crewLabel.setMinWidth(colWidth * 1.5);
@@ -326,7 +326,7 @@ public class TrainUI {
         grid.add(widthlabel, 0, 8);
 
         widthText = new Text();
-        widthText.setText(" 8.69");
+        widthText.setText(" 0");
         widthText.setWrappingWidth(colWidth * 1.5);
         widthText.setTextAlignment(TextAlignment.CENTER);
         grid.add(widthText, 1, 8);
@@ -338,7 +338,7 @@ public class TrainUI {
         grid.add(lengthLabel, 2, 8);
 
         tLengthText = new Text();
-        tLengthText.setText(" 2.65");
+        tLengthText.setText(" 0");
         tLengthText.setWrappingWidth(colWidth * 1.5);
         tLengthText.setTextAlignment(TextAlignment.CENTER);
         grid.add(tLengthText, 3, 8);
@@ -350,10 +350,11 @@ public class TrainUI {
         grid.add(heightLabel, 4, 8);
 
         heightText = new Text();
-        heightText.setText(" 3.42");
+        heightText.setText(" 0");
         heightText.setWrappingWidth(colWidth * 1.5);
         heightText.setTextAlignment(TextAlignment.CENTER);
         grid.add(heightText, 5, 8);
+
 
 
 
@@ -364,14 +365,14 @@ public class TrainUI {
         autoOrManualButton.setOnAction(value ->  {
             if(autoOrManualButton.getText().equals("Manual")) {//label.getText().equals("Not clicked"))
                 autoOrManualButton.setText("Automatic");
-                System.out.println("Automatic");
+                //System.out.println("Automatic");
                 AutoVsManual = true;
 
             }
             //label.setText("Clicked!");
             else {
                 autoOrManualButton.setText("Manual");
-                System.out.println("Manual");
+                //System.out.println("Manual");
                 AutoVsManual = false;
             }
             //label.setText("Not clicked!");
@@ -388,7 +389,6 @@ public class TrainUI {
         sButton.setOnAction(value ->  {
             if(sButton.getText().equals("SBrake off")) {//label.getText().equals("Not clicked"))
                 sButton.setText("Sbrake on");
-                sBrakeText.setText("on");
                 //System.out.println("SBrake onn");
                 sBrake = true;
 
@@ -396,8 +396,6 @@ public class TrainUI {
             //label.setText("Clicked!");
             else {
                 sButton.setText("SBrake off");
-                sBrakeText.setText("off");
-
                 //System.out.println("SBrake off");
                 sBrake = false;
             }
@@ -415,18 +413,14 @@ public class TrainUI {
         eButton.setOnAction(value ->  {
             if(eButton.getText().equals("eBrake off")) {//label.getText().equals("Not clicked"))
                 eButton.setText("ebrake on");
-                sBrakeText.setText("on");
-
-                // System.out.println("eBrake onn");
+                //System.out.println("eBrake onn");
                 eBrake = true;
 
             }
             //label.setText("Clicked!");
             else {
                 eButton.setText("eBrake off");
-                sBrakeText.setText("off");
-
-                // System.out.println("eBrake off");
+                //System.out.println("eBrake off");
                 eBrake = false;
             }
             //label.setText("Not clicked!");
@@ -541,23 +535,23 @@ public class TrainUI {
         blockText.setText(String.format( "%d", block )  );
     }
 
-    protected void updateCrew(int newCrew){
-        crew = newCrew;
-        crewText.setText(String.format( "%d", newCrew )  );
-    }
-
-    protected void updateDimensions(double height, double width, double length){
-        this.height = height;
-        this.width = width;
-        this.tLength = length;
-
-        heightText.setText(String.format( "%d", height )  );
-        widthText.setText(String.format( "%d", width )  );
-        tLengthText.setText(String.format( "%d", tLength )  );
-
+    protected void updateCrew(int crew){
+        this.crew = crew;
+        crewText.setText(String.format( "%d", crew )  );
 
     }
 
+    protected void updateDimensions(double newHeight, double newWidth, double newLength ){
+        height = newHeight;
+        width = newWidth;
+        length = newLength;
+
+        widthText.setText(String.format( "%f", width )  );
+        tLengthText.setText(String.format( "%f", length )  );
+        heightText.setText(String.format( "%f", height )  );
+
+
+    }
     /*
     Getters block
         used for updated train in Manual mode

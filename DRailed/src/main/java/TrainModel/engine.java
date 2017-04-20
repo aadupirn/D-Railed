@@ -58,8 +58,6 @@ public class engine {
 
             if (currentSpeed < 0)
                 currentSpeed = 0;
-            if(currentSpeed > 32)
-                currentSpeed = 32;
             return currentSpeed;
         }
     }

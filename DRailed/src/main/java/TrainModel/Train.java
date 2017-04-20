@@ -21,9 +21,6 @@ public class Train {
     private int authority;
     private double temp;
     private String line;
-    private double length; // 8.69
-    private double width = 2.65;
-    private double height = 3.42;
 
     private engine Engine;
     private AC ac;
@@ -34,7 +31,10 @@ public class Train {
     private static boolean sbrake;
     private static int people;
     private int numberOfCarts = 1;
-    private final int crew = 2;
+    private double height = 3.47;
+    private double width = 2.65;
+    private double length = 8.04;
+
 
 
     public Train() throws IOException, Exception {
@@ -58,8 +58,6 @@ public class Train {
         people = 0;
         trainController = new TrainController(this, this.track);
         trainUI = new TrainUI();
-        Update();
-
         //trainModel = new TrainModel();
     }
 
@@ -86,8 +84,6 @@ public class Train {
         people = 0;
         trainController = new TrainController(this, this.track);
         trainUI = new TrainUI();
-        Update();
-
 
     }
 
@@ -125,12 +121,10 @@ public class Train {
         this.numberOfCarts = numberOfCarts;
         trainController = new TrainController(this, this.track);
         trainUI = new TrainUI();
-        Update();
-
     }
     public Train(int startingBlock, int numberOfCarts, int newAuthority, Double newSpeed, int newID, Track track, String line) throws IOException, Exception {
        //this is the constructor used
-        //System.out.println("Train Created! From Train.java");
+       // System.out.println("Train Created! From Train.java");
         Engine = new engine();
         ac = new AC();
         ebrake = false;
@@ -140,7 +134,8 @@ public class Train {
         mass = 37103.856;
         people = 0;//new Random().nextInt(222);
         this.line = line;
-        length = numberOfCarts * 8.69;
+
+
 
         block = startingBlock;
         id = newID;
@@ -163,7 +158,7 @@ public class Train {
         if(trainUI.getAutoVsManual())
             updateUI();
         else{
-           // System.out.println(" --------------------------------------------------------------- ");
+            //System.out.println(" --------------------------------------------------------------- ");
             get();
         }
 
@@ -197,8 +192,8 @@ public class Train {
     public void updateUI(){
         //TrainModel == UI
         //System.out.println("updateUI");
-       // trainUI.updateDimensions(height, width, length);
-       // trainUI.updateCrew(crew);
+        trainUI.updateDimensions(height, width, length*numberOfCarts);
+        trainUI.updateCrew(2);
         trainUI.updateSpeed(currentSpeed);
         trainUI.updateId(id);
         trainUI.updatePower(commandSpeed);
