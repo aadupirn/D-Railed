@@ -839,7 +839,7 @@ public class TrainController
 				}
 				else if(currentBlock.getBeacon() != null)
 				{
-					if(currentBlock.getBeacon().readMessage().contains("US"))
+					if(!currentBlock.getBeacon().readMessage().contains("US"))
 					{
 						makeAnnouncement("We have arrived at a station.");
 					}
