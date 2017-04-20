@@ -83,6 +83,8 @@ public class TrainController
 
 	private Train train;
 
+	Block lastBlock;
+
 	private LocationCalculator locationCalculator;
 	private ControlCalculator controlCalculator1;
 	private ControlCalculator controlCalculator2;
@@ -129,6 +131,7 @@ public class TrainController
 		recentStop = -1;
 
 		track = iTrack;
+		lastBlock = null;
 
 		locationCalculator = new LocationCalculator(train, track, route, train.GetStartingBlock(), trainID);
 		controlCalculator1 = new ControlCalculator(desiredSpeed, kp, ki);
@@ -786,6 +789,7 @@ public class TrainController
 
 		//Compute Next Location, get desired speed and authority, set grade in the train model.
 		Block currentBlock = locationCalculator.ComputeNextLocation(train.GetCurrentSpeed());
+
 		train.setGrade(currentBlock.getGrade());
 		ThreeBaudMessage message = currentBlock.getMessage();
 		if (message != null)
@@ -836,6 +840,7 @@ public class TrainController
 
 		if(atStation)
 		{
+
 			stationCounter++;
 			if(stationCounter == 20)
 			{
