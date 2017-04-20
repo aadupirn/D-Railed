@@ -42,8 +42,7 @@ public class LocationCalculator
 	{
 
 		//blockLocation += iSpeed;
-		// TODO: Remove for non-testing
-		blockLocation += iSpeed*20;
+		blockLocation += iSpeed;
 
 		if(block == null){
 			System.out.println("ERROR");
