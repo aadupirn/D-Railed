@@ -808,15 +808,50 @@ public class TrainController
 		}
 		List<Block> blockAheadList = track.lookAhead(currentBlock, locationCalculator.getDir(), 1);
 		authority = 151; //debug
+		boolean shouldBrake = false;
 		for(Block b : blockAheadList)
 		{
 			if(b.getBlockNumber().intValue() == authority)
 			{
-				sBrake();
+				shouldBrake = true;
 			}
-			if(b.getBeacon() != null && speed > 5) //station coming up!
+			else if(b.getBeacon() != null && speed > 5) //station coming up!
 			{
 				if(!b.getBeacon().readMessage().contains("US"))
+				{
+					shouldBrake = true;
+				}
+			}
+		}
+
+		int goBlock = -10;
+		if(shouldBrake)
+		{
+			if(speed == 0)
+			{
+				if(currentBlock.getBlockNumber().intValue() == authority)
+				{
+					//we have reached authority
+				}
+				else if(currentBlock.getBeacon() != null)
+				{
+					if(currentBlock.getBeacon().readMessage().contains("US"))
+					{
+						//we are at station
+					}
+				}
+				else
+				{
+					goBlock = currentBlock.getBlockNumber().intValue();
+					releaseBrakes();
+					controlCalculator1.setDesiredSpeed(speedLimit);
+					controlCalculator2.setDesiredSpeed(speedLimit);
+					setDesiredSpeedText(speedLimit);
+				}
+			}
+			else
+			{
+				if(currentBlock.getBlockNumber().intValue() != goBlock)
 				{
 					sBrake();
 				}
