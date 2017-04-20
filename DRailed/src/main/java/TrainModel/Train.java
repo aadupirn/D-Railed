@@ -20,6 +20,7 @@ public class Train {
     private double grade;
     private int authority;
     private double temp;
+    private String line;
 
     private engine Engine;
     private AC ac;
@@ -128,6 +129,7 @@ public class Train {
         commandSpeed = 0.0;
         mass = 37103.856;
         people = 0;//new Random().nextInt(222);
+        this.line = line;
 
         block = startingBlock;
         id = newID;
@@ -208,6 +210,13 @@ public class Train {
       ID Block
           This block gets ID, ID is set during constructor
     */
+
+    public String getLine(){
+        return line;
+    }
+    public void setLine(String line){
+        this.line = line;
+    }
     public int getId(){
         return id;
     }
