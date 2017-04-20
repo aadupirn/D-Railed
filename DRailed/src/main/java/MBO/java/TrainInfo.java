@@ -21,8 +21,7 @@ public class TrainInfo {
     private final SimpleDoubleProperty variance;
     private double stoppingDistance;
     private int gps;
-
-    DecimalFormat df = new DecimalFormat("#0.00");
+    private int len = 2546;
 
     public TrainInfo(int id, String line, double speed, double safeSpeed, String location, double authority, double variance){
         this.id  = new SimpleIntegerProperty(id);
@@ -31,10 +30,16 @@ public class TrainInfo {
         this.speed = new SimpleDoubleProperty(speed);
         this.safeSpeed = new SimpleDoubleProperty(safeSpeed);
         this.location = new SimpleStringProperty(location);
-        this.authority = new SimpleIntegerProperty((int) authority);
         this.variance = new SimpleDoubleProperty(variance);
         this.stoppingDistance = 0;
         this.gps = 1;
+        if(line.toUpperCase().equals("RED"))
+            len = 1050;
+        else
+            len = 2546;
+
+        this.authority = new SimpleIntegerProperty(len);
+
     }
 
     private String formatGPS(String location) {
@@ -67,7 +72,8 @@ public class TrainInfo {
     }
 
     private void kill() {
-
+        this.stoppingDistance = 0;
+        this.safeSpeed.set(0);
     }
 
     public void setStoppingDistance() {
@@ -86,7 +92,7 @@ public class TrainInfo {
                 this.safeSpeed.set(speed.get());
             }
         } else
-            this.safeSpeed.set(-1);
+            this.safeSpeed.set(-999);
     }
 
     public String getLocation(){
@@ -96,14 +102,15 @@ public class TrainInfo {
     public void setLocation(String location, boolean mbo) {
         this.location.set(formatGPS(location));
         setSafeSpeed(mbo);
-        this.variance.set(Math.abs(speed.get() - safeSpeed.get()));
+        if(mbo) this.variance.set(Math.abs(speed.get() - safeSpeed.get()));
+        else this.variance.set(-999);
     }
 
     public int getAuthority(){
         return authority.get();
     }
 
-    public void setAuthorithy(double authority){ this.authority.set((int) authority); }
+    public void setAuthorithy(double authority){ this.authority.set(len); }
 
     // NEEDED FOR AUTO-UPDATING OF UI
     public SimpleIntegerProperty idProperty() {
