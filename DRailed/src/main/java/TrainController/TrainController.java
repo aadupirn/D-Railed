@@ -811,15 +811,15 @@ public class TrainController
 		boolean shouldBrake = false;
 		for(Block b : blockAheadList)
 		{
-			if(b.getBlockNumber().intValue() == authority)
+			if(b != null)
 			{
-				shouldBrake = true;
-			}
-			else if(b.getBeacon() != null && speed > 5) //station coming up!
-			{
-				if(!b.getBeacon().readMessage().contains("US"))
-				{
+				if (b.getBlockNumber().intValue() == authority) {
 					shouldBrake = true;
+				} else if (b.getBeacon() != null && speed > 5) //station coming up!
+				{
+					if (!b.getBeacon().readMessage().contains("US")) {
+						shouldBrake = true;
+					}
 				}
 			}
 		}
