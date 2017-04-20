@@ -48,7 +48,7 @@ public class TrainInfo {
     }
 
     private double getMPH(double mps) {
-        return (mps * 3.28084)/60;
+        return (mps * 2.23694);
     }
 
     public int getId(){ return id.get(); }

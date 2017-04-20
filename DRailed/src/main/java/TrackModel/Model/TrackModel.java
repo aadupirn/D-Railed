@@ -2,10 +2,7 @@ package TrackModel.Model;
 
 import TrainModel.Train;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import MBO.java.*;
 import javafx.stage.FileChooser;
@@ -53,11 +50,14 @@ public class TrackModel
 
     public void importTrack(String fileName){
 
-        FileChooser fileChooser = new FileChooser();
-        Stage fileSelect = new Stage();
-        fileSelect.setTitle(fileName);
-        File file = fileChooser.showOpenDialog(fileSelect);
-        try (BufferedReader br = new BufferedReader(new FileReader(file)))
+        //FileChooser fileChooser = new FileChooser();
+        //Stage fileSelect = new Stage();
+        //fileSelect.setTitle(fileName);
+        //File file = fileChooser.showOpenDialog(fileSelect);
+
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(classloader.getResourceAsStream("TrackModel/tracks/" + fileName))))
         {
 
             String reader = null;

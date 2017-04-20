@@ -102,14 +102,6 @@
                                                                     <HBox.margin>
                                                                         <Insets right="5.0" />
                                                                     </HBox.margin></TextField>
-                                                                <TextField id="safespeed_traininfo_test" prefWidth="75.0" promptText="Safe Speed">
-                                                                    <HBox.margin>
-                                                                        <Insets right="5.0" />
-                                                                    </HBox.margin></TextField>
-                                                                <TextField id="variance_traininfo_test" prefWidth="75.0" promptText="Variance">
-                                                                    <HBox.margin>
-                                                                        <Insets right="5.0" />
-                                                                    </HBox.margin></TextField>
                                                                 <TextField id="authority_traininfo_test" prefWidth="75.0" promptText="Authority">
                                                                     <HBox.margin>
                                                                         <Insets right="5.0" />
@@ -125,11 +117,6 @@
                                                                     <HBox.margin>
                                                                         <Insets right="5.0" />
                                                                     </HBox.margin>
-                                                                </Button>
-                                                                <Button id="murphy_btn" mnemonicParsing="false" text="MURPHY" textFill="RED">
-                                                                    <font>
-                                                                        <Font name="Comic Sans MS Bold" size="14.0" />
-                                                                    </font>
                                                                 </Button>
                                                             </children>
                                                             <HBox.margin>
@@ -204,18 +191,6 @@
                                     <children>
                                         <HBox alignment="CENTER" prefHeight="61.0" prefWidth="1198.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <children>
-                                                <TextField id="id_schedule_test" prefWidth="75.0" promptText="ID">
-                                                    <HBox.margin>
-                                                        <Insets right="5.0" />
-                                                    </HBox.margin></TextField>
-                                                <TextField id="location_schedule_test" prefWidth="75.0" promptText="Location">
-                                                    <HBox.margin>
-                                                        <Insets right="5.0" />
-                                                    </HBox.margin></TextField>
-                                                <Button id="schedule_test_btn" mnemonicParsing="false" text="Update">
-                                                    <HBox.margin>
-                                                        <Insets right="50.0" />
-                                                    </HBox.margin></Button>
                                     <VBox prefHeight="70.0" prefWidth="114.0">
                                        <children>
                                           <RadioButton id="red_sch_radio" mnemonicParsing="false" text="Red">
@@ -226,10 +201,6 @@
                                           <RadioButton id="green_sch_radio" mnemonicParsing="false" prefHeight="36.0" prefWidth="137.0" text="Green" toggleGroup="$ScheduleLine" />
                                        </children>
                                     </VBox>
-                                                <TextField id="worker_count_txt" prefWidth="75.0" promptText="# Workers">
-                                                    <HBox.margin>
-                                                        <Insets right="5.0" />
-                                                    </HBox.margin></TextField>
                                                 <TextField id="thruput_txt" prefWidth="75.0" promptText="Thru-put">
                                                     <HBox.margin>
                                                         <Insets right="5.0" />
