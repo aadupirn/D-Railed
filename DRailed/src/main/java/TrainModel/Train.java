@@ -46,7 +46,7 @@ public class Train {
         sbrake = false;
 
         currentSpeed = 0;
-        mass = 81400;
+        mass = 37103.856;
 
         block = 152;
         track = new Track();
@@ -72,7 +72,7 @@ public class Train {
         sbrake = false;
 
         currentSpeed = 0;
-        mass = 81400;
+        mass = 37103.856;
 
         block = 152;
         track = new Track();
@@ -88,7 +88,7 @@ public class Train {
         ebrake = false;
         sbrake = false;
         currentSpeed = 0;
-        mass = 81400;
+        mass = 37103.856;
         people = 0;
 
 
@@ -106,7 +106,7 @@ public class Train {
         ebrake = false;
         sbrake = false;
         currentSpeed = 0;
-        mass = 81400;
+        mass = 37103.856;
         people = 0;
 
         block = startingBlock;
@@ -126,8 +126,8 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         commandSpeed = 0.0;
-        mass = 81400;
-        people = 10;//new Random().nextInt(222);
+        mass = 37103.856;
+        people = 0;//new Random().nextInt(222);
 
         block = startingBlock;
         id = newID;
@@ -255,7 +255,7 @@ public class Train {
             This block has setters and getters for people and updates weight of system
     */
     public void weightUpdate(){
-        mass = (81400*(numberOfCarts) + (people * 165.347));
+        mass = (37103.856*(numberOfCarts) + (people * 66));
     }
     public void setPeople(int people){
         this.people = people;
