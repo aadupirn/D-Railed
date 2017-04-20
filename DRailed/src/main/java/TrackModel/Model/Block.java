@@ -286,6 +286,11 @@ public class Block {
 
     public void setTrackState(String trackState) {
         this.trackState = trackState;
+        if(trackState.equals("OPEN")){
+            this.setUnoccupied();
+        }else{
+            this.setOccupied();
+        }
     }
 
     public void toggleTrackState(){
