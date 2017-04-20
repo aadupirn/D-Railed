@@ -24,6 +24,7 @@ import MBO.java.MBOController;
 import ctc.CTCMain;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main extends Application {
 	//Class strings
@@ -130,17 +131,18 @@ public class Main extends Application {
 			}
 		});
 
-//        trackModelBtn.setOnAction((ActionEvent e) ->
-//        {
-//            try {
-//
-//            } catch (IOException e1) {
-//                e1.printStackTrace();
-//            }
-//            catch (Exception e2) {
-//            	//lol
-//			}
-//        });
+        trackModelBtn.setOnAction((ActionEvent e) ->
+        {
+            try {
+				Track track = new Track();
+				TrackModelGUI tgui = new TrackModelGUI(track);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            catch (Exception e2) {
+            	//lol
+			}
+        });
 
 		trainModelBtn.setOnAction((ActionEvent e) ->
 		{
@@ -180,15 +182,24 @@ public class Main extends Application {
 				dTime = new DTime();
 				Track track = new Track();
 				track.couple("GREEN", "TIGHT");
-				TrackController trackController = new TrackController(dTime);
-				dTime.addTrackC(trackController);
+				// Initialize Track Controllers
+				TrackController trackController1 = new TrackController(dTime, "GREEN");
+				TrackController trackController2 = new TrackController(dTime, "RED");
+				ArrayList<TrackController> controllers = new ArrayList<TrackController>();
+				controllers.add(trackController1);
+				controllers.add(trackController2);
+				for (TrackController tc : controllers)
+				{
+					dTime.addTrackC(tc);
+					tc.setTrack(track);
+					tc.setControllers(controllers);
+				}
+				trackController1.showUI();
+				// End Track Controller Init
 				dTime.setMBO(MBOCtrl.getMBO());
-				trackController.setTrack(track);
-				track.setTrackController(trackController);
 				TrackModelGUI trackModel = new TrackModelGUI(track);
-				trackController.showUI();
 				CTCMain ctc = new CTCMain();
-				ctc.setTrackConrtoller(trackController);
+				ctc.setTrackController(controllers);
 				ctc.start(new Stage());
 			} catch (Exception e1) {
 				e1.printStackTrace();

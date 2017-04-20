@@ -57,7 +57,7 @@ public class TrainInfo {
         return safeSpeed.doubleValue();
     }
 
-    public void setSafeSpeed(double speed) { this.safeSpeed.set(50); }
+    public void setSafeSpeed(double speed) { this.safeSpeed.set(speed); }
 
     public String getLocation(){
         return location.get();

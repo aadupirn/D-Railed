@@ -194,12 +194,13 @@ public class PLC
         private String replaceAllInputs(String in, int id, boolean isBlock)
         {
             String result;
-            if (isBlock)
+            if (isBlock && blocks[id] != null)
                 result = in.replaceAll("this.occupied", Boolean.toString(blocks[id].isOccupied()));
             else
-                result = in;
+                result = in.replaceAll("this.occupied", Boolean.toString(false));;
             for (int i = 152; i > 0; i--) {
-                result = result.replaceAll(blocks[i].getBlockNumber() + ".occupied", Boolean.toString(blocks[i].isOccupied()));
+                if (blocks[i] != null)
+                    result = result.replaceAll(blocks[i].getBlockNumber() + ".occupied", Boolean.toString(blocks[i].isOccupied()));
             }
             if (result.contains(".occupied")) //The other track controller has this block
             {

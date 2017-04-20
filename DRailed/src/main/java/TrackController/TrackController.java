@@ -27,19 +27,28 @@ public class TrackController {
     private TrackControllerUI ui;
     private DTime dTime;
     private ArrayList<Integer> blocks, plcBlocks;
+    private ArrayList<TrackController> controllers;
 
 
-    public TrackController(DTime iDTime) throws IOException
+    public TrackController(DTime iDTime, String line) throws IOException
     {
         ArrayList<Integer> b = new ArrayList<>();
         ArrayList<Integer> plc = new ArrayList<>();
-        for(int i = 1; i <= 152; i++)
+        if (line.equals("GREEN")) {
+            for (int i = 1; i <= 152; i++) {
+                b.add(i);
+                plc.add(i);
+            }
+        }
+        else
         {
-            b.add(i);
-            plc.add(i);
+            for (int i = 1; i <= 77; i++) {
+                b.add(i);
+                plc.add(i);
+            }
         }
 
-        Init("GREEN",b,plc,iDTime, 1);
+        Init(line,b,plc,iDTime, 1);
     }
 
 
@@ -57,6 +66,7 @@ public class TrackController {
         this.line = line;
         ID = id;
         blocks = b;
+        plcBlocks = plc;
         messageQueue = new LinkedList<>();
 
         if (line.equals("GREEN"))
@@ -85,7 +95,21 @@ public class TrackController {
     {
         ui.hideUI();
     }
+    public void switchUI(String line, int id)
+    {
+        for (TrackController tc : controllers)
+        {
+            if (tc.getLine().equals(line) && tc.getID() == id)
+            {
+                hideUI();
+                tc.showUI();
+            }
+        }
+    }
 
+    public void setControllers(ArrayList<TrackController> controllers) {
+        this.controllers = controllers;
+    }
 
     public boolean plcLoaded()
     {
@@ -95,7 +119,7 @@ public class TrackController {
     }
     public void setPLC(File file) {
         Block[] b = new Block[153];
-        for (int i:blocks)
+        for (int i:plcBlocks)
         {
             b[i] = track.getBlock(this.line,i);
         }
@@ -232,16 +256,17 @@ public class TrackController {
 
     private void sendSpeedAndAuthority(ThreeBaudMessage message)
     {
-        Block block;
-        double speed = (double)message.getSpeed();
-        for (int i:blocks)
-        {
-            block = track.getBlock(this.line,i);
-            if (speed > block.getSpeedLimit()) {
-                speed = block.getSpeedLimit();
-                message.setSpeed((char)speed);
+        if (ctcComms) {
+            Block block;
+            double speed = (double) message.getSpeed();
+            for (int i : blocks) {
+                block = track.getBlock(this.line, i);
+                if (speed > block.getSpeedLimit()) {
+                    speed = block.getSpeedLimit();
+                    message.setSpeed((char) speed);
+                }
+                block.setMessage(message);
             }
-            block.setMessage(message);
         }
     }
 
@@ -268,7 +293,6 @@ public class TrackController {
             b = track.getBlock(line,i);
             if (b != null) {
                 if (myPLC.getStopTrain(i) && b.isOccupied()) {
-                    b = track.getBlock(line, i);
                     b.setMessage(new ThreeBaudMessage((char) 255, (char) 0, (char) 0));
                 }
             }
@@ -305,23 +329,26 @@ public class TrackController {
     public boolean dispatchTrain(int start, int numberOfCarts, int newAuthority, Double newSpeed, int newID) throws Exception
     {
         boolean go = false;
-        if (isLineMain)
+        int startBlock = start;
+        if (isLineMain && ctcComms)
         {
             if (this.line.equals("GREEN"))
             {
                 if(!track.getBlock(this.line,152).isOccupied())
                 {
+                    startBlock = 152;
                     go = true;
                 }
             }
             else if(!track.getBlock(this.line,77).isOccupied())
             {
+                startBlock = 77;
                 go = true;
             }
 
             if (go) {
                 try {
-                    Train train = new Train(start, numberOfCarts, newAuthority, newSpeed, newID, this.track);
+                    Train train = new Train(startBlock, numberOfCarts, newAuthority, newSpeed, newID, this.track, this.line);
                     track.dispatchTrainOnTrack(this.line, train);
                     dTime.addTC(train.GetTrainController());
                     return true;

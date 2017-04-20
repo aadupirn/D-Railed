@@ -515,12 +515,6 @@ public class TrackModel
         return light;
     }
 
-    private void getTestTrains() throws IOException
-    {
-        //testTrainList.add(new Train(0));
-        //testTrainList.add(new Train(1));
-    }
-
     public void tightCoupling(String lineName) {
 
         Line line = getLine(lineName);
@@ -559,6 +553,56 @@ public class TrackModel
                 }
             }
         }
+    }
+
+    public List<Block> lookAhead(Block currentBlock, boolean dir, int numBlocks){
+
+        List<Block> blocksAhead = new ArrayList<Block>();
+
+        for(int i = 0; i < numBlocks; i++) {
+            boolean newDir = currentBlock.canMoveToBlock(dir);
+
+            if (newDir == dir) {
+                // UP
+                if (newDir == true) {
+                    if (currentBlock.getNextUpBlockNumber() == -1) {
+                        blocksAhead.add(currentBlock.getNextSwitchBlock());
+                    } else {
+                        blocksAhead.add(currentBlock.getNextUpBlock());
+                    }
+                    //DOWN
+                } else {
+                    if (currentBlock.getNextDownBlockNumber() == -1) {
+                        blocksAhead.add(currentBlock.getNextSwitchBlock());
+                    } else {
+                        blocksAhead.add(currentBlock.getNextDownBlock());
+                    }
+                }
+            } else {
+                // UP
+                if (newDir == true) {
+                    if (currentBlock.getNextUpBlockNumber() == -1) {
+                        blocksAhead.add(currentBlock.getNextSwitchBlock());
+                    } else {
+                        blocksAhead.add(currentBlock.getNextUpBlock());
+                    }
+                    //DOWN
+                } else {
+                    if (currentBlock.getNextDownBlockNumber() == -1) {
+                        blocksAhead.add(currentBlock.getNextSwitchBlock());
+                    } else {
+                        blocksAhead.add(currentBlock.getNextDownBlock());
+                    }
+                }
+            }
+
+            currentBlock = blocksAhead.get(i);
+            System.out.println(currentBlock);
+
+        }
+
+        return blocksAhead;
+
     }
 
     public void looseCoupling(String inLine){
