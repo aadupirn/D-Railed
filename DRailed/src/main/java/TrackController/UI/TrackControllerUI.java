@@ -471,7 +471,10 @@ public class TrackControllerUI {
         if(source == murphyBreakTMComms)
         {
             tc.toggleTrackComms();
-            //TODO something, maybe display in same pane?
+        }
+        else if (source == murphyBreakCTCComms)
+        {
+            tc.toggleCTCComms();
         }
     }
 
