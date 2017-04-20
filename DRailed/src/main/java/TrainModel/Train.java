@@ -197,8 +197,8 @@ public class Train {
     public void updateUI(){
         //TrainModel == UI
         //System.out.println("updateUI");
-        trainUI.updateDimensions(height, width, length);
-        trainUI.updateCrew(crew);
+       // trainUI.updateDimensions(height, width, length);
+       // trainUI.updateCrew(crew);
         trainUI.updateSpeed(currentSpeed);
         trainUI.updateId(id);
         trainUI.updatePower(commandSpeed);
