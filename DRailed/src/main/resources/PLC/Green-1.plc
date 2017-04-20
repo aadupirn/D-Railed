@@ -106,10 +106,4 @@ this.switch = true
 3.switch = 57.occupied
 1.switch = 13.occupied || !1.occupied
 2.switch = 12.occupied || !150.occupied
-<<<<<<< HEAD:DRailed/src/main/resources/PLC/GreenLine.plc
 0.switch = !(58.occupied || 59.occupied || 60.occupied || 61.occupied || 62.occupied || 63.occupied || 64.occupied || 65.occupied || 66.occupied)
-4.switch = 77.occupied || !76.occupied
-5.switch = !85.occupied || 100.occupied
-=======
-0.switch = !(58.occupied || 59.occupied || 60.occupied || 61.occupied || 62.occupied || 63.occupied || 64.occupied || 65.occupied || 66.occupied)
->>>>>>> master:DRailed/src/main/resources/PLC/Green-1.plc

@@ -193,7 +193,7 @@ public class Train {
         //TrainModel == UI
         //System.out.println("updateUI");
         trainUI.updateDimensions(height, width, length*numberOfCarts);
-        trainUI.updateCrew(2);
+        trainUI.updatePassengers(people);
         trainUI.updateSpeed(currentSpeed);
         trainUI.updateId(id);
         trainUI.updatePower(commandSpeed);
@@ -272,7 +272,7 @@ public class Train {
             This block has setters and getters for people and updates weight of system
     */
     public void weightUpdate(){
-        mass = (10000*(numberOfCarts) + (people * 66));
+        mass = (80000*(numberOfCarts) + (people * 166));
     }
     public void setPeople(int people){
         this.people = people;

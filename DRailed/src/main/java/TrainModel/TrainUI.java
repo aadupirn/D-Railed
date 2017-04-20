@@ -40,7 +40,7 @@ public class TrainUI {
     private double speed;
     private final double maxSpeed = 70.0;
     private double power;
-    private double mass = 10000.0;
+    private double mass = 80000;
     private double grade = 0;
     private int authority;
 
@@ -264,7 +264,7 @@ public class TrainUI {
         grid.add(massLabel, 4, 5);
 
         massText = new Text();
-        massText.setText(" 0 lbs");
+        massText.setText(" 80000 lbs");
         massText.setWrappingWidth(colWidth * 1.5);
         massText.setTextAlignment(TextAlignment.RIGHT);
         grid.add(massText, 5, 5);
@@ -307,7 +307,7 @@ public class TrainUI {
         grid.add(blockText, 1, 7);
 
 ////////////////////////////////////
-        Label crewLabel = new Label("Crew : ");
+        Label crewLabel = new Label("Passengers : ");
         crewLabel.setMinWidth(colWidth * 1.5);
         crewLabel.setTextAlignment(TextAlignment.LEFT);
         crewLabel.setAlignment(Pos.CENTER_LEFT);
@@ -513,6 +513,7 @@ public class TrainUI {
 
     protected void updateMass(double newMass){
         mass = newMass;
+        //mass += (160*crew);
         massText.setText(String.format( "%4.3f", mass ) + " lbs" );
 
     }
@@ -535,8 +536,8 @@ public class TrainUI {
         blockText.setText(String.format( "%d", block )  );
     }
 
-    protected void updateCrew(int crew){
-        this.crew = crew;
+    protected void updatePassengers(int people){
+        this.crew = people;
         crewText.setText(String.format( "%d", crew )  );
 
     }
