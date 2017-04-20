@@ -48,7 +48,9 @@ public class TrainController
 	private int colWidth = 75;
 	private int trainID;
 	private int currentBlockID;
-
+	private int goBlock;
+	private int stationCounter;
+	private int recentStop;
 
 	private double speed;
 	private double speedLimit;
@@ -70,6 +72,7 @@ public class TrainController
 	private boolean locationStatus;
 	private boolean announcementMade;
 	private boolean controlMode;
+	private boolean atStation;
 
 	private Text speedText;
 	private Text powerText;
@@ -105,6 +108,7 @@ public class TrainController
 		rDoorStatus = false;
 		lightStatus = false;
 		controlMode = false;
+		goBlock = -1;
 		kp = 100;
 		ki = 100;
 		speed = train.GetCurrentSpeed();
@@ -115,6 +119,9 @@ public class TrainController
 		desiredSpeed = 0;
 		temperature = train.getTemperature();
 		announcementMade = false;
+		atStation = true;
+		stationCounter = 0;
+		recentStop = -1;
 
 		track = iTrack;
 
@@ -665,26 +672,32 @@ public class TrainController
 
 	public void sBrake()
 	{
-		train.SetSbrake(true);
-		sBrakeStatus = true;
-		desiredSpeed = 0;
-		setDesiredSpeedText(desiredSpeed);
-		controlCalculator1.setDesiredSpeed(desiredSpeed);
-		controlCalculator2.setDesiredSpeed(desiredSpeed);
-		makeAnnouncement("sBrake");
+		if(!sBrakeStatus)
+		{
+			train.SetSbrake(true);
+			sBrakeStatus = true;
+			desiredSpeed = 0;
+			setDesiredSpeedText(desiredSpeed);
+			controlCalculator1.setDesiredSpeed(desiredSpeed);
+			controlCalculator2.setDesiredSpeed(desiredSpeed);
+			makeAnnouncement("Service Brake Activated");
+		}
 	}
 
 	public void emergencyBrake()
 	{
-		train.SetPowerCommand(new Double(0));
-		setPowerText(0);
-		train.setEbrake(true);
-		desiredSpeed = 0;
-		eBrakeStatus = true;
-		setDesiredSpeedText(desiredSpeed);
-		controlCalculator2.setDesiredSpeed(0);
-		controlCalculator1.setDesiredSpeed(0);
-		makeAnnouncement("emergencyBrake");
+		if(!eBrakeStatus)
+		{
+			train.SetPowerCommand(new Double(0));
+			setPowerText(0);
+			train.setEbrake(true);
+			desiredSpeed = 0;
+			eBrakeStatus = true;
+			setDesiredSpeedText(desiredSpeed);
+			controlCalculator2.setDesiredSpeed(0);
+			controlCalculator1.setDesiredSpeed(0);
+			makeAnnouncement("Emergency Brake Activated");
+		}
 	}
 	public double MpS2MpH(double mps)
 	{
@@ -809,58 +822,75 @@ public class TrainController
 		{
 			sBrake();
 		}
-		List<Block> blockAheadList = track.lookAhead(currentBlock, locationCalculator.getDir(), 1);
-		authority = 151; //debug
-		boolean shouldBrake = false;
-		for(Block b : blockAheadList)
+
+		if(atStation)
 		{
-			if(b != null)
+			stationCounter++;
+			if(stationCounter == 20)
 			{
-				if (b.getBlockNumber().intValue() == authority) {
-					shouldBrake = true;
-				} else if (b.getBeacon() != null && speed > 5) //station coming up!
+				stationCounter = 0;
+				atStation = false;
+				releaseBrakes();
+			}
+		}
+		else
+		{
+			List<Block> blockAheadList = track.lookAhead(currentBlock, locationCalculator.getDir(), 4);
+			authority = 151; //debug
+			boolean shouldBrake = false;
+			for(Block b : blockAheadList)
+			{
+				if(b != null)
 				{
-					if (!b.getBeacon().readMessage().contains("US")) {
+					if (b.getBlockNumber().intValue() == authority)
+					{
 						shouldBrake = true;
+					} else if (b.getBeacon() != null) //station coming up!
+					{
+						if (!b.getBeacon().readMessage().contains("US")) {
+							shouldBrake = true;
+						}
 					}
 				}
 			}
-		}
-
-		int goBlock = -10;
-		if(shouldBrake)
-		{
-			if(speed == 0)
+			if(shouldBrake)
 			{
-				if(currentBlock.getBlockNumber().intValue() == authority)
+				if(speed == 0)
 				{
-					//we have reached authority
-					makeAnnouncement("WE HAVE REACHED THE END OF AUTHORITY");
-				}
-				else if(currentBlock.getBeacon() != null)
-				{
-					if(currentBlock.getBeacon().readMessage().contains("US"))
+					if(currentBlock.getBlockNumber().intValue() == authority)
 					{
-						makeAnnouncement("We have arrived at a station.");
+						//we have reached authority
+						makeAnnouncement("WE HAVE REACHED THE END OF AUTHORITY");
+					}
+					else if(currentBlock.getBeacon() != null)
+					{
+						if(!currentBlock.getBeacon().readMessage().contains("US") && !atStation)
+						{
+							makeAnnouncement("We have arrived at a station.");
+							atStation = true;
+						}
+					}
+					else
+					{
+						goBlock = currentBlock.getBlockNumber().intValue();
+						releaseBrakes();
+						controlCalculator1.setDesiredSpeed(speedLimit);
+						controlCalculator2.setDesiredSpeed(speedLimit);
+						setDesiredSpeedText(speedLimit);
 					}
 				}
 				else
 				{
-					goBlock = currentBlock.getBlockNumber().intValue();
-					releaseBrakes();
-					controlCalculator1.setDesiredSpeed(speedLimit);
-					controlCalculator2.setDesiredSpeed(speedLimit);
-					setDesiredSpeedText(speedLimit);
+					if(currentBlock.getBlockNumber().intValue() != goBlock)
+					{
+						goBlock = -1;
+						sBrake();
+					}
 				}
 			}
-			else
-			{
-				if(currentBlock.getBlockNumber().intValue() != goBlock)
-				{
-					sBrake();
-				}
-			}
+
 		}
+
 
 		double powerCommand1 = controlCalculator1.computeNextCommand(speed);
 		double powerCommand2 = controlCalculator2.computeNextCommand(speed);
