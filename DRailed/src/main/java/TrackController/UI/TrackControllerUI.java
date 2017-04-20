@@ -295,7 +295,7 @@ public class TrackControllerUI {
         murphyBreakCTCComms.setOnAction(e -> MurphyButtonClicked(e));
         murphyBreakTMComms.setOnAction(e -> MurphyButtonClicked(e));
         TextField breakBlockID = new TextField("Put Block ID to break");
-        Label breakCommsLabel = new Label("Break Comms with: ");
+        Label breakCommsLabel = new Label("Toggle Comms with: ");
         GridPane breakComms = new GridPane();
         murphy.setVgap(20);
         breakComms.setHgap(10);

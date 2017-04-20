@@ -484,7 +484,7 @@ public class Block {
                 //System.out.println(cndiff);
                 //System.out.println(csdiff);
 
-                if(cndiff > csdiff){
+                if(cndiff < csdiff){
                     nextBlock = nextUpBlock;
                 }else {
                     nextBlock = nextSwitchBlock;
@@ -504,7 +504,7 @@ public class Block {
                 //System.out.println(cndiff);
                 //System.out.println(csdiff);
 
-                if(cndiff < csdiff) {
+                if(cndiff > csdiff) {
                     nextBlock = nextDownBlock;
                 }else{
                     nextBlock = nextSwitchBlock;
