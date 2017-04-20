@@ -127,7 +127,7 @@ public class Train {
         sbrake = false;
         currentSpeed = 0;
         commandSpeed = 0.0;
-        mass = 37103.856;
+        mass = 10000;
         people = 0;//new Random().nextInt(222);
         this.line = line;
 
@@ -264,7 +264,7 @@ public class Train {
             This block has setters and getters for people and updates weight of system
     */
     public void weightUpdate(){
-        mass = (37103.856*(numberOfCarts) + (people * 66));
+        mass = (10000*(numberOfCarts) + (people * 66));
     }
     public void setPeople(int people){
         this.people = people;
