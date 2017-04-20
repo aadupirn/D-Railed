@@ -304,14 +304,14 @@ public class TrainUI {
         autoOrManualButton.setOnAction(value ->  {
             if(autoOrManualButton.getText().equals("Manual")) {//label.getText().equals("Not clicked"))
                 autoOrManualButton.setText("Automatic");
-                System.out.println("Automatic");
+                //System.out.println("Automatic");
                 AutoVsManual = true;
 
             }
             //label.setText("Clicked!");
             else {
                 autoOrManualButton.setText("Manual");
-                System.out.println("Manual");
+                //System.out.println("Manual");
                 AutoVsManual = false;
             }
             //label.setText("Not clicked!");
@@ -328,14 +328,14 @@ public class TrainUI {
         sButton.setOnAction(value ->  {
             if(sButton.getText().equals("SBrake off")) {//label.getText().equals("Not clicked"))
                 sButton.setText("Sbrake on");
-                System.out.println("SBrake onn");
+                //System.out.println("SBrake onn");
                 sBrake = true;
 
             }
             //label.setText("Clicked!");
             else {
                 sButton.setText("SBrake off");
-                System.out.println("SBrake off");
+                //System.out.println("SBrake off");
                 sBrake = false;
             }
             //label.setText("Not clicked!");
@@ -352,14 +352,14 @@ public class TrainUI {
         eButton.setOnAction(value ->  {
             if(eButton.getText().equals("eBrake off")) {//label.getText().equals("Not clicked"))
                 eButton.setText("ebrake on");
-                System.out.println("eBrake onn");
+                //System.out.println("eBrake onn");
                 eBrake = true;
 
             }
             //label.setText("Clicked!");
             else {
                 eButton.setText("eBrake off");
-                System.out.println("eBrake off");
+                //System.out.println("eBrake off");
                 eBrake = false;
             }
             //label.setText("Not clicked!");

@@ -52,9 +52,9 @@ public class engine {
 
 
             double totalAcceleration = (newAcceleration + gravityAcceleration - frictionAcceleration);
-            System.out.println(totalAcceleration + " " + newAcceleration + " " + gravityAcceleration + " " + frictionAcceleration);
+            //System.out.println(totalAcceleration + " " + newAcceleration + " " + gravityAcceleration + " " + frictionAcceleration);
             currentSpeed += (timeStep * totalAcceleration);// * Math.cos(theta));
-            System.out.println("total Accel " + totalAcceleration + " " + "Speed " + currentSpeed);
+            //System.out.println("total Accel " + totalAcceleration + " " + "Speed " + currentSpeed);
 
             if (currentSpeed < 0)
                 currentSpeed = 0;
