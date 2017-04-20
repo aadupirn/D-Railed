@@ -37,7 +37,7 @@ public class engine {
                 accelerationTotal = .1;
             else {
                 accelerationTotal = power /(mass * speed);
-                
+
                 /*double angle = (Math.atan(grade / 100));
                 double theta = Math.sin(angle);
                 System.out.println("Angle   " + angle + " "  + theta);
