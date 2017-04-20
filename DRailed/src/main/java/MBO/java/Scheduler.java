@@ -3,9 +3,7 @@ package MBO.java;
 import ctc.Timer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.apache.poi.ss.formula.PlainCellCache;
 
-import java.sql.Time;
 import java.time.LocalTime;
 import java.util.HashMap;
 
@@ -21,8 +19,8 @@ public class Scheduler {
     private ObservableList<RedTrainSchedule> redTrainSchedules = FXCollections.observableArrayList();
     private Timer clock;
 
-    public Scheduler(Timer clock) {
-        this.clock = clock;
+    public Scheduler() {
+//        this.clock = clock;
     }
 
     public void generateSchedule(String line, int thruput, LocalTime start, LocalTime end) {
@@ -38,8 +36,8 @@ public class Scheduler {
     public void updateSchedule(String line, int id, String location, LocalTime now) {
         if(line.toUpperCase().equals(redLine))
             for(RedTrainSchedule r : redTrainSchedules)
-                if(r.getId() == id)
-                    r.updateSchedule(location, LocalTime.of(clock.getHour()));
+                if(r.getId() == id) return;
+//                    r.updateSchedule(location, LocalTime.of(clock.getHour()));
     }
 
 
@@ -60,6 +58,8 @@ public class Scheduler {
 
 
     private void loadHashMap() {
+        redBlockToId = new HashMap<>();
+        greenBlockToId = new HashMap<>();
         Integer[] redBlockNums = {16, 21, 25, 35, 45, 48, 60};
         Integer[] greenBlockNums = {65, 73, 77, 88, 96, 105, 11, 123, 132, 141, 2, 9, 16, 22, 31, 39, 48, 57};
         for(int i = 0; i < redBlockNums.length ; i++)

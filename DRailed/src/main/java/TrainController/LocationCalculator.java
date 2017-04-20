@@ -33,7 +33,6 @@ public class LocationCalculator
 		line = iLine;
 		block = track.getFromYardBlock(line);
 		trainID = iTrainID;
-		mbo = new MBO();
 	}
 
 	//endregion
@@ -72,8 +71,6 @@ public class LocationCalculator
 				System.out.println("REDIRECT: " + dir);
 				redirect = 1;
 			}
-
-
 		}
 
 		mbo.setLocation(trainID, line, "Block: " + block);

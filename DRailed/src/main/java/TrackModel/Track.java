@@ -1,6 +1,5 @@
 package TrackModel;
 
-import TrackController.TrackController;
 import TrackModel.Model.*;
 import TrainModel.Train;
 
@@ -12,7 +11,6 @@ import java.util.List;
  */
 public class Track {
 
-    TrackController tc = null;
     TrackModel tm = null;
 
     public Track(){
@@ -27,22 +25,10 @@ public class Track {
         tm = new TrackModel(trackLayout);
     }
 
-    public void setTrackController(TrackController tc){
-        this.tc = tc;
-    }
-
-    public TrackController getTrackController(){
-        return tc;
-    }
-
     // @CTC: Places the train on the appropriate block coming from the Yard
     public int dispatchTrainOnTrack(String line, TrainModel.Train train) {
 
         Block block = getBlock(line, tm.dipatchTrain(line, train));
-
-        if(block.getSwitch() != null){
-            setSwitchState(block.getLine(), block.getSwitch().getSwitchNumber(), getTrackController().getPLCSwitch(block.getSwitch().getSwitchNumber()));
-        }
 
         return block.getBlockNumber();
 

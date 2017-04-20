@@ -117,7 +117,7 @@ public class Train {
         trainController = new TrainController(this, this.track);
         trainUI = new TrainUI();
     }
-    public Train(int startingBlock, int numberOfCarts, int newAuthority, Double newSpeed, int newID, Track track) throws IOException, Exception {
+    public Train(int startingBlock, int numberOfCarts, int newAuthority, Double newSpeed, int newID, Track track, String line) throws IOException, Exception {
        //this is the constructor used
         System.out.println("Train Created! From Train.java");
         Engine = new engine();

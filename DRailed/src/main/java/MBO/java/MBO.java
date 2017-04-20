@@ -71,7 +71,7 @@ public class MBO {
         return findTrain(id, line);
     }
 
-    public double calculateBreakingDistance(int id, )
+    // public double calculateBreakingDistance()
 
     // (Get/Set)-ers
 
