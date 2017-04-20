@@ -50,6 +50,7 @@ public class TrainController
 	private int currentBlockID;
 	private int goBlock;
 	private int stationCounter;
+	private int recentStop;
 
 	private double speed;
 	private double speedLimit;
@@ -120,6 +121,7 @@ public class TrainController
 		announcementMade = false;
 		atStation = true;
 		stationCounter = 0;
+		recentStop = -1;
 
 		track = iTrack;
 
