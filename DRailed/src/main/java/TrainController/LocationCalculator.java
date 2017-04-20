@@ -33,7 +33,7 @@ public class LocationCalculator
 		line = iLine;
 		block = track.getFromYardBlock(line);
 		trainID = iTrainID;
-		mbo = new MBO(1);
+		mbo = new MBO();
 	}
 
 	//endregion

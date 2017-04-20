@@ -71,6 +71,10 @@ public class MBO {
         return findTrain(id, line);
     }
 
+    public double calculateBreakingDistance(int id, )
+
+    // (Get/Set)-ers
+
     public void setLocation(int id, String line, String location){
         getTrain(id, line).setLocation(location);
     }
