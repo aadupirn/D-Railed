@@ -120,7 +120,7 @@ public class Train {
     }
     public Train(int startingBlock, int numberOfCarts, int newAuthority, Double newSpeed, int newID, Track track, String line) throws IOException, Exception {
        //this is the constructor used
-        System.out.println("Train Created! From Train.java");
+       // System.out.println("Train Created! From Train.java");
         Engine = new engine();
         ac = new AC();
         ebrake = false;
@@ -152,17 +152,17 @@ public class Train {
         if(trainUI.getAutoVsManual())
             updateUI();
         else{
-            System.out.println(" --------------------------------------------------------------- ");
+            //System.out.println(" --------------------------------------------------------------- ");
             get();
         }
 
     }
     public void get(){
-        System.out.println("get ------------------------------------------------------------------- ");
+        //System.out.println("get ------------------------------------------------------------------- ");
         sbrake = trainUI.getSBrake();
         engine.setSbrake(sbrake);
         if(sbrake)
-            System.out.println("Service Brake ------------------------------------------------------------------- ");
+            //System.out.println("Service Brake ------------------------------------------------------------------- ");
         ebrake = trainUI.getEBrake();
         engine.setEbrake(ebrake);
         mass = trainUI.getMass();
@@ -264,7 +264,7 @@ public class Train {
             This block has setters and getters for people and updates weight of system
     */
     public void weightUpdate(){
-        mass = (37103.856*(numberOfCarts) + (people * 66));
+        mass = (10000*(numberOfCarts) + (people * 66));
     }
     public void setPeople(int people){
         this.people = people;
@@ -342,7 +342,7 @@ public class Train {
     */
     public boolean SetLeftDoors(boolean bool){
         leftDoors = bool;
-        System.out.println(leftDoors + " " + bool + " " + "leftDoors ----------------------------------------------------------------------- ");
+        //System.out.println(leftDoors + " " + bool + " " + "leftDoors ----------------------------------------------------------------------- ");
         return true;
     }
     public boolean GetLeftDoorsStatus(){
@@ -350,7 +350,7 @@ public class Train {
     }
     public boolean SetRightDoors(boolean bool){
         rightDoors = bool;
-        System.out.println(rightDoors + " " + bool + " " + "rightDoors ----------------------------------------------------------------------- ");
+        //System.out.println(rightDoors + " " + bool + " " + "rightDoors ----------------------------------------------------------------------- ");
         return true;
     }
     public boolean GetRightDoorsStatus(){

@@ -70,12 +70,12 @@ public class TrainModel {
         autoOrManualButton.setOnAction(value ->  {
             if(autoOrManualButton.getText().equals("Manual")) {//label.getText().equals("Not clicked"))
                 autoOrManualButton.setText("Automatic");
-                System.out.println("Automatic");
+                //System.out.println("Automatic");
             }
                 //label.setText("Clicked!");
             else {
                 autoOrManualButton.setText("Manual");
-                System.out.println("Manual");
+               // System.out.println("Manual");
             }
             //label.setText("Not clicked!");
         });

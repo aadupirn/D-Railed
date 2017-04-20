@@ -41,7 +41,7 @@ public class DTime
 
 	public DTime()
 	{
-		multiplier = 10;
+		multiplier = 1;
 		int intervalMS = 1000/multiplier;
 		trainControllers = new ArrayList<TrainController>();
 		trackControllers = new ArrayList<TrackController>();
@@ -72,6 +72,15 @@ public class DTime
 		{
 			tc.setMBO(mbo);
 		}
+	}
+
+	public void setMultiplier(int multiplier)
+	{
+		this.multiplier = multiplier;
+		int intervalMS = 1000/multiplier;
+		timer.cancel();
+		timer = new Timer();
+		timer.schedule(new DRailedTask(), intervalMS, intervalMS);
 	}
 
 	public Timer getTimer() { return timer; }

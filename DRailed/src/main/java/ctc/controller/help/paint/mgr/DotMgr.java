@@ -25,7 +25,6 @@ public class DotMgr {
 	}
 	
 	private static Dot getDotByStr(String str){
-		System.out.println("parse Dot" + str);
 		String [] ss = str.split(",");
 		String [] ss_0 = ss[0].split("\\(");
 		String [] ss_1 = ss[1].split("\\)");

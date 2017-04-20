@@ -57,9 +57,9 @@ public class MBO {
             TrainInfo tf = findTrain(id, line);
 
             tf.setSpeed(speed);
-            tf.setSafeSpeed(safeSpeed);
+            tf.setStoppingDistance();
             tf.setAuthorithy(authority);
-            tf.setLocation(location);
+            tf.setLocation(location, active);
         } else if(line.toUpperCase().equals(redLine))
             redTrainInfos.add(new TrainInfo(id, line, speed, safeSpeed, location, authority, variance));
         else if(line.toUpperCase().equals(greenLine))
@@ -71,8 +71,20 @@ public class MBO {
         return findTrain(id, line);
     }
 
+     public double calculateBreakingDistance(int id, String line) {
+
+
+         return 0;
+     }
+
+     private int getMeters(String location) {
+        String[] data = location.split(":");
+        return Integer.parseInt(data[2]);
+     }
+
+    // (Get/Set)-ers
     public void setLocation(int id, String line, String location){
-        getTrain(id, line).setLocation(location);
+        getTrain(id, line).setLocation(location, active);
     }
 
     public void setSpeed(int id, String line, double speed){
@@ -81,15 +93,11 @@ public class MBO {
 
 
     public void setSafeSpeed(int id, String line, double safeSpeed){
-        getTrain(id, line).setSafeSpeed(safeSpeed);
+        getTrain(id, line).setStoppingDistance();
     }
 
     public void setAuthority(int id, String line, int authority){
         getTrain(id, line).setAuthorithy(authority);
-    }
-
-    public void setVariance(int id, String line, double variance) {
-        getTrain(id, line).setVariance(variance);
     }
 
     public int getAuthority(int id, String line){
@@ -98,7 +106,7 @@ public class MBO {
 
 
     public double getSafeSpeed(int id, String line){
-        return getTrain(id, line).getSafeSpeed();
+        return getTrain(id, line).getStoppingDistance();
     }
 
     public boolean isMBOActive(){

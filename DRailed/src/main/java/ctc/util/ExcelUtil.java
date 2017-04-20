@@ -41,7 +41,6 @@ public class ExcelUtil {
 			else
 				wb = new HSSFWorkbook(input);
 			if (wb != null && wb.getNumberOfSheets() > 0) {
-				System.out.println(wb.getNumberOfSheets());
 				for (int numSheet = 0; numSheet < wb.getNumberOfSheets(); numSheet++) {
 					Sheet sheet = wb.getSheetAt(numSheet);
 					if (sheet == null) {
@@ -157,7 +156,6 @@ public class ExcelUtil {
 				if("red".equals(line)){
 					numSheet = 1;
 				}
-				System.out.println(wb.getNumberOfSheets());
 				//for (int numSheet = 0; numSheet < wb.getNumberOfSheets(); numSheet++) {
 				Sheet sheet = wb.getSheetAt(numSheet);
 				if (sheet == null) {
@@ -250,9 +248,6 @@ public class ExcelUtil {
 
 	public static void main(String[] args) throws Exception {
 		List<Trace> list = ExcelUtil.readTrace("Track_Layout_Vehicle_Data_vF1.xlsx", "green");
-		for (Trace s : list) {
-			System.out.println(s.toString());
-		}
 	}
 
 }

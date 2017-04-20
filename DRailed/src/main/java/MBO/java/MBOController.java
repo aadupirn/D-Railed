@@ -34,22 +34,16 @@ public class MBOController extends Application {
     private RadioButton greenRadio;
     private TextField idTestInput;
     private TextField speedTestInput;
-    private TextField safeSpeedTestInput;
-    private TextField varianceTestInput;
     private TextField authorityTestInput;
     private TextField locationTestInput;
     private Button trainInfoTestBtn;
-    private Button murphyBtn;
 
     // Schedule Information Tab
     private TableView<RedTrainSchedule> redStationsTable;
     private TableView<GreenTrainSchedule> greenStationsTable;
-    private TextField idScheduleTestInput;
-    private TextField locattionScheduleTestInput;
     private Button scheduleTestBtn;
     private RadioButton redScheduleRadio;
     private RadioButton greenScheduleRadio;
-    private TextField workersInput;
     private TextField thruputInput;
     private TextField startInput;
     private TextField endInput;
@@ -73,22 +67,16 @@ public class MBOController extends Application {
         greenRadio = (RadioButton) primary.getScene().lookup("#green_radio");
         idTestInput = (TextField) primary.getScene().lookup("#id_traininfo_test");
         speedTestInput = (TextField) primary.getScene().lookup("#speed_traininfo_test");
-        safeSpeedTestInput = (TextField) primary.getScene().lookup("#safespeed_traininfo_test");
-        varianceTestInput = (TextField) primary.getScene().lookup("#variance_traininfo_test");
         authorityTestInput = (TextField) primary.getScene().lookup("#authority_traininfo_test");
         locationTestInput = (TextField) primary.getScene().lookup("#location_traininfo_test");
         trainInfoTestBtn = (Button) primary.getScene().lookup("#submit_traininfo_btn");
-        murphyBtn = (Button) primary.getScene().lookup("#murphy_btn");
 
         // Schedule Information Tab
         redStationsTable = (TableView<RedTrainSchedule>)  primary.getScene().lookup("#red_stations_tableview");
         greenStationsTable = (TableView<GreenTrainSchedule>)  primary.getScene().lookup("#green_stations_tableview");
-        idScheduleTestInput = (TextField) primary.getScene().lookup("#id_schedule_test");
-        locattionScheduleTestInput = (TextField) primary.getScene().lookup("#location_schedule_test");
         scheduleTestBtn = (Button) primary.getScene().lookup("#schedule_test_btn");
         redScheduleRadio = (RadioButton) primary.getScene().lookup("#red_sch_radio");
         greenScheduleRadio = (RadioButton) primary.getScene().lookup("#green_sch_radio");
-        workersInput = (TextField) primary.getScene().lookup("#worker_count_txt");
         thruputInput = (TextField) primary.getScene().lookup("#thruput_txt");
         startInput = (TextField) primary.getScene().lookup("#starttime_txt");
         endInput = (TextField) primary.getScene().lookup("#endtime_txt");
@@ -275,27 +263,18 @@ public class MBOController extends Application {
             String line = ((RadioButton)redRadio.getToggleGroup().getSelectedToggle()).getText();
             int id = Integer.parseInt(idTestInput.getText());
             double speed = Double.parseDouble(speedTestInput.getText());
-            double safeSpeed = Double.parseDouble(safeSpeedTestInput.getText());
-            double variance = Double.parseDouble(varianceTestInput.getText());
             int authority = Integer.parseInt(authorityTestInput.getText());
             String location = locationTestInput.getText();
 
-            mbo.addTrain(id, line, speed, safeSpeed, variance, authority, location);
+            mbo.addTrain(id, line, speed, 0, 0, authority, location);
 
             ((RadioButton)redRadio.getToggleGroup().getSelectedToggle()).setSelected(false);
             idTestInput.clear();
             speedTestInput.clear();
-            safeSpeedTestInput.clear();
-            varianceTestInput.clear();
             authorityTestInput.clear();
             locationTestInput.clear();
         });
 
-        murphyBtn.setOnAction((ActionEvent a) -> { mbo.toggleMurphy(); });
-
-        scheduleTestBtn.setOnAction((ActionEvent a) -> {
-            if(idScheduleTestInput.getText() == null) return; //@TODO ERROR LOG
-        });
 
         generateScheduleBtn.setOnAction((ActionEvent a) -> {
             if(thruputInput.getText() == null || startInput.getText() == null || endInput.getText() == null) return; // @TODO ERROR LOG

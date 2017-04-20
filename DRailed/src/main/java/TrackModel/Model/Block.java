@@ -289,6 +289,11 @@ public class Block {
 
     public void setTrackState(String trackState) {
         this.trackState = trackState;
+        if(trackState.equals("OPEN")){
+            this.setUnoccupied();
+        }else{
+            this.setOccupied();
+        }
     }
 
     public void toggleTrackState(){
@@ -636,7 +641,7 @@ public class Block {
 
     public Block getNextUpBlock() {
         if(nextUpBlockNumber == -1) {
-            System.out.println("This block is UNI directional and a train can only travel DOWN");
+            //System.out.println("This block is UNI directional and a train can only travel DOWN");
         }
         return nextUpBlock;
     }
@@ -647,7 +652,7 @@ public class Block {
 
     public Block getNextDownBlock() {
         if(nextUpBlockNumber == -1) {
-            System.out.println("This block is UNI directional and a train can only travel UP");
+            //System.out.println("This block is UNI directional and a train can only travel UP");
         }
         return nextDownBlock;
     }

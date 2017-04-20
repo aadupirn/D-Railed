@@ -124,7 +124,21 @@ public class TrackController {
             b[i] = track.getBlock(this.line,i);
         }
         this.myPLC = new PLC(file, b);
-        System.out.println("\n\nPLC Valid: " + myPLC.isValid());
+    }
+
+    public void toggleBlock(int id)
+    {
+        Block b;
+        String s;
+        if (blocks.contains(id))
+        {
+            b = track.getBlock(this.line,id);
+            s = b.getTrackState();
+            if (s.equals("OPEN"))
+                b.setTrackState("CLOSED");
+            else if (s.equals("CLOSED"))
+                b.setTrackState("OPEN");
+        }
     }
 
     public void setTrack(Track t) {
@@ -174,6 +188,11 @@ public class TrackController {
 
     public void setMainController(boolean lineMain) {
         isLineMain = lineMain;
+    }
+
+    public void toggleCTCComms()
+    {
+        this.ctcComms = !this.ctcComms;
     }
 
     public boolean hasBlock(String line, int id)

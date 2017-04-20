@@ -25,7 +25,7 @@ public class TrainModelMain {
         timeStep = 0.001;
         distance = 0.0;
         grade = 0.0;
-        System.out.println("Initialized");
+        //System.out.println("Initialized");
        //TimeCalc();
     }
     public TrainModelMain(int numberOfCarts){
@@ -53,7 +53,7 @@ public class TrainModelMain {
             if (velocity <= 0.0)
                 velocity = 0.0;
             distance = distance + velocity * timeStep;
-            System.out.println("Acceleration: " + acceleration +"    Velocity: " + velocity + "    Distance: " + distance);
+            //System.out.println("Acceleration: " + acceleration +"    Velocity: " + velocity + "    Distance: " + distance);
            // i--;
         //}
         return velocity;

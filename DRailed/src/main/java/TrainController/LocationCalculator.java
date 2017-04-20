@@ -35,7 +35,6 @@ public class LocationCalculator
 		line = iLine;
 		block = track.getFromYardBlock(line);
 		trainID = iTrainID;
-		mbo = null;
 	}
 
 	//endregion
@@ -45,7 +44,7 @@ public class LocationCalculator
 	{
 
 		//blockLocation += iSpeed;
-		blockLocation += iSpeed*20; // TODO: Remove for non-testing
+		blockLocation += iSpeed;
 
 		if(block == null){
 			System.out.println("ERROR");
@@ -55,11 +54,16 @@ public class LocationCalculator
 		{
 			blockLocation = blockLocation - block.getLength();
 
+			//System.out.println("Direction Before:" + dir);
+
 			if(redirect == 0) {
 				dir = block.canMoveToBlock(dir);
 			}else{
 				redirect = 0;
 			}
+
+			//System.out.println("Direction After:" + dir);
+
 
 			int switchNum = block.getNextSwitchBlockNumber();
 			boolean redir = block.getNextSwitchRedirect();
@@ -73,14 +77,11 @@ public class LocationCalculator
 				redirect = 1;
 			}
 
-
-
-
 		}
 
-		mbo.setLocation(trainID, line, "Block: " + block);
-		System.out.println("We are on block " + block.getBlockNumber()+"\n" +
-				"Meters we have traveled along block: " + blockLocation);
+
+		mbo.setLocation(trainID, line, "Block:" + block + ":" + blockLocation);
+
 		return block;
 	}
 

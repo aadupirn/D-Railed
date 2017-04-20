@@ -21,14 +21,10 @@ public class FileUtils {
                     String lineTxt = null;
                     while((lineTxt = bufferedReader.readLine()) != null){
                     	contentStrs.add(lineTxt);
-                        System.out.println(lineTxt);
                     }
                     read.close();
-        }else{
-            System.out.println("can not find file��" + filePath);
         }
         } catch (Exception e) {
-            System.out.println("read file: " + filePath + " error:");
             e.printStackTrace();
         }
      return contentStrs;
