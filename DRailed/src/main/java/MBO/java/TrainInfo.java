@@ -50,7 +50,7 @@ public class TrainInfo {
             gps += distInBlk;
 
         block = data[1];
-        distInBlk = Integer.parseInt(data[2]);
+        distInBlk = (int)Double.parseDouble(data[2]);
         return Integer.toString(gps + distInBlk);
     }
 

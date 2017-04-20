@@ -73,7 +73,7 @@ public class LocationCalculator
 			}
 		}
 
-		mbo.setLocation(trainID, line, "Block: " + block + " : " + blockLocation);
+		mbo.setLocation(trainID, line, "Block:" + block + ":" + blockLocation);
 
 		System.out.println("We are on block " + block.getBlockNumber()+"\n" +
 				"Meters we have traveled along block: " + blockLocation);
