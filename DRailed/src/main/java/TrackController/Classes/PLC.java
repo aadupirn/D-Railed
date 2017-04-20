@@ -56,7 +56,6 @@ public class PLC
                                         outputID = Integer.parseInt(id);
                                         plcInputs[outputID][1] = input;
                                     } catch (NumberFormatException e) {
-                                        System.out.println("ID not valid");
                                         isGood = false;
                                     }
                                 }
@@ -73,7 +72,6 @@ public class PLC
                                         outputID = Integer.parseInt(id);
                                         plcInputs[outputID][0] = input;
                                     } catch (NumberFormatException e) {
-                                        System.out.println("ID not valid");
                                         isGood = false;
                                     }
                                 }
@@ -90,7 +88,6 @@ public class PLC
                                         outputID = Integer.parseInt(id);
                                         plcInputs[outputID][2] = input;
                                     } catch (NumberFormatException e) {
-                                        System.out.println("ID not valid");
                                         isGood = false;
                                     }
                                 }
@@ -107,7 +104,6 @@ public class PLC
                                         outputID = Integer.parseInt(id);
                                         switches[outputID] = input;
                                     } catch (NumberFormatException e) {
-                                        System.out.println("ID not valid");
                                         isGood = false;
                                     }
                                 }
@@ -121,7 +117,6 @@ public class PLC
                             }
                             else
                             {
-                                System.out.println("Invalid paramater");
                                 isGood = false;
                             }
                         }
@@ -185,7 +180,6 @@ public class PLC
 
             } catch (ScriptException e) {
 
-                System.out.println("Invalid Expression");
                 isGood=false;
                 return(false);
 
@@ -202,10 +196,10 @@ public class PLC
                 if (blocks[i] != null)
                     result = result.replaceAll(blocks[i].getBlockNumber() + ".occupied", Boolean.toString(blocks[i].isOccupied()));
             }
-            if (result.contains(".occupied")) //The other track controller has this block
-            {
-                System.out.println("Haven't handled yet");
-            }
+//            if (result.contains(".occupied")) //The other track controller has this block
+//            {
+//                System.out.println("Haven't handled yet");
+//            }
             return(result);
         }
     }

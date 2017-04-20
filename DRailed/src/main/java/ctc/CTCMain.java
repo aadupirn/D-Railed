@@ -209,7 +209,6 @@ public class CTCMain extends Application {
 	public static void updateTrainLocal(int trainID, String line,
 			Integer blockNumber) {
 		RailwayCache.green_line_occup.put("" + trainID, "" + blockNumber);
-		System.out.println("draw occupy for Monitor Map trainId =" + trainID + ", block = " + line + ", block = " + blockNumber);
 		MonitorCtrl.update(line);
 	}
 }

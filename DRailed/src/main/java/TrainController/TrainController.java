@@ -793,8 +793,11 @@ public class TrainController
 			int messageTrainID = (int)message.getTrainID();
 			if (messageTrainID == trainID)
 			{
-				speedLimit = (double)message.getSpeed();
-				authority = (double)message.getAuthority();
+				if(mbo.isMBOActive()) speedLimit = mbo.getSafeSpeed(trainID, route);
+				else speedLimit = (double)message.getSpeed();
+
+				if(mbo.isMBOActive()) authority = mbo.getAuthority(trainID, route);
+				else authority = (double)message.getAuthority();
 			}
 			else if (messageTrainID == 0)
 			{
