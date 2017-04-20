@@ -928,7 +928,7 @@ public class TrainController
 		setTempText(train.getTemperature());
 
 		mbo.setSpeed(trainID, route, speed);
-		mbo.setAuthority(trainID, route, 100);
+		mbo.setAuthority(trainID, route, (int)authority);
 	}
 
 	//endregion
