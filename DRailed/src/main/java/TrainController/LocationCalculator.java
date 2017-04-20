@@ -52,13 +52,13 @@ public class LocationCalculator
 		{
 			blockLocation = blockLocation - block.getLength();
 
-			System.out.println("Direction Before:" + dir);
+			//System.out.println("Direction Before:" + dir);
 			if(redirect == 0) {
 				dir = block.canMoveToBlock(dir);
 			}else{
 				redirect = 0;
 			}
-			System.out.println("Direction After:" + dir);
+			//System.out.println("Direction After:" + dir);
 
 			int switchNum = block.getNextSwitchBlockNumber();
 			boolean redir = block.getNextSwitchRedirect();
@@ -67,15 +67,15 @@ public class LocationCalculator
 
 			if(block.getBlockNumber() == switchNum && dir != redir){
 				dir = redir;
-				System.out.println("REDIRECT: " + dir);
+				//System.out.println("REDIRECT: " + dir);
 				redirect = 1;
 			}
 		}
 
 		mbo.setLocation(trainID, line, "Block:" + block + ":" + blockLocation);
 
-		System.out.println("We are on block " + block.getBlockNumber()+"\n" +
-				"Meters we have traveled along block: " + blockLocation);
+		//System.out.println("We are on block " + block.getBlockNumber()+"\n" +
+				//"Meters we have traveled along block: " + blockLocation);
 		return block;
 	}
 
