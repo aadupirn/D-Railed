@@ -326,7 +326,7 @@ public class TrainUI {
         grid.add(widthlabel, 0, 8);
 
         widthText = new Text();
-        widthText.setText(" 0");
+        widthText.setText(" 8.69");
         widthText.setWrappingWidth(colWidth * 1.5);
         widthText.setTextAlignment(TextAlignment.CENTER);
         grid.add(widthText, 1, 8);
@@ -338,7 +338,7 @@ public class TrainUI {
         grid.add(lengthLabel, 2, 8);
 
         tLengthText = new Text();
-        tLengthText.setText(" 0");
+        tLengthText.setText(" 2.65");
         tLengthText.setWrappingWidth(colWidth * 1.5);
         tLengthText.setTextAlignment(TextAlignment.CENTER);
         grid.add(tLengthText, 3, 8);
@@ -350,7 +350,7 @@ public class TrainUI {
         grid.add(heightLabel, 4, 8);
 
         heightText = new Text();
-        heightText.setText(" 0");
+        heightText.setText(" 3.42");
         heightText.setWrappingWidth(colWidth * 1.5);
         heightText.setTextAlignment(TextAlignment.CENTER);
         grid.add(heightText, 5, 8);
