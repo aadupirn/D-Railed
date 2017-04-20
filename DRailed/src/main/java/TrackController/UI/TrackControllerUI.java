@@ -86,14 +86,14 @@ public class TrackControllerUI {
         mainPane.setTop(menuBar);
         trackControllers[0].setOnAction((ActionEvent a) -> {
             try {
-                tc.switchUI("RED",1);
+                tc.switchUI("RED",3);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
         trackControllers[1].setOnAction((ActionEvent a) -> {
             try {
-                tc.switchUI("RED",1); //TODO make a second one!
+                tc.switchUI("RED",3); //TODO make a second one!
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -107,7 +107,7 @@ public class TrackControllerUI {
         });
         trackControllers[3].setOnAction((ActionEvent a) -> {
             try {
-                tc.switchUI("GREEN",1); //TODO make a second one!
+                tc.switchUI("GREEN",2);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -523,7 +523,6 @@ public class TrackControllerUI {
     {
         try {
             tc.dispatchTrain(152, Integer.parseInt(getCartsText.getText()), Integer.parseInt(getAuthText.getText()), Double.parseDouble(getSpeedText.getText()), Integer.parseInt(getTrainIDText.getText()));
-            System.out.println("Train created!");
         } catch (Exception e1) {
             System.out.println("We got an exception: " + e1.toString() + "\n");
             e1.printStackTrace();
