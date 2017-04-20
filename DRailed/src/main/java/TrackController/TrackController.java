@@ -176,6 +176,11 @@ public class TrackController {
         isLineMain = lineMain;
     }
 
+    public void toggleCTCComms()
+    {
+        this.ctcComms = !this.ctcComms;
+    }
+
     public boolean hasBlock(String line, int id)
     {
         if (line.equals(this.line))
