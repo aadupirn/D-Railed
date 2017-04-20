@@ -834,8 +834,8 @@ public class TrainController
 				stationCounter = 0;
 				atStation = false;
 				releaseBrakes();
-				lDoorOpen.setSelected(true);
-				rDoorOpen.setSelected(true);
+				lDoorClosed.setSelected(true);
+				rDoorClosed.setSelected(true);
 			}
 		}
 		else
@@ -870,13 +870,13 @@ public class TrainController
 					}
 					else if(currentBlock.getBeacon() != null)
 					{
-						if(!currentBlock.getBeacon().readMessage().contains("US") && !atStation)
-						{
-							makeAnnouncement("We have arrived at " + currentBlock.getStation().getStationName()+ ".");
+						if(!currentBlock.getBeacon().readMessage().contains("US") && !atStation) {
+							makeAnnouncement("We have arrived at " + currentBlock.getBeacon().readMessage() + ".");
 							atStation = true;
 							recentStop = currentBlock.getBlockNumber().intValue();
-							lDoorClosed.setSelected(true);
-							rDoorClosed.setSelected(true);
+							lDoorOpen.setSelected(true);
+							rDoorOpen.setSelected(true);
+						}
 					}
 					else
 					{
