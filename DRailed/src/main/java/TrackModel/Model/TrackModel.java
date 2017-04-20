@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import MBO.java.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  * Created by adzun_000 on 1/17/2017.
@@ -50,9 +53,10 @@ public class TrackModel
 
     public void importTrack(String fileName){
 
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("TrackModel/tracks/" + fileName).getFile());
-
+        FileChooser fileChooser = new FileChooser();
+        Stage fileSelect = new Stage();
+        fileSelect.setTitle(fileName);
+        File file = fileChooser.showOpenDialog(fileSelect);
         try (BufferedReader br = new BufferedReader(new FileReader(file)))
         {
 
