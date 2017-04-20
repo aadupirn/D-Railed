@@ -31,10 +31,14 @@ public class engine {
             return serviceBrakeSpeedCalculation(mass, power, speed, grade);
         else {
             if (power == 0) {
+                System.out.println("a");
                 return 0;
-            } else if (power == 0 && speed == 0)
+            } else if (power == 0 && speed == 0) {
+                System.out.println("b");
                 accelerationTotal = .1;
+            }
             else {
+                System.out.println("c");
                 accelerationTotal = power / (mass * speed);
 
                 double forceFriction = mass * gravity * friction;
