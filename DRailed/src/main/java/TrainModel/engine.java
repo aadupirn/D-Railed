@@ -22,8 +22,62 @@ public class engine {
     * Send it mass, powerCommand, current Train speed, and current trade grade
     * Returns back new speed
     */
-    protected double calculateSpeed(double mass, double powerCommand, double currentSpeed, double grade){
-        if(powerCommand == 0)
+    protected double calculateSpeed(double mass, double power, double speed, double grade){
+        double accelerationTotal = 0;
+
+        if(emergencyBrake)
+            return emergencyBrakeSpeedCalculation(mass, power, speed, grade);
+        else if(serviceBrake)
+            return serviceBrakeSpeedCalculation(mass, power, speed, grade);
+        else {
+            if (power == 0) {
+                return 0;
+            } else if (power == 0 && speed == 0)
+                accelerationTotal = .1;
+            else {
+                accelerationTotal = power / (mass * speed);
+
+                double forceFriction = mass * gravity * friction;
+                double accelFriction = forceFriction / mass;
+
+                accelerationTotal -= accelFriction;
+            }
+            if (accelerationTotal > .5)
+                accelerationTotal = .5;
+            if(accelerationTotal < 0)
+                accelerationTotal = 0;
+            speed = speed + (accelerationTotal * 1);
+            if (speed < 0)
+                speed = 0;
+            return speed;
+        }
+
+                /*double angle = (Math.atan(grade / 100));
+                double theta = Math.sin(angle);
+                System.out.println("Angle   " + angle + " "  + theta);
+
+                double forceFriction = mass * gravity * friction;
+                double forceTrain = 0.0;
+                if (speed == 0)
+                    forceTrain = power / mass;
+                else {
+                    forceTrain = power / (mass * speed);
+                }
+                double forceTotal = forceTrain;// - forceFriction;
+                double accelerationTotal = forceTotal / mass;
+               // System.out.println(forceTotal + " " + forceTrain + " " + forceFriction);
+                if (accelerationTotal > .5)
+                    accelerationTotal = .5;
+
+
+
+                speed = speed;
+//                System.out.println("Power " + power + " " + grade + " " + accelerationTotal + " " + forceFriction / mass + " " + forceTrain / mass + " " + speed);
+                */
+
+
+
+        /*if(powerCommand == 0)
             return 0;
         else {
             double totalAcceleration = 0.0;
@@ -51,7 +105,7 @@ public class engine {
             System.out.println("Power " + powerCommand + " "  + grade  + " " + trainAcceleration + " " + normalForce + " " + frictionForce + " " + currentSpeed);
 
             return currentSpeed;
-        }
+        }*/
 
 
 
