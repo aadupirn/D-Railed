@@ -523,7 +523,6 @@ public class TrackControllerUI {
     {
         try {
             tc.dispatchTrain(152, Integer.parseInt(getCartsText.getText()), Integer.parseInt(getAuthText.getText()), Double.parseDouble(getSpeedText.getText()), Integer.parseInt(getTrainIDText.getText()));
-            System.out.println("Train created!");
         } catch (Exception e1) {
             System.out.println("We got an exception: " + e1.toString() + "\n");
             e1.printStackTrace();

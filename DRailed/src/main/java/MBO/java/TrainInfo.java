@@ -63,12 +63,18 @@ public class TrainInfo {
 
     private boolean verifyDistance() {
         double test = 1.5 * Math.pow(speed.get(), 2) * .5 /(9.8 * Math.sin(-5));
-        if test ==
+        return test == stoppingDistance;
+    }
+
+    private void kill() {
+
     }
 
     public void setStoppingDistance() {
         double v = this.getSpeed(), g = 9.8, theta = -5;
         this.stoppingDistance = 1.5 * (v * v)/(2 * g * Math.sin(theta));
+        if(!verifyDistance())
+            kill();
     }
 
     public void setSafeSpeed(boolean mbo) {

@@ -24,7 +24,6 @@ public class Scheduler {
     }
 
     public void generateSchedule(String line, int thruput, LocalTime start, LocalTime end) {
-        System.out.println("DEV: Generating schedule for " + line + " line.");
         if(line.toUpperCase().equals(redLine))
             buildRedSchedule(thruput, start, end);
         else if(line.toUpperCase().equals(greenLine))
