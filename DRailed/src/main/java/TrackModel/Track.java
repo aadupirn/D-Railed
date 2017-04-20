@@ -34,9 +34,9 @@ public class Track {
 
     }
 
-    public Block getNextBlock(String line, Block currentBlock, boolean direction, Train train){
+    public Block getNextBlock(String line, Block currentBlock, boolean direction, boolean lastDirection, Train train){
 
-        Block nextBlock = tm.getBlock(line, currentBlock.getBlockNumber().intValue()).moveToNextBlock(train, direction);
+        Block nextBlock = tm.getBlock(line, currentBlock.getBlockNumber().intValue()).moveToNextBlock(train, direction, lastDirection, currentBlock);
 
         tm.getBlock(currentBlock.getLine(), currentBlock.getBlockNumber()).setUnoccupied();
         tm.getBlock(nextBlock.getLine(), nextBlock.getBlockNumber()).setOccupied();
